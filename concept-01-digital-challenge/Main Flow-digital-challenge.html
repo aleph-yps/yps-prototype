@@ -1847,9 +1847,10 @@
         }
         .path-connector {
             width: 4px;
-            height: 24px;
+            height: 32px;
             background: var(--grey-border);
             border-radius: 2px;
+            margin: -4px auto;
         }
         .path-connector.done { background: var(--success); }
 
@@ -4327,6 +4328,7 @@
                 currentScreen = n;
                 updateProtoNav();
                 window.scrollTo(0, 0);
+                target.scrollTo(0, 0);
                 if (n === 19) updateHomeScreen();
                 if (n === 2) buildDeck();
                 if (n === 7 && selectedPack) {
@@ -4372,6 +4374,7 @@
                     currentScreen = prev;
                     updateProtoNav();
                     window.scrollTo(0, 0);
+                    target.scrollTo(0, 0);
                 }
             }
         }
@@ -5112,7 +5115,7 @@
                 document.getElementById('buddyConfirmTitle').textContent = 'Going Solo!';
                 document.getElementById('buddyConfirmSubtitle').textContent = 'You vs. the leaderboard.';
                 document.getElementById('buddyConfirmCards').innerHTML =
-                    '<div style="width:100%; text-align:center;"><div style="font-size:60px;">🚀</div><p style="font-size:14px; color:var(--grey-text); margin-top:12px;">Focus on your own journey. Compete with the world.</p></div>';
+                    '<div style="width:100%; text-align:center;"><div style="font-size:60px;">🚀</div><p style="font-size:14px; color:#FFFFFF; margin-top:12px;">Focus on your own journey. Compete with the world.</p></div>';
                 document.getElementById('buddyConfirmInfo').innerHTML = 'Your XP and streak will count toward the global leaderboard.';
                 document.getElementById('buddyConfirmInfo').style.background = 'rgba(255,255,255,0.15)';
                 document.getElementById('buddyConfirmInfo').style.color = '#FFFFFF';

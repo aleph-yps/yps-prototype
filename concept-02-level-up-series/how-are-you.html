@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>How Are You?</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --green: #45BE93;
+    --green-dark: #2D8A6A;
+    --green-light: #CEEFE4;
+    --green-bg: #EEFAF5;
+    --blue: #1C83E1;
+    --blue-light: #E9F3FD;
+    --violet: #845EF7;
+    --violet-light: #E5DBFF;
+    --coral: #FF6B6B;
+    --coral-light: #FFE0E0;
+    --gold: #FFD43B;
+    --gold-light: #FFF3BF;
+    --ink: #262522;
+    --storm: #7B7874;
+    --cloud: #E5E7EB;
+    --linen: #F5F4F1;
+    --white: #FFFFFF;
+    --r-sm: 12px;
+    --r-md: 16px;
+    --r-lg: 24px;
+    --r-xl: 32px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--linen);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phone {
+    width: 390px;
+    height: 844px;
+    background: var(--white);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 0 0 8px #1a1a1a, 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.screen.active { display: flex; }
+
+/* Status bar */
+.status-bar {
+    padding: 14px 28px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* ═══ S0: LANDING ═══ */
+#s0 {
+    background: linear-gradient(160deg, #CEEFE4 0%, #45BE93 40%, #2D8A6A 100%);
+}
+.landing-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px;
+    text-align: center;
+}
+.keychain-icon {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    border: 2px solid rgba(255,255,255,0.3);
+    animation: floatSlow 4s ease-in-out infinite;
+}
+@keyframes floatSlow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.landing-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+.landing-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 40px;
+    line-height: 1.5;
+    max-width: 280px;
+}
+.landing-promise {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+.promise-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: white;
+    font-weight: 500;
+}
+.promise-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+/* ═══ S1: MOOD PICKER ═══ */
+#s1 {
+    background: linear-gradient(180deg, #EEFAF5 0%, #FFFFFF 50%);
+}
+.mood-header {
+    text-align: center;
+    padding: 20px 32px 0;
+}
+.mood-header h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+.mood-header p {
+    font-size: 14px;
+    color: var(--storm);
+    margin-bottom: 24px;
+}
+.mood-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 24px 24px;
+}
+.mood-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--white);
+    border: 2px solid var(--cloud);
+    border-radius: var(--r-md);
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+.mood-card:hover, .mood-card:active {
+    border-color: var(--green);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+.mood-card.selected {
+    border-color: var(--green);
+    background: var(--green-bg);
+    box-shadow: 0 0 0 3px rgba(69,190,147,0.2);
+}
+.mood-emoji {
+    font-size: 40px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.mood-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+}
+.mood-desc {
+    font-size: 12px;
+    color: var(--storm);
+    margin-top: 2px;
+}
+.privacy-note {
+    text-align: center;
+    padding: 16px 32px;
+    font-size: 11px;
+    color: var(--storm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.privacy-icon {
+    font-size: 14px;
+}
+
+/* ═══ S2: ACTION ═══ */
+#s2 {
+    background: var(--white);
+}
+.action-hero {
+    text-align: center;
+    padding: 20px 32px;
+}
+.action-mood-echo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-light);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green-dark);
+    margin-bottom: 16px;
+}
+.action-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+.action-sub {
+    font-size: 14px;
+    color: var(--storm);
+    margin-bottom: 24px;
+}
+.action-card {
+    margin: 0 24px 20px;
+    background: var(--green-bg);
+    border: 2px solid var(--green-light);
+    border-radius: var(--r-lg);
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.action-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--green-dark));
+}
+.action-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+.action-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+.action-detail {
+    font-size: 13px;
+    color: var(--storm);
+    line-height: 1.5;
+}
+.action-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--white);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-dark);
+    margin-top: 16px;
+    border: 1px solid var(--green-light);
+}
+
+/* ═══ S3: DONE ═══ */
+#s3 {
+    background: linear-gradient(160deg, #CEEFE4 0%, #45BE93 40%, #2D8A6A 100%);
+}
+.done-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px;
+    text-align: center;
+}
+.done-check {
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    border: 3px solid rgba(255,255,255,0.4);
+    animation: popIn 0.6s ease;
+}
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.done-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 12px;
+}
+.done-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 40px;
+    line-height: 1.5;
+    max-width: 280px;
+}
+.helpline-box {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border-radius: var(--r-md);
+    padding: 20px;
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.helpline-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 12px;
+}
+.helpline-item {
+    font-size: 13px;
+    color: white;
+    font-weight: 500;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.helpline-item span {
+    font-weight: 700;
+}
+
+/* ═══ SHARED ═══ */
+.btn {
+    display: block;
+    width: calc(100% - 48px);
+    margin: 0 24px 12px;
+    padding: 16px;
+    border: none;
+    border-radius: var(--r-md);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+.btn-primary {
+    background: var(--green);
+    color: white;
+    box-shadow: 0 4px 0 var(--green-dark);
+}
+.btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--green-dark);
+}
+.btn-ghost {
+    background: transparent;
+    color: var(--storm);
+    border: 2px solid var(--cloud);
+}
+.btn-white {
+    background: white;
+    color: var(--ink);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.08);
+}
+.btn-white:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+}
+.bottom-spacer { height: 24px; flex-shrink: 0; }
+
+/* Transition */
+.screen { transition: opacity 0.3s ease; }
+.fade-out { opacity: 0; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+    <!-- ═══ S0: LANDING ═══ -->
+    <div id="s0" class="screen active">
+        <div class="status-bar" style="color:white;">
+            <span>9:41</span>
+            <span>●●● ⏤</span>
+        </div>
+        <div class="landing-content">
+            <div class="keychain-icon">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+            </div>
+            <h1 class="landing-title">How are you?</h1>
+            <p class="landing-sub">Just a quick check-in with yourself. Takes 30 seconds.</p>
+            <div class="landing-promise">
+                <div class="promise-item">
+                    <div class="promise-icon">🔒</div>
+                    No account needed
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">👁️‍🗨️</div>
+                    No one else sees this
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">🚫</div>
+                    No data stored
+                </div>
+            </div>
+            <button class="btn btn-white" onclick="goTo(1)" style="width:auto; margin:0; padding:16px 48px;">
+                Check In
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ S1: MOOD PICKER ═══ -->
+    <div id="s1" class="screen">
+        <div class="status-bar" style="color:var(--ink);">
+            <span>9:41</span>
+            <span>●●● ⏤</span>
+        </div>
+        <div class="mood-header">
+            <h1>How are you<br>feeling right now?</h1>
+            <p>Pick the one that's closest. No right answer.</p>
+        </div>
+        <div class="mood-grid">
+            <div class="mood-card" onclick="selectMood(this, 0)">
+                <div class="mood-emoji">😊</div>
+                <div>
+                    <div class="mood-label">Great</div>
+                    <div class="mood-desc">Feeling good, things are going well</div>
+                </div>
+            </div>
+            <div class="mood-card" onclick="selectMood(this, 1)">
+                <div class="mood-emoji">🙂</div>
+                <div>
+                    <div class="mood-label">Good</div>
+                    <div class="mood-desc">Pretty okay, nothing major</div>
+                </div>
+            </div>
+            <div class="mood-card" onclick="selectMood(this, 2)">
+                <div class="mood-emoji">😐</div>
+                <div>
+                    <div class="mood-label">Okay</div>
+                    <div class="mood-desc">Not bad, not great — just here</div>
+                </div>
+            </div>
+            <div class="mood-card" onclick="selectMood(this, 3)">
+                <div class="mood-emoji">😔</div>
+                <div>
+                    <div class="mood-label">Not great</div>
+                    <div class="mood-desc">Feeling a bit off today</div>
+                </div>
+            </div>
+            <div class="mood-card" onclick="selectMood(this, 4)">
+                <div class="mood-emoji">😢</div>
+                <div>
+                    <div class="mood-label">Struggling</div>
+                    <div class="mood-desc">Having a really tough time</div>
+                </div>
+            </div>
+        </div>
+        <div class="privacy-note">
+            <span class="privacy-icon">🔒</span>
+            This is just for you. Nobody sees your answer.
+        </div>
+        <div class="bottom-spacer"></div>
+    </div>
+
+    <!-- ═══ S2: ACTION ═══ -->
+    <div id="s2" class="screen">
+        <div class="status-bar" style="color:var(--ink);">
+            <span>9:41</span>
+            <span>●●● ⏤</span>
+        </div>
+        <div class="action-hero">
+            <div class="action-mood-echo" id="actionMoodEcho">😊 Feeling great</div>
+            <h2 class="action-title" id="actionTitle">Here's one small thing</h2>
+            <p class="action-sub">Try this today. No pressure.</p>
+        </div>
+        <div class="action-card" id="actionCard">
+            <div class="action-icon" id="actionIcon">🚶</div>
+            <div class="action-text" id="actionText">Take a 10-minute walk outside</div>
+            <div class="action-detail" id="actionDetail">Fresh air and movement — your brain will thank you.</div>
+            <div class="action-timer" id="actionTimer">⏱ ~10 min</div>
+        </div>
+        <button class="btn btn-primary" onclick="goTo(3)">Got it</button>
+        <button class="btn btn-ghost" onclick="shuffleAction()" style="border:none; text-decoration:underline; color:var(--green-dark); font-weight:600; text-align:center;">
+            Show me a different one
+        </button>
+        <div class="bottom-spacer"></div>
+    </div>
+
+    <!-- ═══ S3: DONE ═══ -->
+    <div id="s3" class="screen">
+        <div class="status-bar" style="color:white;">
+            <span>9:41</span>
+            <span>●●● ⏤</span>
+        </div>
+        <div class="done-content">
+            <div class="done-check">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5"/>
+                </svg>
+            </div>
+            <h1 class="done-title">That's it.</h1>
+            <p class="done-sub">Checking in with yourself is a big deal. Come back anytime — scan the QR whenever you want.</p>
+
+            <div class="helpline-box">
+                <div class="helpline-title">If you need someone to talk to</div>
+                <div class="helpline-item">📞 <span>SOS (24hr):</span> 1800 221 4444</div>
+                <div class="helpline-item">📞 <span>IMH (24hr):</span> 6389 2222</div>
+                <div class="helpline-item">💬 <span>ec2.sg:</span> Online counselling</div>
+            </div>
+
+            <button class="btn btn-white" onclick="goTo(0)" style="width:auto; margin:0; padding:16px 48px;">
+                Done
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let currentScreen = 0;
+let selectedMood = -1;
+
+const actions = {
+    0: [ // Great
+        { icon: '🎉', text: 'Share the good energy', detail: 'Text someone you care about. Tell them something specific you appreciate.', time: '~2 min' },
+        { icon: '📝', text: 'Write down what\'s going right', detail: 'Three things. Just for yourself. Keep the streak going.', time: '~3 min' },
+        { icon: '🏃', text: 'Do something active', detail: 'A walk, a stretch, a dance — ride the good feeling.', time: '~10 min' },
+    ],
+    1: [ // Good
+        { icon: '🚶', text: 'Take a 10-minute walk outside', detail: 'Fresh air and movement — your brain will thank you.', time: '~10 min' },
+        { icon: '🎵', text: 'Listen to a song that makes you feel something', detail: 'Put your headphones on. Close your eyes for the whole thing.', time: '~4 min' },
+        { icon: '💧', text: 'Drink a glass of water', detail: 'Sounds basic. It works. Hydration changes how you feel.', time: '~1 min' },
+    ],
+    2: [ // Okay
+        { icon: '🌬️', text: 'Try 4-7-8 breathing', detail: 'Breathe in for 4 seconds, hold for 7, out for 8. Repeat 3 times.', time: '~2 min' },
+        { icon: '☀️', text: 'Step outside for 5 minutes', detail: 'You don\'t have to go anywhere. Just stand in the sun if there is any.', time: '~5 min' },
+        { icon: '🎧', text: 'Put on a playlist you love', detail: 'Not background noise — actually listen. Let your mind wander.', time: '~10 min' },
+    ],
+    3: [ // Not great
+        { icon: '🫂', text: 'Talk to someone you trust', detail: 'A friend, a sibling, anyone safe. You don\'t have to explain everything — just say you\'re not great.', time: 'When ready' },
+        { icon: '🛏️', text: 'Rest without screens', detail: 'Lie down. Close your eyes. No phone. Even 10 minutes helps.', time: '~10 min' },
+        { icon: '✏️', text: 'Write down what\'s on your mind', detail: 'Doesn\'t have to make sense. Just get it out of your head and onto something.', time: '~5 min' },
+    ],
+    4: [ // Struggling
+        { icon: '📞', text: 'Call or text someone who cares', detail: 'SOS: 1800 221 4444 (24hr). IMH: 6389 2222 (24hr). ec2.sg for online chat. You\'re not alone.', time: 'Anytime' },
+        { icon: '🫂', text: 'You don\'t have to be okay right now', detail: 'Feeling this way doesn\'t mean you\'re broken. It means you\'re human. Just get through today.', time: '' },
+        { icon: '🌊', text: 'Ground yourself: 5-4-3-2-1', detail: '5 things you see. 4 you hear. 3 you can touch. 2 you smell. 1 you taste. Brings you back to now.', time: '~3 min' },
+    ],
+};
+
+const moodLabels = ['😊 Feeling great', '🙂 Feeling good', '😐 Feeling okay', '😔 Not great today', '😢 Having a tough time'];
+const actionTitles = ['Keep the momentum going', 'Here\'s one small thing', 'Something that might help', 'Be gentle with yourself', 'You matter. Try this.'];
+let currentActionIndex = 0;
+
+function goTo(n) {
+    const screens = document.querySelectorAll('.screen');
+    screens.forEach(s => { s.classList.remove('active'); });
+    document.getElementById('s' + n).classList.add('active');
+    currentScreen = n;
+}
+
+function selectMood(el, mood) {
+    selectedMood = mood;
+    currentActionIndex = 0;
+
+    // Visual selection
+    document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+
+    // Update action screen
+    document.getElementById('actionMoodEcho').textContent = moodLabels[mood];
+    document.getElementById('actionTitle').textContent = actionTitles[mood];
+    showAction();
+
+    // Go to action after brief delay
+    setTimeout(() => goTo(2), 400);
+}
+
+function showAction() {
+    const pool = actions[selectedMood];
+    const a = pool[currentActionIndex % pool.length];
+    document.getElementById('actionIcon').textContent = a.icon;
+    document.getElementById('actionText').textContent = a.text;
+    document.getElementById('actionDetail').textContent = a.detail;
+    document.getElementById('actionTimer').textContent = a.time ? '⏱ ' + a.time : '';
+    document.getElementById('actionTimer').style.display = a.time ? 'inline-flex' : 'none';
+}
+
+function shuffleAction() {
+    currentActionIndex++;
+    showAction();
+}
+</script>
+
+</body>
+</html>

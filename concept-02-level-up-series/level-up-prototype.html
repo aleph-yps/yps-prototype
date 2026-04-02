@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Level Up Series — Interactive Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --coral: #E8524A;
+    --coral-dark: #C0392B;
+    --coral-light: #FFE0E0;
+    --yellow: #FFCE49;
+    --yellow-light: #FFF8E1;
+    --green: #45BE93;
+    --green-light: #CEEFE4;
+    --violet: #845EF7;
+    --violet-light: #E5DBFF;
+    --blue: #1C83E1;
+    --blue-light: #E9F3FD;
+    --ink: #262522;
+    --storm: #7B7874;
+    --cloud: #E5E7EB;
+    --linen: #F5F4F1;
+    --white: #FFFFFF;
+    --font-display: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: var(--font-body);
+    background: #1a1a1a;
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* ═══ SCREENS ═══ */
+.screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(30px);
+    z-index: 1;
+}
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    z-index: 10;
+}
+
+/* ═══ SCREEN 1: ROADSHOW ═══ */
+.screen-roadshow {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 24px;
+    text-align: center;
+}
+.roadshow-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+.roadshow-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: white;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+.roadshow-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 1rem;
+    max-width: 400px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+}
+.roadshow-scene {
+    width: 100%;
+    max-width: 900px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin: 0 auto 32px;
+    position: relative;
+    overflow: hidden;
+}
+.roadshow-scene img {
+    width: 100%;
+    display: block;
+    border-radius: 16px;
+}
+.roadshow-scene .placeholder-text {
+    color: rgba(255,255,255,0.3);
+    font-size: 0.8rem;
+    text-align: center;
+}
+.booth-elements {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+.booth-tag {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ═══ SCREEN 2: RECEIVE BOX ═══ */
+.screen-receive {
+    background: linear-gradient(180deg, #f5efe6 0%, #ede5d8 100%);
+    padding: 24px;
+    text-align: center;
+}
+.receive-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--coral);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.receive-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+.receive-sub {
+    color: var(--storm);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+}
+.box-closed-img {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 32px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    position: relative;
+}
+.box-closed-img img {
+    width: 100%;
+    display: block;
+}
+.name-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 2px solid var(--coral);
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+    margin-bottom: 32px;
+}
+.name-tag span {
+    color: var(--coral);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ═══ SCREEN 3: OPEN BOX ═══ */
+.screen-openbox {
+    background: linear-gradient(180deg, #f5efe6 0%, #ede5d8 100%);
+    padding: 24px;
+    text-align: center;
+    overflow-y: auto;
+}
+.openbox-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+}
+.openbox-sub {
+    color: var(--storm);
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+}
+
+/* Interactive box image */
+.box-interactive {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: visible;
+}
+.box-interactive img.box-main-img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    display: block;
+}
+
+/* Hotspot areas — invisible, only the number circle is visible */
+.hotspot {
+    position: absolute;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+}
+.hotspot .hotspot-label {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    display: none;
+}
+/* Floating number indicator — main interactive element */
+.hotspot-num {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    z-index: 2;
+    border: 3px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: transform 0.2s;
+    animation: numBounce 2.5s ease-in-out infinite;
+}
+/* Pulsing ring around each circle */
+.hotspot-num::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    transform: translate(-50%, -50%);
+    animation: pulseRing 2s ease-out infinite;
+    opacity: 0;
+    pointer-events: none;
+}
+.hotspot-num::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: inherit;
+    opacity: 0.25;
+    transform: translate(-50%, -50%);
+    animation: pulseGlow 2s ease-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+@keyframes pulseRing {
+    0% { width: 44px; height: 44px; opacity: 0.6; }
+    100% { width: 70px; height: 70px; opacity: 0; }
+}
+@keyframes pulseGlow {
+    0% { width: 44px; height: 44px; opacity: 0.3; }
+    100% { width: 64px; height: 64px; opacity: 0; }
+}
+.hotspot-num:hover { transform: translate(-50%, -50%) scale(1.15); }
+/* 1=Quick Start Guide (red), 2=Start the Talk (purple), 3=Start Simple (orange), 4=Parenting (orange) */
+/* Hotspots are children 2-5 because <img> is child 1 */
+.hotspot:nth-child(2) > .hotspot-num { background: var(--coral) !important; color: white !important; border-color: rgba(255,255,255,0.6) !important; }
+.hotspot:nth-child(3) > .hotspot-num { background: #845EF7 !important; color: white !important; border-color: rgba(255,255,255,0.6) !important; }
+.hotspot:nth-child(4) > .hotspot-num { background: #F59F00 !important; color: white !important; border-color: rgba(255,255,255,0.6) !important; }
+.hotspot:nth-child(5) > .hotspot-num { background: #F59F00 !important; color: white !important; border-color: rgba(255,255,255,0.6) !important; }
+@keyframes numBounce {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-5px); }
+}
+
+/* Popup tooltip */
+.hotspot-popup {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: white;
+    border-radius: 14px;
+    padding: 16px 20px;
+    padding-bottom: 24px;
+    width: 230px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    text-align: left;
+    z-index: 20;
+    margin-bottom: 8px;
+}
+/* Invisible bridge to keep hover when moving to popup */
+.hotspot-popup::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 16px;
+}
+.hotspot-popup::after {
+    content: '';
+    position: absolute;
+    top: calc(100% - 1px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: white;
+    z-index: 1;
+}
+.hotspot.active .hotspot-popup,
+.hotspot:hover .hotspot-popup {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+    z-index: 30;
+}
+.hotspot.active, .hotspot:hover {
+    z-index: 20;
+}
+/* Flip popup below for top hotspots */
+.hotspot.popup-below .hotspot-popup {
+    bottom: auto;
+    top: 100%;
+    margin-bottom: 0;
+    margin-top: 8px;
+}
+.hotspot.popup-below .hotspot-popup::before {
+    top: auto;
+    bottom: 100%;
+    height: 16px;
+}
+.hotspot.popup-below .hotspot-popup::after {
+    top: auto;
+    bottom: calc(100% - 1px);
+    border-top-color: transparent;
+    border-bottom-color: white;
+}
+/* Keep popup on screen */
+.hotspot.popup-left .hotspot-popup { left: 0; transform: translateX(0) translateY(8px); }
+.hotspot.popup-left.active .hotspot-popup,
+.hotspot.popup-left:hover .hotspot-popup { transform: translateX(0) translateY(0); }
+.hotspot.popup-left .hotspot-popup::after { left: 30px; transform: none; }
+.hotspot.popup-right .hotspot-popup { left: auto; right: 0; transform: translateX(0) translateY(8px); }
+.hotspot.popup-right.active .hotspot-popup,
+.hotspot.popup-right:hover .hotspot-popup { transform: translateX(0) translateY(0); }
+.hotspot.popup-right .hotspot-popup::after { left: auto; right: 30px; transform: none; }
+
+.hotspot-popup h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    color: var(--ink);
+}
+.hotspot-popup p {
+    font-size: 0.75rem;
+    color: var(--storm);
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.hotspot-popup .popup-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 16px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+}
+.hotspot-popup .popup-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+.hotspot-popup .popup-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Overlay to close popups */
+.box-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    display: none;
+}
+.box-overlay.show { display: block; }
+
+/* ═══ SCREEN 4: START THE TALK (GAME) ═══ */
+.screen-talk {
+    background: linear-gradient(135deg, #2d1b69 0%, #1a1145 100%);
+    padding: 24px;
+    text-align: center;
+    overflow-y: auto;
+}
+.talk-header {
+    margin-bottom: 24px;
+}
+.talk-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+}
+.talk-back:hover { color: white; }
+.talk-title-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #845EF7, #FFD43B 60%, #45BE93);
+    border-radius: 16px;
+    padding: 16px 32px;
+    margin-bottom: 16px;
+}
+.talk-title-badge h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.talk-subtitle {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+}
+
+/* Card deck */
+.card-deck {
+    position: relative;
+    width: 300px;
+    height: 420px;
+    margin: 0 auto 24px;
+    perspective: 1000px;
+}
+.playing-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    cursor: pointer;
+    transition: transform 0.5s ease, opacity 0.4s ease;
+    backface-visibility: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.playing-card .card-category {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.playing-card .card-number {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.2rem;
+    opacity: 0.4;
+}
+.playing-card .card-prompt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    text-align: center;
+}
+.playing-card .card-instruction {
+    position: absolute;
+    bottom: 24px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    opacity: 0.5;
+}
+
+/* Card types */
+.playing-card.icebreaker {
+    background: linear-gradient(180deg, #FFF8DB 0%, #FFE066 100%);
+    color: var(--ink);
+}
+.playing-card.icebreaker .card-category { background: rgba(0,0,0,0.08); color: var(--ink); }
+.playing-card.realtalk {
+    background: linear-gradient(180deg, #FFF0F0 0%, #FFB4B4 100%);
+    color: var(--ink);
+}
+.playing-card.realtalk .card-category { background: var(--coral); color: white; }
+.playing-card.deeper {
+    background: linear-gradient(180deg, #F0EBFF 0%, #C9B1FF 100%);
+    color: var(--ink);
+}
+.playing-card.deeper .card-category { background: var(--violet); color: white; }
+.playing-card.swap {
+    background: linear-gradient(180deg, #2d2d2d 0%, #111 100%);
+    color: white;
+}
+.playing-card.swap .card-category { background: #FFD43B; color: var(--ink); }
+
+.card-controls {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+.card-counter {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--font-display);
+}
+.card-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.card-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
+
+/* ═══ SCREEN 5: START SIMPLE (CHALLENGE) ═══ */
+.screen-challenge {
+    background: linear-gradient(180deg, #FFF5F0 0%, #FFE8E0 100%);
+    padding: 24px;
+    text-align: center;
+    overflow-y: auto;
+}
+.challenge-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--storm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+}
+.challenge-back:hover { color: var(--ink); }
+.challenge-header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #FF6B6B, #FFCE49);
+    border-radius: 16px;
+    padding: 12px 28px;
+    margin-bottom: 8px;
+}
+.challenge-header-badge h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: white;
+}
+.challenge-subtitle {
+    color: var(--storm);
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+}
+
+/* Leaderboard - mimics the physical board */
+.leaderboard {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 24px;
+    border: 3px solid #7BC67E;
+}
+.lb-header {
+    background: linear-gradient(135deg, #E8524A 0%, #F0934A 100%);
+    color: white;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.lb-header h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+.lb-header .lb-date {
+    background: white;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--storm);
+    min-width: 80px;
+    text-align: center;
+}
+.lb-subheader {
+    background: #7BC67E;
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    padding: 8px 0;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+.lb-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+}
+.lb-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.lb-player-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 3px solid var(--cloud);
+}
+.lb-player-avatar:hover { transform: scale(1.1); }
+.lb-player-avatar.selected { border-color: #7BC67E; box-shadow: 0 0 0 3px rgba(123,198,126,0.3); }
+.lb-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px;
+    border-bottom: 1px solid #f0f0f0;
+    border-left: 1px solid #f5f5f5;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.lb-cell:hover { background: #f9fff9; }
+.lb-check {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid #d0e8d0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 1rem;
+    color: transparent;
+}
+.lb-check.checked {
+    background: #7BC67E;
+    border-color: #5DAF60;
+    color: white;
+}
+.lb-challenge-text {
+    grid-column: 1 / -1;
+    padding: 12px 20px;
+    border-top: 2px solid #7BC67E;
+    font-family: 'DM Sans', sans-serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-align: center;
+}
+.lb-challenge-text.empty {
+    color: var(--cloud);
+}
+
+/* Magnet picker */
+.magnet-picker {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.magnet-option {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border: 3px solid var(--cloud);
+    background: white;
+    transition: all 0.2s;
+}
+.magnet-option:hover { transform: scale(1.1); border-color: #7BC67E; }
+.magnet-option.selected { border-color: #7BC67E; box-shadow: 0 0 0 3px rgba(123,198,126,0.3); background: #f0fff0; }
+
+/* Card carousel */
+.card-carousel {
+    max-width: 800px;
+    margin: 0 auto 24px;
+    position: relative;
+}
+.carousel-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+.carousel-track-wrap {
+    position: relative;
+    overflow: hidden;
+}
+.carousel-track {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 4px 0 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.ch-card {
+    flex: 0 0 150px;
+    background: white;
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+    border: 2px solid var(--cloud);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.ch-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+.ch-card.active { border-color: var(--coral); background: var(--coral-light); }
+.ch-card .ch-duration {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.ch-card .ch-text {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--ink);
+}
+.ch-card .ch-cat-tag {
+    margin-top: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--storm);
+}
+.ch-card[data-cat="sleep"] { border-color: #D4E5F7; }
+.ch-card[data-cat="sleep"] .ch-duration { background: var(--blue-light); color: var(--blue); }
+.ch-card[data-cat="eat"] { border-color: #C8E8D8; }
+.ch-card[data-cat="eat"] .ch-duration { background: var(--green-light); color: var(--green); }
+.ch-card[data-cat="move"] { border-color: #F7D4D4; }
+.ch-card[data-cat="move"] .ch-duration { background: var(--coral-light); color: var(--coral); }
+.ch-card[data-cat="mind"] { border-color: #DDD4F7; }
+.ch-card[data-cat="mind"] .ch-duration { background: var(--violet-light); color: var(--violet); }
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--coral);
+    border: 2px solid white;
+    box-shadow: 0 4px 12px rgba(232,82,74,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    font-size: 1rem;
+    color: white;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+.carousel-arrow:hover { transform: translateY(-50%) scale(1.1); box-shadow: 0 6px 16px rgba(232,82,74,0.4); }
+.carousel-arrow.left { left: -8px; }
+.carousel-arrow.right { right: -8px; }
+.sb-name {
+    font-weight: 600;
+    font-size: 0.8rem;
+    min-width: 50px;
+}
+.sb-dots {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+}
+.sb-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px dashed var(--cloud);
+    background: var(--linen);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.sb-dot.filled {
+    background: var(--coral);
+    border: 2px solid var(--coral);
+    color: white;
+}
+.sb-dot.filled.green { background: var(--green); border-color: var(--green); }
+
+/* ═══ SCREEN 6: QUICK START GUIDE ═══ */
+.screen-guide {
+    background: var(--linen);
+    padding: 24px;
+    text-align: center;
+    overflow-y: auto;
+}
+.guide-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--storm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+}
+.guide-back:hover { color: var(--ink); }
+.guide-cover {
+    background: var(--coral);
+    border-radius: 16px;
+    padding: 40px 32px;
+    color: white;
+    max-width: 400px;
+    margin: 0 auto 32px;
+    box-shadow: 0 12px 40px rgba(232,82,74,0.3);
+}
+.guide-cover h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+.guide-cover p {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+.guide-steps {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+}
+.guide-step {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid var(--cloud);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+.guide-step .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--coral);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+.guide-step h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+.guide-step p {
+    font-size: 0.8rem;
+    color: var(--storm);
+    line-height: 1.5;
+}
+.guide-step .time-tag {
+    display: inline-block;
+    background: var(--coral-light);
+    color: var(--coral);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 4px;
+}
+
+/* ═══ BUTTONS ═══ */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--coral);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(232,82,74,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,82,74,0.4); }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+.btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: var(--ink);
+    border: 2px solid var(--cloud);
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-white:hover { border-color: var(--coral); color: var(--coral); }
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    z-index: 100;
+}
+.progress-fill {
+    height: 100%;
+    background: var(--coral);
+    transition: width 0.5s ease;
+    border-radius: 0 2px 2px 0;
+}
+
+/* ═══ NAV DOTS ═══ */
+.nav-dots {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 8px 16px;
+}
+.nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.nav-dot.active {
+    background: white;
+    width: 24px;
+    border-radius: 4px;
+}
+.nav-dot.visited { background: rgba(255,255,255,0.6); }
+
+/* Image placeholder */
+.img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    background: rgba(0,0,0,0.05);
+    border-radius: inherit;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--ink);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 200;
+    transition: transform 0.4s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Swipe hint animation */
+@keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+.swipe-hint { animation: pulse 2s infinite; }
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 16.6%"></div>
+</div>
+
+<!-- Navigation Dots -->
+<div class="nav-dots" id="navDots">
+    <div class="nav-dot active" data-screen="0" title="Roadshow"></div>
+    <div class="nav-dot" data-screen="1" title="Receive Box"></div>
+    <div class="nav-dot" data-screen="2" title="Open Box"></div>
+    <div class="nav-dot" data-screen="3" title="Start the Talk"></div>
+    <div class="nav-dot" data-screen="4" title="Start Simple"></div>
+    <div class="nav-dot" data-screen="5" title="Quick Start Guide"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SCREEN 1: ROADSHOW -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen screen-roadshow active" id="screen0">
+    <div class="roadshow-badge">HPB Mall Roadshow</div>
+    <div class="roadshow-title">It starts here.</div>
+    <div class="roadshow-sub">You're at a Health Promotion Board roadshow. You spot the Level Up Series booth. A friendly volunteer hands you a box.</div>
+
+    <div class="roadshow-scene" id="roadshowImg">
+        <img src="Mockup/Roadshow.png" alt="HPB Mall Roadshow">
+    </div>
+
+    <div class="booth-elements">
+        <div class="booth-tag">Live demos</div>
+        <div class="booth-tag">Free box pickup</div>
+        <div class="booth-tag">Try the cards</div>
+    </div>
+
+    <button class="btn-primary" onclick="goToScreen(1)">
+        Collect your box <span>&#8594;</span>
+    </button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SCREEN 2: RECEIVE BOX -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen screen-receive" id="screen1">
+    <div class="receive-label">Your box is ready</div>
+    <div class="receive-title">Level Up Series</div>
+    <div class="receive-sub">One small win a day.</div>
+
+    <div class="box-closed-img" id="boxClosedImg">
+        <img src="Mockup/box close.png" alt="Level Up Series box">
+    </div>
+
+    <div class="name-tag">
+        <span>This box belongs to</span>
+        <span style="font-size: 1.2rem; color: var(--ink); font-family: var(--font-display); font-weight: 800;">YOU</span>
+    </div>
+
+    <button class="btn-primary" onclick="goToScreen(2)">
+        Open the box <span>&#8594;</span>
+    </button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SCREEN 3: OPEN BOX — CHOOSE ITEM -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen screen-openbox" id="screen2">
+    <div class="receive-label">Inside the box</div>
+    <div class="openbox-title">What's inside</div>
+    <div class="openbox-sub">Tap the numbers to explore each item</div>
+
+    <div class="box-overlay" id="boxOverlay" onclick="closeAllPopups()"></div>
+
+    <div class="box-interactive" id="boxInteractive">
+        <img class="box-main-img" src="Mockup/box open up.png" alt="Level Up Series box opened">
+
+        <!-- 1: Quick Start Guide (red instruction booklet, bottom center of box) -->
+        <div class="hotspot popup-right" style="right: 30%; bottom: 22%; width: 40px; height: 40px;" onclick="togglePopup(event, this)">
+            <div class="hotspot-num">1</div>
+            <div class="hotspot-label">Quick Start Guide</div>
+            <div class="hotspot-popup">
+                <img class="popup-img" src="Mockup/quick-start-guide.png" alt="Quick Start Guide" style="max-height: 150px; width: auto;">
+                <h4>Quick Start Guide</h4>
+                <p>Instruction manual. Everything you need to get started in 15 minutes. No prep needed.</p>
+                <button class="popup-btn" style="background: var(--blue);" onclick="event.stopPropagation(); goToScreen(5);">Read guide &#8594;</button>
+            </div>
+        </div>
+
+        <!-- 2: Start the Talk (right card - purple/blue gradient) -->
+        <div class="hotspot popup-right" style="right: 26%; top: 46%; width: 40px; height: 40px;" onclick="togglePopup(event, this)">
+            <div class="hotspot-num">2</div>
+            <div class="hotspot-label">Start the Talk</div>
+            <div class="hotspot-popup">
+                <img class="popup-img" src="Mockup/Start the Talk/start-the-talk-box.png" alt="Start the Talk card box">
+                <h4>Start the Talk</h4>
+                <p>32 conversation cards. "Never Have I Ever" style. Youth draws first. Both answer honestly.</p>
+                <button class="popup-btn" style="background: #845EF7;" onclick="event.stopPropagation(); goToScreen(3);">Play now &#8594;</button>
+            </div>
+        </div>
+
+        <!-- 3: Start Simple (left card + board) -->
+        <div class="hotspot popup-left" style="left: 30%; top: 50%; width: 40px; height: 40px;" onclick="togglePopup(event, this)">
+            <div class="hotspot-num">3</div>
+            <div class="hotspot-label">Start Simple</div>
+            <div class="hotspot-popup">
+                <img class="popup-img" src="Mockup/Start Simple/start-simple-box.png" alt="Start Simple cards and scoreboard">
+                <h4>Start Simple</h4>
+                <p>16 challenge cards + magnetic scoreboard. Pick a card, do the challenge for a week. Parent plays too — nobody gets to nag.</p>
+                <button class="popup-btn" style="background: var(--coral);" onclick="event.stopPropagation(); goToScreen(4);">Try a challenge &#8594;</button>
+            </div>
+        </div>
+
+        <!-- 4: Parenting for wellness 2.0 (QR code on lid, left side to avoid text) -->
+        <div class="hotspot popup-below popup-right" style="left: 28%; top: 12%; width: 40px; height: 40px;" onclick="togglePopup(event, this)">
+            <div class="hotspot-num">4</div>
+            <div class="hotspot-label">Parenting for wellness 2.0</div>
+            <div class="hotspot-popup">
+                <img class="popup-img" src="Mockup/Made for Parents/made-for-parents.png" alt="Parenting for wellness 2.0">
+                <h4>Parenting for wellness 2.0</h4>
+                <p>Real talk. Real tips. From one parent to another. Weekly WhatsApp nudges. Scan to view.</p>
+                <button class="popup-btn" style="background: #845EF7;" onclick="event.stopPropagation(); window.open('made for parents.html', '_blank');">Open experience &#8594;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SCREEN 4: START THE TALK (CARD GAME) -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen screen-talk" id="screen3">
+    <div class="talk-header">
+        <div class="talk-back" onclick="goToScreen(2)">&#8592; Back to box</div>
+        <h2 style="font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: white; margin-bottom: 8px;">Start the Talk</h2>
+        <div class="talk-subtitle">32 conversation cards for parent-youth bonding<br>Youth draws first. Both answer honestly.</div>
+    </div>
+
+    <div class="card-deck" id="cardDeck">
+        <!-- Cards rendered by JS -->
+    </div>
+
+    <div class="card-controls">
+        <button class="card-btn" onclick="prevCard()" title="Previous">&#8592;</button>
+        <span class="card-counter" id="cardCounter">1 / 32</span>
+        <button class="card-btn" onclick="nextCard()" title="Next">&#8594;</button>
+    </div>
+
+    <div style="margin-top: 12px;">
+        <button class="btn-secondary" onclick="shuffleCards()">Shuffle deck</button>
+    </div>
+    <div style="margin-top: 16px;">
+        <button class="btn-primary" onclick="goToScreen(2)">Back to box</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SCREEN 5: START SIMPLE (CHALLENGE GAME) -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen screen-challenge" id="screen4">
+    <div class="challenge-back" onclick="goToScreen(2)">&#8592; Back to box</div>
+    <h2 style="font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--ink); margin-bottom: 8px;">Start Simple</h2>
+    <div class="challenge-subtitle">Pick a challenge card. Choose your magnet. Track who wins.</div>
+
+    <!-- Step 1: Card carousel -->
+    <div class="card-carousel">
+        <div class="carousel-label">1. Pick a challenge card</div>
+        <div class="carousel-track-wrap">
+            <div class="carousel-arrow left" onclick="scrollCarousel(-1)">&#8592;</div>
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Rendered by JS -->
+            </div>
+            <div class="carousel-arrow right" onclick="scrollCarousel(1)">&#8594;</div>
+        </div>
+    </div>
+
+    <!-- Step 2: Magnet picker -->
+    <div style="font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; color: var(--ink); margin-bottom: 8px;">2. Choose your magnet to represent you</div>
+    <div class="magnet-picker" id="magnetPicker">
+        <div class="magnet-option" onclick="selectMagnet(this, 0)">&#129497;</div>
+        <div class="magnet-option" onclick="selectMagnet(this, 1)">&#127917;</div>
+        <div class="magnet-option" onclick="selectMagnet(this, 2)">&#129302;</div>
+        <div class="magnet-option" onclick="selectMagnet(this, 3)">&#129497;&#8205;&#9794;&#65039;</div>
+        <div class="magnet-option" onclick="selectMagnet(this, 4)">&#128373;&#65039;</div>
+    </div>
+
+    <!-- Step 3: Leaderboard -->
+    <div style="font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; color: var(--ink); margin: 16px 0 8px;">3. Track your progress on the leaderboard</div>
+    <div class="leaderboard" id="leaderboard">
+        <div class="lb-header">
+            <h3>This Week's<br>Challenge</h3>
+            <div class="lb-date">DATE</div>
+        </div>
+        <div class="lb-subheader">
+            <div>PLAYERS</div>
+            <div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div><div>SUN</div>
+        </div>
+        <div class="lb-grid" id="lbGrid">
+            <!-- Rows rendered by JS -->
+        </div>
+        <div class="lb-challenge-text empty" id="lbChallengeText">Pick a challenge card above to set this week's challenge</div>
+    </div>
+
+    <div style="margin-top: 16px;">
+        <button class="btn-primary" onclick="goToScreen(2)">Back to box</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SCREEN 6: QUICK START GUIDE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen screen-guide" id="screen5">
+    <div class="guide-back" onclick="goToScreen(2)">&#8592; Back to box</div>
+
+    <h2 style="font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--ink); margin-bottom: 8px;">Quick Start Guide</h2>
+    <p style="color: var(--storm); font-size: 0.9rem; margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;">You just picked up a Level Up Series box. No app to download. No account to create. Just open and go.</p>
+
+    <div class="guide-steps">
+
+        <div class="guide-step">
+            <div class="step-num">1</div>
+            <div>
+                <h4>Start the Talk — Conversation Card</h4>
+                <p>Play with your parent, relatives, or a buddy.<br>Shuffle the deck — you draw first.<br>Read the card aloud. Both answer honestly.<br>Hit a Swap Card? Switch roles and answer as each other.</p>
+            </div>
+        </div>
+
+        <div class="guide-step">
+            <div class="step-num">2</div>
+            <div>
+                <h4>Start Simple — Challenge Card</h4>
+                <p>Play with your parent, a relative, or a buddy.<br>Pick one challenge card and commit to it for a week.<br>Choose a magnet to represent yourself, write the challenge on the leaderboard, and place it somewhere visible at home.<br>Track your progress daily — and see who wins at the end of the week.</p>
+            </div>
+        </div>
+
+        <div class="guide-step">
+            <div class="step-num">3</div>
+            <div>
+                <h4>Parenting for wellness 2.0</h4>
+                <p>Your parent can scan to receive real tips from other parents.<br>Honest experiences. Practical support — for parents, by parents.</p>
+            </div>
+        </div>
+
+        <div class="guide-step" style="background: var(--coral-light); border-color: var(--coral);">
+            <div class="step-num" style="background: var(--coral);">!</div>
+            <div>
+                <h4>That's it. You're playing tonight.</h4>
+                <p>Feel free. Check the items out.</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 24px;">
+        <button class="btn-primary" onclick="goToScreen(2)">Back to box</button>
+    </div>
+</div>
+
+<script>
+// ═══ DATA ═══
+const talkCards = [
+    // Icebreakers (1-10)
+    { id: 1, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... stayed up past midnight on my phone' },
+    { id: 2, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... eaten instant noodles 3 days in a row' },
+    { id: 3, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... pretended to be asleep when someone checked on me' },
+    { id: 4, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... skipped breakfast and regretted it by 10am' },
+    { id: 5, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... said "5 more minutes" and meant 45' },
+    { id: 6, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... scrolled through food videos instead of actually eating' },
+    { id: 7, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... told someone I was "fine" when I wasn\'t' },
+    { id: 8, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... exercised just to eat more later' },
+    { id: 9, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... used headphones to avoid a conversation' },
+    { id: 10, type: 'icebreaker', label: 'Icebreaker', text: 'Never have I ever... drank bubble tea to feel better about a bad day' },
+    // Real Talk (11-20)
+    { id: 11, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... felt like no one noticed I was having a tough time' },
+    { id: 12, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... wished someone would ask me how I\'m really doing' },
+    { id: 13, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... felt pressure to eat a certain way because of what people say' },
+    { id: 14, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... gone a whole day without talking to anyone at home' },
+    { id: 15, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... wanted to try something healthy but didn\'t know where to start' },
+    { id: 16, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... compared my body to someone on social media' },
+    { id: 17, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... felt stressed about school and didn\'t tell anyone' },
+    { id: 18, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... eaten something just because I was bored, not hungry' },
+    { id: 19, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... wished we could talk about feelings without it being awkward' },
+    { id: 20, type: 'realtalk', label: 'Real Talk', text: 'Never have I ever... felt tired but couldn\'t actually fall asleep' },
+    // Deeper (21-26)
+    { id: 21, type: 'deeper', label: 'Deeper', text: 'What\'s one thing you wish the other person understood about your daily life?' },
+    { id: 22, type: 'deeper', label: 'Deeper', text: 'What\'s the hardest part about taking care of yourself right now?' },
+    { id: 23, type: 'deeper', label: 'Deeper', text: 'If you could change one thing about how we spend time together, what would it be?' },
+    { id: 24, type: 'deeper', label: 'Deeper', text: 'What\'s something you\'ve been wanting to say but haven\'t found the right time?' },
+    { id: 25, type: 'deeper', label: 'Deeper', text: 'When was the last time you felt really listened to? What made it different?' },
+    { id: 26, type: 'deeper', label: 'Deeper', text: 'What does "being healthy" actually mean to you — not what anyone else says?' },
+    // Swap (27-32)
+    { id: 27, type: 'swap', label: 'Swap', text: 'Answer as the other person: What stresses them out most right now?' },
+    { id: 28, type: 'swap', label: 'Swap', text: 'Answer as the other person: What\'s one thing they do to feel better when they\'re down?' },
+    { id: 29, type: 'swap', label: 'Swap', text: 'Answer as the other person: What would their perfect weekend look like?' },
+    { id: 30, type: 'swap', label: 'Swap', text: 'Answer as the other person: What\'s their biggest worry that they don\'t talk about?' },
+    { id: 31, type: 'swap', label: 'Swap', text: 'Answer as the other person: What makes them feel most loved or cared for?' },
+    { id: 32, type: 'swap', label: 'Swap', text: 'Answer as the other person: What\'s one habit they wish they could change?' },
+];
+
+const challenges = [
+    { text: 'Phone down by 9:30pm', duration: '7 days', cat: 'sleep' },
+    { text: 'Same bedtime for 7 nights', duration: '7 days', cat: 'sleep' },
+    { text: 'No screens 30 min before bed', duration: '7 days', cat: 'sleep' },
+    { text: 'Dim the lights after 8pm', duration: '7 days', cat: 'sleep' },
+    { text: 'Eat breakfast every day', duration: '7 days', cat: 'eat' },
+    { text: 'Drink 8 glasses of water', duration: '7 days', cat: 'eat' },
+    { text: 'Cook one meal together', duration: '7 days', cat: 'eat' },
+    { text: 'Try one new fruit or veg', duration: '7 days', cat: 'eat' },
+    { text: '10-minute walk after dinner', duration: '7 days', cat: 'move' },
+    { text: 'Take the stairs for 2 weeks', duration: '7 days', cat: 'move' },
+    { text: 'Stretch for 5 min before bed', duration: '7 days', cat: 'move' },
+    { text: 'Dance to one song a day', duration: '7 days', cat: 'move' },
+    { text: 'No social media 1hr after waking', duration: '7 days', cat: 'mind' },
+    { text: '5-minute breathing before bed', duration: '7 days', cat: 'mind' },
+    { text: 'Write one grateful thing daily', duration: '7 days', cat: 'mind' },
+    { text: 'Dinner without phones on table', duration: '7 days', cat: 'mind' },
+];
+
+const catLabels = { sleep: 'Better Sleep', eat: 'Eat Better', move: 'Move Your Body', mind: 'Mind & Focus' };
+
+// ═══ STATE ═══
+let currentScreen = 0;
+let currentCard = 0;
+let cardOrder = [...Array(32).keys()];
+
+// ═══ NAVIGATION ═══
+function goToScreen(idx) {
+    const screens = document.querySelectorAll('.screen');
+    const dots = document.querySelectorAll('.nav-dot');
+
+    screens[currentScreen].classList.remove('active');
+    currentScreen = idx;
+    screens[currentScreen].classList.add('active');
+
+    dots.forEach((d, i) => {
+        d.classList.remove('active');
+        if (i === idx) d.classList.add('active');
+        if (i <= idx) d.classList.add('visited');
+    });
+
+    document.getElementById('progressFill').style.width = ((idx + 1) / 6 * 100) + '%';
+}
+
+// Nav dot clicks
+document.querySelectorAll('.nav-dot').forEach(dot => {
+    dot.addEventListener('click', () => goToScreen(parseInt(dot.dataset.screen)));
+});
+
+// ═══ HOTSPOT POPUPS ═══
+function togglePopup(e, hotspot) {
+    e.stopPropagation();
+    const wasActive = hotspot.classList.contains('active');
+    closeAllPopups();
+    if (!wasActive) {
+        hotspot.classList.add('active');
+        document.getElementById('boxOverlay').classList.add('show');
+    }
+}
+
+function closeAllPopups() {
+    document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
+    document.getElementById('boxOverlay').classList.remove('show');
+}
+
+// ═══ TALK CARDS ═══
+function renderCards() {
+    const deck = document.getElementById('cardDeck');
+    deck.innerHTML = '';
+
+    const idx = cardOrder[currentCard];
+    const card = talkCards[idx];
+
+    const el = document.createElement('div');
+    el.className = `playing-card ${card.type}`;
+    el.innerHTML = `
+        <div class="card-number">#${card.id}</div>
+        <div class="card-category">${card.label}</div>
+        <div class="card-prompt">${card.text}</div>
+        <div class="card-instruction">${card.type === 'swap' ? 'Answer as the other person' : card.type === 'deeper' ? 'Open-ended — just talk' : 'Both answer honestly'}</div>
+    `;
+    deck.appendChild(el);
+
+    document.getElementById('cardCounter').textContent = `${currentCard + 1} / ${talkCards.length}`;
+}
+
+function nextCard() {
+    if (currentCard < talkCards.length - 1) {
+        currentCard++;
+        renderCards();
+    }
+}
+
+function prevCard() {
+    if (currentCard > 0) {
+        currentCard--;
+        renderCards();
+    }
+}
+
+function shuffleCards() {
+    for (let i = cardOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardOrder[i], cardOrder[j]] = [cardOrder[j], cardOrder[i]];
+    }
+    currentCard = 0;
+    renderCards();
+    showToast('Deck shuffled!');
+}
+
+// ═══ LEADERBOARD STATE ═══
+let lbPlayers = [
+    { avatar: '', name: 'Player 1', checks: [false,false,false,false,false,false,false] },
+    { avatar: '', name: 'Player 2', checks: [false,false,false,false,false,false,false] },
+    { avatar: '', name: 'Player 3', checks: [false,false,false,false,false,false,false] },
+    { avatar: '', name: 'Player 4', checks: [false,false,false,false,false,false,false] },
+    { avatar: '', name: 'Player 5', checks: [false,false,false,false,false,false,false] },
+];
+const magnetEmojis = ['\u{1F9D9}', '\u{1F3AD}', '\u{1F916}', '\u{1F9D9}\u200D\u2642\uFE0F', '\u{1F575}\uFE0F'];
+let selectedChallenge = null;
+let activePlayerRow = 0;
+
+function selectMagnet(el, idx) {
+    document.querySelectorAll('.magnet-option').forEach(m => m.classList.remove('selected'));
+    el.classList.add('selected');
+    lbPlayers[activePlayerRow].avatar = magnetEmojis[idx];
+    renderLeaderboard();
+}
+
+function renderLeaderboard() {
+    const grid = document.getElementById('lbGrid');
+    grid.innerHTML = '';
+    lbPlayers.forEach((p, ri) => {
+        // Player avatar cell
+        const playerCell = document.createElement('div');
+        playerCell.className = 'lb-player';
+        const av = document.createElement('div');
+        av.className = 'lb-player-avatar' + (ri === activePlayerRow ? ' selected' : '');
+        av.style.background = ['#E3F2FD','#F3E5F5','#E8F5E9','#FFF3E0','#E0F2F1'][ri];
+        av.textContent = p.avatar || '?';
+        av.onclick = () => { activePlayerRow = ri; renderLeaderboard(); };
+        playerCell.appendChild(av);
+        grid.appendChild(playerCell);
+        // Day cells
+        for (let d = 0; d < 7; d++) {
+            const cell = document.createElement('div');
+            cell.className = 'lb-cell';
+            const check = document.createElement('div');
+            check.className = 'lb-check' + (p.checks[d] ? ' checked' : '');
+            check.innerHTML = p.checks[d] ? '&#10003;' : '';
+            cell.onclick = () => {
+                p.checks[d] = !p.checks[d];
+                renderLeaderboard();
+            };
+            cell.appendChild(check);
+            grid.appendChild(cell);
+        }
+    });
+}
+
+// ═══ CHALLENGE CAROUSEL ═══
+function renderCarousel() {
+    const track = document.getElementById('carouselTrack');
+    track.innerHTML = '';
+    challenges.forEach((ch, i) => {
+        const el = document.createElement('div');
+        el.className = 'ch-card' + (selectedChallenge === i ? ' active' : '');
+        el.dataset.cat = ch.cat;
+        el.innerHTML = `
+            <div class="ch-duration">${ch.duration}</div>
+            <div class="ch-text">${ch.text}</div>
+            <div class="ch-cat-tag">${catLabels[ch.cat]}</div>
+        `;
+        el.onclick = () => {
+            selectedChallenge = i;
+            document.getElementById('lbChallengeText').textContent = ch.text;
+            document.getElementById('lbChallengeText').classList.remove('empty');
+            showToast(`Challenge set: "${ch.text}"`);
+            renderCarousel();
+        };
+        track.appendChild(el);
+    });
+}
+
+function scrollCarousel(dir) {
+    const track = document.getElementById('carouselTrack');
+    track.scrollBy({ left: dir * 320, behavior: 'smooth' });
+}
+
+// ═══ TOAST ═══
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ═══ SWIPE SUPPORT ═══
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    // Only handle swipe on screens 0, 1, 2
+    if (currentScreen <= 2) {
+        if (diff > 80 && currentScreen < 2) goToScreen(currentScreen + 1);
+        if (diff < -80 && currentScreen > 0) goToScreen(currentScreen - 1);
+    }
+    // Handle card swipes on talk screen
+    if (currentScreen === 3) {
+        if (diff > 80) nextCard();
+        if (diff < -80) prevCard();
+    }
+});
+
+// ═══ KEYBOARD ═══
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+        if (currentScreen <= 2) goToScreen(Math.min(currentScreen + 1, 5));
+        if (currentScreen === 3) nextCard();
+    }
+    if (e.key === 'ArrowLeft') {
+        if (currentScreen <= 2) goToScreen(Math.max(currentScreen - 1, 0));
+        if (currentScreen === 3) prevCard();
+    }
+});
+
+// ═══ INIT ═══
+renderCards();
+renderLeaderboard();
+renderCarousel();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level Up Series — Roadshow Box Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    /* === PRIMARY PALETTE (Level Up Series — Design System Aligned) === */
+    /* Remapped from earthy tones to vibrant institutional palette */
+    --terracotta: #FF6B6B;        /* was #D4775C → now lu-coral */
+    --terracotta-dark: #D94040;   /* was #A85A42 → now lu-coral-dark */
+    --sand: #FFCE49;              /* was #C4956A → now lu-yellow */
+    --sand-dark: #C5960C;         /* was #9A7350 → now lu-yellow-dark */
+    --sage: #45BE93;              /* was #6B8F71 → now lu-green */
+    --sage-dark: #2D8A6A;         /* was #4A6E50 → now lu-green-dark */
+    --mauve: #845EF7;             /* was #B07D9E → now lu-violet */
+    --mauve-dark: #5B3DB8;        /* was #8A5E7C → now lu-violet-dark */
+    --denim: #1C83E1;             /* was #5C7FA3 → now lu-blue */
+    --denim-dark: #0D4F8A;        /* was #3E5E7E → now lu-blue-dark */
+
+    /* Shared brand colours */
+    --coral: #FF6B6B;
+    --coral-dark: #D94040;
+    --violet: #845EF7;
+    --violet-dark: #5B3DB8;
+    --gold: #FFD43B;
+
+    /* === LIGHT TINTS === */
+    --terracotta-light: #FFE0E0;  /* was #FCEEE9 → lu-coral-light */
+    --sand-light: #FCF3DB;        /* was #FCF3EB → lu-yellow-light */
+    --sage-light: #CEEFE4;        /* was #EAF5EB → lu-green-light */
+    --mauve-light: #E5DBFF;       /* was #F5EBF2 → violet-light */
+    --denim-light: #E9F3FD;       /* was #EBF1F7 → lu-blue-light */
+    --coral-light: #FFE0E0;
+    --violet-light: #E5DBFF;
+    --gold-light: #FFF3BF;
+
+    /* === NEUTRALS (Warm Linen — unchanged, matches design system) === */
+    --ink: #262522;
+    --charcoal: #3D3935;
+    --storm: #7B7874;
+    --cloud: #B2B0AD;
+    --parchment: #EDE9E3;
+    --linen: #F5F4F1;
+    --warm-white: #FAFAF8;
+    --white: #FFFFFF;
+
+    /* === SEMANTIC SURFACES === */
+    --surface-primary: var(--linen);
+    --surface-card: var(--white);
+    --surface-dark: var(--terracotta);
+    --text-primary: var(--ink);
+    --text-secondary: var(--storm);
+    --text-tertiary: #9E9B97;
+    --border-default: var(--cloud);
+
+    /* === COMPONENT MAPPING === */
+    --talk-color: var(--sand);
+    --talk-bg: var(--sand-light);
+    --challenge-color: var(--terracotta);
+    --challenge-bg: var(--terracotta-light);
+    --mood-color: var(--sage);
+    --mood-bg: var(--sage-light);
+    --parent-color: var(--mauve);
+    --parent-bg: var(--mauve-light);
+
+    /* === GRADIENTS (Design System Aligned) === */
+    --grad-terracotta: linear-gradient(135deg, #FF6B6B 0%, #D94040 100%);
+    --grad-sand: linear-gradient(135deg, #FFCE49 0%, #E5B020 100%);
+    --grad-sage: linear-gradient(135deg, #45BE93 0%, #2D8A6A 100%);
+    --grad-mauve: linear-gradient(135deg, #845EF7 0%, #5B3DB8 100%);
+    --grad-denim: linear-gradient(135deg, #1C83E1 0%, #0D4F8A 100%);
+
+    /* === HOLOGRAPHIC / MESH (Decorative layer — from design system) === */
+    --holo-dawn: linear-gradient(135deg, #FFB4A2 0%, #E5DBFF 35%, #B8E0FF 65%, #C3FAE8 100%);
+    --holo-prism: linear-gradient(135deg, #FF9CF5 0%, #C9B1FF 25%, #A8D8FF 50%, #97F0C1 75%, #FFE0A0 100%);
+    --holo-ocean: linear-gradient(135deg, #C9D6FF 0%, #B8E0FF 30%, #D5F0FF 50%, #E5DBFF 70%, #FFD6F5 100%);
+    --holo-sunset: linear-gradient(135deg, #FFB07C 0%, #FF8FA3 30%, #D4A5FF 60%, #A8D8FF 100%);
+    --holo-aura: linear-gradient(135deg, #E5DBFF 0%, #C9B1FF 20%, #FFB4D9 40%, #FFD6A5 60%, #B8E0FF 80%, #C3FAE8 100%);
+    --mesh-warm: radial-gradient(ellipse at 20% 50%, #FFD6A5 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, #E5DBFF 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, #FFB4D9 0%, transparent 50%), linear-gradient(135deg, #FFF5EB 0%, #F5F0FF 100%);
+    --mesh-cool: radial-gradient(ellipse at 30% 30%, #B8E0FF 0%, transparent 50%), radial-gradient(ellipse at 70% 70%, #E5DBFF 0%, transparent 50%), radial-gradient(ellipse at 50% 20%, #C3FAE8 0%, transparent 50%), linear-gradient(135deg, #F0F8FF 0%, #F5F0FF 100%);
+    --grad-holographic: var(--holo-prism);
+
+    /* === TYPOGRAPHY === */
+    --font-display: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'Space Grotesk', sans-serif;
+
+    /* === SPACING (8px base) === */
+    --sp-2: 2px; --sp-4: 4px; --sp-8: 8px; --sp-12: 12px; --sp-16: 16px;
+    --sp-20: 20px; --sp-24: 24px; --sp-32: 32px; --sp-40: 40px;
+    --sp-48: 48px; --sp-64: 64px;
+
+    /* === RADIUS === */
+    --r-xs: 4px; --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px; --r-full: 9999px;
+
+    /* === SHADOWS === */
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+    --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-body); background: var(--linen); color: var(--ink); line-height: 1.6; }
+
+/* ─── NAV ─── */
+.topnav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(245,244,241,0.88); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--cloud); padding: 12px 32px;
+}
+.topnav-inner {
+    max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px;
+    overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
+}
+.topnav .brand {
+    font-family: var(--font-display); font-weight: 800; font-size: 0.9rem;
+    color: var(--ink); letter-spacing: -0.02em; margin-right: auto; flex-shrink: 0;
+}
+.topnav a {
+    font-size: 0.75rem; font-weight: 600; color: var(--storm); text-decoration: none;
+    padding: 6px 12px; border-radius: var(--r-full); transition: all 0.15s; flex-shrink: 0;
+}
+.topnav a:hover, .topnav a.active { background: var(--terracotta-light); color: var(--terracotta); }
+
+/* ─── PAGE ─── */
+.page { max-width: 1200px; margin: 0 auto; padding: 0 32px 80px; }
+
+/* ─── HERO ─── */
+.hero {
+    background: var(--grad-terracotta);
+    border-radius: var(--r-xl); padding: 64px 48px; text-align: center;
+    color: white; margin: 32px 0 48px; position: relative; overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(196,149,106,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(107,143,113,0.06) 0%, transparent 60%);
+}
+.hero .tag {
+    display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--r-full); padding: 6px 16px; font-size: 0.7rem; font-weight: 700;
+    margin-bottom: 16px; position: relative; z-index: 1; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.hero h1 {
+    font-family: var(--font-display); font-weight: 800; font-size: 3rem;
+    letter-spacing: -0.03em; position: relative; z-index: 1; line-height: 1.1;
+}
+.hero p { font-size: 1rem; opacity: 0.7; margin-top: 12px; position: relative; z-index: 1; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+/* ─── SECTION ─── */
+.section { margin-bottom: 64px; scroll-margin-top: 80px; }
+.section-label {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 6px;
+}
+.section-label.talk { color: var(--sand-dark); }
+.section-label.challenge { color: var(--terracotta); }
+.section-label.mood { color: var(--sage); }
+.section-label.wellness { color: var(--coral); }
+.section-label.parent { color: var(--mauve); }
+.section-label.manual { color: var(--storm); }
+.section-label.unboxing { color: var(--ink); }
+
+.section-title {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.75rem;
+    letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.section-desc { font-size: 0.95rem; color: var(--storm); margin-bottom: 28px; max-width: 640px; }
+
+/* ─── GRIDS ─── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.g5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+
+@media (max-width: 900px) {
+    .g3, .g4 { grid-template-columns: 1fr 1fr; }
+    .g5 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+    .g2, .g3, .g4 { grid-template-columns: 1fr; }
+    .g5 { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 40px 24px; }
+    .hero h1 { font-size: 2rem; }
+    .page { padding: 0 16px 60px; }
+}
+
+/* ─── CARD ─── */
+.card {
+    background: var(--white); border-radius: var(--r-lg); padding: 24px;
+    border: 1px solid var(--cloud); transition: border-color 0.15s, transform 0.15s;
+}
+.card:hover { border-color: var(--terracotta-light); transform: translateY(-2px); }
+.card h4 {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 6px;
+}
+.card p { font-size: 0.85rem; color: var(--storm); line-height: 1.5; }
+.card .badge {
+    display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 3px 10px;
+    border-radius: var(--r-full); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* ─── TALK CARDS ─── */
+.talk-card {
+    background: var(--sand-light); border: 2px solid var(--sand); border-radius: var(--r-md);
+    padding: 20px; position: relative; min-height: 110px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.talk-card:hover { transform: translateY(-3px) rotate(-0.5deg); box-shadow: 0 8px 24px rgba(255,206,73,0.25); }
+.talk-card .card-type {
+    position: absolute; top: 8px; right: 10px; font-size: 0.6rem; font-weight: 700;
+    background: var(--sand); color: var(--ink); padding: 2px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+}
+.talk-card .card-type.swap { background: var(--ink); color: var(--white); }
+.talk-card .card-type.deeper { background: var(--coral); color: white; }
+.talk-card .text {
+    font-size: 0.9rem; font-weight: 500; line-height: 1.45; color: var(--ink);
+}
+.talk-card.swap-card {
+    background: linear-gradient(135deg, var(--sand-light), var(--sand));
+    border: 3px solid var(--sand);
+}
+.talk-card.deeper-card {
+    background: var(--coral-light); border-color: var(--coral);
+}
+
+/* ─── CHALLENGE CARDS ─── */
+.challenge-card {
+    background: var(--terracotta-light); border: 2px solid var(--terracotta); border-radius: var(--r-md);
+    padding: 20px; text-align: center; transition: transform 0.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.challenge-card:hover { transform: translateY(-3px); }
+.challenge-card .duration {
+    font-size: 0.65rem; font-weight: 700; background: var(--terracotta); color: white;
+    padding: 2px 10px; border-radius: var(--r-full); text-transform: uppercase;
+}
+.challenge-card .action {
+    font-size: 0.9rem; font-weight: 600; color: var(--ink); line-height: 1.4;
+}
+.challenge-card .note {
+    font-size: 0.75rem; color: var(--storm); font-style: italic;
+}
+
+/* ─── SCOREBOARD ─── */
+.scoreboard-wrap {
+    background: var(--white); border-radius: var(--r-lg); overflow: hidden;
+    box-shadow: var(--shadow-lg); border: 3px solid var(--terracotta);
+}
+.scoreboard-header {
+    background: var(--grad-terracotta);
+    color: white; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between;
+}
+.scoreboard-header h3 {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.1rem;
+}
+.scoreboard-header .date-slot {
+    background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: var(--r-sm); padding: 6px 16px; font-size: 0.75rem; font-weight: 600;
+}
+.scoreboard-body { padding: 0; }
+.scoreboard-body table { width: 100%; border-collapse: collapse; }
+.scoreboard-body th {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--terracotta); padding: 14px 12px; border-bottom: 2px solid var(--terracotta-light);
+    text-align: center;
+}
+.scoreboard-body th:first-child { text-align: left; padding-left: 24px; }
+.scoreboard-body td {
+    padding: 14px 12px; text-align: center; border-bottom: 1px solid var(--linen);
+    font-size: 0.85rem;
+}
+.scoreboard-body td:first-child {
+    text-align: left; padding-left: 24px; font-weight: 700;
+}
+.scoreboard-body tr:last-child td { border-bottom: none; }
+.check-token {
+    width: 32px; height: 32px; border-radius: 50%; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 0.85rem;
+    border: 2px dashed var(--cloud); color: var(--cloud); background: var(--linen);
+}
+.check-token.filled {
+    background: var(--terracotta); border: 2px solid var(--terracotta); color: white;
+}
+.check-token.filled.green { background: var(--sage); border-color: var(--sage); }
+.habit-magnet {
+    display: inline-block; background: var(--terracotta); color: white; padding: 6px 14px;
+    border-radius: var(--r-sm); font-size: 0.75rem; font-weight: 700;
+    box-shadow: 0 2px 6px rgba(255,107,107,0.3);
+}
+
+/* ─── WELLNESS BOARDS ─── */
+.wellness-board {
+    background: var(--white); border-radius: var(--r-lg); overflow: hidden;
+    box-shadow: var(--shadow-md); border: 2px solid var(--cloud);
+}
+.wb-header {
+    padding: 24px; color: white; position: relative; overflow: hidden;
+}
+.wb-header::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 60%);
+}
+.wb-header h3 {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+    position: relative; z-index: 1;
+}
+.wb-header p { font-size: 0.8rem; opacity: 0.8; position: relative; z-index: 1; margin-top: 4px; }
+.wb-header.sleep { background: var(--grad-denim); }
+.wb-header.eat { background: var(--grad-sage); }
+.wb-header.move { background: var(--grad-terracotta); }
+.wb-header.mind { background: var(--grad-mauve); }
+
+.wb-grid {
+    display: grid; grid-template-columns: 140px repeat(7, 1fr); gap: 0;
+    padding: 0;
+}
+.wb-grid .day-header {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--terracotta); padding: 10px 8px; text-align: center; background: var(--linen);
+    border-bottom: 1px solid var(--cloud);
+}
+.wb-grid .day-header:first-child { text-align: left; padding-left: 16px; color: var(--storm); }
+.wb-grid .habit-label {
+    padding: 12px 16px; font-size: 0.75rem; font-weight: 700; color: var(--ink);
+    display: flex; align-items: center; border-bottom: 1px solid var(--linen);
+    background: var(--white);
+}
+.wb-grid .habit-cell {
+    padding: 10px 8px; display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid var(--linen);
+}
+.wb-grid .habit-cell .dot {
+    width: 24px; height: 24px; border-radius: 50%; border: 2px dashed var(--cloud);
+    background: var(--linen);
+}
+
+/* ─── PHONE MOCK ─── */
+.phone-mock {
+    width: 320px; background: var(--white); border: 10px solid var(--ink);
+    border-radius: 36px; overflow: hidden; box-shadow: var(--shadow-xl);
+    margin: 0 auto;
+}
+.phone-notch {
+    height: 24px; background: var(--ink); border-radius: 0 0 16px 16px;
+    width: 120px; margin: 0 auto;
+}
+.phone-screen { padding: 16px; min-height: 520px; }
+.phone-status {
+    display: flex; justify-content: space-between; padding: 8px 4px; font-size: 0.65rem;
+    color: var(--storm); font-weight: 600;
+}
+
+/* ─── QR CARD ─── */
+.qr-card {
+    background: var(--sage-light); border: 2px solid var(--sage); border-radius: var(--r-lg);
+    padding: 32px; text-align: center;
+}
+.qr-placeholder {
+    width: 120px; height: 120px; background: var(--white); border-radius: var(--r-sm);
+    margin: 16px auto; display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 8px;
+    box-shadow: var(--shadow-sm);
+}
+.qr-block { background: var(--ink); border-radius: 1px; }
+.qr-empty { background: transparent; }
+
+/* ─── INSTRUCTION MANUAL ─── */
+.manual-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
+}
+.manual-step {
+    background: var(--white); border-radius: var(--r-lg); padding: 24px;
+    border: 1px solid var(--cloud); text-align: center;
+}
+.manual-step .step-num {
+    width: 40px; height: 40px; background: var(--terracotta); color: white;
+    border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; margin-bottom: 12px;
+}
+.manual-step h4 {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 6px;
+}
+.manual-step p { font-size: 0.8rem; color: var(--storm); line-height: 1.5; }
+
+@media (max-width: 700px) { .manual-grid { grid-template-columns: 1fr; } }
+
+/* ─── UNBOXING FLOW ─── */
+.unbox-flow {
+    display: flex; gap: 20px; overflow-x: auto; padding-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+}
+.unbox-step {
+    flex: 0 0 260px; background: var(--white); border-radius: var(--r-lg);
+    padding: 24px; border: 1px solid var(--cloud); position: relative;
+}
+.unbox-step .step-badge {
+    position: absolute; top: -10px; left: 20px;
+    background: var(--terracotta); color: white; font-size: 0.65rem; font-weight: 700;
+    padding: 4px 12px; border-radius: var(--r-full); text-transform: uppercase;
+}
+.unbox-step h4 {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.9rem;
+    margin-top: 10px; margin-bottom: 8px;
+}
+.unbox-step p { font-size: 0.8rem; color: var(--storm); line-height: 1.5; }
+.unbox-step .visual {
+    font-size: 2.5rem; text-align: center; margin-bottom: 8px; margin-top: 4px;
+}
+
+/* ─── BOX OVERVIEW ─── */
+.box-overview {
+    background: var(--grad-terracotta);
+    border-radius: var(--r-xl); padding: 40px; color: white;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+}
+.box-item {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--r-lg); padding: 24px; text-align: center;
+}
+.box-item .icon { font-size: 2rem; margin-bottom: 8px; }
+.box-item h4 {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;
+}
+.box-item p { font-size: 0.8rem; opacity: 0.8; line-height: 1.5; }
+@media (max-width: 700px) { .box-overview { grid-template-columns: 1fr; padding: 24px; } }
+
+/* ─── POSTER ─── */
+.poster {
+    background: var(--white); border-radius: var(--r-xl); overflow: hidden;
+    box-shadow: var(--shadow-lg); border: 2px solid var(--cloud);
+}
+.poster-header {
+    background: var(--grad-mauve);
+    padding: 32px; color: white; text-align: center;
+}
+.poster-header h3 {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+}
+.poster-body { padding: 32px; }
+.poster-tip {
+    display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px;
+    padding-bottom: 20px; border-bottom: 1px solid var(--linen);
+}
+.poster-tip:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.poster-tip .num {
+    flex-shrink: 0; width: 28px; height: 28px; background: var(--mauve-light);
+    color: var(--mauve); border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-weight: 800; font-size: 0.75rem;
+    font-family: var(--font-display);
+}
+.poster-tip h4 {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; margin-bottom: 2px;
+}
+.poster-tip p { font-size: 0.8rem; color: var(--storm); line-height: 1.5; }
+
+/* ─── DIVIDER ─── */
+.divider {
+    height: 1px; background: var(--cloud); margin: 48px 0;
+}
+
+/* ─── UTILITIES ─── */
+.text-center { text-align: center; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mb-16 { margin-bottom: 16px; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.gap-16 { gap: 16px; }
+.gap-8 { gap: 8px; }
+
+/* ─── CALLOUT ─── */
+.callout {
+    border-radius: var(--r-md); padding: 16px 20px; font-size: 0.85rem; line-height: 1.6;
+}
+.callout.blue { background: var(--terracotta-light); border-left: 4px solid var(--terracotta); color: var(--ink); }
+.callout.green { background: var(--sage-light); border-left: 4px solid var(--sage); color: var(--ink); }
+.callout.yellow { background: var(--sand-light); border-left: 4px solid var(--sand); color: var(--ink); }
+.callout.violet { background: var(--mauve-light); border-left: 4px solid var(--mauve); color: var(--ink); }
+
+/* ─── PARENT QR SCREENS ─── */
+.screen-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+@media (max-width: 900px) { .screen-grid { grid-template-columns: 1fr; } }
+
+/* ─── EMOTION BUTTONS ─── */
+.emotion-grid-phone {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;
+}
+.emotion-btn {
+    background: var(--white); border: 2px solid var(--sage); border-radius: var(--r-sm);
+    padding: 12px 8px; text-align: center; font-size: 0.75rem; font-weight: 600;
+    color: var(--ink); cursor: pointer; transition: all 0.2s;
+}
+.emotion-btn:hover { background: var(--sage-light); transform: scale(1.03); }
+.emotion-btn .emoji { font-size: 1.25rem; display: block; margin-bottom: 4px; }
+
+/* ─── FLOATING BOX 3D ─── */
+.box-3d-wrap { perspective: 1000px; margin: 32px auto; text-align: center; }
+.box-3d {
+    width: 240px; height: 300px; margin: 0 auto;
+    background: var(--grad-terracotta);
+    border-radius: var(--r-lg); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; color: white;
+    box-shadow: 0 20px 60px rgba(255,107,107,0.3);
+    animation: floatBox 3s ease-in-out infinite;
+}
+@keyframes floatBox {
+    0%, 100% { transform: translateY(0) rotateX(2deg); }
+    50% { transform: translateY(-12px) rotateX(-2deg); }
+}
+.box-3d .box-title {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.75rem;
+    letter-spacing: -0.02em;
+}
+.box-3d .box-sub {
+    font-size: 0.8rem; opacity: 0.7; margin-top: 4px;
+}
+.box-3d .box-logos {
+    margin-top: 16px; font-size: 0.65rem; opacity: 0.5; letter-spacing: 0.05em;
+}
+
+/* COMPONENT TABS */
+.tab-row {
+    display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.tab-pill {
+    padding: 8px 16px; border-radius: var(--r-full); font-size: 0.75rem; font-weight: 600;
+    border: 1.5px solid var(--cloud); background: var(--white); color: var(--storm);
+    cursor: pointer; transition: all 0.15s;
+}
+.tab-pill:hover { border-color: var(--terracotta); color: var(--terracotta); }
+.tab-pill.active { background: var(--terracotta); color: white; border-color: var(--terracotta); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+    <div class="topnav-inner">
+        <span class="brand">Level Up Series</span>
+        <a href="#overview">Overview</a>
+        <a href="#unboxing">Unboxing</a>
+        <a href="#talk">Start the Talk</a>
+        <a href="#challenge">Start Simple</a>
+        <a href="#mood">How Are You</a>
+        <a href="#wellness">Wellness Boards</a>
+        <a href="#parent">Parent Content</a>
+        <a href="#manual">Manual</a>
+    </div>
+</nav>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="hero">
+    <div class="tag">Roadshow Box Prototype</div>
+    <h1>Level Up Series</h1>
+    <p>A physical wellness kit for youth. Everything you need to start building better habits — one small step at a time.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION: BOX OVERVIEW -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="overview">
+    <div class="section-label" style="color: var(--terracotta);">THE BOX</div>
+    <div class="section-title">What's Inside</div>
+    <div class="section-desc">Six components. One system. Each piece connects to the next.</div>
+
+    <div class="box-3d-wrap">
+        <div class="box-3d">
+            <div class="box-title">Level Up</div>
+            <div class="box-sub">Your Wellness Starter Kit</div>
+            <div class="box-logos">Level Up Series &middot; HPB</div>
+        </div>
+    </div>
+
+    <div class="box-overview mt-32">
+        <div class="box-item">
+            <div class="icon" style="filter: grayscale(0);">&#x1F4AC;</div>
+            <h4>Start the Talk</h4>
+            <p>32 conversation cards for parent-youth bonding</p>
+        </div>
+        <div class="box-item">
+            <div class="icon">&#x1F3AF;</div>
+            <h4>Start Simple</h4>
+            <p>Challenge cards + magnetic scoreboard</p>
+        </div>
+        <div class="box-item">
+            <div class="icon">&#x1F49A;</div>
+            <h4>How Are You</h4>
+            <p>QR mood check-in card</p>
+        </div>
+        <div class="box-item">
+            <div class="icon">&#x1F4CB;</div>
+            <h4>Wellness Boards</h4>
+            <p>5 magnetic habit trackers (incl. Exam Season)</p>
+        </div>
+        <div class="box-item">
+            <div class="icon">&#x1F468;&#x200D;&#x1F469;&#x200D;&#x1F467;</div>
+            <h4>Parent Zone</h4>
+            <p>QR card + booth poster for parents</p>
+        </div>
+        <div class="box-item">
+            <div class="icon">&#x1F4D6;</div>
+            <h4>Quick Start Guide</h4>
+            <p>Simple visual instruction manual</p>
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION: UNBOXING EXPERIENCE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="unboxing">
+    <div class="section-label unboxing">UNBOXING FLOW</div>
+    <div class="section-title">The First 60 Seconds</div>
+    <div class="section-desc">What youth see, pick up, and do — the moment they open the box.</div>
+
+    <div class="unbox-flow">
+        <div class="unbox-step">
+            <div class="step-badge">Step 1</div>
+            <div class="visual">&#x1F4E6;</div>
+            <h4>Open the Box</h4>
+            <p>The lid lifts to reveal a <strong>holographic gradient interior</strong> with a bold message: <strong>"One small step. That's all it takes."</strong> Underneath: a clear compartment layout with each item visible.</p>
+        </div>
+        <div class="unbox-step">
+            <div class="step-badge">Step 2</div>
+            <div class="visual">&#x1F4D6;</div>
+            <h4>Pick Up the Quick Start Guide</h4>
+            <p>Sits on top of everything. A single folded card. Front says: <strong>"Start here."</strong> Back shows the 3 things to try tonight.</p>
+        </div>
+        <div class="unbox-step">
+            <div class="step-badge">Step 3</div>
+            <div class="visual">&#x1F4AC;</div>
+            <h4>Grab the Yellow Cards</h4>
+            <p>The "Start the Talk" deck is the first thing underneath. Bright yellow edges make it impossible to miss. <strong>Play tonight with your family.</strong></p>
+        </div>
+        <div class="unbox-step">
+            <div class="step-badge">Step 4</div>
+            <div class="visual">&#x1F3AF;</div>
+            <h4>Find Your Challenge</h4>
+            <p>The blue challenge deck + scoreboard sit side by side. Pick a card, stick a magnet. <strong>Your first week starts now.</strong></p>
+        </div>
+        <div class="unbox-step">
+            <div class="step-badge">Step 5</div>
+            <div class="visual">&#x1F4F1;</div>
+            <h4>Scan the QR</h4>
+            <p>A standalone green card with a QR code. Scan it — a mood check-in loads instantly. <strong>No app. No login. Just you.</strong></p>
+        </div>
+        <div class="unbox-step">
+            <div class="step-badge">Step 6</div>
+            <div class="visual">&#x1F4CB;</div>
+            <h4>Choose Your Board</h4>
+            <p>5 wellness boards at the bottom (4 everyday + 1 Exam Season). Pick the one that speaks to you. Place it where you'll see it every day. <strong>Start with one habit.</strong> Swap in the Exam Season board during revision.</p>
+        </div>
+    </div>
+
+    <div class="callout blue mt-24">
+        <strong>Design Note:</strong> The box uses a tray-and-lid structure. The lid interior features a holographic gradient (holo-aura) with the welcome message in bold white. Items are layered: Quick Start Guide on top, then card decks, then boards at the base. Each component has its own colour-coded section per the design system.
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 1: START THE TALK -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="talk">
+    <div class="section-label talk">COMPONENT 1</div>
+    <div class="section-title">Start the Talk — Conversation Cards</div>
+    <div class="section-desc">32 cards. "Never Have I Ever" style. Youth lead. No lectures. Start light, go deeper naturally.</div>
+
+    <div class="callout yellow mb-16">
+        <strong>How to play:</strong> Shuffle the deck. Youth draws first. Read aloud: "Never have I ever..." Both answer honestly. Hit a Swap Card? Now answer as each other. Duration: 10-15 minutes.
+    </div>
+
+    <!-- ICEBREAKERS -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px; margin-top: 24px;">Icebreakers (Cards 1-10)</h3>
+    <div class="g4">
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... stayed up past midnight on my phone</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... eaten instant noodles 3 days in a row</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... pretended to be asleep when someone checked on me</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... skipped breakfast and regretted it by 10am</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... said "5 more minutes" and meant 45</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... scrolled through food videos instead of actually eating</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... told someone I was "fine" when I wasn't</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... exercised just to eat more later</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... used headphones to avoid a conversation</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Icebreaker</div>
+            <div class="text">Never have I ever... drank bubble tea to feel better about a bad day</div>
+        </div>
+    </div>
+
+    <!-- REAL TALK -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 32px 0 16px;">Real Talk (Cards 11-20)</h3>
+    <div class="g4">
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... felt like no one noticed I was having a tough time</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... wished someone would ask me how I'm really doing</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... felt pressure to eat a certain way because of what people say</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... gone a whole day without talking to anyone at home</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... wanted to try something healthy but didn't know where to start</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... compared my body to someone on social media</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... felt stressed about school and didn't tell anyone</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... eaten something just because I was bored, not hungry</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... wished we could talk about feelings without it being awkward</div>
+        </div>
+        <div class="talk-card">
+            <div class="card-type">Real Talk</div>
+            <div class="text">Never have I ever... felt tired but couldn't actually fall asleep</div>
+        </div>
+    </div>
+
+    <!-- DEEPER CARDS -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 32px 0 16px;">Deeper Prompts (Cards 21-26)</h3>
+    <div class="g4">
+        <div class="talk-card deeper-card">
+            <div class="card-type deeper">Deeper</div>
+            <div class="text">What's one thing you wish the other person understood about your daily life?</div>
+        </div>
+        <div class="talk-card deeper-card">
+            <div class="card-type deeper">Deeper</div>
+            <div class="text">What's the hardest part about taking care of yourself right now?</div>
+        </div>
+        <div class="talk-card deeper-card">
+            <div class="card-type deeper">Deeper</div>
+            <div class="text">If you could change one thing about how we spend time together, what would it be?</div>
+        </div>
+        <div class="talk-card deeper-card">
+            <div class="card-type deeper">Deeper</div>
+            <div class="text">What's something you've been wanting to say but haven't found the right time?</div>
+        </div>
+        <div class="talk-card deeper-card">
+            <div class="card-type deeper">Deeper</div>
+            <div class="text">When was the last time you felt really listened to? What made it different?</div>
+        </div>
+        <div class="talk-card deeper-card">
+            <div class="card-type deeper">Deeper</div>
+            <div class="text">What does "being healthy" actually mean to you — not what others say it should be?</div>
+        </div>
+    </div>
+
+    <!-- SWAP CARDS -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 32px 0 16px;">Swap Cards (Cards 27-32)</h3>
+    <div class="g4">
+        <div class="talk-card swap-card">
+            <div class="card-type swap">Swap</div>
+            <div class="text">Answer as each other: What's the first thing they do when they wake up?</div>
+        </div>
+        <div class="talk-card swap-card">
+            <div class="card-type swap">Swap</div>
+            <div class="text">Answer as each other: What stresses them out most right now?</div>
+        </div>
+        <div class="talk-card swap-card">
+            <div class="card-type swap">Swap</div>
+            <div class="text">Answer as each other: What's their comfort food after a bad day?</div>
+        </div>
+        <div class="talk-card swap-card">
+            <div class="card-type swap">Swap</div>
+            <div class="text">Answer as each other: What would they choose — sleep in or wake up early?</div>
+        </div>
+        <div class="talk-card swap-card">
+            <div class="card-type swap">Swap</div>
+            <div class="text">Answer as each other: How do they actually feel about dinner time at home?</div>
+        </div>
+        <div class="talk-card swap-card">
+            <div class="card-type swap">Swap</div>
+            <div class="text">Answer as each other: What's one healthy thing they secretly want to try?</div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 2: START SIMPLE CHALLENGE KIT -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="challenge">
+    <div class="section-label challenge">COMPONENT 2</div>
+    <div class="section-title">Start Simple — Challenge Kit</div>
+    <div class="section-desc">Pick a card. Do the challenge. Track it on your board. Both parent and youth play — nobody gets to nag.</div>
+
+    <div class="callout blue mb-16">
+        <strong>How it works:</strong> Both parent AND youth draw a card each week. Both must complete the challenge. Track progress on the magnetic scoreboard. Whoever completes more days wins bragging rights.
+    </div>
+
+    <!-- CHALLENGE CARDS BY CATEGORY -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">Sleep Challenges</h3>
+    <div class="g4 mb-16">
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">Phone down by 9:30pm</div>
+            <div class="note">Put it in the living room, not your bed</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">Same bedtime for 7 nights</div>
+            <div class="note">Pick a time. Stick to it. Even weekends.</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">3 Days</div>
+            <div class="action">No screens 30 min before bed</div>
+            <div class="note">Read, stretch, or just chill</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">Dim the lights after 8pm</div>
+            <div class="note">Your brain needs the signal</div>
+        </div>
+    </div>
+
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">Eating Challenges</h3>
+    <div class="g4 mb-16">
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">Eat breakfast every day</div>
+            <div class="note">Even a banana counts</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">Drink 8 glasses of water</div>
+            <div class="note">Refill a bottle. Keep it visible.</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">3 Days</div>
+            <div class="action">Cook one meal together</div>
+            <div class="note">Doesn't have to be fancy</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">Try one new fruit or veg</div>
+            <div class="note">Something you've never had before</div>
+        </div>
+    </div>
+
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">Movement Challenges</h3>
+    <div class="g4 mb-16">
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">10-minute walk after dinner</div>
+            <div class="note">Around the block. Together or solo.</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">14 Days</div>
+            <div class="action">Take the stairs for 2 weeks</div>
+            <div class="note">Every floor counts</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">3 Days</div>
+            <div class="action">Stretch for 5 min before bed</div>
+            <div class="note">YouTube has 5-min routines</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">Dance to one song a day</div>
+            <div class="note">Pick any song. Move however you want.</div>
+        </div>
+    </div>
+
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">Mind & Connection Challenges</h3>
+    <div class="g4 mb-16">
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">No social media for 1 hour after waking</div>
+            <div class="note">Eat first. Breathe first.</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">7 Days</div>
+            <div class="action">5-minute breathing before bed</div>
+            <div class="note">4 seconds in, 4 seconds out</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">14 Days</div>
+            <div class="action">Write one thing you're grateful for daily</div>
+            <div class="note">Keep a note on your phone</div>
+        </div>
+        <div class="challenge-card">
+            <div class="duration">3 Days</div>
+            <div class="action">Have dinner without phones on the table</div>
+            <div class="note">Stack them in a pile. Last one to grab it wins.</div>
+        </div>
+    </div>
+
+    <!-- MAGNETIC SCOREBOARD -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 40px 0 16px;">The Magnetic Scoreboard</h3>
+    <div class="section-desc">A physical magnetic board. Place it on the fridge or wall. Use check tokens to track daily progress. Satisfying to fill. Visible to everyone.</div>
+
+    <div class="g2">
+        <div>
+            <div class="scoreboard-wrap">
+                <div class="scoreboard-header">
+                    <h3>Start Simple</h3>
+                    <div class="date-slot">WEEK OF: ___________</div>
+                </div>
+                <div class="scoreboard-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Challenge</th>
+                                <th>Mon</th>
+                                <th>Tue</th>
+                                <th>Wed</th>
+                                <th>Thu</th>
+                                <th>Fri</th>
+                                <th>Sat</th>
+                                <th>Sun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="habit-magnet">Parent's Challenge</span></td>
+                                <td><span class="check-token filled">&#10003;</span></td>
+                                <td><span class="check-token filled">&#10003;</span></td>
+                                <td><span class="check-token">&#x25CB;</span></td>
+                                <td><span class="check-token filled">&#10003;</span></td>
+                                <td><span class="check-token">&#x25CB;</span></td>
+                                <td><span class="check-token">&#x25CB;</span></td>
+                                <td><span class="check-token">&#x25CB;</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="habit-magnet" style="background: var(--sage);">Youth's Challenge</span></td>
+                                <td><span class="check-token filled green">&#10003;</span></td>
+                                <td><span class="check-token filled green">&#10003;</span></td>
+                                <td><span class="check-token filled green">&#10003;</span></td>
+                                <td><span class="check-token filled green">&#10003;</span></td>
+                                <td><span class="check-token">&#x25CB;</span></td>
+                                <td><span class="check-token">&#x25CB;</span></td>
+                                <td><span class="check-token">&#x25CB;</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card" style="height: 100%;">
+                <h4 style="margin-bottom: 16px;">What's In the Kit</h4>
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div style="width: 36px; height: 36px; background: var(--terracotta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">16</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.85rem;">Challenge Cards</div>
+                            <div style="font-size: 0.8rem; color: var(--storm);">4 categories &times; 4 cards each. Sleep, Eating, Movement, Mind. Plus Exam Season challenges.</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div style="width: 36px; height: 36px; background: var(--terracotta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">1</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.85rem;">Magnetic Scoreboard</div>
+                            <div style="font-size: 0.8rem; color: var(--storm);">A3 size. Sticks to fridge or wall. Writable surface for challenge names.</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div style="width: 36px; height: 36px; background: var(--sage); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">14</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.85rem;">Check Tokens</div>
+                            <div style="font-size: 0.8rem; color: var(--storm);">Magnetic tokens. 7 blue (parent), 7 green (youth). Satisfying click when placed.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 3: HOW ARE YOU QR EXPERIENCE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="mood">
+    <div class="section-label mood">COMPONENT 3</div>
+    <div class="section-title">"How Are You?" — QR Mood Check-in</div>
+    <div class="section-desc">A standalone QR card. Scan it. Check in with yourself. Get one small action. No app. No login. No one watching.</div>
+
+    <div class="g2" style="align-items: start;">
+        <!-- QR CARD -->
+        <div>
+            <div class="qr-card">
+                <div style="font-size: 2rem; margin-bottom: 8px;">&#x1F49A;</div>
+                <h3 style="font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; margin-bottom: 4px;">How Are You?</h3>
+                <p style="font-size: 0.85rem; color: var(--storm); margin-bottom: 16px;">Scan this with your camera. No app needed.</p>
+                <div class="qr-placeholder">
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                    <div class="qr-empty"></div><div class="qr-empty"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-empty"></div><div class="qr-empty"></div>
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--storm); margin-top: 12px;">levelup.sg/howareyou</p>
+                <p style="font-size: 0.7rem; color: var(--cloud); margin-top: 4px;">This is just for you. No one else sees this.</p>
+            </div>
+        </div>
+
+        <!-- PHONE SCREENS FLOW -->
+        <div>
+            <div class="screen-grid" style="grid-template-columns: 1fr;">
+                <!-- Screen 1: Mood Selection -->
+                <div class="phone-mock">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="phone-status"><span>9:41</span><span>Level Up Series</span></div>
+                        <div style="text-align: center; padding: 20px 0 8px;">
+                            <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.2rem;">How are you<br>feeling right now?</div>
+                            <div style="font-size: 0.75rem; color: var(--storm); margin-top: 6px;">This is just for you. No one else sees this.</div>
+                        </div>
+                        <div class="emotion-grid-phone">
+                            <div class="emotion-btn"><span class="emoji">&#x1F624;</span>Stressed</div>
+                            <div class="emotion-btn"><span class="emoji">&#x1F614;</span>Down</div>
+                            <div class="emotion-btn"><span class="emoji">&#x1F634;</span>Tired</div>
+                            <div class="emotion-btn"><span class="emoji">&#x1F630;</span>Anxious</div>
+                            <div class="emotion-btn"><span class="emoji">&#x1F642;</span>Okay</div>
+                            <div class="emotion-btn"><span class="emoji">&#x1F60A;</span>Good</div>
+                        </div>
+                        <div style="margin-top: 16px; text-align: center; font-size: 0.65rem; color: var(--cloud);">Level Up Series &middot; HPB</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 16px 0; font-size: 1.5rem; color: var(--cloud);">&#x2193;</div>
+
+            <!-- Screen 2: Action Response -->
+            <div class="phone-mock">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="phone-status"><span>9:41</span><span>Level Up Series</span></div>
+                    <div style="text-align: center; padding: 20px 0 12px;">
+                        <div style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;">Feeling tired?</div>
+                    </div>
+                    <div style="background: var(--grad-sage); border-radius: var(--r-md); padding: 20px; color: white; text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 0.9rem; font-weight: 500; line-height: 1.5;">Set a phone alarm for 10:00 PM. When it rings, put your phone face-down on the table. That's it.</div>
+                    </div>
+                    <div style="text-align: center; font-size: 0.8rem; color: var(--storm); margin-bottom: 12px;">Did this help?</div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <div style="background: var(--white); border: 2px solid var(--cloud); border-radius: var(--r-sm); padding: 10px 20px; font-weight: 600; font-size: 0.8rem;">&#x1F44D; Yes</div>
+                        <div style="background: var(--white); border: 2px solid var(--cloud); border-radius: var(--r-sm); padding: 10px 20px; font-weight: 600; font-size: 0.8rem;">&#x1F44E; No</div>
+                    </div>
+                    <div style="margin-top: 16px; text-align: center; font-size: 0.7rem; color: var(--sage); font-weight: 600;">Not quite right? Try another &#x2192;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 4: WELLNESS BOARDS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="wellness">
+    <div class="section-label wellness">COMPONENT 4 &middot; SWAP-IN</div>
+    <div class="section-title">Wellness Boards</div>
+    <div class="section-desc">5 magnetic boards. Same system. Different focus. Pick 2&ndash;4 habits per board. Track with magnetic check tokens. Swap boards as you build confidence. The 5th board &mdash; Exam Season &mdash; swaps in during revision period. The board belongs to the youth &mdash; it lives in their space, not a shared family area. Parents only come in if invited.</div>
+
+    <div class="g2" style="margin-bottom: 24px;">
+        <!-- SLEEP BOARD -->
+        <div class="wellness-board">
+            <div class="wb-header sleep">
+                <h3>Better Sleep</h3>
+                <p>Build a bedtime routine that works</p>
+            </div>
+            <div class="wb-grid">
+                <div class="day-header">Habits</div>
+                <div class="day-header">Mon</div><div class="day-header">Tue</div><div class="day-header">Wed</div>
+                <div class="day-header">Thu</div><div class="day-header">Fri</div><div class="day-header">Sat</div><div class="day-header">Sun</div>
+
+                <div class="habit-label"><span class="habit-magnet">Woke Up On Time</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet">Phone Down by 9pm</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet">8 Hours Sleep</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet">Dim Lights After 8pm</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+            </div>
+        </div>
+
+        <!-- EAT BOARD -->
+        <div class="wellness-board">
+            <div class="wb-header eat">
+                <h3>Eat Better</h3>
+                <p>Small food wins, every day</p>
+            </div>
+            <div class="wb-grid">
+                <div class="day-header">Habits</div>
+                <div class="day-header">Mon</div><div class="day-header">Tue</div><div class="day-header">Wed</div>
+                <div class="day-header">Thu</div><div class="day-header">Fri</div><div class="day-header">Sat</div><div class="day-header">Sun</div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--sage);">Ate Breakfast</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--sage);">Drink 8 Glasses Water</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--sage);">5 Fruits & Veg</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--sage);">No Late Night Eating</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="g2">
+        <!-- MOVE BOARD -->
+        <div class="wellness-board">
+            <div class="wb-header move">
+                <h3>Move Your Body</h3>
+                <p>Any movement counts</p>
+            </div>
+            <div class="wb-grid">
+                <div class="day-header">Habits</div>
+                <div class="day-header">Mon</div><div class="day-header">Tue</div><div class="day-header">Wed</div>
+                <div class="day-header">Thu</div><div class="day-header">Fri</div><div class="day-header">Sat</div><div class="day-header">Sun</div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--coral);">10 Min Walk</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--coral);">Took Stairs</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--coral);">Stretched 5 Min</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--coral);">Danced</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+            </div>
+        </div>
+
+        <!-- MIND BOARD -->
+        <div class="wellness-board">
+            <div class="wb-header mind">
+                <h3>Mind & Focus</h3>
+                <p>Calm the noise. Find your centre.</p>
+            </div>
+            <div class="wb-grid">
+                <div class="day-header">Habits</div>
+                <div class="day-header">Mon</div><div class="day-header">Tue</div><div class="day-header">Wed</div>
+                <div class="day-header">Thu</div><div class="day-header">Fri</div><div class="day-header">Sat</div><div class="day-header">Sun</div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--mauve);">5 Min Breathing</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--mauve);">Journaled</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--mauve);">No Social Media 1hr</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: var(--mauve);">Gratitude Practice</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+            </div>
+        </div>
+        <!-- EXAM SEASON BOARD -->
+        <div class="wellness-board">
+            <div class="wb-header" style="background: linear-gradient(135deg, #FF6B6B, #845EF7);">
+                <h3>Exam Season</h3>
+                <p>Survive revision without burning out.</p>
+            </div>
+            <div class="wb-grid">
+                <div class="day-header">Habits</div>
+                <div class="day-header">Mon</div><div class="day-header">Tue</div><div class="day-header">Wed</div>
+                <div class="day-header">Thu</div><div class="day-header">Fri</div><div class="day-header">Sat</div><div class="day-header">Sun</div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: linear-gradient(135deg, #FF6B6B, #845EF7); color: white;">Study Break Every 45 Min</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: linear-gradient(135deg, #FF6B6B, #845EF7); color: white;">Stopped by 10pm</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: linear-gradient(135deg, #FF6B6B, #845EF7); color: white;">Ate a Proper Meal</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: linear-gradient(135deg, #FF6B6B, #845EF7); color: white;">Moved for 10 Min</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: linear-gradient(135deg, #FF6B6B, #845EF7); color: white;">No Phone While Studying</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+
+                <div class="habit-label"><span class="habit-magnet" style="background: linear-gradient(135deg, #FF6B6B, #845EF7); color: white;">Talked to Someone</span></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+                <div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div><div class="habit-cell"><div class="dot"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout green mt-24">
+        <strong>How to use:</strong> Each board comes with pre-printed habit magnets + 2 blank magnets for custom habits. Place check tokens each day you complete a habit. At the end of the week, take a photo, reset, and start fresh. Start with 1-2 habits. Build from there. <strong>Swap in the Exam Season board during revision period — swap it back out after.</strong>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 5: PARENT CONTENT -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="parent">
+    <div class="section-label parent">COMPONENT 5</div>
+    <div class="section-title">Parent Zone — Made for Parents</div>
+    <div class="section-desc">From one parent to another — let's figure this out. One QR card in the box links to a digital parent playbook: real parent videos (not scripted), situation-matched tips by transition stage, and optional weekly WhatsApp nudges. A physical poster at the roadshow booth plays one video on loop with a takeaway tip card. Peer-to-peer. Practical. Not a lecture.</div>
+
+    <div class="g2" style="align-items: start;">
+        <!-- PARENT QR DIGITAL EXPERIENCE -->
+        <div>
+            <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">QR Card (In the Box)</h3>
+
+            <div style="background: var(--mauve-light); border: 2px solid var(--mauve); border-radius: var(--r-lg); padding: 24px; text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 1.5rem; margin-bottom: 8px;">&#x1F468;&#x200D;&#x1F469;&#x200D;&#x1F467;</div>
+                <h4 style="font-family: var(--font-display); font-weight: 800; font-size: 1rem; margin-bottom: 4px;">Made for Parents</h4>
+                <p style="font-size: 0.8rem; color: var(--storm); margin-bottom: 12px;">Real parent videos. Situation-matched tips. Weekly WhatsApp nudges. From one parent to another.</p>
+                <div class="qr-placeholder" style="border-color: var(--mauve);">
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                    <div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div>
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div><div class="qr-empty"></div><div class="qr-block"></div>
+                    <div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div><div class="qr-block"></div>
+                </div>
+                <p style="font-size: 0.7rem; color: var(--storm); margin-top: 10px;">levelup.sg/parents</p>
+            </div>
+
+            <!-- PHONE SCREEN: PARENT EXPERIENCE -->
+            <div class="phone-mock">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="phone-status"><span>9:41</span><span>For Parents</span></div>
+                    <div style="padding: 12px 0;">
+                        <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; margin-bottom: 2px;">Your Situations</div>
+                        <div style="font-size: 0.75rem; color: var(--storm);">Content matched to your child's stage</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="background: var(--mauve-light); border: 1px solid var(--mauve); border-radius: var(--r-sm); padding: 12px;">
+                            <div style="font-size: 0.6rem; font-weight: 700; color: var(--mauve); text-transform: uppercase; margin-bottom: 4px;">This week</div>
+                            <div style="font-weight: 700; font-size: 0.85rem;">Bedtime Battles</div>
+                            <div style="font-size: 0.75rem; color: var(--storm);">The phone won't go down</div>
+                        </div>
+                        <div style="background: var(--white); border: 1px solid var(--cloud); border-radius: var(--r-sm); padding: 12px;">
+                            <div style="font-weight: 700; font-size: 0.85rem;">Silent Dinners</div>
+                            <div style="font-size: 0.75rem; color: var(--storm);">When the table goes quiet</div>
+                        </div>
+                        <div style="background: var(--white); border: 1px solid var(--cloud); border-radius: var(--r-sm); padding: 12px;">
+                            <div style="font-weight: 700; font-size: 0.85rem;">The Screen Fight</div>
+                            <div style="font-size: 0.75rem; color: var(--storm);">Every convo becomes about screen time</div>
+                        </div>
+                        <div style="background: var(--white); border: 1px solid var(--cloud); border-radius: var(--r-sm); padding: 12px;">
+                            <div style="font-weight: 700; font-size: 0.85rem;">Exam Season</div>
+                            <div style="font-size: 0.75rem; color: var(--storm);">Everything healthy goes out the window — use the Exam Season board</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 0.65rem; color: var(--cloud); text-align: center;">Powered by Parenting for Wellness</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOTH POSTER -->
+        <div>
+            <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">Booth Poster (At the Roadshow)</h3>
+
+            <div class="poster">
+                <div class="poster-header">
+                    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px;">For Parents</div>
+                    <h3>5 Things That Actually Worked</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 4px;">From parents who've been where you are.</p>
+                </div>
+                <div class="poster-body">
+                    <div class="poster-tip">
+                        <div class="num">1</div>
+                        <div>
+                            <h4>Put YOUR phone down first</h4>
+                            <p>You can't ask them to stop if you're doing the same thing. At 9pm, both phones go in a basket. You go first.</p>
+                        </div>
+                    </div>
+                    <div class="poster-tip">
+                        <div class="num">2</div>
+                        <div>
+                            <h4>Stop asking "how was school"</h4>
+                            <p>They'll say "fine." Instead try: "What was the most boring part of today?" You'll get a real answer.</p>
+                        </div>
+                    </div>
+                    <div class="poster-tip">
+                        <div class="num">3</div>
+                        <div>
+                            <h4>Cook together. Even once.</h4>
+                            <p>It doesn't have to be fancy. Maggi mee counts. The point is doing something side by side.</p>
+                        </div>
+                    </div>
+                    <div class="poster-tip">
+                        <div class="num">4</div>
+                        <div>
+                            <h4>Don't fix it. Just listen.</h4>
+                            <p>When they tell you something hard, the instinct is to solve it. Try: "That sounds tough. Tell me more." That's it.</p>
+                        </div>
+                    </div>
+                    <div class="poster-tip">
+                        <div class="num">5</div>
+                        <div>
+                            <h4>One walk. No agenda.</h4>
+                            <p>10 minutes after dinner. No lectures. No questions about homework. Just walk together. The conversation happens on its own.</p>
+                        </div>
+                    </div>
+                    <div style="background: var(--mauve-light); border-radius: var(--r-md); padding: 16px; text-align: center; margin-top: 8px;">
+                        <div style="font-size: 0.75rem; font-weight: 700; color: var(--mauve);">Want more? Scan the QR in your child's box.</div>
+                        <div style="font-size: 0.7rem; color: var(--storm); margin-top: 4px;">levelup.sg/parents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 6: INSTRUCTION MANUAL -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="manual">
+    <div class="section-label manual">COMPONENT 6</div>
+    <div class="section-title">Quick Start Guide</div>
+    <div class="section-desc">A single folded card. Front: "Start here." Back: 3 things to try tonight. Inside: full overview.</div>
+
+    <!-- FRONT -->
+    <div class="card text-center mb-16" style="padding: 48px; background: var(--grad-terracotta); color: white; border: none;">
+        <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 8px;">Level Up Series</div>
+        <div style="font-family: var(--font-display); font-weight: 800; font-size: 2rem; margin-bottom: 8px;">Start Here.</div>
+        <div style="font-size: 0.9rem; opacity: 0.7;">Your wellness kit. One small step at a time.</div>
+    </div>
+
+    <!-- INSIDE: STEPS -->
+    <div class="manual-grid">
+        <div class="manual-step">
+            <div class="step-num">1</div>
+            <h4>Tonight: Play the Cards</h4>
+            <p>Grab the yellow "Start the Talk" deck. Shuffle. Take turns. 10 minutes. That's it.</p>
+        </div>
+        <div class="manual-step">
+            <div class="step-num">2</div>
+            <h4>This Week: Pick a Challenge</h4>
+            <p>Both you and your parent draw a blue card. Stick it on the scoreboard. Track it daily.</p>
+        </div>
+        <div class="manual-step">
+            <div class="step-num">3</div>
+            <h4>Anytime: Scan the QR</h4>
+            <p>Feeling something? Scan the green card. Tell it how you feel. Get one thing to try right now.</p>
+        </div>
+    </div>
+
+    <!-- BACK: WHAT'S IN THE BOX -->
+    <div class="card mt-32">
+        <h4 style="margin-bottom: 16px;">What's In Your Box</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--sand); margin-top: 6px; flex-shrink: 0;"></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.85rem;">32 Conversation Cards</div>
+                    <div style="font-size: 0.75rem; color: var(--storm);">Yellow deck. Play tonight.</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--terracotta); margin-top: 6px; flex-shrink: 0;"></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.85rem;">16 Challenge Cards + Scoreboard</div>
+                    <div style="font-size: 0.75rem; color: var(--storm);">Blue deck. Start this week.</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--sage); margin-top: 6px; flex-shrink: 0;"></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.85rem;">1 QR Mood Check-in Card</div>
+                    <div style="font-size: 0.75rem; color: var(--storm);">Green card. Scan anytime.</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--coral); margin-top: 6px; flex-shrink: 0;"></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.85rem;">5 Wellness Boards</div>
+                    <div style="font-size: 0.75rem; color: var(--storm);">Sleep · Eat · Move · Mind + Exam Season. Pick one. Track daily.</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--mauve); margin-top: 6px; flex-shrink: 0;"></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.85rem;">1 Parent QR Card</div>
+                    <div style="font-size: 0.75rem; color: var(--storm);">For parents. Tips from other parents.</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cloud); margin-top: 6px; flex-shrink: 0;"></div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.85rem;">14 Magnetic Check Tokens</div>
+                    <div style="font-size: 0.75rem; color: var(--storm);">For the scoreboard + wellness boards.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMPORTANT REMINDERS -->
+    <div class="callout blue mt-24">
+        <strong>Remember:</strong> This is YOUR kit. Choose habits that matter to you. Progress, not perfection — some days one token is enough. Start small. 2-3 habits per board is perfect. Be flexible. What works this week might shift next week. Place your board somewhere you'll see it every day.
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SYSTEM CONNECTIONS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section">
+    <div class="section-label" style="color: var(--ink);">THE SYSTEM</div>
+    <div class="section-title">How Everything Connects</div>
+    <div class="section-desc">Each component hands off to the next. Physical leads to digital. Short-term leads to long-term.</div>
+
+    <div class="g3">
+        <div class="card">
+            <div style="font-size: 1.5rem; margin-bottom: 8px;">&#x1F4AC; &#x2192; &#x1F3AF;</div>
+            <h4>Cards Lead to Challenges</h4>
+            <p>After talking, you're ready to do something together. The challenge deck gives you that action.</p>
+        </div>
+        <div class="card">
+            <div style="font-size: 1.5rem; margin-bottom: 8px;">&#x1F3AF; &#x2192; &#x1F4CB;</div>
+            <h4>Challenges Lead to Boards</h4>
+            <p>Once you've done one challenge, the wellness boards let you track habits across a full week. During exam season, swap in the Exam Season board for revision-specific habits.</p>
+        </div>
+        <div class="card">
+            <div style="font-size: 1.5rem; margin-bottom: 8px;">&#x1F4CB; &#x2192; &#x1F49A;</div>
+            <h4>Boards Lead to Check-ins</h4>
+            <p>The QR card is always there. When habits feel hard, scan it. Get one action. Start again.</p>
+        </div>
+    </div>
+
+    <div class="callout yellow mt-24">
+        <strong>The cycle:</strong> Talk &#x2192; Challenge &#x2192; Track &#x2192; Check-in &#x2192; Reset &#x2192; Repeat. Each week is a fresh start. No streaks broken. No guilt. Just building, one step at a time.
+    </div>
+
+    <!-- TRANSITION FRAMEWORK -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 32px 0 16px;">How the Box Adapts Across Transitions</h3>
+    <div class="section-desc">The box arrives at transition points — not after. Each tool plays a different role depending on where the youth is.</div>
+
+    <div class="g3" style="margin-bottom: 20px;">
+        <div class="card" style="border-top: 4px solid var(--terracotta);">
+            <div style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--terracotta); margin-bottom: 6px;">Transition 1: P6 &#x2192; Sec 1 (12&ndash;13)</div>
+            <h4>Parent-driven</h4>
+            <ul>
+                <li><strong>Start the Talk</strong> and <strong>Start Simple</strong> land because the relationship is still open</li>
+                <li>The silly tone of the game makes it safe to start</li>
+                <li>Wellness Board sits in youth's room &mdash; parent sees it but youth owns it</li>
+                <li>Parent Zone QR helps parents adjust from enforcing to supporting</li>
+            </ul>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--denim);">
+            <div style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--denim); margin-bottom: 6px;">Transition 2: Sec 2 &#x2192; Sec 3 (14&ndash;15)</div>
+            <h4>Peer-driven</h4>
+            <ul>
+                <li>Peer accountability replaces parent-led tools</li>
+                <li><strong>Swap Cards</strong> become essential &mdash; answering as each other is less exposing</li>
+                <li>Challenge cards shift to peer pairs instead of parent-youth pairs</li>
+                <li>Wellness Board becomes fully youth-owned; parent visibility drops</li>
+                <li>Digital Challenge (Challenge Accepted) becomes the primary tool</li>
+            </ul>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--sage);">
+            <div style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage); margin-bottom: 6px;">Transition 3: Sec 4 &#x2192; JC / IHL (16+)</div>
+            <h4>Self-managing</h4>
+            <ul>
+                <li>Youth is now self-managing &mdash; card games are no longer needed</li>
+                <li>Wellness Board and <strong>How Are You?</strong> QR become the core tools</li>
+                <li><strong>Exam Season board</strong> is most relevant here &mdash; O/A-level pressure</li>
+                <li>Parent Zone content shifts to &ldquo;how to step back without disconnecting&rdquo;</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="callout mauve">
+        <strong>Design principle:</strong> Parent involvement doesn't disappear &mdash; it changes form. From structure-setter (T1) to silent supporter (T2) to available-if-needed (T3). The box supports this evolution through how each component is used, not through separate products.
+    </div>
+
+    <!-- WHAT THIS BOX COMBINES -->
+    <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 32px 0 16px;">What This Box Combines</h3>
+    <div class="section-desc">Level Up Series brings together three originally separate concepts into one physical kit.</div>
+
+    <div class="g3" style="margin-bottom: 20px;">
+        <div class="card" style="border-left: 4px solid var(--sage);">
+            <div style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage); margin-bottom: 4px;">Originally C1</div>
+            <h4>Wellness Board</h4>
+            <p>Physical magnetic habit boards. Youth-owned. One well at a time. Now includes 5 boards (Sleep, Eat, Move, Mind, Exam Season) with magnetic check tokens.</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--terracotta);">
+            <div style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--terracotta); margin-bottom: 4px;">Originally C3</div>
+            <h4>Level Up Series Tools</h4>
+            <p>Start the Talk (32 cards), Start Simple (16 challenges + scoreboard), How Are You? QR mood check-in, and Quick Start Guide.</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--mauve);">
+            <div style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mauve); margin-bottom: 4px;">Originally C4</div>
+            <h4>Made for Parents</h4>
+            <p>Real parent videos, situation-matched tips by transition stage, optional WhatsApp nudges. Accessed via one QR card in the box. Not a lecture &mdash; from one parent to another.</p>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align: center; padding: 48px 0; color: var(--storm); font-size: 0.8rem;">
+    <div style="font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--ink); margin-bottom: 4px;">Level Up Series</div>
+    <div>Health Promotion Board &middot; Roadshow Box Prototype</div>
+    <div style="margin-top: 8px; font-size: 0.7rem; color: var(--cloud);">One small step. That's all it takes.</div>
+</div>
+
+</div><!-- /.page -->
+
+<!-- Smooth scroll for nav -->
+<script>
+document.querySelectorAll('.topnav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelectorAll('.topnav a').forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+        }
+    });
+});
+
+// Highlight active nav on scroll
+const sections = document.querySelectorAll('.section[id]');
+const navLinks = document.querySelectorAll('.topnav a');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+        const top = section.offsetTop - 120;
+        if (scrollY >= top) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+});
+</script>
+
+</body>
+</html>

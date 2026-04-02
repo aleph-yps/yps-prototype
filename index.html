@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YPS Prototypes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f5f3f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .header .badge {
+    display: inline-block;
+    background: #E8E5E1;
+    color: #6B6560;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 48px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-size: 16px;
+    color: #888;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .cards {
+    display: flex;
+    gap: 32px;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .card {
+    flex: 1;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    cursor: pointer;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  }
+
+  .card-img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 28px;
+  }
+
+  .card-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .card:nth-child(1) .card-label {
+    background: #EBF5FF;
+    color: #2B7DE9;
+  }
+
+  .card:nth-child(2) .card-label {
+    background: #FFEEEE;
+    color: #E05252;
+  }
+
+  .card-body h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+
+  .card-body p {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: gap 0.2s ease;
+  }
+
+  .card:nth-child(1) .card-cta { color: #2B7DE9; }
+  .card:nth-child(2) .card-cta { color: #E05252; }
+
+  .card:hover .card-cta { gap: 10px; }
+
+  .card-cta svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover .card-cta svg { transform: translateX(2px); }
+
+  /* Concept 1 image area - dark blue gradient */
+  .card-img-c1 {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, #0f1b2d 0%, #1a3a5c 50%, #2B7DE9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-img-c1::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(43,125,233,0.3) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .card-img-c1 .phone-mockup {
+    width: 120px;
+    height: 220px;
+    background: #111;
+    border-radius: 20px;
+    border: 3px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-img-c1 .phone-mockup::before {
+    content: '';
+    width: 40px;
+    height: 5px;
+    background: #333;
+    border-radius: 3px;
+    position: absolute;
+    top: 10px;
+  }
+
+  .card-img-c1 .phone-screen {
+    width: 90%;
+    height: 80%;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #1a3a5c, #0f1b2d);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .card-img-c1 .phone-screen .bar {
+    width: 70%;
+    height: 4px;
+    background: rgba(43,125,233,0.5);
+    border-radius: 2px;
+  }
+
+  .card-img-c1 .phone-screen .bar:nth-child(2) { width: 50%; }
+
+  /* Concept 2 image area - warm red */
+  .card-img-c2 {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #f5a623 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-img-c2::before {
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .card-img-c2 .box-icon {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-img-c2 .box-icon .box-base {
+    width: 120px;
+    height: 80px;
+    background: white;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  .card-img-c2 .box-icon .box-lid {
+    width: 130px;
+    height: 20px;
+    background: #E05252;
+    border-radius: 6px 6px 0 0;
+    margin: 0 auto -4px;
+    transform: translateX(-5px) rotate(-3deg);
+    transform-origin: bottom left;
+  }
+
+  .card-img-c2 .box-icon .card-stack {
+    display: flex;
+    gap: 4px;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .card-img-c2 .box-icon .mini-card {
+    width: 28px;
+    height: 38px;
+    border-radius: 4px;
+  }
+
+  .card-img-c2 .box-icon .mini-card:nth-child(1) {
+    background: linear-gradient(180deg, #f5a623, #4CAF50);
+  }
+
+  .card-img-c2 .box-icon .mini-card:nth-child(2) {
+    background: linear-gradient(180deg, #9b59b6, #2B7DE9);
+  }
+
+  @media (max-width: 700px) {
+    .cards { flex-direction: column; }
+    .header h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">Health Promotion Board</div>
+  <h1>YPS</h1>
+  <p>Explore the prototypes. Pick a concept to begin.</p>
+</div>
+
+<div class="cards">
+
+  <!-- Concept 1: Digital Challenge -->
+  <a class="card" href="concept-01-digital-challenge/Main Flow-digital-challenge.html">
+    <div class="card-img-c1">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-label">Concept 1</div>
+      <h2>Digital Challenge</h2>
+      <p>A mobile-first wellness challenge experience. Complete daily tasks, earn streaks, and level up your wellbeing.</p>
+      <div class="card-cta">
+        Explore prototype
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  </a>
+
+  <!-- Concept 2: Level Up Series -->
+  <a class="card" href="concept-02-level-up-series/level-up-prototype.html">
+    <div class="card-img-c2">
+      <div class="box-icon">
+        <div class="box-lid"></div>
+        <div class="box-base">
+          <div class="card-stack">
+            <div class="mini-card"></div>
+            <div class="mini-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-label">Concept 2</div>
+      <h2>Level Up Series</h2>
+      <p>A physical toolkit for families. Conversation cards, weekly challenges, and a magnetic scoreboard — all in one box.</p>
+      <div class="card-cta">
+        Explore prototype
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+</body>
+</html>

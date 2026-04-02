@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C04 — Made for Parents</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  /* Airbnb/Wise palette */
+  --ink:#222222;
+  --ink-2:#484848;
+  --ink-3:#767676;
+  --line:#EBEBEB;
+  --surface:#FFFFFF;
+  --bg:#F7F7F7;
+  --brand:#FF385C;        /* Airbnb coral */
+  --brand-lt:#FFF1F2;
+  --brand-dark:#C0001F;
+  --wise-green:#9FE870;   /* Wise green accent */
+  --sage:#00A699;         /* Airbnb teal */
+  --sage-lt:#E6F7F6;
+  --amber:#FFB400;
+  --amber-lt:#FFF8E1;
+  --blue:#0066FF;
+  --blue-lt:#EEF4FF;
+  --wa-green:#25D366;
+  --wa-header:#075E54;
+  --wa-bg:#ECE5DD;
+  --wa-in:#DCF8C6;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:#F0EDEA;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:32px 16px 60px;
+}
+
+/* ═══════════════════════
+   NOTIFICATION
+═══════════════════════ */
+#notif{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:340px;
+  background:rgba(255,255,255,0.98);
+  border-radius:16px;
+  padding:12px 14px;
+  display:flex;
+  gap:11px;
+  align-items:flex-start;
+  z-index:99999;
+  cursor:pointer;
+  box-shadow:0 4px 24px rgba(0,0,0,.14),0 1px 4px rgba(0,0,0,.08);
+  opacity:0;
+  pointer-events:none;
+}
+.ni{width:36px;height:36px;border-radius:9px;background:var(--wa-green);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.nb{flex:1;min-width:0}
+.nr{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.na{font-size:11px;font-weight:600;color:var(--ink-3);text-transform:uppercase;letter-spacing:.3px}
+.nw{font-size:11px;color:var(--ink-3)}
+.nt{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.nm{font-size:12px;color:var(--ink-2);line-height:1.4}
+
+/* ═══════════════════════
+   PHONE SHELL — silver/graphite like a real iPhone
+═══════════════════════ */
+.phone{
+  width:375px;
+  height:812px;
+  background:white;
+  border-radius:48px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:
+    0 0 0 10px #1C1C1E,
+    0 0 0 11px rgba(255,255,255,0.12),
+    0 30px 70px rgba(0,0,0,.22);
+  flex-shrink:0;
+}
+/* Dynamic island style notch */
+.notch{
+  position:absolute;top:12px;left:50%;
+  transform:translateX(-50%);
+  width:120px;height:34px;
+  background:#1C1C1E;
+  border-radius:20px;
+  z-index:999;
+}
+
+/* ═══════════════════════
+   SCREENS
+═══════════════════════ */
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden}
+.screen.active{display:flex;animation:fu .22s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.sb{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 0;flex-shrink:0}
+.sbt{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.sbr{font-size:12px;opacity:.75}
+
+/* ═══════════════════════
+   HOME SCREEN
+═══════════════════════ */
+#sh{background:linear-gradient(155deg,#BBA0D0,#DDA88C 35%,#F0CC78 65%,#88C8E0)}
+#sh .sbt,#sh .sbr{color:rgba(20,10,0,.8)}
+
+.hclock{text-align:center;margin:18px 0 4px;flex-shrink:0}
+.htime{font-size:72px;font-weight:200;color:rgba(20,10,0,.82);letter-spacing:-3px;line-height:1}
+.hdate{font-size:15px;color:rgba(20,10,0,.6);font-weight:600;margin-top:4px}
+
+.apps{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:18px 8px;padding:18px 14px 0;align-content:start}
+.app{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.aico{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:25px;box-shadow:0 2px 8px rgba(0,0,0,.15);flex-shrink:0}
+.albl{font-size:10px;color:rgba(20,10,0,.75);font-weight:600;text-align:center}
+.dock{background:rgba(255,255,255,.28);backdrop-filter:blur(20px);margin:8px 14px 28px;border-radius:24px;padding:12px 18px;display:flex;justify-content:space-around;flex-shrink:0}
+
+/* ═══════════════════════
+   WHATSAPP
+═══════════════════════ */
+.wah{background:var(--wa-header);padding:36px 14px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wabk{color:white;font-size:26px;cursor:pointer;padding:0 6px;line-height:1}
+.waav{width:38px;height:38px;border-radius:50%;background:var(--wa-green);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.wamt{flex:1}
+.watl{font-size:15px;font-weight:700;color:white}
+.wasl{font-size:12px;color:rgba(255,255,255,.7)}
+.waac{display:flex;gap:16px;color:white;font-size:18px}
+
+.wachat{flex:1;overflow-y:auto;padding:10px 12px 16px;display:flex;flex-direction:column;gap:4px;background:var(--wa-bg)}
+.wachat::-webkit-scrollbar{width:0}
+.wday{text-align:center;margin:8px 0}
+.wdp{background:rgba(255,255,255,.72);color:var(--ink-3);font-size:11px;font-weight:600;padding:3px 11px;border-radius:7px;display:inline-block}
+
+.bb{max-width:83%;padding:8px 11px 5px;border-radius:10px;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.bb.i{background:white;align-self:flex-start;border-bottom-left-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.bb.o{background:var(--wa-in);align-self:flex-end;border-bottom-right-radius:3px}
+.bbf{font-size:12px;font-weight:700;color:#128C7E;margin-bottom:2px}
+.bbm{text-align:right;font-size:10px;color:var(--ink-3);margin-top:3px}
+
+.walink{background:white;border-radius:10px;overflow:hidden;margin-top:8px;cursor:pointer;border:1px solid #E8E8E8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.walink:active{opacity:.8}
+.walth{height:64px;background:linear-gradient(135deg,#FF385C,#FF6B81);display:flex;align-items:center;justify-content:center;font-size:26px}
+.walb{padding:10px 12px}
+.walbt{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.walbu{font-size:11px;color:var(--sage)}
+
+/* ═══════════════════════
+   BROWSER — clean white Airbnb-style
+═══════════════════════ */
+.browser{background:var(--surface)}
+.urlbar{
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  padding:38px 14px 10px;
+  flex-shrink:0;
+}
+.urlin{
+  background:var(--bg);
+  border-radius:12px;
+  padding:8px 14px;
+  display:flex;align-items:center;gap:7px;
+}
+.urllock{font-size:11px;color:var(--ink-3)}
+.urltxt{font-size:12.5px;color:var(--ink-2);flex:1;font-weight:500}
+
+.ws{flex:1;overflow-y:auto;padding:20px 20px 44px}
+.ws::-webkit-scrollbar{width:0}
+
+/* back row */
+.brow{display:flex;align-items:center;gap:2px;margin-bottom:20px;cursor:pointer}
+.bark{font-size:24px;color:var(--ink);line-height:1;margin-left:-4px}
+.barl{font-size:14px;font-weight:600;color:var(--ink)}
+
+/* typography */
+.wh1{font-size:22px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:8px;letter-spacing:-.2px}
+.wsub{font-size:14px;color:var(--ink-2);line-height:1.6;margin-bottom:22px}
+.slbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-3);margin-bottom:12px}
+
+/* ═══════════════════════
+   LOGO ROW
+═══════════════════════ */
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.logoico{width:34px;height:34px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px}
+.logotxt{font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.2px}
+
+/* ═══════════════════════
+   LANDING CARDS
+═══════════════════════ */
+.tcards{display:flex;flex-direction:column;gap:12px}
+.tc{
+  border-radius:16px;padding:16px;
+  display:flex;gap:14px;align-items:flex-start;
+  cursor:pointer;transition:transform .12s, box-shadow .12s;
+  border:1px solid var(--line);
+  background:var(--surface);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.tc:active{transform:scale(.975);box-shadow:none}
+.tico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.tca .tico{background:#FFF0E8}
+.tcb .tico{background:#EEF4FF}
+.tcc .tico{background:#EAF9F5}
+.ttl{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px;letter-spacing:-.1px}
+.tdesc{font-size:13px;color:var(--ink-2);line-height:1.5}
+
+/* ═══════════════════════
+   CHALLENGES
+═══════════════════════ */
+.proof{
+  background:var(--blue-lt);border-radius:12px;
+  padding:10px 14px;margin-bottom:18px;
+  font-size:13px;color:var(--blue);font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.chlist{display:flex;flex-direction:column;gap:10px}
+.chi{
+  background:var(--surface);border-radius:16px;
+  padding:14px 16px;display:flex;align-items:center;gap:13px;
+  cursor:pointer;border:1px solid var(--line);
+  transition:all .12s;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.chi:active{border-color:var(--brand);background:var(--brand-lt);transform:scale(.977)}
+.che{font-size:24px;width:36px;text-align:center;flex-shrink:0}
+.chb{flex:1}
+.cht{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;letter-spacing:-.1px}
+.chs{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.char{font-size:18px;color:#CCCCCC;flex-shrink:0}
+
+/* ═══════════════════════
+   TINDER STACK CARDS
+═══════════════════════ */
+.stack-wrap{
+  position:relative;
+  height:260px;
+  margin:0 0 14px;
+  user-select:none;
+}
+.stack-wrap.tip-stack{height:310px}
+
+.stack-card{
+  position:absolute;
+  top:0;left:0;right:0;
+  background:var(--surface);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 2px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.06);
+  border:1px solid var(--line);
+  cursor:grab;
+  transform-origin:50% 110%;
+  transition:transform .15s ease,box-shadow .15s;
+  will-change:transform;
+  touch-action:none;
+}
+.stack-card:active{cursor:grabbing}
+
+.stack-card.behind-1{transform:scale(0.95) translateY(9px);z-index:1}
+.stack-card.behind-2{transform:scale(0.90) translateY(18px);z-index:0}
+.stack-card.top{z-index:10}
+
+@keyframes flyLeft{to{transform:translateX(-140%) rotate(-20deg);opacity:0}}
+@keyframes flyRight{to{transform:translateX(140%) rotate(20deg);opacity:0}}
+.stack-card.fly-left{animation:flyLeft .32s ease forwards}
+.stack-card.fly-right{animation:flyRight .32s ease forwards}
+
+@keyframes springBack{
+  0%{}60%{transform:rotate(0) translateX(0) scale(1.02)}100%{transform:rotate(0) translateX(0) scale(1)}
+}
+.stack-card.spring{animation:springBack .32s ease forwards}
+
+.swipe-hint{
+  position:absolute;top:16px;
+  padding:4px 12px;border-radius:8px;
+  font-size:12px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;
+  opacity:0;transition:opacity .1s;pointer-events:none;z-index:20;
+}
+.hint-next{right:14px;background:#E6FAF0;color:#00875A;border:1.5px solid #00875A}
+.hint-back{left:14px;background:#FFF1F2;color:#C0001F;border:1.5px solid #C0001F}
+
+.swipe-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.sdot{width:6px;height:6px;border-radius:50%;background:#DDDCDB;transition:all .25s;flex-shrink:0}
+.sdot.on{background:var(--ink);width:18px;border-radius:3px}
+
+/* POV card internals */
+.pov-label{
+  font-size:10px;font-weight:700;color:var(--amber);
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:10px;display:flex;align-items:center;gap:5px;
+}
+.pov-insight{font-size:14px;color:var(--ink);line-height:1.75;font-weight:400;margin-bottom:12px}
+.pov-quote{
+  background:#FAFAFA;border-left:3px solid var(--line);
+  padding:10px 14px;border-radius:0 10px 10px 0;
+  font-size:13px;color:var(--ink-2);line-height:1.6;font-style:italic;
+}
+
+/* ═══════════════════════
+   SELF-CHECK HERO — Airbnb scale
+═══════════════════════ */
+.selfcheck-hero{padding:4px 0 4px}
+.sch-eyebrow{
+  font-size:11px;font-weight:700;color:var(--brand);
+  text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;
+}
+.sch-h{
+  font-size:28px;font-weight:700;color:var(--ink);
+  line-height:1.18;margin-bottom:10px;letter-spacing:-.4px;
+}
+.sch-sub{font-size:14.5px;color:var(--ink-2);line-height:1.65;margin-bottom:24px}
+
+.sch-btn{
+  width:100%;display:flex;align-items:center;gap:16px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;padding:18px;
+  cursor:pointer;font-family:inherit;
+  transition:all .14s;margin-bottom:12px;
+  box-shadow:0 1px 6px rgba(0,0,0,.06);text-align:left;
+}
+.sch-btn:active{transform:scale(.975);box-shadow:none;background:var(--bg)}
+.sch-btn-icon{font-size:28px;flex-shrink:0;width:36px;text-align:center}
+.sch-btn-body{flex:1}
+.sch-btn-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px;letter-spacing:-.1px}
+.sch-btn-sub{font-size:13px;color:var(--ink-2);line-height:1.45}
+.sch-arr{font-size:20px;color:#CCCCCC;flex-shrink:0}
+
+/* ═══════════════════════
+   PARENT LOW SCREEN
+═══════════════════════ */
+.pl-hero{
+  background:linear-gradient(135deg,#FFF1F2 0%,#FFF8F0 100%);
+  border-radius:20px;padding:26px 20px;margin-bottom:22px;
+  text-align:center;border:1px solid #FFE0E4;
+}
+.pl-icon{font-size:40px;margin-bottom:12px}
+.pl-h{font-size:22px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:10px;letter-spacing:-.2px}
+.pl-sub{font-size:14px;color:var(--ink-2);line-height:1.65}
+
+#care-stack .stack-card{background:linear-gradient(145deg,#FFFEFB,#FAF8F4);border-color:#EBEBEB}
+.care-num{font-size:10px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.care-h{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3;letter-spacing:-.1px}
+.care-body{font-size:14px;color:var(--ink-2);line-height:1.72}
+.care-time{
+  display:inline-flex;align-items:center;gap:5px;
+  background:white;border:1px solid var(--line);
+  color:var(--ink-3);font-size:11px;font-weight:600;
+  padding:4px 12px;border-radius:20px;margin-top:12px;
+}
+
+.pl-ctas{margin-top:24px}
+.pl-cta-label{font-size:11px;font-weight:600;color:var(--ink-3);text-align:center;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.pl-cta-main{
+  width:100%;padding:16px;
+  background:var(--brand);color:white;
+  border:none;border-radius:14px;
+  font-size:15px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  line-height:1.3;margin-bottom:10px;
+  transition:all .14s;letter-spacing:-.1px;
+}
+.pl-cta-main:active{background:var(--brand-dark);transform:scale(.975)}
+.pl-cta-sec{
+  width:100%;padding:14px;
+  background:transparent;color:var(--ink-2);
+  border:1px solid var(--line);border-radius:14px;
+  font-size:14px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all .14s;
+}
+.pl-cta-sec:active{background:var(--bg)}
+
+/* ═══════════════════════
+   VIDEO RAIL
+═══════════════════════ */
+.vrail{display:flex;gap:12px;overflow-x:auto;margin:0 -20px;padding:0 20px 12px;scrollbar-width:none}
+.vrail::-webkit-scrollbar{display:none}
+.vcard{flex-shrink:0;width:148px;cursor:pointer}
+.vthumb{width:148px;height:96px;border-radius:14px;overflow:hidden;position:relative;margin-bottom:8px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.vbg{width:100%;height:100%;display:flex;align-items:flex-end;padding:8px}
+.vov{position:absolute;inset:0;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center}
+.vplay{width:32px;height:32px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;padding-left:2px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.vdur{position:absolute;bottom:7px;right:8px;background:rgba(0,0,0,.65);color:white;font-size:10px;font-weight:600;padding:2px 6px;border-radius:5px}
+.vraw{position:absolute;top:7px;left:8px;background:rgba(0,0,0,.5);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;text-transform:uppercase;letter-spacing:.3px}
+.vname{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.1px}
+.vrole{font-size:11.5px;color:var(--ink-3);margin-top:1px}
+.vcap{font-size:12px;color:var(--ink-2);line-height:1.4;margin-top:3px;font-style:italic}
+
+/* empathy block */
+.empathy{
+  background:var(--amber-lt);border-left:3px solid var(--amber);
+  border-radius:0 14px 14px 0;padding:16px;margin:18px 0 20px;
+}
+.etxt{font-size:14px;color:var(--ink);line-height:1.72}
+.esrc{font-size:12px;color:var(--ink-3);margin-top:8px;font-style:italic}
+
+/* tip card internals */
+.tipno{font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.tiptxt{font-size:14.5px;color:var(--ink);line-height:1.7}
+.tiptxt strong{color:var(--ink);font-weight:700;display:block;margin-bottom:8px;font-size:16px;letter-spacing:-.15px}
+.tonight{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--amber-lt);color:#7A4800;
+  font-size:10px;font-weight:700;
+  padding:4px 11px;border-radius:20px;
+  margin-bottom:10px;text-transform:uppercase;letter-spacing:.3px;
+  border:1px solid #FFD68A;
+}
+
+/* try button */
+.trybtn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;margin-top:16px;padding:14px;
+  background:var(--ink);color:white;
+  border:none;border-radius:12px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:all .15s;letter-spacing:-.1px;
+}
+.trybtn:active{background:#444;transform:scale(.97)}
+
+/* saved state */
+.saved-inner{display:flex;flex-direction:column;align-items:center;text-align:center;padding:4px 0 2px;gap:6px}
+.saved-tick{font-size:32px;margin-bottom:2px}
+.saved-title{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.1px}
+.saved-msg{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.saved-sub{font-size:12px;color:var(--ink-3);margin-top:4px}
+
+/* mini feedback */
+.fbmini{display:flex;align-items:center;gap:10px;margin:14px 0 16px;padding:14px 16px;background:var(--bg);border-radius:14px;border:1px solid var(--line)}
+.fbmq{font-size:13.5px;font-weight:600;color:var(--ink);flex:1}
+.fbmbtns{display:flex;gap:8px}
+.fbmbtn{padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:white;font-size:14px;cursor:pointer;font-weight:600;transition:all .1s}
+.fbmbtn:active{background:var(--sage-lt);border-color:var(--sage)}
+
+/* feedback box */
+.fbbox{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:22px;text-align:center}
+.fbq{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px;letter-spacing:-.1px}
+.fbbtns{display:flex;gap:8px}
+.fbb{flex:1;padding:12px 6px;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:transform .1s;font-family:inherit}
+.fbb:active{transform:scale(.94)}
+.fby{background:var(--sage-lt);color:var(--sage)}
+.fbm{background:var(--blue-lt);color:var(--blue)}
+.fbn{background:var(--brand-lt);color:var(--brand)}
+
+/* check-in options */
+.ciopts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.ciopt{
+  background:white;border:1px solid var(--line);
+  border-radius:12px;padding:12px 16px;
+  font-size:14px;font-weight:600;color:var(--ink);
+  cursor:pointer;transition:all .12s;font-family:inherit;
+  width:100%;text-align:left;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.ciopt:active{background:var(--brand-lt);border-color:var(--brand)}
+
+/* week later screen */
+#slater{background:linear-gradient(155deg,#BBA0D0,#DDA88C 35%,#F0CC78 65%,#88C8E0)}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.28)}
+.linner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%}
+.lclock{text-align:center;margin:44px 0 16px}
+.ltime{font-size:68px;font-weight:200;color:white;letter-spacing:-2px;line-height:1}
+.ldate{font-size:15px;color:rgba(255,255,255,.85);font-weight:600;margin-top:4px}
+.lbadge{background:rgba(255,255,255,.2);color:white;font-size:12px;font-weight:600;padding:4px 13px;border-radius:20px;display:inline-block;margin-top:8px}
+.lnotif{background:rgba(255,255,255,.96);border-radius:16px;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;margin:16px 14px 0;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.18);animation:fu .4s .2s ease both}
+.breakopt{text-align:center;margin-top:16px;padding:0 24px}
+.breaktxt{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.breaklink{color:rgba(255,255,255,.92);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+
+/* self-check buttons (legacy, kept for fallback) */
+.selfbtn{background:white;border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;font-family:inherit;transition:all .12s;text-align:left;width:100%}
+.selfbtn:active{border-color:var(--brand);background:var(--brand-lt);transform:scale(.978)}
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION — fixed to viewport -->
+<div id="notif" onclick="tapNotif()">
+  <div class="ni">💬</div>
+  <div class="nb">
+    <div class="nr">
+      <span class="na">WhatsApp · Parents like you</span>
+      <span class="nw">now</span>
+    </div>
+    <!-- Change 1: peer voice, not institution -->
+    <div class="nt">Sureena: "I was at my limit too."</div>
+    <div class="nm">She found something that helped. Passing it on…</div>
+  </div>
+</div>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <!-- ══ HOME ══ -->
+  <div class="screen active" id="sh">
+    <div class="sb"><span class="sbt" style="color:rgba(25,15,5,.8)">9:41</span><span class="sbr" style="color:rgba(25,15,5,.7)">▲▲ WiFi 🔋</span></div>
+    <div class="hclock"><div class="htime">9:41</div><div class="hdate">Monday, 23 March</div></div>
+    <div class="apps">
+      <div class="app"><div class="aico" style="background:#4CAF50">📱</div><span class="albl">Phone</span></div>
+      <div class="app"><div class="aico" style="background:#2196F3">✉️</div><span class="albl">Mail</span></div>
+      <div class="app"><div class="aico" style="background:#FF9800">📅</div><span class="albl">Calendar</span></div>
+      <div class="app"><div class="aico" style="background:#9C27B0">🖼️</div><span class="albl">Photos</span></div>
+      <div class="app"><div class="aico" style="background:#E91E63">🎵</div><span class="albl">Music</span></div>
+      <div class="app"><div class="aico" style="background:#00BCD4">🗺️</div><span class="albl">Maps</span></div>
+      <div class="app"><div class="aico" style="background:#FF5722">🛍️</div><span class="albl">Shop</span></div>
+      <div class="app"><div class="aico" style="background:#607D8B">⚙️</div><span class="albl">Settings</span></div>
+      <div class="app"><div class="aico" style="background:#3F51B5">📰</div><span class="albl">News</span></div>
+      <div class="app"><div class="aico" style="background:#795548">📖</div><span class="albl">Notes</span></div>
+      <div class="app"><div class="aico" style="background:linear-gradient(135deg,#1B3A6B,#3A80E0)">❤️</div><span class="albl">H365</span></div>
+      <div class="app"><div class="aico" style="background:#FF6F00">🏥</div><span class="albl">Health</span></div>
+    </div>
+    <div class="dock">
+      <div class="app"><div class="aico" style="background:#4CAF50;width:52px;height:52px">📞</div></div>
+      <div class="app" onclick="go('swa')"><div class="aico" style="background:var(--wa-green);width:52px;height:52px">💬</div></div>
+      <div class="app"><div class="aico" style="background:#2196F3;width:52px;height:52px">🌐</div></div>
+      <div class="app"><div class="aico" style="background:#FF9800;width:52px;height:52px">📷</div></div>
+    </div>
+  </div>
+
+  <!-- ══ WHATSAPP ══ -->
+  <!-- Change 1: message reads peer-to-peer, Sureena's voice opens it -->
+  <div class="screen" id="swa" style="background:var(--wa-bg)">
+    <div class="wah">
+      <span class="wabk" onclick="go('sh')">‹</span>
+      <div class="waav">🌿</div>
+      <div class="wamt"><div class="watl">Parents like you</div><div class="wasl">Sureena, Bhavani, Calvin +284 others</div></div>
+      <div class="waac"><span>📹</span><span>📞</span></div>
+    </div>
+    <div class="wachat">
+      <div class="wday"><span class="wdp">Today · Sunday, 9:12 PM</span></div>
+      <div style="align-self:flex-start;max-width:86%">
+        <div class="bb i"><div class="bbf">Sureena</div>Honestly I was at my limit last week. My son was still on his phone at 1am on a school night and every time I said something it became a whole thing. Anyone else?<div class="bbm">9:12 PM</div></div>
+      </div>
+      <div style="align-self:flex-start;max-width:86%">
+        <div class="bb i"><div class="bbf">Calvin</div>Yes. We stopped fighting about it because nothing worked. The minute you bring it up they get defensive.<div class="bbm">9:18 PM</div></div>
+      </div>
+      <div style="align-self:flex-start;max-width:86%">
+        <div class="bb i"><div class="bbf">Bhavani</div>I feel like I'm always the bad guy. Every conversation ends with her slamming the door. I'm exhausted.<div class="bbm">9:24 PM</div></div>
+      </div>
+      <div style="align-self:flex-start;max-width:86%">
+        <div class="bb i"><div class="bbf">Sureena</div>A friend sent me this last week. It's not a programme or anything — just real parents talking through what they tried. Something in there actually helped us. Passing it on in case it helps anyone here too 👇<div class="bbm">9:31 PM</div></div>
+      </div>
+      <div style="align-self:flex-start;max-width:90%">
+        <div class="bb i" style="padding-bottom:0">
+          <div class="walink" onclick="go('slanding')">
+            <div class="walth">💙</div>
+            <div class="walb"><div class="walbt">What's going on at home right now?</div><div class="walbu">hpb.gov.sg/parents</div></div>
+          </div>
+          <div class="bbm" style="padding:0 0 5px">9:31 PM</div>
+        </div>
+      </div>
+      <div style="align-self:flex-start;max-width:86%">
+        <div class="bb i"><div class="bbf">Bhavani</div>Omg opening this now<div class="bbm">9:33 PM</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LANDING ══ -->
+  <div class="screen browser" id="slanding">
+    <div class="urlbar"><div class="urlin"><span class="urllock">🔒</span><span class="urltxt">hpb.gov.sg/parents</span></div></div>
+    <div class="ws">
+      <div class="logo"><div class="logoico">❤️</div><span class="logotxt">Made for Parents</span></div>
+      <h1 class="wh1">Where is your child right now?</h1>
+      <p class="wsub">Pick the stage and we'll show you what other parents in the same situation actually tried.</p>
+      <div class="tcards">
+        <div class="tc tca" onclick="pickT(1)">
+          <div class="tico">🌱</div>
+          <div>
+            <div class="ttl">Just started Sec 1</div>
+            <div class="tdesc">Everything changed at once. You're both still figuring out the new normal and the old rules don't quite fit anymore.</div>
+          </div>
+        </div>
+        <div class="tc tcb" onclick="pickT(2)">
+          <div class="tico">🔄</div>
+          <div>
+            <div class="ttl">Sec 2 or Sec 3</div>
+            <div class="tdesc">Friends are everything now. Getting through to them feels harder than it used to, and the gap keeps widening.</div>
+          </div>
+        </div>
+        <div class="tc tcc" onclick="pickT(3)">
+          <div class="tico">🚀</div>
+          <div>
+            <div class="ttl">Heading to JC or Poly</div>
+            <div class="tdesc">They're almost out the door. The conversations feel harder to start and the time you have left together at home is shorter than it used to be.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CHALLENGES ══ -->
+  <div class="screen browser" id="schall">
+    <div class="urlbar"><div class="urlin"><span class="urllock">🔒</span><span class="urltxt">hpb.gov.sg/parents</span></div></div>
+    <div class="ws">
+      <div class="brow" onclick="go('slanding')"><span class="bark">‹</span><span class="barl">Back</span></div>
+      <h2 class="wh1" style="font-size:18px">What's been on your mind?</h2>
+      <p class="wsub" style="margin-bottom:14px">Pick the one that feels most like right now.</p>
+      <div class="proof">👥 <span id="proof-txt">Over 300 parents found something useful here this week</span></div>
+      <div class="chlist" id="chlist"></div>
+    </div>
+  </div>
+
+  <!-- ══ YOUTH PERSPECTIVE + PARENT CHECK-IN ══ -->
+  <div class="screen browser" id="spov">
+    <div class="urlbar"><div class="urlin"><span class="urllock">🔒</span><span class="urltxt">hpb.gov.sg/parents</span></div></div>
+    <div class="ws">
+      <div class="brow" onclick="go('schall')"><span class="bark">‹</span><span class="barl">Back</span></div>
+
+      <!-- Self-check FIRST — Airbnb-style centrepiece, always above fold -->
+      <div class="selfcheck-hero">
+        <div class="sch-eyebrow">Before you go in</div>
+        <h2 class="sch-h">How are you<br>holding up?</h2>
+        <p class="sch-sub">What you bring into this conversation matters as much as what you say.</p>
+
+        <button class="sch-btn sch-ok" onclick="selfCheck('ok')">
+          <div class="sch-btn-icon">💪</div>
+          <div class="sch-btn-body">
+            <div class="sch-btn-title">I'm okay. Ready to try something.</div>
+            <div class="sch-btn-sub">Show me what other parents tried with their kids.</div>
+          </div>
+          <div class="sch-arr">›</div>
+        </button>
+
+        <button class="sch-btn sch-low" onclick="selfCheck('low')">
+          <div class="sch-btn-icon">😮‍💨</div>
+          <div class="sch-btn-body">
+            <div class="sch-btn-title">Honestly, I'm running low right now.</div>
+            <div class="sch-btn-sub">Let me take a moment first.</div>
+          </div>
+          <div class="sch-arr">›</div>
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div style="border-top:1.5px solid #EDEAE4;margin:24px 0"></div>
+
+      <!-- Youth perspective BELOW — they can scroll to see it -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:32px;height:32px;background:#FFF3E0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">👟</div>
+        <div>
+          <div style="font-size:10px;font-weight:800;color:var(--stone);text-transform:uppercase;letter-spacing:.5px">Scroll to read first</div>
+          <div style="font-size:15px;font-weight:800;color:var(--dark)">Here's their world right now</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--stone);line-height:1.6;margin-bottom:16px">This isn't to excuse the behaviour. It's so you go in understanding it — which changes how it lands.</p>
+
+      <div id="pov-cards"></div>
+
+      <div style="height:24px"></div>
+    </div>
+  </div>
+
+  <!-- ══ PARENT SELF-CARE (running low) ══ -->
+  <div class="screen browser" id="sparent-low">
+    <div class="urlbar"><div class="urlin"><span class="urllock">🔒</span><span class="urltxt">hpb.gov.sg/parents</span></div></div>
+    <div class="ws">
+      <div class="brow" onclick="go('spov')"><span class="bark">‹</span><span class="barl">Back</span></div>
+
+      <!-- Hero -->
+      <div class="pl-hero">
+        <div class="pl-icon">🫂</div>
+        <h2 class="pl-h">You're not alone in this.</h2>
+        <p class="pl-sub">A lot of parents feel exactly this way. Not sometimes — a lot of the time. Here's what some of them said.</p>
+      </div>
+
+      <!-- Parent videos — running low -->
+      <div class="slbl" style="margin-top:4px">Parents who've felt the same</div>
+      <div class="vrail" id="pl-vrail">
+        <div class="vcard">
+          <div class="vthumb"><div class="vbg" style="background:linear-gradient(160deg,#C09070,#C09070bb)"><span style="font-size:42px">🧕</span></div><div class="vov"><div class="vplay">▶</div></div><div class="vraw">At home</div><div class="vdur">1:12</div></div>
+          <div class="vname">Norita</div><div class="vrole">Mum of 14yo, F</div>
+          <div class="vcap">"I cried in the bathroom so he wouldn't see. Then I came out and tried again."</div>
+        </div>
+        <div class="vcard">
+          <div class="vthumb"><div class="vbg" style="background:linear-gradient(160deg,#8BADC0,#8BADC0bb)"><span style="font-size:42px">👨</span></div><div class="vov"><div class="vplay">▶</div></div><div class="vraw">At home</div><div class="vdur">0:58</div></div>
+          <div class="vname">David</div><div class="vrole">Dad of 15yo, M</div>
+          <div class="vcap">"I stopped pretending I had it figured out. That actually helped."</div>
+        </div>
+        <div class="vcard">
+          <div class="vthumb"><div class="vbg" style="background:linear-gradient(160deg,#A090C0,#A090C0bb)"><span style="font-size:42px">👩</span></div><div class="vov"><div class="vplay">▶</div></div><div class="vraw">At home</div><div class="vdur">1:04</div></div>
+          <div class="vname">Kartika</div><div class="vrole">Mum of 13yo, F</div>
+          <div class="vcap">"My husband said just leave it. I couldn't. I kept trying because I still care."</div>
+        </div>
+        <div class="vcard">
+          <div class="vthumb"><div class="vbg" style="background:linear-gradient(160deg,#80C0A0,#80C0A0bb)"><span style="font-size:42px">🧕</span></div><div class="vov"><div class="vplay">▶</div></div><div class="vraw">At home</div><div class="vdur">1:18</div></div>
+          <div class="vname">Bhavani</div><div class="vrole">Mum of 13yo, F</div>
+          <div class="vcap">"This is something we have been looking for a long time."</div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="border-top:1.5px solid #EDEAE4;margin:22px 0"></div>
+
+      <!-- Self-care tips stack -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div style="width:32px;height:32px;background:#FFF0F5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🌿</div>
+        <div>
+          <div style="font-size:10px;font-weight:800;color:var(--stone);text-transform:uppercase;letter-spacing:.5px">For you, not your child</div>
+          <div style="font-size:16px;font-weight:800;color:var(--dark)">Something to try right now</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--stone);line-height:1.6;margin-bottom:16px">Small things. Five minutes or less. No one needs to know.</p>
+
+      <div class="stack-wrap" id="care-stack" style="height:240px"></div>
+      <div class="swipe-dots" id="care-dots">
+        <div class="sdot on"></div>
+        <div class="sdot"></div>
+        <div class="sdot"></div>
+      </div>
+
+      <!-- Two CTAs -->
+      <div class="pl-ctas">
+        <div class="pl-cta-label">When you feel ready</div>
+        <button class="pl-cta-main" onclick="buildVideoScreen();go('svideo')">
+          I'm ready — show me what to try with my child →
+        </button>
+        <button class="pl-cta-sec" onclick="go('spov')">
+          Come back to this later
+        </button>
+      </div>
+
+      <div style="height:28px"></div>
+    </div>
+  </div>
+
+  <!-- ══ VIDEO + TIPS ══ -->
+  <div class="screen browser" id="svideo">
+    <div class="urlbar"><div class="urlin"><span class="urllock">🔒</span><span class="urltxt">hpb.gov.sg/parents</span></div></div>
+    <div class="ws">
+      <div class="brow" onclick="go('spov')"><span class="bark">‹</span><span class="barl">Back</span></div>
+      <h2 class="wh1" id="vid-h2" style="font-size:18px"></h2>
+      <p class="wsub" style="margin-bottom:14px">Parents who've been through the same thing. Here's what they actually tried.</p>
+      <div class="slbl">Filmed at home, unscripted</div>
+      <div class="vrail" id="vrail"></div>
+      <div class="empathy"><div class="etxt" id="etxt"></div><div class="esrc" id="esrc"></div></div>
+      <div class="slbl">What they tried — and why it worked</div>
+      <div id="tips"></div>
+      <div class="fbbox" id="fb">
+        <div class="fbq">How did this land for you?</div>
+        <div class="fbbtns">
+          <button class="fbb fby" onclick="fb('y')">👍 Useful</button>
+          <button class="fbb fbm" onclick="fb('s')">🤔 Sort of</button>
+          <button class="fbb fbn" onclick="fb('n')">🤷 Not yet</button>
+        </div>
+      </div>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+
+  <!-- ══ WEEK LATER ══ -->
+  <!-- Change 9: "from a parent" nudge + Change 10: break option -->
+  <div class="screen" id="slater">
+    <div class="dim"></div>
+    <div class="linner">
+      <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">▲▲ WiFi 🔋</span></div>
+      <div class="lclock">
+        <div class="ltime">9:41</div>
+        <div class="ldate">Sunday, 30 March</div>
+        <div><span class="lbadge">One week on</span></div>
+      </div>
+
+      <!-- Change 9: peer voice in the follow-up, not institution -->
+      <div class="lnotif" onclick="go('swaci')">
+        <div class="ni">💬</div>
+        <div class="nb">
+          <div class="nr"><span class="na">Parents like you</span><span class="nw">now</span></div>
+          <div class="nt">Sureena wanted to check in 🌿</div>
+          <div class="nm">How did last week go? Even if nothing changed, that's worth knowing too.</div>
+        </div>
+      </div>
+
+      <!-- Change 10: graceful exit -->
+      <div class="breakopt">
+        <p class="breaktxt">Life got busy? <span class="breaklink" onclick="showBreak()">Pause for a month — no pressure.</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CHECK-IN WHATSAPP ══ -->
+  <div class="screen" id="swaci" style="background:var(--wa-bg)">
+    <div class="wah">
+      <span class="wabk" onclick="go('slater')">‹</span>
+      <div class="waav">🌿</div>
+      <div class="wamt"><div class="watl">Parents like you</div><div class="wasl">Sureena, Bhavani, Calvin +284 others</div></div>
+      <div class="waac"><span>📹</span><span>📞</span></div>
+    </div>
+    <div class="wachat" id="cichat">
+      <div class="wday"><span class="wdp">Sunday, 30 March</span></div>
+      <div style="align-self:flex-start;max-width:86%">
+        <div class="bb i" id="ci-question">
+          <div class="bbf">Sureena</div>
+          Hey — just wanted to check in. How did the week go? Even if nothing shifted, that's completely fine to say. This isn't about getting it right.
+          <div class="bbm">9:38 PM</div>
+        </div>
+      </div>
+      <div id="ciopts">
+        <div class="ciopts">
+          <button class="ciopt" onclick="checkin('w')">✅ Something actually shifted</button>
+          <button class="ciopt" onclick="checkin('t')">🤔 Still figuring it out</button>
+          <button class="ciopt" onclick="checkin('r')">😮‍💨 Honestly it was a rough week</button>
+          <button class="ciopt" onclick="checkin('m')">💬 I need something different</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+// ══════════════════════
+//  DATA
+// ══════════════════════
+
+// Change 2: max 4 challenges per transition
+const CHALLENGES = {
+  1:[
+    {e:'📱', t:'The phone never goes down',          s:'Before school, after school, at dinner. It\'s always there.'},
+    {e:'🌙', t:'Bedtime keeps getting later',         s:'10pm became 11, then midnight. You\'re not sure how it happened.'},
+    {e:'🤐', t:'They\'ve gone quiet on me',           s:'Short answers. Closed door. I don\'t know how to reach them.'},
+    {e:'⏰', t:'After school is a black hole now',    s:'Student care ended. Those hours are unaccounted for.'},
+  ],
+  2:[
+    {e:'🔥', t:'Every conversation turns into a fight', s:'You say one thing. They react to something else entirely.'},
+    {e:'📱', t:'Screen time has gone out of control',   s:'Phone during dinner, homework, past midnight. Every night.'},
+    {e:'🙈', t:'I feel like I\'m always the bad guy',   s:'Every limit I set causes a fight. I\'m tired of being the one who nags.'},
+    {e:'😴', t:'They\'re exhausted but won\'t sleep',   s:'Up past 1am studying or scrolling. Impossible to get up in the morning.'},
+  ],
+  3:[
+    {e:'💬', t:'I want to help but don\'t know how',  s:'Anything I say either lands wrong or gets brushed off completely.'},
+    {e:'🤫', t:'They say they\'re fine — but they\'re not', s:'You can see it. They won\'t let you in.'},
+    {e:'🌙', t:'Sleep has completely broken down',    s:'Studying past 2am, crashing on weekends. The pattern is set.'},
+    {e:'🚪', t:'We barely talk anymore',              s:'The relationship feels distant and you\'re not sure how to close the gap.'},
+  ]
+};
+
+// Change 6: transition-specific social proof text
+const PROOF = {
+  1:'Over 300 parents of Sec 1 students found something useful here this week',
+  2:'Over 280 parents of Sec 2 and 3 students found something useful here this week',
+  3:'Over 240 parents heading into JC and Poly found something useful here',
+};
+
+const CONTENT = {
+  '1-0':{
+    empathy:'A lot of parents hit this same wall. The phone isn\'t just entertainment — it\'s how they stay connected with friends and feel in control of something when their day feels like it controls them. Fighting the phone directly rarely changes anything. What tends to shift things is making something else worth putting it down for.',
+    src:'A pattern that came up consistently across parents in our research sessions',
+    // Change 3: raw/unscripted captions, uncomfortable truths
+    videos:[
+      {n:'Sureena', r:'Mum of 13yo, F', cap:'"I was the one scrolling in bed while telling him to sleep."', bg:'#D4A574', f:'🧕'},
+      {n:'Calvin',  r:'Dad of 14yo, M', cap:'"We moved the charger. Just that. It changed everything."', bg:'#8BADC0', f:'👨'},
+      {n:'Bhavani', r:'Mum of 13yo, F', cap:'"I stopped fighting about it. Here\'s what I did instead."', bg:'#A090C0', f:'👩'},
+      {n:'Han Tien',r:'Mum of 15yo, F', cap:'"He made the rule himself. That\'s the only reason it stuck."', bg:'#80C0A0', f:'👩'},
+    ],
+    tips:[
+      // Change 7: tonight tag on first tip
+      {tonight:true,  h:'Move the charger out of the bedroom — yours first, then ask about theirs.', b:'Tonight, put your own phone charger in the living room. Don\'t say anything yet. When they notice, you\'ll have a different conversation than you\'ve been having.'},
+      {tonight:false, h:'Start with one agreement, not a full rule book.', b:'Ask your child: "Is there one time of day where the phone goes away?" Let them name it. A rule they made is one they\'re far less likely to fight.'},
+      {tonight:false, h:'Don\'t compete with the phone. Give them something worth putting it down for.', b:'A snack, something you watch together, a good question at dinner. Small moments with no lecture attached change the tone more than any restriction does.'},
+    ]
+  },
+  '1-2':{
+    empathy:'When the day ends and the evening is free, there\'s nothing pulling them toward bed — and the phone fills that gap naturally. This isn\'t disobedience. It\'s a habit that\'s hard to rebuild once it shifts, and rules alone rarely hold it.',
+    src:'A pattern seen across Sec 1 youth in our research',
+    videos:[
+      {n:'Norita',    r:'Mum of 13yo, F', cap:'"One small thing changed bedtime without a single argument."', bg:'#C8B880', f:'🧕'},
+      {n:'Ryan',      r:'Dad of 14yo, M', cap:'"I stopped making it a rule. I made it a routine instead."', bg:'#88A8C8', f:'👨'},
+      {n:'Kartika',   r:'Mum of 13yo, F', cap:'"The wind-down routine took two weeks. Then it just happened."', bg:'#C880A4', f:'🧕'},
+      {n:'Augustine', r:'Dad of 14yo, M', cap:'"I gave a 30-min heads-up instead of a command. That was it."', bg:'#88C8B4', f:'👨'},
+    ],
+    tips:[
+      {tonight:true,  h:'Give a 30-minute heads-up — not a command.', b:'Tonight, try: "30 more minutes, then phones go to charge." Not because you\'re enforcing it, just as a heads-up. That one change removes the abrupt feeling that causes most of the friction.'},
+      {tonight:false, h:'A physical cue works better than a rule.', b:'Something beside the bed — a book, a skincare routine, anything — signals wind-down before the phone needs to go. It doesn\'t compete with the phone, it just makes the transition easier.'},
+      {tonight:false, h:'Let the data do the talking.', b:'If your child can see they feel better on days they slept earlier, that reason belongs to them. Track it together for a week. Show, don\'t tell.'},
+    ]
+  },
+  '2-0':{
+    empathy:'When every conversation turns into a fight, most parents start pulling back — and that\'s the natural thing to do. But what keeps the cycle going is coming in with a point to make. Shifting to a question you\'re genuinely curious about changes the dynamic more than any rule does.',
+    src:'A recurring pattern among parents of Sec 2–3 students in our research',
+    videos:[
+      {n:'Han Tien', r:'Mum of 15yo, F', cap:'"I stopped arguing. I started asking. It took a month to feel normal."', bg:'#80C0A0', f:'👩'},
+      {n:'Kartika',  r:'Mum of 14yo, F', cap:'"I gave up being right. That\'s what kept us connected."', bg:'#C09070', f:'🧕'},
+      {n:'Ryan',     r:'Dad of 15yo, M', cap:'"Months of silence at dinner. This is what changed it."', bg:'#88A8C8', f:'👨'},
+      {n:'Calvin',   r:'Dad of 14yo, M', cap:'"I used to come in with a point. Now I come in with a question."', bg:'#8BADC0', f:'👨'},
+    ],
+    tips:[
+      {tonight:true,  h:'Tonight at dinner: ask one question and stop there.', b:'The most common mistake is turning a question into a speech. Ask — then let the silence sit. They\'ll usually fill it. But only if you don\'t.'},
+      {tonight:false, h:'Name what you see, not what you want changed.', b:'"I noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it. The first is a conversation. The second is a rule.'},
+      {tonight:false, h:'Once a week is enough.', b:'One genuinely good conversation a week does more for your relationship than seven tense daily check-ins. Small and consistent beats intense and frequent.'},
+    ]
+  },
+  '2-2':{
+    empathy:'When friends become everything, it\'s not that you\'ve become less important — it\'s that the way you matter has shifted. Parents who stayed connected at this age usually did it by staying curious, not by staying involved. It\'s a meaningful difference.',
+    src:'A pattern across Sec 2–3 families in our research',
+    videos:[
+      {n:'Sureena', r:'Mum of 14yo, F', cap:'"One question unlocked our conversations. I still use it."', bg:'#D4A574', f:'🧕'},
+      {n:'Calvin',  r:'Dad of 15yo, M', cap:'"I stopped being the last to know things. Here\'s how."', bg:'#8BADC0', f:'👨'},
+      {n:'Bhavani', r:'Mum of 14yo, F', cap:'"I made home somewhere she wanted to bring her friends."', bg:'#A090C0', f:'👩'},
+      {n:'Ryan',    r:'Dad of 14yo, M', cap:'"What I stopped doing helped more than anything I started."', bg:'#88A8C8', f:'👨'},
+    ],
+    tips:[
+      {tonight:true,  h:'Tonight: ask about their friends, not them.', b:'"How\'s Jamie doing?" lands very differently from "How are you doing?" They\'ll tell you more about themselves by talking about the people around them. Try it tonight.'},
+      {tonight:false, h:'Make home somewhere they want to bring friends.', b:'When home is where friends are welcome and nobody gets a lecture, it stays in the picture. Let a friend join dinner sometime. That changes the relationship more than most serious conversations.'},
+      {tonight:false, h:'Small signals go further than formal conversations.', b:'A comment about something they mentioned last week. A question about something they said in passing. Paying attention in small ways tells them more than sitting them down for a talk.'},
+    ]
+  }
+};
+
+const DEFAULT = {
+  empathy:'Whatever is going on at home, you\'re not the only parent sitting with it. Most of what families go through in these secondary school years is genuinely hard — and the fact that you\'re here looking for something different means you\'re already ahead of where a lot of parents are.',
+  src:'A common thread across families in our research',
+  videos:[
+    {n:'Sureena', r:'Mum of 13yo, F', cap:'"I was at my limit too. This is what helped."', bg:'#D4A574', f:'🧕'},
+    {n:'Calvin',  r:'Dad of 14yo, M', cap:'"One small thing changed the whole tone at home."', bg:'#8BADC0', f:'👨'},
+    {n:'Bhavani', r:'Mum of 13yo, F', cap:'"I stopped trying to fix it. That\'s when things shifted."', bg:'#A090C0', f:'👩'},
+    {n:'Norita',  r:'Mum of 15yo, F', cap:'"I let go of the script I\'d been using. Here\'s what replaced it."', bg:'#80C0A0', f:'🧕'},
+  ],
+  tips:[
+    {tonight:true,  h:'Tonight: try one thing you haven\'t tried before.', b:'It doesn\'t have to be big. Put your own phone down first. Ask one question and stop there. Move the charger out of the bedroom. Small shifts change the tone before any big conversation happens.'},
+    {tonight:false, h:'Name what you see, not what you want changed.', b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it. The first one is a conversation.'},
+    {tonight:false, h:'Once a week is enough to start.', b:'One genuinely good moment a week does more for your relationship than seven tense daily check-ins. Small and consistent beats frequent and forced.'},
+  ]
+};
+
+// ══════════════════════
+//  TINDER STACK ENGINE
+// ══════════════════════
+function initStack(stackId, dotsId, total){
+  const stack = document.getElementById(stackId);
+  if(!stack) return;
+
+  let current = 0;
+  let isDragging = false;
+  let startX = 0, startY = 0, dx = 0;
+  let activeCard = null;
+  const THRESHOLD = 75;
+
+  // ── layout ──────────────────────────
+  function getCard(idx){
+    return stack.querySelector('[data-idx="'+idx+'"]');
+  }
+
+  function updateLayout(){
+    for(let i=0; i<total; i++){
+      const card = getCard(i);
+      if(!card) continue;
+      // Remove all state classes and inline styles
+      card.classList.remove('top','behind-1','behind-2','fly-left','fly-right','spring');
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      card.style.transition = '';
+      // depth = position from current in the loop
+      const depth = (i - current + total) % total;
+      if(depth === 0){
+        card.classList.add('top');
+        card.style.display = '';
+      } else if(depth === 1){
+        card.classList.add('behind-1');
+        card.style.display = '';
+      } else if(depth === 2){
+        card.classList.add('behind-2');
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    }
+    // dots
+    document.querySelectorAll('#'+dotsId+' .sdot')
+      .forEach((d,i)=>d.classList.toggle('on', i===current));
+  }
+
+  // ── drag ────────────────────────────
+  function onStart(x, y, card){
+    if(isDragging) return;
+    isDragging = true;
+    activeCard = card;
+    startX = x; startY = y; dx = 0;
+    card.style.transition = 'none';
+  }
+
+  function onMove(x, y){
+    if(!isDragging || !activeCard) return;
+    dx = x - startX;
+    const dy = y - startY;
+    if(Math.abs(dy) > Math.abs(dx) * 1.5 && Math.abs(dx) < 15) return;
+    const rot = dx * 0.1;
+    activeCard.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+    activeCard.style.boxShadow = `0 12px 40px rgba(0,0,0,${Math.min(0.3, Math.abs(dx)/150)})`;
+    const hintNext = activeCard.querySelector('.hint-next');
+    const hintBack = activeCard.querySelector('.hint-back');
+    const prog = Math.min(1, Math.abs(dx) / THRESHOLD);
+    if(hintNext) hintNext.style.opacity = dx > 15 ? prog : 0;
+    if(hintBack) hintBack.style.opacity = dx < -15 ? prog : 0;
+  }
+
+  function onEnd(){
+    if(!isDragging || !activeCard) return;
+    isDragging = false;
+    const card = activeCard;
+    activeCard = null;
+
+    // hide hints
+    const hintNext = card.querySelector('.hint-next');
+    const hintBack = card.querySelector('.hint-back');
+    if(hintNext) hintNext.style.opacity = 0;
+    if(hintBack) hintBack.style.opacity = 0;
+
+    if(Math.abs(dx) >= THRESHOLD){
+      // fly off
+      card.style.transition = '';
+      card.classList.add(dx > 0 ? 'fly-right' : 'fly-left');
+      setTimeout(()=>{
+        current = (current + 1) % total;
+        updateLayout();
+      }, 360);
+    } else {
+      // spring back
+      card.style.transition = '';
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      card.classList.add('spring');
+      setTimeout(()=>card.classList.remove('spring'), 400);
+    }
+  }
+
+  // ── single set of listeners on the stack container ──
+  stack.addEventListener('mousedown', e=>{
+    const card = stack.querySelector('.top');
+    if(card && card.contains(e.target) && !e.target.closest('button')){
+      onStart(e.clientX, e.clientY, card);
+      e.preventDefault();
+    }
+  });
+  stack.addEventListener('touchstart', e=>{
+    const card = stack.querySelector('.top');
+    if(card && card.contains(e.target) && !e.target.closest('button')){
+      onStart(e.touches[0].clientX, e.touches[0].clientY, card);
+    }
+  },{passive:true});
+
+  document.addEventListener('mousemove', e=>{ if(isDragging) onMove(e.clientX, e.clientY); });
+  document.addEventListener('mouseup',   ()=>{ if(isDragging) onEnd(); });
+  document.addEventListener('touchmove', e=>{
+    if(isDragging){ onMove(e.touches[0].clientX, e.touches[0].clientY); if(Math.abs(dx)>10) e.preventDefault(); }
+  },{passive:false});
+  document.addEventListener('touchend',  ()=>{ if(isDragging) onEnd(); });
+
+  updateLayout();
+}
+
+// ══════════════════════
+//  NAVIGATION
+// ══════════════════════
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id);
+  el.classList.add('active');
+  const ws=el.querySelector('.ws');
+  if(ws) ws.scrollTop=0;
+  if(id==='swaci') loadCheckin();
+}
+
+// ══════════════════════
+//  NOTIFICATION — simple opacity fade, no transform tricks
+// ══════════════════════
+function tapNotif(){
+  const n=document.getElementById('notif');
+  n.style.opacity='0';
+  n.style.pointerEvents='none';
+  setTimeout(()=>go('swa'),300);
+}
+
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    const n=document.getElementById('notif');
+    n.style.transition='opacity 0.5s ease';
+    n.style.opacity='1';
+    n.style.pointerEvents='auto';
+  },2500);
+});
+
+// ══════════════════════
+//  TRANSITION PICK
+// ══════════════════════
+function pickT(t){
+  document.getElementById('proof-txt').textContent=PROOF[t];
+  const list=document.getElementById('chlist');
+  list.innerHTML='';
+  CHALLENGES[t].forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='chi';
+    d.onclick=()=>pickC(t,i,c.t);
+    d.innerHTML=`<div class="che">${c.e}</div><div class="chb"><div class="cht">${c.t}</div><div class="chs">${c.s}</div></div><div class="char">›</div>`;
+    list.appendChild(d);
+  });
+  go('schall');
+}
+
+// ══════════════════════
+//  YOUTH PERSPECTIVE DATA
+//  Drawn from YPS discovery IDIs, co-creation, and validation transcripts
+// ══════════════════════
+const POV = {
+  '1-0':[
+    {
+      insight:'The phone isn\'t just entertainment for them. After a full day of school — new environment, new social pressures, new expectations — it\'s how they decompress and feel connected to friends. It\'s the one thing in the day that feels fully theirs.',
+      quote:'"I know it\'s a bad habit. But if I can\'t sleep I just get fed up and use my phone. I feel like it makes me tired eventually."',
+      attr:'Youth participant, 13yo, M — Discovery IDI'
+    },
+    {
+      insight:'Many youth know the phone is affecting their sleep. But knowing and stopping are very different things — and at this age, the habit is still new enough that they haven\'t built the tools to manage it themselves.',
+      quote:'"Even if I\'m tired, I\'ll still watch TikTok. I need to see my phone before I fall asleep."',
+      attr:'Youth participant, 14yo, F — Validation testing'
+    },
+  ],
+  '1-2':[
+    {
+      insight:'Secondary school is a lot of performance, all day, in front of peers. Coming home and going quiet isn\'t shutting you out — it\'s often the first moment they\'ve had to just be, without being evaluated.',
+      quote:'"Every time my mom talks to me it\'s \'did you eat\', \'go sleep\', \'stop your phone.\' I just tune it out now."',
+      attr:'Youth participant, 14yo, F — Discovery IDI'
+    },
+    {
+      insight:'The door closing doesn\'t mean the relationship is closed. Most youth still want connection — they just want it on terms that don\'t feel like a check-in or a correction.',
+      quote:'"When I entered Sec 1, everything changed. New school, new friends, new timing. I had to figure everything out myself."',
+      attr:'Youth participant, 15yo, M — Discovery IDI'
+    },
+  ],
+  '2-0':[
+    {
+      insight:'When every conversation about health or habits ends in a fight, youth learn to avoid the topic entirely. They\'re not dismissing you — they\'re anticipating the script and skipping to the end.',
+      quote:'"I trust my friends\' opinions more. They understand what I\'m going through. My parents... they just don\'t get it."',
+      attr:'Youth participant, 15yo, M — Discovery IDI'
+    },
+    {
+      insight:'At this age, being told what to do by a parent in front of the family is publicly uncomfortable in a way it wasn\'t before. The reaction isn\'t about the topic — it\'s about feeling like a child in a moment they\'re trying not to be one.',
+      quote:'"Everyone asks \'what did you get?\' after every test. It\'s so stressful. At home it\'s the same questions."',
+      attr:'Youth participant, 15yo, F — Discovery IDI'
+    },
+  ],
+  '2-2':[
+    {
+      insight:'By Sec 2, peer relationships are doing the work that family used to do. Friends understand the same pressures, speak the same language, and are available in the same digital space. This isn\'t rejection — it\'s development.',
+      quote:'"We go to the library to \'study\' but honestly half the time everyone is on their phone. It\'s just being together."',
+      attr:'Youth participant, 15yo, M — Discovery IDI'
+    },
+    {
+      insight:'Youth who felt like they could talk to a parent without getting a lecture were the ones who did. The access point is less about the topic and more about whether the conversation feels safe to start.',
+      quote:'"She\'s stressed if I don\'t do well. It\'s more of a self-driven stress — but it still builds up."',
+      attr:'Parent of 14yo, F — Discovery IDI'
+    },
+  ],
+  '3-0':[
+    {
+      insight:'At this stage, youth are often holding more than they show. Academic pressure, social expectations, and the beginning of real-world anxiety about the future all converge — and most of it is invisible to parents because youth have learned not to surface it.',
+      quote:'"Sec 3 was the worst year. Homework, tuition, CCA, then study for streaming. There\'s no time for anything else."',
+      attr:'Youth participant, 16yo, M — Discovery IDI'
+    },
+    {
+      insight:'Health is something they will get back to "later" — after exams, after results, after everything settles. That later rarely comes. The habits that don\'t survive this period tend not to come back.',
+      quote:'"Sleep, exercise, eating properly — those are luxuries right now. It\'s about surviving the workload."',
+      attr:'Youth participant, 15yo, F — Discovery IDI'
+    },
+  ],
+};
+
+const POV_DEFAULT = [
+  {
+    insight:'Whatever behaviour you\'re seeing, there\'s usually something underneath it that has nothing to do with you. Secondary school is a long, relentless performance — socially, academically, physically. What looks like avoidance or defiance is often just exhaustion.',
+    quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',
+    attr:'Youth participant, 15yo, F — Discovery IDI'
+  },
+  {
+    insight:'Youth rarely articulate stress directly. Instead it shows up as withdrawal, irritability, habit changes, and yes — more screen time. The phone is often a symptom, not the cause.',
+    quote:'"I know I should sleep earlier. I just... can\'t. I\'ll say one more video, then it\'s 2am."',
+    attr:'Youth participant, 15yo, M — Discovery IDI'
+  },
+];
+
+// ══════════════════════
+//  CHALLENGE PICK — now routes through spov first
+// ══════════════════════
+let currentT = 1;
+let currentI = 0;
+let currentTitle = '';
+
+function pickC(t,i,title){
+  currentT = t;
+  currentI = i;
+  currentTitle = title;
+
+  // Build POV stacked cards (Tinder style)
+  const povKey = `${t}-${i}`;
+  const povData = POV[povKey] || POV_DEFAULT;
+  const container = document.getElementById('pov-cards');
+  container.innerHTML='';
+
+  const stack = document.createElement('div');
+  stack.className='stack-wrap';
+  stack.id='pov-stack';
+
+  povData.slice().reverse().forEach((p, revIdx)=>{
+    const realIdx = povData.length - 1 - revIdx;
+    const card = document.createElement('div');
+    card.className='stack-card';
+    card.dataset.idx=realIdx;
+    card.innerHTML=`
+      <div class="swipe-hint hint-next">Next →</div>
+      <div class="swipe-hint hint-back">← Back</div>
+      <div class="pov-label">👟 What they might be feeling</div>
+      <div class="pov-insight">${p.insight}</div>
+      <div class="pov-quote">${p.quote.replace(/^"|"$/g,'')}</div>`;
+    stack.appendChild(card);
+  });
+
+  // Make top card draggable
+  const topCard = stack.querySelector('[data-idx="0"]');
+  topCard.classList.remove('behind-1','behind-2');
+  topCard.classList.add('top');
+
+  // Dots
+  const dots = document.createElement('div');
+  dots.className='swipe-dots';
+  dots.id='pov-dots';
+  povData.forEach((_,idx)=>{
+    const dot=document.createElement('div');
+    dot.className='sdot'+(idx===0?' on':'');
+    dots.appendChild(dot);
+  });
+
+  container.appendChild(stack);
+  container.appendChild(dots);
+
+  initStack('pov-stack','pov-dots', povData.length);
+
+  go('spov');
+}
+
+function selfCheck(state){
+  if(state==='ok'){
+    buildVideoScreen();
+    go('svideo');
+  } else {
+    // Build self-care stack then go to parent-low screen
+    buildCareStack();
+    go('sparent-low');
+  }
+}
+
+// ══════════════════════
+//  SELF-CARE STACK
+// ══════════════════════
+const CARE_TIPS = [
+  {
+    h:'Put your phone down for the next 10 minutes.',
+    body:'Not because you should. Just because you\'ve been holding a lot and your nervous system needs a break from incoming information. Ten minutes. That\'s all.',
+    time:'10 minutes'
+  },
+  {
+    h:'Text one friend — not about your child.',
+    body:'Something small. A meme. A voice note. A "how are you?". You\'ve probably been pouring into your family without anyone asking how you\'re doing. Let someone in.',
+    time:'2 minutes'
+  },
+  {
+    h:'Get a drink of water and sit down.',
+    body:'Not at your desk. Somewhere you don\'t usually sit. It sounds too small to matter. It isn\'t. Your body carries stress even when your mind thinks it\'s coping.',
+    time:'5 minutes'
+  },
+];
+
+function buildCareStack(){
+  const stack = document.getElementById('care-stack');
+  stack.innerHTML = '';
+
+  CARE_TIPS.slice().reverse().forEach((tip, revIdx)=>{
+    const realIdx = CARE_TIPS.length - 1 - revIdx;
+    const d = document.createElement('div');
+    d.className = 'stack-card';
+    d.dataset.idx = realIdx;
+    d.innerHTML = `
+      <div class="swipe-hint hint-next">Next →</div>
+      <div class="swipe-hint hint-back">← Back</div>
+      <div class="care-num">For you · ${realIdx+1} of ${CARE_TIPS.length}</div>
+      <div class="care-h">${tip.h}</div>
+      <div class="care-body">${tip.body}</div>
+      <div class="care-time">⏱ ${tip.time}</div>`;
+    stack.appendChild(d);
+  });
+
+  // reset dots
+  const dots = document.querySelectorAll('#care-dots .sdot');
+  dots.forEach((d,i)=>d.classList.toggle('on', i===0));
+
+  initStack('care-stack','care-dots', CARE_TIPS.length);
+}
+
+// ══════════════════════
+//  BUILD VIDEO SCREEN
+// ══════════════════════
+function buildVideoScreen(){
+  const t=currentT, i=currentI, title=currentTitle;
+  const key=`${t}-${i}`;
+  const c=CONTENT[key]||DEFAULT;
+  document.getElementById('vid-h2').textContent=title;
+  document.getElementById('etxt').textContent=c.empathy;
+  document.getElementById('esrc').textContent=c.src;
+
+  // videos
+  const rail=document.getElementById('vrail');
+  rail.innerHTML='';
+  c.videos.forEach(v=>{
+    const d=document.createElement('div');
+    d.className='vcard';
+    d.innerHTML=`
+      <div class="vthumb">
+        <div class="vbg" style="background:linear-gradient(160deg,${v.bg},${v.bg}bb)">
+          <span style="font-size:42px">${v.f}</span>
+        </div>
+        <div class="vov"><div class="vplay">▶</div></div>
+        <div class="vraw">At home</div>
+        <div class="vdur">1:02</div>
+      </div>
+      <div class="vname">${v.n}</div>
+      <div class="vrole">${v.r}</div>
+      <div class="vcap">${v.cap}</div>`;
+    rail.appendChild(d);
+  });
+
+  // Tips — Tinder stacked cards
+  const tw=document.getElementById('tips');
+  tw.innerHTML='';
+
+  const tipStack=document.createElement('div');
+  tipStack.className='stack-wrap tip-stack';
+  tipStack.id='tip-stack';
+
+  c.tips.slice().reverse().forEach((tip, revIdx)=>{
+    const realIdx = c.tips.length - 1 - revIdx;
+    const tipKey=`tip-${t}-${i}-${realIdx}`;
+    const labelEsc=tip.h.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    const d=document.createElement('div');
+    d.className='stack-card';
+    d.dataset.idx=realIdx;
+    d.id=tipKey;
+    d.innerHTML=`
+      <div class="swipe-hint hint-next">Next →</div>
+      <div class="swipe-hint hint-back">← Back</div>
+      <div class="tipno">Tip ${realIdx+1} of ${c.tips.length}</div>
+      ${tip.tonight?'<div class="tonight">🌙 Try tonight</div>':''}
+      <div class="tiptxt">
+        <strong>${tip.h}</strong>
+        ${tip.b}
+      </div>
+      <button class="trybtn" onclick="saveTip('${tipKey}','${labelEsc}',document.getElementById('${tipKey}'))">
+        ✋ I want to try this
+      </button>`;
+    tipStack.appendChild(d);
+  });
+
+  const topTip = tipStack.querySelector('[data-idx="0"]');
+  topTip.classList.add('top');
+
+  const tipDots=document.createElement('div');
+  tipDots.className='swipe-dots';
+  tipDots.id='tip-dots';
+  c.tips.forEach((_,idx)=>{
+    const dot=document.createElement('div');
+    dot.className='sdot'+(idx===0?' on':'');
+    tipDots.appendChild(dot);
+  });
+
+  tw.appendChild(tipStack);
+  tw.appendChild(tipDots);
+
+  initStack('tip-stack','tip-dots', c.tips.length);
+
+  document.getElementById('fb').innerHTML=`
+    <div class="fbq">How did this land for you?</div>
+    <div class="fbbtns">
+      <button class="fbb fby" onclick="fb('y')">👍 Useful</button>
+      <button class="fbb fbm" onclick="fb('s')">🤔 Sort of</button>
+      <button class="fbb fbn" onclick="fb('n')">🤷 Not yet</button>
+    </div>`;
+}
+
+// ══════════════════════
+//  SAVE TIP TO STORAGE
+// ══════════════════════
+const ENCOURAGEMENTS = [
+  {title:"You've got this, mama.", msg:"One small step is still a step. The fact that you're trying already puts you ahead."},
+  {title:"You're doing more than you think.", msg:"Most parents never look this hard for a better way. You already have."},
+  {title:"Good luck — you've got it.", msg:"Even if it's messy the first time, that's fine. You showing up is what matters."},
+  {title:"Here's to a better evening.", msg:"Small shifts at home start exactly like this. You've got it."},
+  {title:"One week. You can do this.", msg:"Give it a few days. You might surprise yourself — and them."},
+];
+
+async function saveTip(key, label, cardEl){
+  if(cardEl.classList.contains('saved-card')) return;
+
+  const record={label, savedAt:Date.now(), checkAfterDays:7};
+  try { await window.storage.set('saved-tip', JSON.stringify(record)); }
+  catch(e){ window._savedTip = record; }
+
+  // Pick a random encouragement
+  const enc = ENCOURAGEMENTS[Math.floor(Math.random()*ENCOURAGEMENTS.length)];
+
+  // Replace the card content with warm success state
+  cardEl.classList.add('saved-card');
+  cardEl.innerHTML=`
+    <div class="saved-inner">
+      <div class="saved-tick">🌿</div>
+      <div class="saved-title">${enc.title}</div>
+      <div class="saved-msg">${enc.msg}</div>
+      <div class="saved-sub">We'll check in with you in a few days.</div>
+    </div>`;
+}
+
+// ══════════════════════
+//  FEEDBACK
+// ══════════════════════
+function fbmini(v){
+  const el=document.getElementById('fb-mini');
+  if(!el) return;
+  el.innerHTML=v==='y'
+    ? '<span style="font-size:13px;color:var(--sage);font-weight:700">💙 Glad. Keep reading for two more ideas.</span>'
+    : '<span style="font-size:13px;color:var(--stone);font-weight:700">Got it. The next ones might land better.</span>';
+}
+
+function fb(v){
+  const msgs={
+    y:{ico:'💙',l1:'Glad it landed.',l2:'We\'ll send something new next week. See you for a check-in in 7 days.'},
+    s:{ico:'🌿',l1:'That\'s okay.',l2:'We\'ll try a slightly different angle next week. Sometimes it takes a couple of tries.'},
+    n:{ico:'🤝',l1:'Thanks for being honest.',l2:'We\'ll look for something that fits your situation better. Check back next week.'}
+  };
+  const m=msgs[v];
+  document.getElementById('fb').innerHTML=`
+    <div style="padding:6px 0">
+      <div style="font-size:26px;margin-bottom:9px">${m.ico}</div>
+      <div style="font-size:14px;font-weight:800;color:var(--dark);margin-bottom:5px">${m.l1}</div>
+      <div style="font-size:12.5px;color:var(--stone);line-height:1.5;margin-bottom:15px">${m.l2}</div>
+      <button onclick="go('slater')" style="background:var(--navy);color:white;border:none;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">See your check-in next week →</button>
+    </div>`;
+}
+
+// ══════════════════════
+//  CHECK-IN — loads saved tip, names it in the question
+// ══════════════════════
+async function loadCheckin(){
+  let saved = null;
+  try {
+    const r = await window.storage.get('saved-tip');
+    if(r) saved = JSON.parse(r.value);
+  } catch(e){
+    saved = window._savedTip || null;
+  }
+
+  const q = document.getElementById('ci-question');
+  if(saved && saved.label){
+    // Truncate label for the message
+    const short = saved.label.length > 60
+      ? saved.label.substring(0,57)+'…'
+      : saved.label;
+    q.innerHTML=`<div class="bbf">Sureena</div>
+      Hey — you saved a tip last week: <em>"${short}"</em><br><br>
+      Did it work? Even a small shift counts. And if it didn't, that's fine to say too.
+      <div class="bbm">9:38 PM</div>`;
+  }
+  // else leave the generic message
+}
+
+function checkin(type){
+  // Get tip label for personalised response
+  let tipLabel = null;
+  try { const r = window._savedTip; if(r) tipLabel=r.label; } catch(e){}
+
+  const tipRef = tipLabel
+    ? `trying "${tipLabel.length>50?tipLabel.substring(0,47)+'…':tipLabel}"`
+    : 'trying something new';
+
+  const r={
+    w:{sent:'✅ Something actually shifted',
+       resp:`That's real. Even one small shift from ${tipRef} is worth building on. We'll send something new next week 💙`},
+    t:{sent:'🤔 Still figuring it out',
+       resp:`That's completely fine. These things rarely click in one week. We'll try a different angle — sometimes it just takes a few tries to find what fits your family.`},
+    r:{sent:'😮‍💨 Honestly it was a rough week',
+       resp:`Rough weeks happen. You're still here, which matters more than you think. Nothing to fix today. We'll come back with something lighter next week 🌿`},
+    m:{sent:'💬 I need something different',
+       resp:`Noted. We'll match you with something else next week. Thanks for being honest about what's not working.`},
+  }[type];
+
+  document.getElementById('ciopts').innerHTML='';
+  const chat=document.getElementById('cichat');
+
+  const s=document.createElement('div');
+  s.style.cssText='align-self:flex-end;max-width:82%';
+  s.innerHTML=`<div class="bb o">${r.sent}<div class="bbm">9:41 PM</div></div>`;
+  chat.appendChild(s);
+
+  setTimeout(()=>{
+    const rep=document.createElement('div');
+    rep.style.cssText='align-self:flex-start;max-width:86%;animation:fu .3s ease both';
+    rep.innerHTML=`<div class="bb i"><div class="bbf">Sureena</div>${r.resp}<div class="bbm">9:41 PM</div></div>`;
+    chat.appendChild(rep);
+    chat.scrollTop=chat.scrollHeight;
+  },900);
+}
+
+// Change 10: graceful pause option
+function showBreak(){
+  alert('Taking a break is completely fine.\n\nWe\'ll check back in a month. No guilt, no catching up required.');
+}
+</script>
+
+<div style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;">
+  <button onclick="window.close(); window.location.href='level-up-prototype.html';" style="
+    display:inline-flex;align-items:center;gap:8px;
+    background:#E8524A;color:white;border:none;border-radius:50px;
+    padding:12px 28px;font-family:'Plus Jakarta Sans',sans-serif;
+    font-weight:700;font-size:0.85rem;cursor:pointer;
+    box-shadow:0 4px 16px rgba(232,82,74,0.3);
+  ">Back to box</button>
+</div>
+
+</body>
+</html>

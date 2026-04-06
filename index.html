@@ -55,7 +55,7 @@
   .cards {
     display: flex;
     gap: 32px;
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
   }
 
@@ -107,6 +107,11 @@
     color: #E05252;
   }
 
+  .card:nth-child(3) .card-label {
+    background: #F0EBFF;
+    color: #845EF7;
+  }
+
   .card-body h2 {
     font-size: 22px;
     font-weight: 700;
@@ -132,6 +137,43 @@
 
   .card:nth-child(1) .card-cta { color: #2B7DE9; }
   .card:nth-child(2) .card-cta { color: #E05252; }
+  .card:nth-child(3) .card-cta { color: #845EF7; }
+
+  /* Concept 3 image area - dark RPG purple */
+  .card-img-c3 {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, #0B0C1A 0%, #1A1B35 50%, #845EF7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-img-c3::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(132,94,247,0.3) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .card-img-c3 .quest-icon {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-img-c3 .quest-icon img {
+    width: 180px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(132,94,247,0.4);
+  }
 
   .card:hover .card-cta { gap: 10px; }
 
@@ -338,6 +380,24 @@
       <div class="card-label">Concept 2</div>
       <h2>Level Up Series</h2>
       <p>A physical toolkit for families. Conversation cards, weekly challenges, and a magnetic scoreboard — all in one box.</p>
+      <div class="card-cta">
+        Explore prototype
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  </a>
+
+  <!-- Concept 3: Quest Mode (Wellbits) -->
+  <a class="card" href="concept-03-quest-mode/quest-mode-prototype.html">
+    <div class="card-img-c3">
+      <div class="quest-icon">
+        <img src="concept-03-quest-mode/Icon/Icon.png" alt="Wellbits Characters">
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-label">Concept 3</div>
+      <h2>Wellbits — Quest Mode</h2>
+      <p>An RPG-style wellness adventure. Choose a character, fight unhealthy monsters, and invite your parent as a quest ally.</p>
       <div class="card-cta">
         Explore prototype
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>

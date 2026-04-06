@@ -1015,34 +1015,85 @@
   <div class="screen-label"><div class="num">SCREEN 13</div><div class="title">5-Day Streak — Power-Up</div></div>
 </div>
 
-<!-- S13: GATCHA -->
+<!-- S13a: GATCHA — Enter Code -->
 <div class="screen s13" id="screen17">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p13"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
     <div class="badge badge-g">Day 15 Milestone 🎉</div>
     <div style="height:8px"></div>
-    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--text)">Gatcha Time!</h2>
-    <p style="font-size:11px;color:var(--text-muted);margin-top:4px">Visit any HPB booth</p>
-    <div class="cap-rev"><img src="Mockup/Gacha.jpg" style="width:120px;height:auto;border-radius:var(--r-md);"></div>
-    <div class="panel rev-card">
-      <div class="ct">✨ Rare Card</div>
-      <div class="cn">🧊 Freeze Day</div>
-      <div class="ce">Pause your streak for 1 day. Life happens — this card has your back!</div>
-    </div>
-    <p style="font-size:10px;color:var(--text-muted);margin-bottom:8px">Enter code to activate:</p>
-    <div class="panel code-in" style="padding:12px;">
-      <div class="code-boxes">
-        <div class="cb fl">Q</div><div class="cb fl">M</div><div class="cb fl">7</div><div class="cb fl">X</div><div class="cb">_</div><div class="cb">_</div>
+    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--text)">Gacha Time!</h2>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:4px">You earned a Gacha Token!</p>
+    <div style="margin:16px 0;"><img src="Mockup/Gacha.jpg" style="width:140px;height:auto;border-radius:var(--r-md);filter:drop-shadow(0 8px 24px rgba(255,107,107,.3));animation:float 3s ease-in-out infinite;"></div>
+    <p style="font-size:12px;color:var(--text);font-weight:600;margin-bottom:12px;">Visit any HPB gacha machine and enter your capsule code:</p>
+    <div class="panel" style="padding:16px;width:100%;margin-bottom:12px;">
+      <div class="code-boxes" style="display:flex;gap:8px;justify-content:center;">
+        <div class="cb fl">Q</div><div class="cb fl">M</div><div class="cb fl">7</div><div class="cb fl">X</div><div class="cb fl">9</div><div class="cb fl">K</div>
       </div>
     </div>
-    <button class="btn btn-violet" onclick="nextScreen()">Activate Card →</button>
+    <a href="#" style="font-size:11px;color:var(--violet);text-decoration:underline;margin-bottom:16px;">📍 See list of HPB gacha machines in Singapore</a>
+    <button class="btn btn-violet" onclick="nextScreen()">Enter Code</button>
   </div>
-  <div class="screen-label"><div class="num">SCREEN 14</div><div class="title">Gatcha — Day 15 Blind Box</div></div>
+</div>
+
+<!-- S13b: GATCHA — Reveal Card -->
+<div class="screen" id="screen18" style="background:var(--bg-deep);">
+  <div class="back-btn" onclick="prevScreen()">←</div>
+  <div class="particles" id="p13b"></div>
+  <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
+    <div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">✨ You got a card!</div>
+    <!-- Full card reveal -->
+    <div style="width:240px;background:var(--bg-card);border-radius:var(--r-lg);border:2px solid rgba(255,212,59,.3);overflow:hidden;box-shadow:0 8px 40px rgba(255,212,59,.15);margin-bottom:16px;">
+      <!-- Card header -->
+      <div style="background:linear-gradient(135deg,rgba(255,212,59,.15),rgba(132,94,247,.1));padding:16px;text-align:center;">
+        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;">★ Rare Power-Up Card</div>
+      </div>
+      <!-- Card icon -->
+      <div style="padding:20px;display:flex;justify-content:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(51,154,240,.2),transparent 70%);display:flex;align-items:center;justify-content:center;font-size:48px;animation:float 2.5s ease-in-out infinite;">🧊</div>
+      </div>
+      <!-- Card info -->
+      <div style="padding:0 20px 20px;text-align:center;">
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px;">Freeze Day</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:12px;">Pause your streak for 1 day without losing progress. Life happens — this card has your back!</div>
+        <div style="display:flex;justify-content:center;gap:12px;">
+          <div style="text-align:center;"><div style="font-size:9px;color:var(--text-muted);">Rarity</div><div style="font-size:12px;font-weight:700;color:var(--blue);">★★ Rare</div></div>
+          <div style="text-align:center;"><div style="font-size:9px;color:var(--text-muted);">Uses</div><div style="font-size:12px;font-weight:700;color:var(--mint);">1x</div></div>
+          <div style="text-align:center;"><div style="font-size:9px;color:var(--text-muted);">Type</div><div style="font-size:12px;font-weight:700;color:var(--violet);">Defense</div></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="nextScreen()">Activate Card</button>
+  </div>
+</div>
+
+<!-- S13c: GATCHA — Card Activated -->
+<div class="screen" id="screen19" style="background:var(--bg-deep);">
+  <div class="back-btn" onclick="prevScreen()">←</div>
+  <div class="particles" id="p13c"></div>
+  <div class="content" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px 24px;height:100%;">
+    <div style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(81,207,102,.2),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:16px;animation:glow-pulse 2s ease-in-out infinite;">
+      <div style="font-size:52px;">✅</div>
+    </div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px;">Card Activated!</div>
+    <p style="font-size:12px;color:var(--text-dim);max-width:260px;line-height:1.5;margin-bottom:4px;">🧊 <b>Freeze Day</b> has been added to your inventory.</p>
+    <p style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">Use it anytime from your backpack when you need a break.</p>
+    <div class="panel" style="width:100%;padding:14px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:28px;">🧊</div>
+        <div style="text-align:left;flex:1;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);">Freeze Day</div>
+          <div style="font-size:10px;color:var(--text-dim);">Pause streak for 1 day</div>
+        </div>
+        <div style="font-size:10px;font-weight:700;color:var(--mint);background:rgba(81,207,102,.1);padding:4px 8px;border-radius:var(--r-sm);">READY</div>
+      </div>
+    </div>
+    <button class="btn btn-violet" onclick="nextScreen()">Continue Quest</button>
+  </div>
 </div>
 
 <!-- S14: FINAL BOSS -->
-<div class="screen s14" id="screen18">
+<div class="screen s14" id="screen20">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p14"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -1062,7 +1113,7 @@
 </div>
 
 <!-- S15: VICTORY -->
-<div class="screen s15" id="screen19">
+<div class="screen s15" id="screen21">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p15"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -1092,7 +1143,7 @@
 </div>
 
 <!-- S16: CHAMPION -->
-<div class="screen s16" id="screen20">
+<div class="screen s16" id="screen22">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="glow-orb" style="width:300px;height:300px;background:var(--violet);top:60px;left:-80px;"></div>
   <div class="particles" id="p16"></div>
@@ -1119,7 +1170,7 @@
 <div class="dot-nav" id="dotNav"></div>
 
 <script>
-let cur=0;const tot=21,dn=document.getElementById('dotNav');
+let cur=0;const tot=23,dn=document.getElementById('dotNav');
 for(let i=0;i<tot;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>go(i);dn.appendChild(d);}
 function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));cur=n;document.getElementById('screen'+n).classList.add('active');dn.children[n].classList.add('active');document.getElementById('screenCounter').textContent=(n+1)+' / '+tot;document.getElementById('prevBtn').disabled=n===0;document.getElementById('nextBtn').disabled=n===tot-1;}
 function nextScreen(){if(cur<tot-1)go(cur+1);}
@@ -1249,7 +1300,7 @@ function spawnParticles(id,count=12){
     c.appendChild(p);
   }
 }
-['p0','p2','p3','p5','p8','p9','p10','p10c','p11','p12','p13','p14','p15','p16','p17'].forEach(id=>spawnParticles(id));
+['p0','p2','p3','p5','p8','p9','p10','p10c','p11','p12','p13','p13b','p13c','p14','p15','p16','p17'].forEach(id=>spawnParticles(id));
 </script>
 </body>
 </html>

@@ -882,8 +882,20 @@
   </div>
 </div>
 
-<!-- S10b: PARENT NOTIFICATION — What parent sees -->
-<div class="screen s2" id="screen12">
+<!-- S10b: POV TRANSITION -->
+<div class="screen" id="screen12" style="background:var(--bg-deep);">
+  <div class="content" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px;height:100%;">
+    <div style="font-size:48px;margin-bottom:20px;animation:float 2.5s ease-in-out infinite;">📱</div>
+    <div style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Meanwhile...</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--text);line-height:1.3;">On Sarah's phone</div>
+    <div style="width:40px;height:2px;background:var(--grad-buddy);border-radius:2px;margin:16px 0;"></div>
+    <p style="font-size:12px;color:var(--text-dim);max-width:240px;line-height:1.5;">A notification just arrived...</p>
+    <button class="btn btn-violet" style="margin-top:24px;width:auto;padding:12px 32px;" onclick="nextScreen()">See Notification</button>
+  </div>
+</div>
+
+<!-- S10c: PARENT NOTIFICATION — What parent sees -->
+<div class="screen s2" id="screen13">
   <div class="back-btn-light" onclick="prevScreen()">←</div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 24px 24px;">
     <div style="font-size:10px;font-weight:600;color:#6B7280;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;">📱 Parent's Phone</div>
@@ -912,8 +924,8 @@
   </div>
 </div>
 
-<!-- S10c: BOTH COMPLETED — Shield activates -->
-<div class="screen s10c" id="screen13">
+<!-- S10d: BOTH COMPLETED — Shield activates -->
+<div class="screen s10c" id="screen14">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p10c"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -952,7 +964,7 @@
 </div>
 
 <!-- S11: CO-OP BOSS BATTLE -->
-<div class="screen s11" id="screen14">
+<div class="screen s11" id="screen15">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p11"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -980,7 +992,7 @@
 </div>
 
 <!-- S12: STREAK -->
-<div class="screen s12" id="screen15">
+<div class="screen s12" id="screen16">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p12"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -1004,7 +1016,7 @@
 </div>
 
 <!-- S13: GATCHA -->
-<div class="screen s13" id="screen16">
+<div class="screen s13" id="screen17">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p13"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -1030,7 +1042,7 @@
 </div>
 
 <!-- S14: FINAL BOSS -->
-<div class="screen s14" id="screen17">
+<div class="screen s14" id="screen18">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p14"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -1050,7 +1062,7 @@
 </div>
 
 <!-- S15: VICTORY -->
-<div class="screen s15" id="screen18">
+<div class="screen s15" id="screen19">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="particles" id="p15"></div>
   <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;">
@@ -1080,7 +1092,7 @@
 </div>
 
 <!-- S16: CHAMPION -->
-<div class="screen s16" id="screen19">
+<div class="screen s16" id="screen20">
   <div class="back-btn" onclick="prevScreen()">←</div>
   <div class="glow-orb" style="width:300px;height:300px;background:var(--violet);top:60px;left:-80px;"></div>
   <div class="particles" id="p16"></div>
@@ -1107,7 +1119,7 @@
 <div class="dot-nav" id="dotNav"></div>
 
 <script>
-let cur=0;const tot=20,dn=document.getElementById('dotNav');
+let cur=0;const tot=21,dn=document.getElementById('dotNav');
 for(let i=0;i<tot;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>go(i);dn.appendChild(d);}
 function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));cur=n;document.getElementById('screen'+n).classList.add('active');dn.children[n].classList.add('active');document.getElementById('screenCounter').textContent=(n+1)+' / '+tot;document.getElementById('prevBtn').disabled=n===0;document.getElementById('nextBtn').disabled=n===tot-1;}
 function nextScreen(){if(cur<tot-1)go(cur+1);}
@@ -1218,7 +1230,7 @@ function playSequentialLog(logId){
     setTimeout(()=>{l.classList.add('show');},delay);
   });
 }
-go=function(n){origGo(n);if(n===8)setTimeout(playBattle,300);if(n===11)setTimeout(()=>playSequentialLog('bossFailLog'),300);if(n===14)setTimeout(()=>playSequentialLog('coopBattleLog'),300);};
+go=function(n){origGo(n);if(n===8)setTimeout(playBattle,300);if(n===11)setTimeout(()=>playSequentialLog('bossFailLog'),300);if(n===15)setTimeout(()=>playSequentialLog('coopBattleLog'),300);};
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')nextScreen();if(e.key==='ArrowLeft')prevScreen();});
 let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
 document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(d>50)nextScreen();if(d<-50)prevScreen();});

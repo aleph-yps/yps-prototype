@@ -883,32 +883,32 @@
 </div>
 
 <!-- S10b: PARENT NOTIFICATION — What parent sees -->
-<div class="screen s10b" id="screen12">
-  <div class="back-btn" onclick="prevScreen()">←</div>
-  <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 20px 24px;background:linear-gradient(180deg, #0D0E20, #151633);">
-    <div style="font-size:10px;font-weight:600;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;">📱 Parent's Phone</div>
+<div class="screen s2" id="screen12">
+  <div class="back-btn-light" onclick="prevScreen()">←</div>
+  <div class="content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 24px 24px;">
+    <div style="font-size:10px;font-weight:600;color:#6B7280;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;">📱 Parent's Phone</div>
     <!-- Notification bubble -->
-    <div class="panel" style="width:100%;padding:16px;margin-bottom:16px;border:1px solid rgba(255,107,107,.2);background:rgba(255,107,107,.05);">
+    <div class="p-card" style="width:100%;padding:16px;margin-bottom:16px;border-left:3px solid var(--coral);">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div style="width:36px;height:36px;border-radius:50%;background:var(--grad-fire);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🔔</div>
         <div style="text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text);">Wellbits Alert!</div>
-          <div style="font-size:10px;color:var(--text-dim);">Just now</div>
+          <div style="font-size:13px;font-weight:800;color:#1A1B2E;">Wellbits Alert!</div>
+          <div style="font-size:10px;color:#6B7280;">Just now</div>
         </div>
       </div>
-      <p style="font-size:13px;text-align:left;line-height:1.5;"><b style="color:var(--violet);">Ethan</b> encountered <b style="color:var(--coral);">Sleepy Tom</b> — a boss too strong to fight alone. Complete a co-op challenge together to power up!</p>
+      <p style="font-size:13px;text-align:left;line-height:1.5;color:#374151;"><b style="color:var(--violet);">Ethan</b> encountered <b style="color:var(--coral);">Sleepy Tom</b> — a boss too strong to fight alone. Complete a co-op challenge together to power up!</p>
     </div>
     <!-- Co-op challenge card -->
-    <div class="panel" style="width:100%;padding:16px;border:1px solid rgba(132,94,247,.2);">
+    <div class="p-card" style="width:100%;padding:16px;border-left:3px solid var(--violet);">
       <div style="font-size:10px;font-weight:700;color:var(--violet);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">🎯 Co-Op Challenge</div>
-      <div style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px;">Cook a healthy meal together</div>
-      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">At least 2 veggies. Bonus for trying something new!</div>
-      <div style="margin-top:12px;padding:10px;background:rgba(81,207,102,.06);border:1px solid rgba(81,207,102,.15);border-radius:var(--r-sm);">
-        <div style="font-size:10px;color:var(--mint);font-weight:600;">⏰ Complete within 24 hours</div>
+      <div style="font-size:16px;font-weight:800;color:#1A1B2E;margin-bottom:6px;">Cook a healthy meal together</div>
+      <div style="font-size:11px;color:#6B7280;line-height:1.5;">At least 2 veggies. Bonus for trying something new!</div>
+      <div style="margin-top:12px;padding:10px;background:rgba(81,207,102,.08);border:1px solid rgba(81,207,102,.2);border-radius:var(--r-sm);">
+        <div style="font-size:10px;color:#2B8A3E;font-weight:600;">⏰ Complete within 24 hours</div>
       </div>
     </div>
-    <button class="btn btn-mint" style="margin-top:16px;" onclick="nextScreen()">✅ Challenge Accepted!</button>
-    <p style="font-size:9px;color:var(--text-muted);margin-top:4px;">Both of you need to complete this challenge</p>
+    <button class="btn-parent" style="margin-top:16px;" onclick="nextScreen()">✅ Challenge Accepted!</button>
+    <p style="font-size:9px;color:#999;margin-top:4px;">Both of you need to complete this challenge</p>
   </div>
 </div>
 

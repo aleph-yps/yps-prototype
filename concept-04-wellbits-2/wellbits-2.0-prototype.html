@@ -64,6 +64,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 .btn-mint{background:var(--mint);color:#fff;box-shadow:0 4px 0 var(--mint-dim),0 0 20px var(--mint-glow);}
 .btn-coral{background:var(--coral);color:#fff;box-shadow:0 4px 0 var(--coral-dark),0 0 20px var(--coral-glow);}
 .btn-ghost{background:rgba(255,255,255,.06);color:var(--text-dim);border:1px solid rgba(255,255,255,.08);}
+.btn-bottom-action{width:100% !important;margin:24px 0 56px !important;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .chip{display:inline-block;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
 
 /* === ANIMATIONS === */
@@ -371,7 +372,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
     </div>
 
-    <button class="btn btn-primary" onclick="goTo(2)" style="width:100%;margin-bottom:60px;">Let's Go</button>
+    <button class="btn btn-primary btn-bottom-action" onclick="goTo(2)">Let's Go</button>
   </div>
 </div>
 
@@ -427,7 +428,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:700;display:flex;align-items:center;gap:4px;" id="questBuff"><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.5);flex-shrink:0;"></div> +1 bonus coin on Eat Well challenges</div>
     </div>
-    <button class="btn btn-primary" onclick="goTo(3)" style="width:100%;margin:16px 0 60px;">Select</button>
+    <button class="btn btn-primary btn-bottom-action" onclick="goTo(3)">Select</button>
   </div>
 </div>
 
@@ -465,7 +466,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="font-size:11px;color:var(--text-dim);max-width:260px;line-height:1.5;" id="goalCharName">Complete all 20 days to unlock your <b style="color:var(--gold);">Champion form</b> — fully geared with the armour you earned along the way.</div>
     </div>
-    <button class="btn btn-primary" id="evolveNextBtn" onclick="goTo(4)" style="width:calc(100% - 40px);margin:24px 0 60px;opacity:.3;pointer-events:none;">Start My Quest</button>
+    <button class="btn btn-primary btn-bottom-action" id="evolveNextBtn" onclick="goTo(4)" style="opacity:.3;pointer-events:none;">Start My Quest</button>
   </div>
 </div>
 

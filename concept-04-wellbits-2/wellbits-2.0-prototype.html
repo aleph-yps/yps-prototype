@@ -1512,6 +1512,8 @@ function goTo(n){
   });
   curScreen=n;
   if(n===3)resetEvolve();
+  if(n===8)updateAllScreens(); // rebuild quest map when team ready screen loads
+  if(n===9)updateAllScreens(); // rebuild quest map when quest map loads
   if(n===15)setTimeout(startBossFailAnimation,300);
   if(n===18)setTimeout(startCoopBattle,300);
   if(n===19)setupBossVictory();

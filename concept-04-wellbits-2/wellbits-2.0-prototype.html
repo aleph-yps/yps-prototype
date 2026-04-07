@@ -1716,7 +1716,8 @@ function buildQuestMap(c){
       if(d===15) bossAction='showBoss15()';
       if(d===20) bossAction='showBoss20()';
       const cl=bossClickable?' onclick="'+bossAction+'" style="cursor:pointer;"':'';
-      const bossInner=bi===0?'<img src="Assets/Monsters/SNACK GREMLIN.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none;">':bossEmoji[bi];
+      const bossImgs=['Assets/Monsters/SNACK GREMLIN.png','','Assets/Monsters/Greasy Gary .png','Assets/Monsters/Captain Couch.png'];
+      const bossInner=bossImgs[bi]?'<img src="'+bossImgs[bi]+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none;">':bossEmoji[bi];
       const pulseStyle=bossClickable?' style="font-size:18px;box-shadow:0 0 20px var(--coral-glow),0 0 40px rgba(255,107,107,.15);cursor:pointer;"':' style="font-size:18px;"';
       let tapLabel='tap';
       if(d===15) tapLabel='\ud83c\udfb0 gacha';

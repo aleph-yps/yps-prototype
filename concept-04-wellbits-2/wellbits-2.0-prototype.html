@@ -614,9 +614,6 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="background:var(--bg-card);border:1px solid rgba(132,94,247,.2);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--violet);">🛡️ 1 Ally Shield</div>
     </div>
     <div id="questMapNodes"></div>
-    <div id="debugBossTest" style="padding:12px;background:var(--coral);border-radius:8px;text-align:center;cursor:pointer;margin-top:8px;font-weight:700;" onclick="showBossPreview()">DEBUG: Tap here for Boss 5</div>
-    <div style="padding:12px;background:var(--gold);border-radius:8px;text-align:center;cursor:pointer;margin-top:8px;font-weight:700;color:#1A1B2E;" onclick="showBoss15()">DEBUG: Tap here for Boss 15</div>
-    <div style="padding:12px;background:var(--violet);border-radius:8px;text-align:center;cursor:pointer;margin-top:8px;font-weight:700;" onclick="showBoss20()">DEBUG: Tap here for Boss 20</div>
   </div>
 </div>
 
@@ -910,7 +907,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div class="back-btn" onclick="goTo(9)">←</div>
   <div class="content" style="align-items:center;text-align:center;overflow-y:auto;">
     <div id="bossEncounterSprite" style="margin-bottom:8px;"><img src="Characters/SNACK GREMLIN.png" style="width:110px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));"></div>
-    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--coral);margin-bottom:4px;">Snack Gremlin</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--coral);margin-bottom:4px;" id="bossBattleName1">Snack Gremlin</div>
     <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;" id="bossZoneLabel">Level 5 Boss</div>
 
     <!-- Boss challenge -->

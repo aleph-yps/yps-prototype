@@ -1690,7 +1690,7 @@ function buildQuestMap(c){
       if(d===20) tapLabel='\ud83c\udfc6 collect';
       const tapB=bossClickable?'<span style="font-size:9px;color:#fff;margin-left:6px;background:'+(d===20?'var(--gold)':'var(--coral)')+';padding:2px 8px;border-radius:10px;animation:glow-pulse 1.5s infinite;box-shadow:0 0 12px '+(d===20?'rgba(255,212,59,.4)':'var(--coral-glow)')+';'+(d===20?'color:#1A1B2E;':'')+'">'+tapLabel+'</span>':'';
       if(bossClickable){
-        h+='<div onclick="'+bossAction+'" style="display:flex;align-items:center;gap:14px;width:100%;padding:8px 0;cursor:pointer;"><div class="nc boss" style="font-size:18px;box-shadow:0 0 20px var(--coral-glow),0 0 40px rgba(255,107,107,.15);">'+bossInner+'</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--coral);">Boss \u2014 '+bossNames[bi]+tapB+'</div><div style="color:var(--text-dim);font-size:10px;">'+short+'</div></div></div>';
+        h+='<div onclick="'+bossAction+'" style="display:flex;align-items:center;gap:14px;width:100%;padding:8px 0;cursor:pointer;position:relative;z-index:5;"><div class="nc boss" style="font-size:18px;box-shadow:0 0 20px var(--coral-glow),0 0 40px rgba(255,107,107,.15);pointer-events:none;">'+bossInner+'</div><div style="pointer-events:none;flex:1;"><div style="font-size:14px;font-weight:700;color:var(--coral);">Boss \u2014 '+bossNames[bi]+tapB+'</div><div style="color:var(--text-dim);font-size:10px;">'+short+'</div></div></div>';
       } else {
         h+='<div class="mn"><div class="nc boss lock" style="font-size:18px;">'+bossInner+'</div><div class="ni"><div class="nt" style="color:var(--text-dim);">Boss \u2014 '+bossNames[bi]+'</div><div class="ns" style="color:var(--text-dim);">'+short+'</div></div></div>';
       }

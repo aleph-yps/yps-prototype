@@ -1500,6 +1500,12 @@ function goTo(n){
   } else {
     topNav.style.display='none';
   }
+  // Update champion card with current character
+  const champCard=document.getElementById('champCard0');
+  if(champCard){
+    const c=characters[curChar];
+    champCard.innerHTML='<img src="Characters/'+c.img+'" style="width:44px;height:auto;border-radius:4px;">';
+  }
   // Close notif panel on screen change
   document.getElementById('notifPanel').classList.remove('show');
 }
@@ -1755,7 +1761,8 @@ function showBoss15(){
   if(c.zones&&document.getElementById('bossZoneLabel')) document.getElementById('bossZoneLabel').textContent='Level 15 Boss \u00B7 '+c.zones[2];
   goTo(15);
 }
-function showBoss20(){
+function showBoss20(){// Day 20 goes to boss, then champion (no gacha)
+
   const c=characters[curChar];
   if(c.days&&c.days[19]) document.getElementById('bossChallengeText').textContent=c.days[19].t;
   if(document.getElementById('bossBattleName1')) document.getElementById('bossBattleName1').textContent=c.name;

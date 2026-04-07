@@ -192,7 +192,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
 /* === QUEST MAP === */
 .quest-bg{position:relative;}
-.quest-bg::before{content:'';position:absolute;inset:0;background:url('0329ba5aa6b74e13cc01fda0931abd9b.jpg') center/cover;opacity:.3;z-index:0;pointer-events:none;}
+.quest-bg::before{content:'';position:absolute;inset:0;background:url('../Concept 03 - Quest Mode/Backgrounds/0329ba5aa6b74e13cc01fda0931abd9b.jpg') center/cover;opacity:.3;z-index:0;pointer-events:none;}
 .quest-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,14,26,.7) 0%,rgba(13,14,26,.4) 40%,rgba(13,14,26,.7) 100%);z-index:0;pointer-events:none;}
 .quest-bg .content{position:relative;z-index:1;}
 .quest-bg .back-btn{z-index:2;}
@@ -320,7 +320,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
 <!-- S0: LANDING -->
 <div class="screen s0 active" id="screen0">
-  <img src="Icon.png" class="hero-img" alt="Wellbits">
+  <img src="../Concept 03 - Quest Mode/Icon/Icon.png" class="hero-img" alt="Wellbits">
   <div class="hero-text">Wellbits</div>
   <div class="hero-sub">Team up, take on real-life challenges,<br>collect bits, and level up your Wellbits.</div>
   <button class="btn btn-primary" onclick="goTo(1)" style="margin-top:24px;">Enter</button>
@@ -359,13 +359,13 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
 
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,212,59,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="Gacha.jpg" style="width:44px;height:44px;object-fit:cover;border-radius:10px;"></div>
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,212,59,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="../Concept 03 - Quest Mode/Mockup/Gacha.jpg" style="width:44px;height:44px;object-fit:cover;border-radius:10px;"></div>
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Gacha Rewards</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Hit milestones and earn <b style="color:var(--gold)">Gacha Tokens</b>. Redeem for <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">holographic power-up cards</b>!</div></div>
     </div>
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
 
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:8px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:rgba(132,94,247,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="Figurines.png" style="width:44px;height:44px;object-fit:cover;border-radius:10px;"></div>
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(132,94,247,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="../Concept 03 - Quest Mode/Mockup/Figurines.png" style="width:44px;height:44px;object-fit:cover;border-radius:10px;"></div>
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
     </div>
   </div>
@@ -607,9 +607,9 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
 <!-- S8: QUEST MAP -->
 <div class="screen quest-bg hidden" id="screen9">
-  <div class="back-btn" onclick="goTo(8)" style="z-index:2;">←</div>
+  <div class="back-btn" onclick="goTo(8)">←</div>
 
-  <div class="content" style="padding:92px 16px 24px;position:relative;z-index:1;">
+  <div class="content" style="padding:92px 16px 24px;">
     <div class="mh"><h2>Quest Map</h2></div>
     <!-- Gem inventory bar -->
     <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
@@ -1237,6 +1237,29 @@ const characters = [
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🌿 Eat Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(51,154,240,.1);color:#339AF0;">😴 Sleep Well</span>',
    buff:'⭐ +1 bonus coin on Eat Well challenges',
+   zones:['The Crystal Springs','Dewdrop Valley','The Glow Gardens','The Crystal Caverns'],
+   days:[
+    {d:1,t:'Better skin? Sleep before midnight tonight.',type:'solo'},
+    {d:2,t:'Glow-ups start with water. Drink at least 2L today.',type:'solo'},
+    {d:3,t:'One less sugary drink today — choose water or plain tea.',type:'solo'},
+    {d:4,t:'Add one vegetable to your next meal. Challenge your ally too.',type:'ally'},
+    {d:5,t:'Put phone down 30 min before bed. Blue light is ageing your skin.',type:'boss',boss:'Snack Gremlin',coop:'Both go screen-free before bed'},
+    {d:6,t:'Apply sunscreen before you leave the house.',type:'solo'},
+    {d:7,t:'No skipping meals today. Cook a balanced plate together.',type:'ally'},
+    {d:8,t:'Eat something with protein today for stronger hair.',type:'solo'},
+    {d:9,t:'Change or wash your pillowcase tonight.',type:'solo'},
+    {d:10,t:'Cold splash on your face — tightens pores, wakes you up.',type:'boss',boss:'Sleepy Tom',coop:'Both commit to 7+ hours sleep tonight'},
+    {d:11,t:'The glow up is 70% sleep. Get 7+ hours tonight.',type:'solo'},
+    {d:12,t:'Brush for the full two minutes. Oral health glow check.',type:'solo'},
+    {d:13,t:'Drink a full glass of water right now. Race your ally.',type:'ally'},
+    {d:14,t:'Healthy family meal — 2+ vegetables.',type:'ally'},
+    {d:15,t:'Both eat clean today — no junk.',type:'boss',boss:'Greasy Gary',coop:'Both eat clean today — no junk'},
+    {d:16,t:'Sleep before 11pm tonight.',type:'solo'},
+    {d:17,t:'No sugary drinks all day.',type:'solo'},
+    {d:18,t:'Cook breakfast together.',type:'ally'},
+    {d:19,t:'Sunscreen reminder chain — text 3 friends.',type:'ally'},
+    {d:20,t:'Glow check. Take a selfie and compare to Day 1.',type:'boss',boss:'Captain Couch',coop:'Both share what changed'}
+   ],
    baby:'Characters/Baby versions/baby BLAZE.png',
    teen:'Characters/BLAZE.png',
    stats:{sleep:4,eat:4,move:1,mind:2,skin:2}},
@@ -1267,6 +1290,29 @@ const characters = [
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(255,107,107,.1);color:#FF6B6B;">🏃 Exercise Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🌿 Eat Well</span>',
    buff:'⭐ +1 bonus coin on Exercise Well challenges',
+   zones:['The Training Ground','Iron Valley','The Forge','The Iron Peaks'],
+   days:[
+    {d:1,t:'30 push-ups today — any form. Just show up.',type:'solo'},
+    {d:2,t:'Skip lifts and escalators today. Take the stairs.',type:'solo'},
+    {d:3,t:'Add protein to at least one meal — eggs, chicken, tofu.',type:'solo'},
+    {d:4,t:'30-second plank challenge with your ally. Who holds longer?',type:'ally'},
+    {d:5,t:'25 push-ups total today.',type:'boss',boss:'Snack Gremlin',coop:'Do them together, count for each other'},
+    {d:6,t:'20 wall push-ups. Easy on joints, great for shoulders.',type:'solo'},
+    {d:7,t:'Swap one meal for something clean — less fried, more grilled.',type:'ally'},
+    {d:8,t:'Add 15 minutes of walking to your day.',type:'solo'},
+    {d:9,t:'Finish a full 1.5L water bottle today.',type:'solo'},
+    {d:10,t:'Pick your favourite exercise and go again. Extra reps.',type:'boss',boss:'Sleepy Tom',coop:'Exercise together for 15 min'},
+    {d:11,t:'Active recovery — stretch for 5 minutes.',type:'solo'},
+    {d:12,t:'15 squats + 15 push-ups with your ally.',type:'ally'},
+    {d:13,t:'Take the stairs all day. Every floor counts.',type:'solo'},
+    {d:14,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:15,t:'Take a 20-min walk together.',type:'boss',boss:'Greasy Gary',coop:'Take a 20-min walk together'},
+    {d:16,t:'Healthy protein-rich dinner together.',type:'ally'},
+    {d:17,t:'40 push-ups today. You are stronger now.',type:'solo'},
+    {d:18,t:'Plank challenge round 2 — beat your Day 4 time.',type:'ally'},
+    {d:19,t:'Drink 2L of water.',type:'solo'},
+    {d:20,t:'Two weeks of showing up. Final check.',type:'boss',boss:'Captain Couch',coop:'Both share how your body feels different'}
+   ],
    baby:'Characters/Baby versions/Baby NYX.png',
    teen:'Characters/NYX.png',
    stats:{sleep:1,eat:3,move:5,mind:2,skin:2}},
@@ -1297,6 +1343,29 @@ const characters = [
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🌿 Eat Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(132,94,247,.1);color:#845EF7;">📵 Screen</span>',
    buff:'⭐ +1 bonus coin on Sleep Well challenges',
+   zones:['The Garden Gate','Processed Plains','The Fresh Fields','The Harvest'],
+   days:[
+    {d:1,t:'Swap one sugary drink for water or plain tea.',type:'solo'},
+    {d:2,t:'Eat something real before noon — eggs, toast, fruit.',type:'solo'},
+    {d:3,t:'Skip the fried items today. Swap for steamed or grilled.',type:'solo'},
+    {d:4,t:'Drink water before anything else today. Challenge your ally too.',type:'ally'},
+    {d:5,t:'Pick one junk snack you always grab — skip it today.',type:'boss',boss:'Snack Gremlin',coop:'Cook a healthy snack together'},
+    {d:6,t:'One day without fried food. Soups, salads, grilled.',type:'solo'},
+    {d:7,t:'Snack on a vegetable today — cucumber, carrot sticks, edamame.',type:'solo'},
+    {d:8,t:'Try sleeping before midnight. Ask your ally to hold you accountable.',type:'ally'},
+    {d:9,t:'Count the sugar in your drinks today — check labels.',type:'solo'},
+    {d:10,t:'No eating after 9pm tonight.',type:'boss',boss:'Sleepy Tom',coop:'Both commit to 9pm cutoff'},
+    {d:11,t:'Replace one snack with fruit, nuts, or anything real.',type:'solo'},
+    {d:12,t:'One meal with real nutrients together. Protein, greens, carbs.',type:'ally'},
+    {d:13,t:'Two less teaspoons of sugar today — just two.',type:'solo'},
+    {d:14,t:'Phone down for one hour. Do something else with your ally.',type:'ally'},
+    {d:15,t:'Healthy hawker meal together.',type:'boss',boss:'Greasy Gary',coop:'Healthy hawker meal together'},
+    {d:16,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:17,t:'No screens 30 min before bed.',type:'solo'},
+    {d:18,t:'Grocery shop together — pick 3 healthy items.',type:'ally'},
+    {d:19,t:'Screen-free lunch with your ally.',type:'ally'},
+    {d:20,t:'How do you feel vs Day 1?',type:'boss',boss:'Captain Couch',coop:'Cook a final meal together'}
+   ],
    baby:'Characters/Baby versions/Baby KAI.png',
    teen:'Characters/KAI.png',
    stats:{sleep:3,eat:4,move:1,mind:2,skin:3}},
@@ -1327,6 +1396,29 @@ const characters = [
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(240,101,149,.1);color:#F06595;">💜 Bond Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(255,107,107,.1);color:#FF6B6B;">🏃 Exercise Well</span>',
    buff:'⭐ +1 bonus coin on Bond Well challenges',
+   zones:['The Rally Point','Buddy Basin','The Ally Archipelago','The Summit'],
+   days:[
+    {d:1,t:'10 minutes of movement with your ally — walk, stretch, your pick.',type:'ally'},
+    {d:2,t:'Before coffee, before phone — a glass of water first thing.',type:'solo'},
+    {d:3,t:'Go to bed 30 min earlier tonight.',type:'solo'},
+    {d:4,t:'Eat a real lunch today with your ally. No skipping.',type:'ally'},
+    {d:5,t:'Show up for yourself today.',type:'boss',boss:'Snack Gremlin',coop:'Do one activity together outside'},
+    {d:6,t:'Skip every sugary snack today.',type:'solo'},
+    {d:7,t:'Compliment someone in your group today. Out loud. Mean it.',type:'solo'},
+    {d:8,t:'Cook a meal together. Any meal. 2+ veggies.',type:'ally'},
+    {d:9,t:'Pay attention to how you feel 30 min after eating.',type:'solo'},
+    {d:10,t:'15-minute walk with your ally. No music, just talk.',type:'boss',boss:'Sleepy Tom',coop:'Walk together, no phones'},
+    {d:11,t:'Phone down for one meal today — with someone.',type:'ally'},
+    {d:12,t:'Drink 2 bottles of water today.',type:'solo'},
+    {d:13,t:'Do one thing you have been putting off. Ask your ally for help.',type:'ally'},
+    {d:14,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:15,t:'Exercise together for 15 min.',type:'boss',boss:'Greasy Gary',coop:'Exercise together for 15 min'},
+    {d:16,t:'Walk a different route to school with your ally.',type:'ally'},
+    {d:17,t:'Family dinner — no phones on the table.',type:'ally'},
+    {d:18,t:'10-minute stretch session.',type:'solo'},
+    {d:19,t:'Challenge your ally to a plank hold.',type:'ally'},
+    {d:20,t:'What actually shifted? Write 3 things.',type:'boss',boss:'Captain Couch',coop:'Share your 3 things with each other'}
+   ],
    baby:'Characters/Baby versions/baby BLAZE.png',
    teen:'Characters/BLAZE.png',
    stats:{sleep:2,eat:2,move:4,mind:4,skin:1}},
@@ -1357,6 +1449,29 @@ const characters = [
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(51,154,240,.1);color:#339AF0;">😴 Sleep Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(132,94,247,.1);color:#845EF7;">📵 Screen</span>',
    buff:'⭐ +1 bonus coin on Balanced Screen Use challenges',
+   zones:['The Quiet Shore','Midnight Meadow','The Scroll Swamp','The Dreamscape'],
+   days:[
+    {d:1,t:'Phones down at 10:30pm tonight.',type:'solo'},
+    {d:2,t:'Limit social media tonight.',type:'solo'},
+    {d:3,t:'Better mornings start the night before. Set up your morning tonight.',type:'solo'},
+    {d:4,t:'Leave the phone outside your room tonight. Challenge your ally too.',type:'ally'},
+    {d:5,t:'The morning glow might just be 8 hours of sleep.',type:'boss',boss:'Snack Gremlin',coop:'Both commit to 8hrs tonight'},
+    {d:6,t:'Not just kopi — eat a real breakfast. Eggs, toast, fruit.',type:'solo'},
+    {d:7,t:'The last thing before lights out — no phone.',type:'solo'},
+    {d:8,t:'One screen-free hour today with your ally.',type:'ally'},
+    {d:9,t:'A 15-20 minute power nap boosts alertness. Set a timer.',type:'solo'},
+    {d:10,t:'Step out for 10 minutes. Sunshine, no earphones.',type:'boss',boss:'Sleepy Tom',coop:'Walk together'},
+    {d:11,t:'Drink water when you wake up — before anything else.',type:'solo'},
+    {d:12,t:'Protect the hour before bed. No news, no doom scrolling.',type:'solo'},
+    {d:13,t:'One hour today with no deadlines, no screen. Real rest.',type:'ally'},
+    {d:14,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:15,t:'Cook a healthy dinner together.',type:'boss',boss:'Greasy Gary',coop:'Cook a healthy dinner together'},
+    {d:16,t:'No screens for 30 minutes before bed.',type:'solo'},
+    {d:17,t:'Drink 2L of water today.',type:'solo'},
+    {d:18,t:'Phone-free lunch with your ally.',type:'ally'},
+    {d:19,t:'15-minute walk, no phones.',type:'ally'},
+    {d:20,t:'Two weeks of trying to rest. How do you feel?',type:'boss',boss:'Captain Couch',coop:'Both write 3 things that changed'}
+   ],
    baby:'Characters/Baby versions/Baby LUNA.png',
    teen:'Characters/LUNA.png',
    stats:{sleep:5,eat:1,move:1,mind:3,skin:3}},
@@ -1626,21 +1741,21 @@ function showDayChallenge(day){
   goTo(10);
 }
 
-function showBossPreview(){console.log("showBossPreview called");
+function showBossPreview(){
   const c=characters[curChar];
   if(c.days&&c.days[4]) document.getElementById('bossChallengeText').textContent=c.days[4].t;
   document.getElementById('bossBattleName1').textContent=c.name;
   if(c.zones) document.getElementById('bossZoneLabel').textContent='Level 5 Boss \u00B7 '+c.zones[0];
   goTo(15);
 }
-function showBoss15(){console.log("showBoss15 called");
+function showBoss15(){
   const c=characters[curChar];
   if(c.days&&c.days[14]) document.getElementById('bossChallengeText').textContent=c.days[14].t;
   document.getElementById('bossBattleName1').textContent=c.name;
   if(c.zones) document.getElementById('bossZoneLabel').textContent='Level 15 Boss \u00B7 '+c.zones[2];
   goTo(15);
 }
-function showBoss20(){console.log("showBoss20 called");
+function showBoss20(){
   const c=characters[curChar];
   if(c.days&&c.days[19]) document.getElementById('bossChallengeText').textContent=c.days[19].t;
   document.getElementById('bossBattleName1').textContent=c.name;

@@ -369,7 +369,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
     </div>
 
-    <button class="btn btn-primary" onclick="goTo(2)" style="width:100%;flex-shrink:0;margin-bottom:32px;">Let's Go</button>
+    <div style="padding:0 4px;"><button class="btn btn-primary" onclick="goTo(2)" style="width:100%;flex-shrink:0;margin-bottom:32px;">Let's Go</button></div>
   </div>
 </div>
 
@@ -397,38 +397,33 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="font-size:13px;color:var(--text);line-height:1.6;font-weight:500;" id="questDesc">Journey through the Crystal Caverns. Battle monsters that drain your glow. Earn radiant armour along the way.</div>
     </div>
     <!-- Stats (Concept 3 style) -->
-    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px 12px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px;">
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 6px;background:rgba(255,255,255,.02);border-radius:6px;">
-        <span style="font-size:15px;width:22px;text-align:center;flex-shrink:0;">😴</span>
-        <span style="font-size:10px;color:var(--text-dim);width:44px;font-weight:600;">Sleep</span>
-        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statSleep" style="height:100%;border-radius:4px;background:var(--blue);box-shadow:0 0 6px rgba(51,154,240,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:20px;text-align:right;color:var(--blue);" id="valSleep">2</span>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:10px 14px 8px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <span style="font-size:10px;color:var(--text-dim);width:48px;font-weight:600;">Sleep</span>
+        <div style="flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div id="statSleep" style="height:100%;border-radius:3px;background:var(--blue);box-shadow:0 0 6px rgba(51,154,240,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:11px;font-weight:700;width:16px;text-align:right;color:var(--blue);" id="valSleep">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 6px;background:rgba(255,255,255,.02);border-radius:6px;">
-        <span style="font-size:15px;width:22px;text-align:center;flex-shrink:0;">🥦</span>
-        <span style="font-size:10px;color:var(--text-dim);width:44px;font-weight:600;">Eat</span>
-        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statEat" style="height:100%;border-radius:4px;background:var(--mint);box-shadow:0 0 6px rgba(81,207,102,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:20px;text-align:right;color:var(--mint);" id="valEat">2</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <span style="font-size:10px;color:var(--text-dim);width:48px;font-weight:600;">Eat</span>
+        <div style="flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div id="statEat" style="height:100%;border-radius:3px;background:var(--mint);box-shadow:0 0 6px rgba(81,207,102,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:11px;font-weight:700;width:16px;text-align:right;color:var(--mint);" id="valEat">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 6px;background:rgba(255,255,255,.02);border-radius:6px;">
-        <span style="font-size:15px;width:22px;text-align:center;flex-shrink:0;">🏃</span>
-        <span style="font-size:10px;color:var(--text-dim);width:44px;font-weight:600;">Exercise</span>
-        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statMove" style="height:100%;border-radius:4px;background:var(--coral);box-shadow:0 0 6px rgba(255,107,107,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:20px;text-align:right;color:var(--coral);" id="valMove">2</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <span style="font-size:10px;color:var(--text-dim);width:48px;font-weight:600;">Exercise</span>
+        <div style="flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div id="statMove" style="height:100%;border-radius:3px;background:var(--coral);box-shadow:0 0 6px rgba(255,107,107,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:11px;font-weight:700;width:16px;text-align:right;color:var(--coral);" id="valMove">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 6px;background:rgba(255,255,255,.02);border-radius:6px;">
-        <span style="font-size:15px;width:22px;text-align:center;flex-shrink:0;">💜</span>
-        <span style="font-size:10px;color:var(--text-dim);width:44px;font-weight:600;">Bond</span>
-        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statMind" style="height:100%;border-radius:4px;background:var(--gold);box-shadow:0 0 6px rgba(255,212,59,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:20px;text-align:right;color:var(--gold);" id="valMind">2</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <span style="font-size:10px;color:var(--text-dim);width:48px;font-weight:600;">Bond</span>
+        <div style="flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div id="statMind" style="height:100%;border-radius:3px;background:var(--gold);box-shadow:0 0 6px rgba(255,212,59,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:11px;font-weight:700;width:16px;text-align:right;color:var(--gold);" id="valMind">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 6px;background:rgba(255,255,255,.02);border-radius:6px;">
-        <span style="font-size:15px;width:22px;text-align:center;flex-shrink:0;">📵</span>
-        <span style="font-size:10px;color:var(--text-dim);width:44px;font-weight:600;">Screen</span>
-        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statSkin" style="height:100%;border-radius:4px;background:var(--violet);box-shadow:0 0 6px rgba(132,94,247,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:20px;text-align:right;color:var(--violet);" id="valSkin">2</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+        <span style="font-size:10px;color:var(--text-dim);width:48px;font-weight:600;">Screen</span>
+        <div style="flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div id="statSkin" style="height:100%;border-radius:3px;background:var(--violet);box-shadow:0 0 6px rgba(132,94,247,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:11px;font-weight:700;width:16px;text-align:right;color:var(--violet);" id="valSkin">2</span>
       </div>
-      <div style="font-size:9px;color:var(--gold);margin-top:4px;font-weight:600;padding:0 6px;" id="questBuff">⭐ +1 bonus coin on Eat Well challenges</div>
+      <div style="font-size:9px;color:var(--gold);margin-top:4px;font-weight:600;" id="questBuff">🪙 +1 bonus coin on Eat Well challenges</div>
     </div>
     <button class="btn btn-primary" onclick="goTo(3)" style="margin-top:8px;flex-shrink:0;">Select</button>
   </div>
@@ -1262,7 +1257,7 @@ const characters = [
      {t:'Two weeks down. Glow check. Compare to Day 1.',type:'Boss'},
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🌿 Eat Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(51,154,240,.1);color:#339AF0;">😴 Sleep Well</span>',
-   buff:'⭐ +1 bonus coin on Eat Well challenges',
+   buff:'🪙 +1 bonus coin on Eat Well challenges',
    zones:['The Crystal Springs','Dewdrop Valley','The Glow Gardens','The Crystal Caverns'],
    days:[
     {d:1,t:'Better skin? Sleep before midnight tonight.',type:'solo'},
@@ -1315,7 +1310,7 @@ const characters = [
      {t:'Two weeks of showing up. How does your body feel?',type:'Boss'},
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(255,107,107,.1);color:#FF6B6B;">🏃 Exercise Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🌿 Eat Well</span>',
-   buff:'⭐ +1 bonus coin on Exercise Well challenges',
+   buff:'🪙 +1 bonus coin on Exercise Well challenges',
    zones:['The Training Ground','Iron Valley','The Forge','The Iron Peaks'],
    days:[
     {d:1,t:'30 push-ups today — any form. Just show up.',type:'solo'},
@@ -1368,7 +1363,7 @@ const characters = [
      {t:'How do you feel vs Day 1? Cook a final meal together.',type:'Boss'},
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🌿 Eat Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(132,94,247,.1);color:#845EF7;">📵 Screen</span>',
-   buff:'⭐ +1 bonus coin on Sleep Well challenges',
+   buff:'🪙 +1 bonus coin on Sleep Well challenges',
    zones:['The Garden Gate','Processed Plains','The Fresh Fields','The Harvest'],
    days:[
     {d:1,t:'Swap one sugary drink for water or plain tea.',type:'solo'},
@@ -1421,7 +1416,7 @@ const characters = [
      {t:'What actually shifted? Share 3 things with each other.',type:'Boss'},
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(240,101,149,.1);color:#F06595;">💜 Bond Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(255,107,107,.1);color:#FF6B6B;">🏃 Exercise Well</span>',
-   buff:'⭐ +1 bonus coin on Bond Well challenges',
+   buff:'🪙 +1 bonus coin on Bond Well challenges',
    zones:['The Rally Point','Buddy Basin','The Ally Archipelago','The Summit'],
    days:[
     {d:1,t:'10 minutes of movement with your ally — walk, stretch, your pick.',type:'ally'},
@@ -1474,7 +1469,7 @@ const characters = [
      {t:'Two weeks of trying to rest. How do you feel?',type:'Boss'},
    ],
    wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(51,154,240,.1);color:#339AF0;">😴 Sleep Well</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(132,94,247,.1);color:#845EF7;">📵 Screen</span>',
-   buff:'⭐ +1 bonus coin on Balanced Screen Use challenges',
+   buff:'🪙 +1 bonus coin on Balanced Screen Use challenges',
    zones:['The Quiet Shore','Midnight Meadow','The Scroll Swamp','The Dreamscape'],
    days:[
     {d:1,t:'Phones down at 10:30pm tonight.',type:'solo'},
@@ -1590,10 +1585,8 @@ function evolveChar(){
     // Show evolution path inline
     document.getElementById('evoGoalSection').style.display='block';
     // Make evolve circle smaller to fit path
-    document.getElementById('evolveCircle').style.width='160px';
-    document.getElementById('evolveCircle').style.height='160px';
-    document.getElementById('evolveTeen').style.width='130px';
-    document.getElementById('evolveTeen').style.height='130px';
+    // Circle stays same size (320px from CSS)
+    // Teen stays same size as baby (280px from CSS)
   },400);
   setTimeout(()=>{flash.style.animation='';},900);
 }

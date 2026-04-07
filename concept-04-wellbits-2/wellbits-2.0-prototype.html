@@ -126,9 +126,9 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 .char-arrow.left{left:8px;}
 .char-arrow.right{right:8px;}
 .stat-rows{padding:0 8px;}
-.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
-.stat-row .slbl{font-size:11px;color:var(--text-dim);width:72px;text-align:right;}
-.stat-row .sbar-bg{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.stat-row{display:flex;align-items:center;gap:6px;margin-bottom:2px;}
+.stat-row .slbl{font-size:10px;color:var(--text-dim);width:60px;text-align:right;}
+.stat-row .sbar-bg{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
 .stat-row .sbar{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1);}
 .stat-row .sbar.sleep{background:var(--blue);}
 .stat-row .sbar.eat{background:var(--mint);}
@@ -139,8 +139,8 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
 /* === EVOLVE === */
 .evolve-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:56px 20px 0;}
-.evolve-circle{width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
-.evolve-circle img{width:240px;height:240px;object-fit:contain;transition:all .5s;}
+.evolve-circle{width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
+.evolve-circle img{width:280px;height:280px;object-fit:contain;transition:all .5s;}
 .evolve-flash{position:absolute;inset:0;background:radial-gradient(circle,rgba(132,94,247,.4),transparent 70%);border-radius:50%;opacity:0;pointer-events:none;}
 .evolve-stages{display:flex;gap:12px;align-items:center;margin-top:24px;}
 .evolve-stage{text-align:center;opacity:.4;}
@@ -179,10 +179,10 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 /* === TEAM READY === */
 .team-ready{align-items:center;text-align:center;}
 .tm-row{display:flex;align-items:center;gap:16px;margin:16px 0;}
-.tm-spr{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite;}
+.tm-spr{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite;}
 .tm-spr.hero{background:linear-gradient(135deg,rgba(81,207,102,.15),rgba(81,207,102,.05));border:2px solid rgba(81,207,102,.3);box-shadow:0 0 20px var(--mint-glow);}
 .tm-spr.ally{background:linear-gradient(135deg,rgba(132,94,247,.15),rgba(132,94,247,.05));border:2px solid rgba(132,94,247,.3);box-shadow:0 0 20px var(--violet-glow);animation-delay:.4s;}
-.tm-spr img{width:68px;height:68px;object-fit:contain;}
+.tm-spr img{width:84px;height:84px;object-fit:contain;}
 .tm-lbl{font-weight:700;font-size:13px;}
 .tm-sub{font-size:10px;color:var(--text-dim);}
 .char-img{width:40px;height:auto;object-fit:contain;}
@@ -329,7 +329,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <!-- S1: WELCOME - Scrollable -->
 <div class="screen welcome-bg hidden" id="screen1" style="padding-bottom:0;">
   <div class="back-btn" onclick="goTo(0)">←</div>
-  <div style="flex:1;overflow-y:auto;padding:56px 24px 0;-webkit-overflow-scrolling:touch;">
+  <div style="flex:1;overflow-y:auto;padding:92px 24px 0;-webkit-overflow-scrolling:touch;">
     <div style="text-align:center;margin-bottom:8px;">
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.02em;">How it works</div>
     </div>
@@ -364,12 +364,13 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     </div>
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
 
-    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:8px;">
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;">
       <div style="width:44px;height:44px;border-radius:12px;background:rgba(132,94,247,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="../Concept 03 - Quest Mode/Mockup/Figurines.png" style="width:44px;height:44px;object-fit:cover;border-radius:10px;"></div>
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
     </div>
+
+    <button class="btn btn-primary" onclick="goTo(2)" style="width:100%;flex-shrink:0;margin-bottom:32px;">Let's Go</button>
   </div>
-  <button class="btn btn-primary" onclick="goTo(2)" style="margin:24px 20px 28px;flex-shrink:0;width:calc(100% - 40px);">Let's Go</button>
 </div>
 
 <!-- S2: PICK YOUR QUEST -->
@@ -526,7 +527,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <!-- S6: PARENT VIEW -->
 <div class="screen parent-bg hidden" id="screen6">
   <div class="back-btn" onclick="goTo(5)" style="color:#1A1B2E;">←</div>
-  <div style="flex:1;overflow-y:auto;padding:48px 24px 0;display:flex;flex-direction:column;align-items:center;text-align:center;">
+  <div style="flex:1;overflow-y:auto;padding:92px 24px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;">
     <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="parentCharImg" src="Characters/BLAZE.png" style="width:64px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2));"></div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;"><span style="color:var(--violet);" id="parentYouthName">Ethan</span> wants you<br>on their quest!</div>
     <div style="font-size:12px;color:#6B7280;margin-bottom:20px;">Choose your Ally character</div>
@@ -591,7 +592,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="font-size:20px;color:var(--text-dim);">+</div>
       <div style="text-align:center;">
-        <div class="tm-spr ally"><span style="font-size:28px;">🦉</span></div>
+        <div class="tm-spr ally"><span style="font-size:48px;">🦉</span></div>
         <div class="tm-lbl">Sarah</div>
         <div class="tm-sub">Aegis</div>
       </div>

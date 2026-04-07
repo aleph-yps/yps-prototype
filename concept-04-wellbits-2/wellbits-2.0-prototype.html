@@ -925,14 +925,18 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
     </div>
 
-    <!-- Solo attempt fails (animated via JS) -->
-    <div id="bossFailLog" style="width:100%;min-height:80px;background:rgba(255,255,255,.02);border-radius:12px;padding:10px;margin-bottom:12px;"></div>
+    <!-- Try to fight button (shows first) -->
+    <button class="btn btn-coral" id="tryFightBtn" onclick="tryFightBoss()" style="width:100%;margin-bottom:12px;">⚔️ Try to fight this boss</button>
 
-    <div style="background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.15);border-radius:var(--r-md);padding:12px;width:100%;margin-bottom:12px;">
-      <div style="font-size:12px;font-weight:700;color:var(--coral);margin-bottom:4px;">You need your ally!</div>
-      <div style="font-size:11px;color:var(--text-dim);">Send a notification — your ally will receive the same challenge.</div>
+    <!-- Solo attempt fails (animated via JS, hidden initially) -->
+    <div id="bossFailSection" style="display:none;">
+      <div id="bossFailLog" style="width:100%;min-height:80px;background:rgba(255,255,255,.02);border-radius:12px;padding:10px;margin-bottom:12px;"></div>
+      <div style="background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.15);border-radius:var(--r-md);padding:12px;width:100%;margin-bottom:12px;">
+        <div style="font-size:12px;font-weight:700;color:var(--coral);margin-bottom:4px;">You need your ally!</div>
+        <div style="font-size:11px;color:var(--text-dim);">Send a notification — your ally will receive the same challenge.</div>
+      </div>
+      <button class="btn btn-coral" onclick="goTo(16)">📩 Send notification to ally</button>
     </div>
-    <button class="btn btn-coral" onclick="goTo(16)">📩 Send notification to ally</button>
   </div>
 </div>
 
@@ -1514,7 +1518,7 @@ function goTo(n){
   if(n===3)resetEvolve();
   if(n===8)updateAllScreens(); // rebuild quest map when team ready screen loads
   if(n===9)updateAllScreens(); // rebuild quest map when quest map loads
-  if(n===15)setTimeout(startBossFailAnimation,300);
+  if(n===15){document.getElementById('tryFightBtn').style.display='block';document.getElementById('bossFailSection').style.display='none';}
   if(n===18)setTimeout(startCoopBattle,300);
   if(n===19)setupBossVictory();
   // Show/hide persistent top nav (visible from screen 8 onwards, hide on parent/transition screens)
@@ -1892,6 +1896,11 @@ function closeBattlePopup(){
 }
 
 // === BOSS ENCOUNTER ANIMATION ===
+function tryFightBoss(){
+  document.getElementById('tryFightBtn').style.display='none';
+  document.getElementById('bossFailSection').style.display='block';
+  startBossFailAnimation();
+}
 function startBossFailAnimation(){
   var log=document.getElementById('bossFailLog');
   if(!log)return;

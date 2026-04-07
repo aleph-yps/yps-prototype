@@ -1832,13 +1832,25 @@ function setupBossVictory(){
     b3.style.display='block';
   }
 }
+function setBossImage(name){
+  const bossImgMap={'Snack Gremlin':'Assets/Monsters/SNACK GREMLIN.png','Sleepy Tom':'','Greasy Gary':'Assets/Monsters/Greasy Gary .png','Captain Couch':'Assets/Monsters/Captain Couch.png'};
+  const bossEmojiMap={'Snack Gremlin':'👹','Sleepy Tom':'🦥','Greasy Gary':'🍔','Captain Couch':'🛋'};
+  const sprite=document.getElementById('bossEncounterSprite');
+  if(bossImgMap[name]){
+    sprite.innerHTML='<img src="'+bossImgMap[name]+'" style="width:130px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));">';
+  } else {
+    sprite.innerHTML='<div style="font-size:80px;animation:monsterIdle 2s ease-in-out infinite;">'+bossEmojiMap[name]+'</div>';
+  }
+}
 function showBossPreview(){
   setupParentScreen('boss');
   currentBossLevel=5;
   const c=characters[curChar];
   if(c.days&&c.days[4]) document.getElementById('bossChallengeText').textContent=c.days[4].t;
   document.getElementById('bossBattleName1').textContent='Snack Gremlin';
+  setBossImage('Snack Gremlin');
   if(c.zones) document.getElementById('bossZoneLabel').textContent=c.zones[0];
+  document.getElementById('screen15').style.background='linear-gradient(180deg,#2a0a0a 0%,#1a0505 50%,#0D0E1A 100%)';
   goTo(15);
 }
 function showBoss15(){
@@ -1847,7 +1859,9 @@ function showBoss15(){
   const c=characters[curChar];
   if(c.days&&c.days[14]) document.getElementById('bossChallengeText').textContent=c.days[14].t;
   document.getElementById('bossBattleName1').textContent='Greasy Gary';
+  setBossImage('Greasy Gary');
   if(c.zones) document.getElementById('bossZoneLabel').textContent=c.zones[2];
+  document.getElementById('screen15').style.background='linear-gradient(180deg,#2a0a0a 0%,#1a0505 50%,#0D0E1A 100%)';
   goTo(15);
 }
 function showBoss20(){
@@ -1856,7 +1870,9 @@ function showBoss20(){
   const c=characters[curChar];
   if(c.days&&c.days[19]) document.getElementById('bossChallengeText').textContent=c.days[19].t;
   document.getElementById('bossBattleName1').textContent='Captain Couch';
+  setBossImage('Captain Couch');
   if(c.zones) document.getElementById('bossZoneLabel').textContent=c.zones[3];
+  document.getElementById('screen15').style.background='linear-gradient(180deg,#2a0a0a 0%,#1a0505 50%,#0D0E1A 100%)';
   goTo(15);
 }
 

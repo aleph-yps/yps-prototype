@@ -984,13 +984,13 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div class="content" style="align-items:center;text-align:center;padding-top:56px;color:#1A1B2E;">
     <div style="font-size:11px;color:#6B7280;margin-bottom:8px;">📱 PARENT'S PHONE</div>
     <div style="background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,212,59,.1));border:2px solid rgba(255,107,107,.2);border-radius:var(--r-xl);padding:20px;margin-bottom:16px;width:100%;">
-      <div style="font-size:40px;margin-bottom:8px;">⚔️</div>
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#1A1B2E;margin-bottom:4px;"><span id="parentAlertName">Ethan</span> needs your help!</div>
-      <div style="font-size:12px;color:#6B7280;">Defeat the <b style="color:var(--coral-dark);">Snack Gremlin</b> together</div>
+      <div style="font-size:40px;margin-bottom:8px;" id="parentAlertIcon">⚔️</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#1A1B2E;margin-bottom:4px;" id="parentAlertTitle"><span id="parentAlertName">Ethan</span> needs your help!</div>
+      <div style="font-size:12px;color:#6B7280;" id="parentAlertSub">Defeat the <b style="color:var(--coral-dark);">Snack Gremlin</b> together</div>
     </div>
     <div style="background:#fff;border:2px solid #E5E7EB;border-radius:var(--r-lg);padding:16px;width:100%;text-align:left;">
-      <div style="font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">👨‍👩‍👧 CO-OP CHALLENGE</div>
-      <div style="font-size:15px;font-weight:800;color:#1A1B2E;margin-bottom:8px;">Cook one healthy meal together with 2+ vegetables</div>
+      <div style="font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;" id="parentChallengeLabel">👨‍👩‍👧 Co-op challenge</div>
+      <div style="font-size:15px;font-weight:800;color:#1A1B2E;margin-bottom:8px;" id="parentChallengeText">Cook one healthy meal together with 2+ vegetables</div>
       <div style="display:flex;gap:8px;">
         <span style="font-size:10px;color:var(--gold-dark);font-weight:700;display:inline-flex;align-items:center;gap:3px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 3px rgba(255,212,59,.4);font-size:6px;color:#8B6914;font-weight:bold;">W</span> +25 coins</span>
         <span style="font-size:10px;color:var(--violet-dark);font-weight:700;">⭐ +15 XP</span>
@@ -1755,6 +1755,10 @@ function buildQuestMap(c){
 
 // === ALLY COMPLETE DEMO ===
 let lastChallengeDay=0;
+function showAllyParentScreen(challengeText){
+  setupParentScreen('ally', challengeText);
+  goTo(16); // transition screen
+}
 function allyCompletes(){
   document.getElementById('allyWaitingView').style.display='none';
   document.getElementById('bothCompleteView').style.display='block';
@@ -1774,6 +1778,8 @@ function showRewardsForDay(isAlly){
 
 // === SHOW DAY CHALLENGE ===
 function showDayChallenge(day){
+  if(day===4) parentScreenContext='ally';
+  else parentScreenContext='boss';
   const c=characters[curChar];
   const d=c.days[day-1];
   if(!d)return;
@@ -1826,6 +1832,7 @@ function setupBossVictory(){
   }
 }
 function showBossPreview(){
+  setupParentScreen('boss');
   currentBossLevel=5;
   const c=characters[curChar];
   if(c.days&&c.days[4]) document.getElementById('bossChallengeText').textContent=c.days[4].t;
@@ -1834,6 +1841,7 @@ function showBossPreview(){
   goTo(15);
 }
 function showBoss15(){
+  setupParentScreen('boss');
   currentBossLevel=15;
   const c=characters[curChar];
   if(c.days&&c.days[14]) document.getElementById('bossChallengeText').textContent=c.days[14].t;
@@ -1842,6 +1850,7 @@ function showBoss15(){
   goTo(15);
 }
 function showBoss20(){
+  setupParentScreen('boss');
   currentBossLevel=20;
   const c=characters[curChar];
   if(c.days&&c.days[19]) document.getElementById('bossChallengeText').textContent=c.days[19].t;
@@ -2113,6 +2122,32 @@ document.addEventListener('click',function(e){
 // Init
 updateCharDisplay();
 updateAllScreens();
+
+// Context for parent screen
+var parentScreenContext = 'boss'; // 'ally' or 'boss'
+
+function setupParentScreen(context, challengeText) {
+  parentScreenContext = context;
+  var icon = document.getElementById('parentAlertIcon');
+  var title = document.getElementById('parentAlertTitle');
+  var sub = document.getElementById('parentAlertSub');
+  var label = document.getElementById('parentChallengeLabel');
+  var ctext = document.getElementById('parentChallengeText');
+  
+  if(context === 'ally') {
+    icon.textContent = '🤝';
+    title.innerHTML = '<span id="parentAlertName">Ethan</span> wants to do this with you!';
+    sub.textContent = 'A quick challenge you can do together. Fun and easy!';
+    label.textContent = '🤝 Ally challenge';
+    if(challengeText) ctext.textContent = challengeText;
+  } else {
+    icon.textContent = '⚔️';
+    title.innerHTML = '<span id="parentAlertName">Ethan</span> needs your help!';
+    sub.innerHTML = 'Defeat the <b style="color:#FF6B6B;">Snack Gremlin</b> together';
+    label.textContent = '👨‍👩‍👧 Co-op challenge';
+    if(challengeText) ctext.textContent = challengeText;
+  }
+}
 </script>
 </body>
 </html>

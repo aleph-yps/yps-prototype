@@ -29,6 +29,7 @@ body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:var(--text);overf
 h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 .data,.counter{font-family:'Space Grotesk',monospace;}
 
+.gold-coin{display:inline-block;width:1em;height:1em;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.4);vertical-align:middle;position:relative;}.gold-coin::after{content:'$';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.55em;color:#8B6914;font-weight:900;}
 /* === PHONE === */
 .phone-container{display:flex;justify-content:center;align-items:center;height:100vh;}
 .phone-frame{width:375px;height:812px;background:var(--bg-deep);border-radius:44px;border:3px solid #2a2b3d;overflow:hidden;position:relative;box-shadow:0 0 0 2px #1a1b2e,0 20px 60px rgba(0,0,0,.5);}
@@ -347,7 +348,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
 
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,212,59,.12);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;animation:float 2s ease-in-out infinite;">🪙</div>
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,212,59,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:float 2s ease-in-out infinite;"><div style='width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 8px rgba(255,212,59,.5);display:flex;align-items:center;justify-content:center;font-size:14px;color:#8B6914;font-weight:900;'>$</div></div>
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Complete Daily Bits</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Every day, a new challenge. Earn <b style="color:var(--gold)">Digital Coins</b> and <b style="color:var(--violet)">XP</b>. Your character grows stronger with every bit.</div></div>
     </div>
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>

@@ -1718,16 +1718,16 @@ function buildQuestMap(c){
     }
   }
   el.innerHTML=h;
-  // Attach boss click handlers via delegation (inline onclick can be blocked)
-  el.querySelectorAll('.boss-click').forEach(function(node){
-    node.addEventListener('click',function(){
-      var bd=parseInt(this.getAttribute('data-boss'));
-      if(bd===5) showBossPreview();
-      else if(bd===15) showBoss15();
-      else if(bd===20) showBoss20();
-    });
-  });
 }
+// Single delegated click handler on the quest map container
+document.addEventListener('click',function(e){
+  var target=e.target.closest('.boss-click');
+  if(!target)return;
+  var bd=parseInt(target.getAttribute('data-boss'));
+  if(bd===5) showBossPreview();
+  else if(bd===15) showBoss15();
+  else if(bd===20) showBoss20();
+});
 
 // === ALLY COMPLETE DEMO ===
 let lastChallengeDay=0;

@@ -309,7 +309,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <!-- Persistent top-right nav (profile + notification) -->
 <div id="topNav" style="display:none;position:absolute;top:44px;right:16px;z-index:20;gap:8px;">
   <div onclick="toggleNotif()" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);position:relative;">🔔<div id="topNotifDot" style="position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--coral);border:2px solid var(--bg-deep);"></div></div>
-  <div onclick="goTo(13)" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);overflow:hidden;"><img id="topNavAvatar" src="Characters/BLAZE.png" style="width:28px;height:28px;object-fit:contain;"></div>
+  <div onclick="goTo(13)" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);overflow:hidden;"><img id="topNavAvatar" src="Assets/Characters/AURA.png" style="width:28px;height:28px;object-fit:contain;"></div>
 </div>
 <!-- Notification panel (shared) -->
 <div class="notif-panel" id="notifPanel" style="z-index:25;">
@@ -323,7 +323,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
 <!-- S0: LANDING -->
 <div class="screen s0 active" id="screen0">
-  <img src="Icon.png" class="hero-img" alt="Wellbits">
+  <img src="Assets/Icon/Icon.png" class="hero-img" alt="Wellbits">
   <div class="hero-text">Wellbits</div>
   <div class="hero-sub">Team up, take on real-life challenges,<br>collect bits, and level up your Wellbits.</div>
   <button class="btn btn-primary" onclick="goTo(1)" style="margin-top:24px;">Enter</button>
@@ -356,7 +356,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
 
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,107,107,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="Characters/SNACK GREMLIN.png" style="width:36px;height:auto;"></div>
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,107,107,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="Assets/Monsters/SNACK GREMLIN.png" style="width:36px;height:auto;"></div>
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Fight Bosses Together</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Battle unhealthy monsters. At boss levels, you and your ally complete a <b style="color:var(--coral)">co-op challenge</b> together!</div></div>
     </div>
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
@@ -389,7 +389,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div class="char-arrow left" onclick="prevChar()">‹</div>
       <div class="char-card" id="charCard">
         <div class="char-img-wrap" id="charImgWrap">
-          <img id="charImg" src="Characters/Baby versions/baby BLAZE.png">
+          <img id="charImg" src="Assets/Baby_Versions/Baby AURA.png">
         </div>
         <div class="char-nm" id="charName">Aura</div>
         <div class="char-tp" id="charType">The Radiant One</div>
@@ -440,8 +440,8 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px 0;min-height:0;">
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text-dim);margin-bottom:12px;">Your character</div>
     <div class="evolve-circle" id="evolveCircle" onclick="evolveChar()">
-      <img id="evolveBaby" src="Characters/Baby versions/baby BLAZE.png">
-      <img id="evolveTeen" src="Characters/BLAZE.png" style="display:none;">
+      <img id="evolveBaby" src="Assets/Baby_Versions/Baby AURA.png">
+      <img id="evolveTeen" src="Assets/Characters/AURA.png" style="display:none;">
       <div class="evolve-flash" id="evolveFlash"></div>
     </div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-top:10px;" id="evolveNameLbl">Glow Up</div>
@@ -501,7 +501,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div class="back-btn" onclick="goTo(4)">←</div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px 0;">
     <div style="width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
-      <img id="inviteCharImg" src="Characters/BLAZE.png" style="width:130px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">
+      <img id="inviteCharImg" src="Assets/Characters/AURA.png" style="width:130px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">
     </div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;line-height:1.2;margin-bottom:8px;">Now invite your<br><span style="background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Quest Ally</span></div>
     <div style="font-size:12px;color:var(--text-dim);margin-bottom:24px;line-height:1.5;" id="inviteLinkSubtitle">Send this link to a parent — they'll help<br>you fight bosses!</div>
@@ -526,7 +526,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="screen parent-bg hidden" id="screen6">
   <div class="back-btn" onclick="goTo(5)" style="color:#1A1B2E;">←</div>
   <div style="flex:1;overflow-y:auto;padding:92px 24px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="parentCharImg" src="Characters/BLAZE.png" style="width:64px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2));"></div>
+    <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="parentCharImg" src="Assets/Characters/AURA.png" style="width:64px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2));"></div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;"><span style="color:var(--violet);" id="parentYouthName">Ethan</span> wants you<br>on their quest!</div>
     <div style="font-size:12px;color:#6B7280;margin-bottom:20px;">Choose your Ally character</div>
 
@@ -553,7 +553,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="screen parent-bg hidden" id="screen7">
   <div class="back-btn" onclick="goTo(4)" style="color:#1A1B2E;">←</div>
   <div style="flex:1;overflow-y:auto;padding:48px 24px 0;display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="friendCharImg" src="Characters/BLAZE.png" style="width:100px;height:auto;filter:drop-shadow(0 8px 20px rgba(0,0,0,.15));"></div>
+    <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="friendCharImg" src="Assets/Characters/AURA.png" style="width:100px;height:auto;filter:drop-shadow(0 8px 20px rgba(0,0,0,.15));"></div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;"><span style="color:var(--violet);">Ethan</span> wants you<br>on their quest!</div>
     <div style="font-size:12px;color:#6B7280;margin-bottom:20px;">Choose your Ally character</div>
 
@@ -584,7 +584,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="font-size:12px;color:var(--text-dim);margin-bottom:24px;">Your quest begins now</div>
     <div class="tm-row" style="justify-content:center;">
       <div style="text-align:center;">
-        <div class="tm-spr hero"><img id="teamHeroImg" src="Characters/BLAZE.png" class="char-img-lg"></div>
+        <div class="tm-spr hero"><img id="teamHeroImg" src="Assets/Characters/AURA.png" class="char-img-lg"></div>
         <div class="tm-lbl" id="teamHeroName">Glow Up</div>
         <div class="tm-sub">You</div>
       </div>
@@ -626,7 +626,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div class="chip" id="dailyChip" style="background:rgba(81,207,102,.15);color:var(--mint);">Day 3 · Solo</div>
     </div>
     <div style="margin:8px 0 12px;position:relative;" id="dailyAvatarWrap">
-      <img id="dailyCharImg" src="Characters/BLAZE.png" style="width:140px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">
+      <img id="dailyCharImg" src="Assets/Characters/AURA.png" style="width:140px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">
       <!-- Ally avatar (shown for ally challenges) -->
       <div id="dailyAllyAvatar" style="display:none;position:absolute;bottom:0;right:calc(50% - 100px);width:50px;height:50px;border-radius:50%;background:rgba(132,94,247,.15);border:2px solid var(--violet);display:none;align-items:center;justify-content:center;font-size:24px;">🦉</div>
     </div>
@@ -646,14 +646,14 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px;">
       <div style="text-align:center;">
         <div id="battleHeroSprite" style="width:110px;height:110px;border-radius:20px;background:rgba(132,94,247,.1);border:2px solid rgba(132,94,247,.25);display:flex;align-items:center;justify-content:center;">
-          <img id="battleHeroImg" src="Characters/BLAZE.png" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+          <img id="battleHeroImg" src="Assets/Characters/AURA.png" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
         </div>
         <div style="font-size:11px;font-weight:700;margin-top:6px;" id="battleHeroName">Aura</div>
       </div>
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VS</div>
       <div style="text-align:center;">
         <div id="battleMonSprite" style="width:110px;height:110px;border-radius:20px;background:rgba(255,107,107,.1);border:2px solid rgba(255,107,107,.25);display:flex;align-items:center;justify-content:center;">
-          <img src="Characters/SNACK GREMLIN.png" style="width:80px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+          <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:80px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
         </div>
         <div style="font-size:11px;font-weight:700;color:var(--coral);margin-top:6px;">Snack Gremlin</div>
       </div>
@@ -676,7 +676,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="margin-bottom:4px;">
         <div class="chip" style="background:rgba(81,207,102,.15);color:var(--mint);">Day 1 · Completed ✓</div>
       </div>
-      <div style="margin:12px 0;"><img id="previewCharImg" src="Characters/BLAZE.png" style="width:120px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));"></div>
+      <div style="margin:12px 0;"><img id="previewCharImg" src="Assets/Characters/AURA.png" style="width:120px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));"></div>
       <div class="ch-card" style="text-align:left;width:100%;border:1px solid rgba(81,207,102,.2);background:rgba(81,207,102,.04);">
         <div class="ch-type" style="color:var(--mint);">✅ Completed</div>
         <div class="ch-txt" id="previewChallengeText" style="font-size:16px;margin-bottom:12px;">Better skin? Sleep before midnight.</div>
@@ -694,7 +694,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0;">
         <div style="text-align:center;">
-          <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;"><img id="allyPreviewHero" src="Characters/BLAZE.png" style="width:60px;height:auto;"></div>
+          <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;"><img id="allyPreviewHero" src="Assets/Characters/AURA.png" style="width:60px;height:auto;"></div>
           <div style="font-size:10px;font-weight:700;margin-top:4px;">You</div>
         </div>
         <div style="font-size:14px;color:var(--text-dim);">+</div>
@@ -736,7 +736,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div id="allyWaitingView" style="display:none;">
       <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;">
         <div style="text-align:center;">
-          <div style="width:60px;height:60px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;"><img id="allyCompleteHero" src="Characters/BLAZE.png" style="width:44px;height:auto;"></div>
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;"><img id="allyCompleteHero" src="Assets/Characters/AURA.png" style="width:44px;height:auto;"></div>
           <div style="font-size:9px;color:var(--mint);margin-top:4px;">✓ Done</div>
         </div>
         <div style="font-size:12px;color:var(--text-dim);">+</div>
@@ -759,7 +759,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div class="vic-title">Both completed!</div>
       <div style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">You and Sarah crushed it together!</div>
       <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;">
-        <div style="width:50px;height:50px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;"><img id="bothHeroImg" src="Characters/BLAZE.png" style="width:36px;height:auto;"></div>
+        <div style="width:50px;height:50px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;"><img id="bothHeroImg" src="Assets/Characters/AURA.png" style="width:36px;height:auto;"></div>
         <div style="font-size:14px;color:var(--mint);">✓</div>
         <div style="width:50px;height:50px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;font-size:22px;">🦉</div>
       </div>
@@ -809,7 +809,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <!-- Profile header -->
     <div style="text-align:center;margin-bottom:16px;">
       <div style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;">
-        <img id="profileCharImg" src="Characters/BLAZE.png" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+        <img id="profileCharImg" src="Assets/Characters/AURA.png" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
       </div>
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;" id="profileCharName">Aura</div>
       <div style="font-size:10px;color:var(--text-dim);">★ Level 3 · 3-day streak</div>
@@ -875,7 +875,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
     <div style="font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:8px;">Leaderboard</div>
     <div class="lb-row"><div class="lb-rank gold">1</div><div class="lb-av">🏆</div><div class="lb-info"><div class="lb-name">Wei Jie</div><div class="lb-stat">Lvl 5 · 850 pts</div></div><div class="lb-pts">850</div></div>
-    <div class="lb-row me"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbMyImg" src="Characters/BLAZE.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat">Lvl 3 · 620 pts</div></div><div class="lb-pts">620</div></div>
+    <div class="lb-row me"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbMyImg" src="Assets/Characters/AURA.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat">Lvl 3 · 620 pts</div></div><div class="lb-pts">620</div></div>
     <div class="lb-row"><div class="lb-rank bronze">3</div><div class="lb-av">🎮</div><div class="lb-info"><div class="lb-name">Priya</div><div class="lb-stat">Lvl 3 · 580 pts</div></div><div class="lb-pts">580</div></div>
     <button class="btn btn-ghost" onclick="goTo(14)" style="margin-top:8px;">View full leaderboard</button>
     <button class="btn btn-primary" onclick="goTo(9)">Back to Quest Map</button>
@@ -895,7 +895,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div class="lb-tab">All Players</div>
     </div>
     <div class="lb-row"><div class="lb-rank gold">1</div><div class="lb-av">🏆</div><div class="lb-info"><div class="lb-name">Wei Jie</div><div class="lb-stat">Lvl 5 · 7-day streak</div></div><div class="lb-pts">850</div></div>
-    <div class="lb-row me"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbMyImg2" src="Characters/BLAZE.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat">Lvl 3 · 3-day streak</div></div><div class="lb-pts">620</div></div>
+    <div class="lb-row me"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbMyImg2" src="Assets/Characters/AURA.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat">Lvl 3 · 3-day streak</div></div><div class="lb-pts">620</div></div>
     <div class="lb-row"><div class="lb-rank bronze">3</div><div class="lb-av">🎮</div><div class="lb-info"><div class="lb-name">Priya</div><div class="lb-stat">Lvl 3 · 2-day streak</div></div><div class="lb-pts">580</div></div>
     <div class="lb-row"><div class="lb-rank">4</div><div class="lb-av">🎯</div><div class="lb-info"><div class="lb-name">Amir</div><div class="lb-stat">Lvl 2 · 1-day streak</div></div><div class="lb-pts">410</div></div>
     <div class="lb-row"><div class="lb-rank">5</div><div class="lb-av">🌟</div><div class="lb-info"><div class="lb-name">Mei Lin</div><div class="lb-stat">Lvl 2 · 3-day streak</div></div><div class="lb-pts">395</div></div>
@@ -909,7 +909,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div class="content" style="align-items:center;text-align:center;justify-content:center;overflow-y:auto;">
     <!-- Boss sprite -->
     <div id="bossEncounterSprite" style="margin-bottom:12px;">
-      <img src="Characters/SNACK GREMLIN.png" style="width:130px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));">
+      <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:130px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));">
     </div>
 
     <!-- Boss name & zone -->
@@ -944,14 +944,14 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
       <div style="text-align:center;">
         <div style="width:90px;height:90px;border-radius:50%;background:rgba(132,94,247,.12);border:2px solid rgba(132,94,247,.25);display:flex;align-items:center;justify-content:center;">
-          <img id="bossPopupHeroImg" src="Characters/BLAZE.png" style="width:64px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:float 2s ease-in-out infinite;">
+          <img id="bossPopupHeroImg" src="Assets/Characters/AURA.png" style="width:64px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:float 2s ease-in-out infinite;">
         </div>
         <div id="bossPopupHeroName" style="font-size:11px;font-weight:700;color:var(--violet);margin-top:6px;">Aura</div>
       </div>
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VS</div>
       <div style="text-align:center;">
         <div id="bossPopupMonsterSprite" style="width:90px;height:90px;border-radius:50%;background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.25);display:flex;align-items:center;justify-content:center;">
-          <img src="Characters/SNACK GREMLIN.png" style="width:64px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:monsterIdle 2.5s ease-in-out infinite;">
+          <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:64px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:monsterIdle 2.5s ease-in-out infinite;">
         </div>
         <div style="font-size:11px;font-weight:700;color:var(--coral);margin-top:6px;">Snack Gremlin</div>
       </div>
@@ -1008,7 +1008,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;">
       <div style="text-align:center;">
         <div id="coopHeroSprite" style="width:100px;height:100px;border-radius:16px;background:rgba(132,94,247,.1);border:2px solid rgba(132,94,247,.25);display:flex;align-items:center;justify-content:center;">
-          <img id="coopHeroImg" src="Characters/BLAZE.png" style="width:70px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+          <img id="coopHeroImg" src="Assets/Characters/AURA.png" style="width:70px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
         </div>
         <div style="font-size:10px;font-weight:700;margin-top:4px;" id="coopHeroName">Aura</div>
         <div style="font-size:8px;color:var(--violet);">+ 🦉 Aegis</div>
@@ -1016,7 +1016,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VS</div>
       <div style="text-align:center;">
         <div id="coopMonSprite" style="width:100px;height:100px;border-radius:16px;background:rgba(255,107,107,.1);border:2px solid rgba(255,107,107,.25);display:flex;align-items:center;justify-content:center;">
-          <img src="Characters/SNACK GREMLIN.png" style="width:70px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+          <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:70px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
         </div>
         <div style="font-size:10px;font-weight:700;color:var(--coral);margin-top:4px;">Snack Gremlin</div>
       </div>
@@ -1091,7 +1091,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div class="back-btn" onclick="goTo(9)">←</div>
   <div class="content">
     <div style="text-align:center;margin-bottom:16px;">
-      <div style="margin-bottom:8px;"><img id="bpCharImg" src="Characters/BLAZE.png" style="width:60px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));"></div>
+      <div style="margin-bottom:8px;"><img id="bpCharImg" src="Assets/Characters/AURA.png" style="width:60px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));"></div>
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;" id="bpCharName">Glow Up</div>
       <div style="font-size:10px;color:var(--text-dim);">★ LEVEL 3 — THE FOGGY VILLAGE</div>
       <div style="display:flex;gap:4px;justify-content:center;margin-top:8px;">
@@ -1135,7 +1135,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div class="chip" style="background:rgba(255,212,59,.15);color:var(--gold);margin-bottom:12px;">✨ CARD REVEALED!</div>
     <div class="holo-card-big">
       <div style="font-size:8px;font-weight:800;color:var(--gold);letter-spacing:.08em;margin-bottom:8px;">Holographic power-up</div>
-      <img id="gachaCardImg" src="Characters/BLAZE.png" style="width:80px;height:auto;">
+      <img id="gachaCardImg" src="Assets/Characters/AURA.png" style="width:80px;height:auto;">
       <div class="hc-name">Stat Boost Card</div>
       <div class="hc-badge">+3 MOVE FOR 24 HOURS</div>
     </div>
@@ -1172,18 +1172,18 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <!-- Evolution: Baby → Teen → Champion -->
     <div style="display:flex;align-items:flex-end;gap:8px;justify-content:center;margin-bottom:16px;">
       <div style="text-align:center;opacity:.4;">
-        <div style="width:50px;height:50px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="finalBabyImg" src="Characters/Baby versions/baby BLAZE.png" style="width:36px;height:auto;"></div>
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="finalBabyImg" src="Assets/Baby_Versions/Baby AURA.png" style="width:36px;height:auto;"></div>
         <div style="font-size:7px;color:var(--text-muted);">Baby</div>
       </div>
       <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;">→</div>
       <div style="text-align:center;opacity:.5;">
-        <div style="width:60px;height:60px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="finalTeenImg" src="Characters/BLAZE.png" style="width:44px;height:auto;"></div>
+        <div style="width:60px;height:60px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="finalTeenImg" src="Assets/Characters/AURA.png" style="width:44px;height:auto;"></div>
         <div style="font-size:7px;color:var(--text-muted);">Teen</div>
       </div>
       <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;">→</div>
       <div style="text-align:center;">
         <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,212,59,.1);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;box-shadow:0 0 20px rgba(255,212,59,.3);">
-          <img id="finalChampImg" src="Characters/BLAZE.png" style="width:60px;height:auto;filter:drop-shadow(0 4px 12px rgba(255,212,59,.4));">
+          <img id="finalChampImg" src="Assets/Characters/AURA.png" style="width:60px;height:auto;filter:drop-shadow(0 4px 12px rgba(255,212,59,.4));">
         </div>
         <div style="font-size:7px;color:var(--gold);font-weight:700;">👑 Champion</div>
       </div>
@@ -1201,7 +1201,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <!-- Master holographic card -->
     <div class="holo-card-big" style="width:180px;height:240px;margin-bottom:10px;">
       <div style="font-size:8px;font-weight:800;color:var(--gold);letter-spacing:.08em;margin-bottom:4px;">Master holographic card</div>
-      <img id="finalCardImg" src="Characters/BLAZE.png" style="width:70px;height:auto;">
+      <img id="finalCardImg" src="Assets/Characters/AURA.png" style="width:70px;height:auto;">
       <div class="hc-name" id="finalCardName">Aura</div>
       <div class="hc-badge">Quest champion · Level 20</div>
       <div style="font-size:8px;color:var(--text-dim);margin-top:4px;">⛑ 🗡️ 🛡️ 👟 🧤 💎</div>
@@ -1229,7 +1229,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">Collect all 5 champion cards</div>
     <div id="fiveCardsGrid" style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;">
       <div class="champ-card-mini" id="cc0" style="width:56px;text-align:center;">
-        <div style="width:56px;height:56px;border-radius:12px;background:rgba(240,101,149,.15);border:2px solid var(--pink);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 12px rgba(240,101,149,.3);"><img src="Characters/BLAZE.png" id="cc0img" style="width:44px;height:auto;"></div>
+        <div style="width:56px;height:56px;border-radius:12px;background:rgba(240,101,149,.15);border:2px solid var(--pink);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 12px rgba(240,101,149,.3);"><img src="Assets/Characters/AURA.png" id="cc0img" style="width:44px;height:auto;"></div>
         <div style="font-size:7px;font-weight:700;color:var(--pink);margin-top:3px;" id="cc0name">Aura</div>
       </div>
       <div class="champ-card-mini" style="width:56px;text-align:center;opacity:.35;">
@@ -1317,8 +1317,8 @@ const characters = [
     {d:19,t:'Sunscreen reminder chain — text 3 friends.',type:'ally'},
     {d:20,t:'Glow check. Take a selfie and compare to Day 1.',type:'boss',boss:'Captain Couch',coop:'Both share what changed'}
    ],
-   baby:'Characters/Baby versions/baby BLAZE.png',
-   teen:'Characters/BLAZE.png',
+   baby:'Assets/Baby_Versions/Baby AURA.png',
+   teen:'Assets/Characters/AURA.png',
    stats:{sleep:4,eat:4,move:1,mind:2,skin:2}},
   {name:'Titan',type:'The Strong One',color:'#339AF0',
    quest:'Titan wants to Bulk Up',questDesc:'Climb the Iron Peaks. Face beasts that test your strength. Forge legendary gear at the summit.',
@@ -1370,8 +1370,8 @@ const characters = [
     {d:19,t:'Drink 2L of water.',type:'solo'},
     {d:20,t:'Two weeks of showing up. Final check.',type:'boss',boss:'Captain Couch',coop:'Both share how your body feels different'}
    ],
-   baby:'Characters/Baby versions/Baby NYX.png',
-   teen:'Characters/NYX.png',
+   baby:'Assets/Baby_Versions/Baby TITAN.png',
+   teen:'Assets/Characters/TITAN.png',
    stats:{sleep:1,eat:3,move:5,mind:2,skin:2}},
   {name:'Sage',type:'The Nourished One',color:'#51CF66',
    quest:'Sage wants a Clean Slate',questDesc:'Cross the Fresh Fields. Outsmart creatures that feed on bad habits. Reclaim the land.',
@@ -1423,8 +1423,8 @@ const characters = [
     {d:19,t:'Screen-free lunch with your ally.',type:'ally'},
     {d:20,t:'How do you feel vs Day 1?',type:'boss',boss:'Captain Couch',coop:'Cook a final meal together'}
    ],
-   baby:'Characters/Baby versions/Baby KAI.png',
-   teen:'Characters/KAI.png',
+   baby:'Assets/Baby_Versions/Baby SAGE.png',
+   teen:'Assets/Characters/SAGE.png',
    stats:{sleep:3,eat:4,move:1,mind:2,skin:3}},
   {name:'Spark',type:'The Energetic One',color:'#FF6B6B',
    quest:'Spark wants Squad Goals',questDesc:'Explore the Ally Archipelago. Islands only unlock when you and your crew work together.',
@@ -1476,8 +1476,8 @@ const characters = [
     {d:19,t:'Challenge your ally to a plank hold.',type:'ally'},
     {d:20,t:'What actually shifted? Write 3 things.',type:'boss',boss:'Captain Couch',coop:'Share your 3 things with each other'}
    ],
-   baby:'Characters/Baby versions/baby BLAZE.png',
-   teen:'Characters/BLAZE.png',
+   baby:'Assets/Baby_Versions/Baby SPARK.png',
+   teen:'Assets/Characters/SPARK.png',
    stats:{sleep:2,eat:2,move:4,mind:4,skin:1}},
   {name:'Luna',type:'The Restful One',color:'#845EF7',
    quest:'Luna wants to Chill',questDesc:'Drift through the Dreamscape. Silence the noise monsters. Restore the night sky.',
@@ -1529,8 +1529,8 @@ const characters = [
     {d:19,t:'15-minute walk, no phones.',type:'ally'},
     {d:20,t:'Two weeks of trying to rest. How do you feel?',type:'boss',boss:'Captain Couch',coop:'Both write 3 things that changed'}
    ],
-   baby:'Characters/Baby versions/Baby LUNA.png',
-   teen:'Characters/LUNA.png',
+   baby:'Assets/Baby_Versions/Baby LUNA.png',
+   teen:'Assets/Characters/LUNA.png',
    stats:{sleep:5,eat:1,move:1,mind:3,skin:3}},
 ];
 let curChar = 0;
@@ -1716,7 +1716,7 @@ function buildQuestMap(c){
       if(d===15) bossAction='showBoss15()';
       if(d===20) bossAction='showBoss20()';
       const cl=bossClickable?' onclick="'+bossAction+'" style="cursor:pointer;"':'';
-      const bossInner=bi===0?'<img src="Characters/SNACK GREMLIN.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none;">':bossEmoji[bi];
+      const bossInner=bi===0?'<img src="Assets/Monsters/SNACK GREMLIN.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none;">':bossEmoji[bi];
       const pulseStyle=bossClickable?' style="font-size:18px;box-shadow:0 0 20px var(--coral-glow),0 0 40px rgba(255,107,107,.15);cursor:pointer;"':' style="font-size:18px;"';
       let tapLabel='tap';
       if(d===15) tapLabel='\ud83c\udfb0 gacha';
@@ -1937,7 +1937,7 @@ function tryFightBoss(){
   // Set hero sprite
   var c=characters[curChar];
   var heroImg=document.getElementById('bossPopupHeroImg');
-  if(heroImg)heroImg.src='Characters/'+c.name.toUpperCase()+'.png';
+  if(heroImg)heroImg.src='Assets/Characters/'+c.name.toUpperCase()+'.png';
   var heroName=document.getElementById('bossPopupHeroName');
   if(heroName)heroName.textContent=c.name;
   // Reset

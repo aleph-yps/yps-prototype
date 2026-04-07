@@ -371,7 +371,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
     </div>
 
-    <button class="btn btn-primary" onclick="goTo(2)" style="flex-shrink:0;margin-bottom:80px;margin-left:0;margin-right:0;">Let's Go</button>
+    <button class="btn btn-primary" onclick="goTo(2)" style="flex-shrink:0;margin-bottom:80px;">Let's Go</button>
   </div>
 </div>
 
@@ -399,36 +399,31 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="font-size:13px;color:var(--text);line-height:1.6;font-weight:500;" id="questDesc">Journey through the Crystal Caverns. Battle monsters that drain your glow. Earn radiant armour along the way.</div>
     </div>
     <!-- Stats -->
-    <div style="padding:0 4px;margin-bottom:8px;">
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 0;">
-        <div style="width:20px;height:20px;border-radius:6px;background:rgba(51,154,240,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 6px var(--blue);"></div></div>
-        <span style="font-size:11px;color:var(--text-dim);width:50px;font-weight:600;">Sleep</span>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px 14px 10px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--blue);width:52px;font-weight:700;">Sleep</span>
         <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statSleep" style="height:100%;border-radius:4px;background:var(--blue);box-shadow:0 0 8px rgba(51,154,240,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;width:18px;text-align:right;color:var(--blue);" id="valSleep">2</span>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--blue);" id="valSleep">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 0;">
-        <div style="width:20px;height:20px;border-radius:6px;background:rgba(81,207,102,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 6px var(--mint);"></div></div>
-        <span style="font-size:11px;color:var(--text-dim);width:50px;font-weight:600;">Eat</span>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--mint);width:52px;font-weight:700;">Eat</span>
         <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statEat" style="height:100%;border-radius:4px;background:var(--mint);box-shadow:0 0 8px rgba(81,207,102,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;width:18px;text-align:right;color:var(--mint);" id="valEat">2</span>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--mint);" id="valEat">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 0;">
-        <div style="width:20px;height:20px;border-radius:6px;background:rgba(255,107,107,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:8px;height:8px;border-radius:50%;background:var(--coral);box-shadow:0 0 6px var(--coral);"></div></div>
-        <span style="font-size:11px;color:var(--text-dim);width:50px;font-weight:600;">Exercise</span>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--coral);width:52px;font-weight:700;">Exercise</span>
         <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statMove" style="height:100%;border-radius:4px;background:var(--coral);box-shadow:0 0 8px rgba(255,107,107,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;width:18px;text-align:right;color:var(--coral);" id="valMove">2</span>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--coral);" id="valMove">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 0;">
-        <div style="width:20px;height:20px;border-radius:6px;background:rgba(255,212,59,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);"></div></div>
-        <span style="font-size:11px;color:var(--text-dim);width:50px;font-weight:600;">Bond</span>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--gold);width:52px;font-weight:700;">Bond</span>
         <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statMind" style="height:100%;border-radius:4px;background:var(--gold);box-shadow:0 0 8px rgba(255,212,59,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;width:18px;text-align:right;color:var(--gold);" id="valMind">2</span>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--gold);" id="valMind">2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;padding:5px 0;">
-        <div style="width:20px;height:20px;border-radius:6px;background:rgba(132,94,247,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:8px;height:8px;border-radius:50%;background:var(--violet);box-shadow:0 0 6px var(--violet);"></div></div>
-        <span style="font-size:11px;color:var(--text-dim);width:50px;font-weight:600;">Screen</span>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--violet);width:52px;font-weight:700;">Screen</span>
         <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statSkin" style="height:100%;border-radius:4px;background:var(--violet);box-shadow:0 0 8px rgba(132,94,247,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
-        <span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;width:18px;text-align:right;color:var(--violet);" id="valSkin">2</span>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--violet);" id="valSkin">2</span>
       </div>
       <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:700;display:flex;align-items:center;gap:4px;" id="questBuff"><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.5);flex-shrink:0;"></div> +1 bonus coin on Eat Well challenges</div>
     </div>
@@ -472,7 +467,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     </div>
   </div>
   <div style="padding:0 20px 44px;flex-shrink:0;">
-    <button class="btn btn-primary" id="evolveNextBtn" onclick="goTo(4)" style="margin-top:0;opacity:.3;pointer-events:none;">Start My Quest</button>
+    <button class="btn btn-primary" id="evolveNextBtn" onclick="goTo(4)" style="margin-top:24px;opacity:.3;pointer-events:none;">Start My Quest</button>
   </div>
 </div>
 
@@ -619,6 +614,9 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="background:var(--bg-card);border:1px solid rgba(132,94,247,.2);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--violet);">🛡️ 1 Ally Shield</div>
     </div>
     <div id="questMapNodes"></div>
+    <div id="debugBossTest" style="padding:12px;background:var(--coral);border-radius:8px;text-align:center;cursor:pointer;margin-top:8px;font-weight:700;" onclick="showBossPreview()">DEBUG: Tap here for Boss 5</div>
+    <div style="padding:12px;background:var(--gold);border-radius:8px;text-align:center;cursor:pointer;margin-top:8px;font-weight:700;color:#1A1B2E;" onclick="showBoss15()">DEBUG: Tap here for Boss 15</div>
+    <div style="padding:12px;background:var(--violet);border-radius:8px;text-align:center;cursor:pointer;margin-top:8px;font-weight:700;" onclick="showBoss20()">DEBUG: Tap here for Boss 20</div>
   </div>
 </div>
 

@@ -1744,22 +1744,22 @@ function showDayChallenge(day){
 function showBossPreview(){
   const c=characters[curChar];
   if(c.days&&c.days[4]) document.getElementById('bossChallengeText').textContent=c.days[4].t;
-  document.getElementById('bossBattleName1').textContent=c.name;
-  if(c.zones) document.getElementById('bossZoneLabel').textContent='Level 5 Boss \u00B7 '+c.zones[0];
+  if(document.getElementById('bossBattleName1')) document.getElementById('bossBattleName1').textContent=c.name;
+  if(c.zones&&document.getElementById('bossZoneLabel')) document.getElementById('bossZoneLabel').textContent='Level 5 Boss \u00B7 '+c.zones[0];
   goTo(15);
 }
 function showBoss15(){
   const c=characters[curChar];
   if(c.days&&c.days[14]) document.getElementById('bossChallengeText').textContent=c.days[14].t;
-  document.getElementById('bossBattleName1').textContent=c.name;
-  if(c.zones) document.getElementById('bossZoneLabel').textContent='Level 15 Boss \u00B7 '+c.zones[2];
+  if(document.getElementById('bossBattleName1')) document.getElementById('bossBattleName1').textContent=c.name;
+  if(c.zones&&document.getElementById('bossZoneLabel')) document.getElementById('bossZoneLabel').textContent='Level 15 Boss \u00B7 '+c.zones[2];
   goTo(15);
 }
 function showBoss20(){
   const c=characters[curChar];
   if(c.days&&c.days[19]) document.getElementById('bossChallengeText').textContent=c.days[19].t;
-  document.getElementById('bossBattleName1').textContent=c.name;
-  if(c.zones) document.getElementById('bossZoneLabel').textContent='Level 20 Final Boss \u00B7 '+c.zones[3];
+  if(document.getElementById('bossBattleName1')) document.getElementById('bossBattleName1').textContent=c.name;
+  if(c.zones&&document.getElementById('bossZoneLabel')) document.getElementById('bossZoneLabel').textContent='Level 20 Final Boss \u00B7 '+c.zones[3];
   goTo(15);
 }
 

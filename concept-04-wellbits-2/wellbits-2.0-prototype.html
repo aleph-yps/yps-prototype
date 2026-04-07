@@ -55,7 +55,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 .notif-item .ni-text{font-size:11px;color:var(--text-dim);line-height:1.4;}
 .notif-item .ni-text b{color:var(--text);}
 .notif-item .ni-time{font-size:9px;color:var(--text-muted);margin-top:2px;}
-.content{padding:88px 20px 8px;flex:1;display:flex;flex-direction:column;min-height:0;}
+.content{padding:92px 20px 16px;flex:1;display:flex;flex-direction:column;min-height:0;}
 .btn{width:100%;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;padding:14px;border-radius:var(--r-md);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:var(--sp-8);letter-spacing:.01em;margin-top:16px;flex-shrink:0;}
 .btn-primary{background:var(--violet);color:#fff;box-shadow:0 4px 0 var(--violet-dark),0 0 20px var(--violet-glow);}
 .btn-primary:active{transform:translateY(2px);box-shadow:0 2px 0 var(--violet-dark);}
@@ -120,13 +120,13 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 .char-card .char-img-wrap img{width:170px;height:170px;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;}
 .char-card .char-img-wrap .rec-badge{position:absolute;top:-4px;right:-4px;background:var(--gold);color:#1A1B2E;font-size:8px;font-weight:800;padding:3px 8px;border-radius:10px;letter-spacing:.04em;}
 .char-nm{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em;}
-.char-tp{font-size:11px;color:var(--text-dim);margin-bottom:20px;}
+.char-tp{font-size:11px;color:var(--text-dim);margin-bottom:6px;}
 .char-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--text-dim);transition:all .2s;z-index:3;}
 .char-arrow:hover{background:rgba(255,255,255,.12);color:var(--text);}
 .char-arrow.left{left:8px;}
 .char-arrow.right{right:8px;}
 .stat-rows{padding:0 8px;}
-.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
 .stat-row .slbl{font-size:11px;color:var(--text-dim);width:72px;text-align:right;}
 .stat-row .sbar-bg{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
 .stat-row .sbar{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1);}
@@ -139,8 +139,8 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
 /* === EVOLVE === */
 .evolve-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:56px 20px 0;}
-.evolve-circle{width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
-.evolve-circle img{width:220px;height:220px;object-fit:contain;transition:all .5s;}
+.evolve-circle{width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
+.evolve-circle img{width:240px;height:240px;object-fit:contain;transition:all .5s;}
 .evolve-flash{position:absolute;inset:0;background:radial-gradient(circle,rgba(132,94,247,.4),transparent 70%);border-radius:50%;opacity:0;pointer-events:none;}
 .evolve-stages{display:flex;gap:12px;align-items:center;margin-top:24px;}
 .evolve-stage{text-align:center;opacity:.4;}
@@ -179,10 +179,10 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 /* === TEAM READY === */
 .team-ready{align-items:center;text-align:center;}
 .tm-row{display:flex;align-items:center;gap:16px;margin:16px 0;}
-.tm-spr{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite;}
+.tm-spr{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite;}
 .tm-spr.hero{background:linear-gradient(135deg,rgba(81,207,102,.15),rgba(81,207,102,.05));border:2px solid rgba(81,207,102,.3);box-shadow:0 0 20px var(--mint-glow);}
 .tm-spr.ally{background:linear-gradient(135deg,rgba(132,94,247,.15),rgba(132,94,247,.05));border:2px solid rgba(132,94,247,.3);box-shadow:0 0 20px var(--violet-glow);animation-delay:.4s;}
-.tm-spr img{width:50px;height:50px;object-fit:contain;}
+.tm-spr img{width:68px;height:68px;object-fit:contain;}
 .tm-lbl{font-weight:700;font-size:13px;}
 .tm-sub{font-size:10px;color:var(--text-dim);}
 .char-img{width:40px;height:auto;object-fit:contain;}
@@ -336,7 +336,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
     <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
       <div style="width:44px;height:44px;border-radius:12px;background:rgba(132,94,247,.12);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
-      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Pick Your Quest</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Choose a character and their quest path. Each quest has different challenges and adventures.</div></div>
+      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Choose a Wellbit</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Pick your character and quest path. Each Wellbit has unique challenges and adventures.</div></div>
     </div>
     <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
 
@@ -369,7 +369,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
     </div>
   </div>
-  <button class="btn btn-primary" onclick="goTo(2)" style="margin:0 20px 28px;flex-shrink:0;width:calc(100% - 40px);">Let's Go</button>
+  <button class="btn btn-primary" onclick="goTo(2)" style="margin:24px 20px 28px;flex-shrink:0;width:calc(100% - 40px);">Let's Go</button>
 </div>
 
 <!-- S2: PICK YOUR QUEST -->
@@ -377,8 +377,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div class="back-btn" onclick="goTo(1)">←</div>
   <div class="content" style="overflow-y:auto;padding-bottom:32px;">
     <div style="text-align:center;margin-top:8px;">
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;">Pick Your Quest</div>
-      <div style="font-size:11px;color:var(--text-dim);">Your character. Your challenge path. One choice.</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;">Choose a Wellbit</div>
     </div>
     <div class="char-card-wrap">
       <div class="char-arrow left" onclick="prevChar()">‹</div>
@@ -430,7 +429,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="font-size:9px;color:var(--gold);margin-top:4px;font-weight:600;padding:0 6px;" id="questBuff">⭐ +1 bonus coin on Eat Well challenges</div>
     </div>
-    <button class="btn btn-primary" onclick="goTo(3)" style="margin-top:12px;flex-shrink:0;">Choose This Quest</button>
+    <button class="btn btn-primary" onclick="goTo(3)" style="margin-top:8px;flex-shrink:0;">Select</button>
   </div>
 </div>
 
@@ -528,7 +527,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="screen parent-bg hidden" id="screen6">
   <div class="back-btn" onclick="goTo(5)" style="color:#1A1B2E;">←</div>
   <div style="flex:1;overflow-y:auto;padding:48px 24px 0;display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="parentCharImg" src="Characters/BLAZE.png" style="width:100px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2));"></div>
+    <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="parentCharImg" src="Characters/BLAZE.png" style="width:64px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2));"></div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;"><span style="color:var(--violet);" id="parentYouthName">Ethan</span> wants you<br>on their quest!</div>
     <div style="font-size:12px;color:#6B7280;margin-bottom:20px;">Choose your Ally character</div>
 

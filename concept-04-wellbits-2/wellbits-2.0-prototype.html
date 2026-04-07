@@ -371,14 +371,16 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
     </div>
 
-    <button class="btn btn-primary" onclick="goTo(2)" style="flex-shrink:0;margin-bottom:80px;">Let's Go</button>
+  </div>
+  <div style="padding:0 20px 44px;flex-shrink:0;">
+    <button class="btn btn-primary" onclick="goTo(2)" style="flex-shrink:0;">Let's Go</button>
   </div>
 </div>
 
 <!-- S2: PICK YOUR QUEST -->
-<div class="screen game-bg hidden" id="screen2" style="background:var(--bg-deep);overflow-y:auto;">
+<div class="screen game-bg hidden" id="screen2" style="background:var(--bg-deep);display:flex;flex-direction:column;">
   <div class="back-btn" onclick="goTo(1)">←</div>
-  <div class="content" style="overflow-y:auto;padding-bottom:32px;">
+  <div class="content" style="overflow-y:auto;flex:1;min-height:0;padding-bottom:8px;">
     <div style="text-align:center;margin-top:8px;">
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;">Choose a Wellbit</div>
     </div>
@@ -427,7 +429,9 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:700;display:flex;align-items:center;gap:4px;" id="questBuff"><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.5);flex-shrink:0;"></div> +1 bonus coin on Eat Well challenges</div>
     </div>
-    <button class="btn btn-primary" onclick="goTo(3)" style="margin-top:8px;margin-bottom:40px;flex-shrink:0;">Select</button>
+  </div>
+  <div style="padding:0 20px 44px;flex-shrink:0;">
+    <button class="btn btn-primary" onclick="goTo(3)" style="margin-top:8px;flex-shrink:0;">Select</button>
   </div>
 </div>
 
@@ -1507,9 +1511,11 @@ let evolved = false;
 function goTo(n){
   const screens = document.querySelectorAll('.screen');
   screens.forEach((s,i)=>{
-    if(i===n){s.className='screen '+s.className.replace(/hidden|hidden-left|active/g,'').trim()+' active';s.scrollTop=0;}
-    else if(i<n){s.className='screen '+s.className.replace(/hidden|hidden-left|active/g,'').trim()+' hidden-left';}
-    else{s.className='screen '+s.className.replace(/hidden|hidden-left|active/g,'').trim()+' hidden';}
+    // Extract only the base classes (everything that is not a screen-state class)
+    const base=s.className.replace(/\b(hidden-left|hidden|active)\b/g,'').replace(/\s+/g,' ').trim();
+    if(i===n){s.className=base+' active';s.scrollTop=0;}
+    else if(i<n){s.className=base+' hidden-left';}
+    else{s.className=base+' hidden';}
   });
   curScreen=n;
   if(n===3)resetEvolve();
@@ -1621,15 +1627,17 @@ function updateAllScreens(){
   // Co-op
   document.getElementById('coopHeroImg').src=c.teen;
   document.getElementById('coopHeroName').textContent=c.name;
-  document.getElementById('coopBattleName1').textContent=c.name;
-  document.getElementById('coopBattleName2').textContent=c.name;
+  // These IDs may not exist in all screen configurations — guard against null
+  var _el;
+  _el=document.getElementById('coopBattleName1'); if(_el) _el.textContent=c.name;
+  _el=document.getElementById('coopBattleName2'); if(_el) _el.textContent=c.name;
   // Top nav avatar
   document.getElementById('topNavAvatar').src=c.teen;
   // Battle + Profile
   document.getElementById('battleHeroImg').src=c.teen;
   document.getElementById('battleHeroName').textContent=c.name;
-  document.getElementById('animHeroName1').textContent=c.name;
-  document.getElementById('animHeroName2').textContent=c.name;
+  _el=document.getElementById('animHeroName1'); if(_el) _el.textContent=c.name;
+  _el=document.getElementById('animHeroName2'); if(_el) _el.textContent=c.name;
   document.getElementById('profileCharImg').src=c.teen;
   document.getElementById('profileCharName').textContent=c.name;
   // Leaderboard
@@ -1978,6 +1986,12 @@ function showGemTooltip(){
   t.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,18,40,.96);border:1px solid rgba(132,94,247,.3);border-radius:16px;padding:20px;z-index:100;width:280px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);';
   t.innerHTML='<div style="font-size:28px;margin-bottom:8px;">\u{1F48E}</div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:15px;font-weight:800;color:#F1F3F5;margin-bottom:6px;">You found a Time Warp Gem!</div><div style="font-size:12px;color:#9CA3AF;line-height:1.5;margin-bottom:8px;">Use it to freeze a day without breaking your streak.</div><div style="font-size:10px;color:#845EF7;font-weight:600;margin-bottom:12px;">Max 3 per zone \u00B7 Stored in inventory</div><div style="font-size:13px;color:#845EF7;font-weight:700;cursor:pointer;" onclick="this.parentElement.remove()">Got it</div>';
   document.body.appendChild(t);
+}
+
+// === PICK ALLY (parent/friend screens) ===
+function pickAlly(el){
+  el.parentElement.querySelectorAll('.ally-opt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
 }
 
 // === ALLY TYPE ===

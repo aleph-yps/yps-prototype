@@ -1957,6 +1957,15 @@ function tryFightBoss(){
   if(heroImg)heroImg.src='Assets/Characters/'+c.name.toUpperCase()+'.png';
   var heroName=document.getElementById('bossPopupHeroName');
   if(heroName)heroName.textContent=c.name;
+  // Update boss monster image in popup
+  var bossPopupMon=document.getElementById('bossPopupMonsterSprite');
+  if(bossPopupMon){
+    var bIM={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
+    var bEM={'5':'👹','10':'🦥','15':'🍔','20':'🛋'};
+    var bKey=String(currentBossLevel);
+    if(bIM[bKey]){bossPopupMon.innerHTML='<img src="'+bIM[bKey]+'" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
+    else{bossPopupMon.innerHTML='<div style="font-size:60px;">'+bEM[bKey]+'</div>';}
+  }
   // Reset
   var log=document.getElementById('bossPopupLog');
   if(log)log.innerHTML='';
@@ -1975,10 +1984,12 @@ function startBossFailAnimation(){
   bossPopupTimers=[];
   var monsterSprite=document.getElementById('bossPopupMonsterSprite');
   var c=characters[curChar];
+  var bossNameMap={5:'Snack Gremlin',10:'Sleepy Tom',15:'Greasy Gary',20:'Captain Couch'};
+  var curBossName=bossNameMap[currentBossLevel]||'Snack Gremlin';
   var lines=[
     {t:'\u26a1 <b>'+c.name+'</b> attacks!',delay:600,shake:false},
-    {t:'\ud83d\udca5 Snack Gremlin takes <b>10 damage!</b>',delay:1200,shake:true},
-    {t:'\ud83d\udee1\ufe0f Snack Gremlin blocks! <b>Too strong!</b>',delay:2000,shake:true,color:'var(--coral)'},
+    {t:'\ud83d\udca5 '+curBossName+' takes <b>10 damage!</b>',delay:1200,shake:true},
+    {t:'\ud83d\udee1\ufe0f '+curBossName+' blocks! <b>Too strong!</b>',delay:2000,shake:true,color:'var(--coral)'},
     {t:'\u274c <b>This boss is too powerful to face alone!</b>',delay:2800,shake:false,color:'var(--coral)'},
   ];
   lines.forEach(function(l,i){
@@ -2060,10 +2071,20 @@ function startCoopBattle(){
   const c=characters[curChar];
   const heroS=document.getElementById('coopHeroSprite');
   const monS=document.getElementById('coopMonSprite');
+  // Update co-op boss monster image
+  if(monS){
+    const bImgCoop={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
+    const bEmojiCoop={'5':'👹','10':'🦥','15':'🍔','20':'🛋'};
+    const bK=String(currentBossLevel);
+    if(bImgCoop[bK]){monS.innerHTML='<img src="'+bImgCoop[bK]+'" style="width:70px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
+    else{monS.innerHTML='<div style="font-size:50px;animation:monsterIdle 2.5s ease-in-out infinite;">'+bEmojiCoop[bK]+'</div>';}
+  }
+  const bossNM={5:'Snack Gremlin',10:'Sleepy Tom',15:'Greasy Gary',20:'Captain Couch'};
+  const curBN=bossNM[currentBossLevel]||'Snack Gremlin';
   const lines=[
     {t:'\u26a1 <b>'+c.name+'</b> + \ud83e\udd89 <b>Aegis</b> combine forces!',hp:100,delay:600,a:null},
     {t:'\ud83c\udf73 Co-op challenge complete! <b>+50 damage!</b>',hp:50,delay:1400,a:'hero'},
-    {t:'\ud83e\udda0 Snack Gremlin retaliates...',hp:50,delay:2400,a:'monster'},
+    {t:'\ud83e\udda0 '+curBN+' retaliates...',hp:50,delay:2400,a:'monster'},
     {t:'\ud83e\udd89 <b>Aegis Shield blocks</b> the attack!',hp:50,delay:3200,a:null},
     {t:'\ud83d\udd25 <b>'+c.name+'</b> uses <b>Final Strike!</b>',hp:10,delay:4200,a:'hero'},
     {t:'\ud83d\udca5 <b style="color:var(--gold);">BOSS DEFEATED!</b> \ud83c\udf89',hp:0,delay:5200,a:null},

@@ -1830,11 +1830,9 @@ function setupBossVictory(){
     b1.style.display='block';
     b2.textContent='Back to quest map';
   } else if(currentBossLevel===20){
-    p.style.display='block';
-    b1.style.display='none';
-    b2.style.display='none';
-    b3.style.display='block';
-    b3.textContent='Complete Quest';
+    // Skip boss victory screen entirely — go straight to Quest Champion
+    goTo(24);
+    return;
   }
 }
 function setBossImage(name){

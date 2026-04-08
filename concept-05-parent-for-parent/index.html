@@ -515,27 +515,29 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
   </div>
 </div>
 
-<!-- SELF-CHECK -->
-<div class="screen" id="spov" style="background:var(--bg)">
-  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slanding')">‹</button></div>
-  <!-- Background content -->
-  <div style="flex:1;padding:4px 22px 44px">
-    <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What most parents notice at this stage</div>
-    <div style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px" id="sc-title"></div>
-    <div style="font-size:15px;color:var(--ink2);line-height:1.65" id="sc-txt"></div>
-    <button class="f-btn" id="spov-continue" style="margin-top:24px" onclick="showSelfCheck()">Continue</button>
-  </div>
-  <!-- Overlay popup -->
-  <div id="spov-overlay" style="position:absolute;bottom:0;left:0;right:0;z-index:30;transform:translateY(100%);opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1), opacity .3s ease">
-    <div style="background:white;border-radius:24px 24px 0 0;padding:28px 22px 36px;box-shadow:0 -8px 40px rgba(0,0,0,.12);text-align:center">
-      <div style="width:40px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 16px"></div>
-      <div style="font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Before you go in</div>
-      <div style="font-size:22px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:8px;letter-spacing:-.3px">How are you doing<br>right now?</div>
-      <div style="font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:22px">What you bring to the conversation matters as much as what you say.</div>
-      <button class="f-btn" onclick="go('schall')">I'm good</button>
-      <button class="f-btn-ghost" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
-      <div style="font-size:12px;color:var(--ink3);margin-top:12px;line-height:1.5">No judgement. Both paths lead to the same place.</div>
+<!-- SELF-CHECK: CONTEXT -->
+<div class="screen flat" id="spov">
+  <div class="app-bar"><button class="app-back" onclick="go('slanding')">‹</button></div>
+  <div class="flat-scroll" style="display:flex;flex-direction:column;justify-content:center;align-items:center;padding:22px">
+    <div style="background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%">
+      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What most parents notice at this stage</div>
+      <div style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px" id="sc-title"></div>
+      <div style="font-size:15px;color:var(--ink2);line-height:1.65" id="sc-txt"></div>
     </div>
+    <button class="f-btn" style="margin-top:24px;width:100%" onclick="go('s-selfcheck')">Continue</button>
+  </div>
+</div>
+
+<!-- SELF-CHECK: HOW ARE YOU -->
+<div class="screen flat" id="s-selfcheck">
+  <div class="app-bar"><button class="app-back" onclick="go('spov')">‹</button></div>
+  <div class="flat-scroll" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px">
+    <div style="font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Before you go in</div>
+    <div style="font-size:24px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:8px;letter-spacing:-.3px">How are you doing<br>right now?</div>
+    <div style="font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:28px">What you bring to the conversation matters as much as what you say.</div>
+    <button class="f-btn" style="width:100%" onclick="go('schall')">I'm good</button>
+    <button class="f-btn-ghost" style="width:100%" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
+    <div style="font-size:12px;color:var(--ink3);margin-top:14px;line-height:1.5">No judgement. Both paths lead to the same place.</div>
   </div>
 </div>
 
@@ -708,18 +710,6 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if(id==='swaci')loadCheckin();
-  if(id==='spov'){
-    const overlay=document.getElementById('spov-overlay');
-    if(overlay){overlay.style.transform='translateY(100%)';overlay.style.opacity='0';}
-    const btn=document.getElementById('spov-continue');
-    if(btn)btn.style.display='';
-  }
-}
-function showSelfCheck(){
-  const btn=document.getElementById('spov-continue');
-  if(btn)btn.style.display='none';
-  const overlay=document.getElementById('spov-overlay');
-  if(overlay){overlay.style.transform='translateY(0)';overlay.style.opacity='1';}
 }
 function tapNotif(){const n=document.getElementById('notif');n.style.opacity='0';n.style.pointerEvents='none';setTimeout(()=>go('swa'),300);}
 function pickChar(el){document.querySelectorAll('.ally-char').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}

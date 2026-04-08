@@ -519,12 +519,8 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <div class="screen flat" id="spov">
   <div class="app-bar"><button class="app-back" onclick="spovBack()">‹</button></div>
   <div class="flat-scroll" style="padding:22px;overflow-y:auto">
-    <!-- Context card: starts centered, compacts up on continue -->
-    <div id="sc-card" style="background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%;transition:all .5s cubic-bezier(.22,1,.36,1)">
-      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What most parents notice at this stage</div>
-      <div id="sc-title" style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px;transition:all .5s ease"></div>
-      <div id="sc-txt" style="font-size:15px;color:var(--ink2);line-height:1.65;transition:all .5s ease"></div>
-    </div>
+    <!-- Dynamic context cards container (1-3 cards) -->
+    <div id="sc-cards"></div>
     <button class="f-btn" id="sc-continue" style="margin-top:24px;width:100%" onclick="expandSelfCheck()">Continue</button>
     <!-- Self-check: hidden initially, fades in after continue -->
     <div id="sc-checkin" style="opacity:0;max-height:0;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);text-align:center;padding:0 4px">
@@ -715,33 +711,32 @@ function spovBack(){
   else{go('slanding');}
 }
 function resetSelfCheck(){
-  const card=document.getElementById('sc-card');
   const btn=document.getElementById('sc-continue');
   const checkin=document.getElementById('sc-checkin');
-  const title=document.getElementById('sc-title');
-  const txt=document.getElementById('sc-txt');
-  if(card){card.style.padding='24px';card.style.marginTop='0';}
-  if(title){title.style.fontSize='20px';title.style.marginBottom='12px';}
-  if(txt){txt.style.maxHeight='';txt.style.opacity='1';txt.style.marginBottom='';}
+  // Expand all cards back
+  document.querySelectorAll('.sc-card-item').forEach(card=>{
+    card.style.padding='24px';
+    const t=card.querySelector('.sc-card-title');if(t){t.style.fontSize='20px';t.style.marginBottom='12px';}
+    const x=card.querySelector('.sc-card-txt');if(x){x.style.maxHeight='200px';x.style.opacity='1';x.style.marginBottom='';}
+  });
   if(btn){btn.style.display='';btn.style.opacity='1';btn.style.pointerEvents='';}
-  if(checkin){checkin.style.opacity='0';checkin.style.maxHeight='0';checkin.style.marginTop='0';}
+  if(checkin){checkin.style.opacity='0';checkin.style.maxHeight='0';checkin.style.marginTop='0';checkin.style.overflow='hidden';}
 }
 function expandSelfCheck(){
   spovExpanded=true;
-  const card=document.getElementById('sc-card');
   const btn=document.getElementById('sc-continue');
   const checkin=document.getElementById('sc-checkin');
-  const title=document.getElementById('sc-title');
-  const txt=document.getElementById('sc-txt');
-  // Compact the card: shrink title, hide body text
-  if(card){card.style.padding='14px 20px';card.style.marginTop='0';}
-  if(title){title.style.fontSize='14px';title.style.marginBottom='0';}
-  if(txt){txt.style.maxHeight='0';txt.style.opacity='0';txt.style.marginBottom='0';}
+  // Compact all cards
+  document.querySelectorAll('.sc-card-item').forEach(card=>{
+    card.style.padding='14px 20px';
+    const t=card.querySelector('.sc-card-title');if(t){t.style.fontSize='14px';t.style.marginBottom='0';}
+    const x=card.querySelector('.sc-card-txt');if(x){x.style.maxHeight='0';x.style.opacity='0';x.style.marginBottom='0';}
+  });
   // Hide continue button
   if(btn){btn.style.opacity='0';btn.style.pointerEvents='none';setTimeout(()=>{btn.style.display='none'},400);}
   // Reveal self-check
   setTimeout(()=>{
-    if(checkin){checkin.style.opacity='1';checkin.style.maxHeight='500px';checkin.style.marginTop='28px';}
+    if(checkin){checkin.style.opacity='1';checkin.style.maxHeight='500px';checkin.style.marginTop='28px';checkin.style.overflow='visible';}
   },300);
 }
 function tapNotif(){const n=document.getElementById('notif');n.style.opacity='0';n.style.pointerEvents='none';setTimeout(()=>go('swa'),300);}
@@ -785,8 +780,26 @@ function switchChild(i){activeChild=i;T=children[i].stage||1;buildToggles();load
 // ════ CHALLENGES ════
 function pickT(t){T=t;loadChallenges(t);setSelfCheck(t);go('spov');}
 function setSelfCheck(t){
-  document.getElementById('sc-title').textContent=STAGE_TITLE[t]||STAGE_TITLE[1];
-  document.getElementById('sc-txt').textContent=STAGE_CTX[t]||STAGE_CTX[1];
+  const container=document.getElementById('sc-cards');
+  container.innerHTML='';
+  // Build cards: if children exist, one per child; else single card for selected stage
+  const cards=children.length>0?children.map(c=>({stage:c.stage,name:c.name})):[{stage:t,name:null}];
+  cards.forEach((c,i)=>{
+    const s=c.stage||1;
+    const tag=STAGE_SUB[s]||'Sec 1';
+    const title=STAGE_TITLE[s]||STAGE_TITLE[1];
+    const ctx=STAGE_CTX[s]||STAGE_CTX[1];
+    const card=document.createElement('div');
+    card.className='sc-card-item';
+    card.style.cssText='background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%;transition:all .5s cubic-bezier(.22,1,.36,1);'+(i>0?'margin-top:12px;':'');
+    card.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px">What most parents notice at this stage</div>
+      <div style="font-size:10px;font-weight:800;color:white;background:var(--brand);padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap">${c.name?c.name+' · ':''}${tag}</div>
+    </div>
+    <div class="sc-card-title" style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px;transition:all .5s ease;overflow:hidden">${title}</div>
+    <div class="sc-card-txt" style="font-size:15px;color:var(--ink2);line-height:1.65;transition:all .5s ease;overflow:hidden;max-height:200px">${ctx}</div>`;
+    container.appendChild(card);
+  });
 }
 function loadChallenges(t){
   document.getElementById('proof-txt').textContent=PROOF[t];

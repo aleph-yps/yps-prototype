@@ -977,7 +977,7 @@ function renderGround(){
     <div class="f-dots">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>`;
   }
 
-  html+=`<button class="f-btn" style="margin-top:16px" onclick="go('schall')">I'm ready — show me what's on your mind</button><button class="f-btn-ghost" style="margin-top:0" onclick="groundNext()">Show me another</button>`;
+  html+=`<button class="f-btn-ghost" style="margin-top:16px" onclick="groundNext()">Show me another</button><button class="f-btn" style="margin-top:0" onclick="go('schall')">I'm ready</button>`;
   scroll.innerHTML=html;
   wrap.appendChild(scroll);
   container.appendChild(wrap);

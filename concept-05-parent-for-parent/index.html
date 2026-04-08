@@ -517,7 +517,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- SELF-CHECK (unified) -->
 <div class="screen flat" id="spov">
-  <div class="app-bar"><button class="app-back" onclick="go('slanding')">‹</button></div>
+  <div class="app-bar"><button class="app-back" onclick="spovBack()">‹</button></div>
   <div class="flat-scroll" style="padding:22px;overflow-y:auto">
     <!-- Context card: starts centered, compacts up on continue -->
     <div id="sc-card" style="background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%;transition:all .5s cubic-bezier(.22,1,.36,1)">
@@ -709,6 +709,11 @@ function go(id){
   if(id==='swaci')loadCheckin();
   if(id==='spov')resetSelfCheck();
 }
+let spovExpanded=false;
+function spovBack(){
+  if(spovExpanded){resetSelfCheck();spovExpanded=false;}
+  else{go('slanding');}
+}
 function resetSelfCheck(){
   const card=document.getElementById('sc-card');
   const btn=document.getElementById('sc-continue');
@@ -722,6 +727,7 @@ function resetSelfCheck(){
   if(checkin){checkin.style.opacity='0';checkin.style.maxHeight='0';checkin.style.marginTop='0';}
 }
 function expandSelfCheck(){
+  spovExpanded=true;
   const card=document.getElementById('sc-card');
   const btn=document.getElementById('sc-continue');
   const checkin=document.getElementById('sc-checkin');

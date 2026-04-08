@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Parent for Parent</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#18181B;--ink2:#52525B;--ink3:#A1A1AA;
+  --line:#E4E4E7;--bg:#FAF9F7;--white:#FFF;
+  --brand:#45BE93;--brand-lt:#CEEFE4;
+  --wa-green:#25D366;--wa-hdr:#075E54;--wa-bg:#ECE5DD;--wa-in:#DCF8C6;
+  --panel:rgba(8,6,18,.72);
+}
+body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px 60px}
+
+/* NOTIFICATION */
+#notif{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:340px;background:rgba(255,255,255,.97);border-radius:20px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start;z-index:99999;cursor:pointer;box-shadow:0 8px 40px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .5s}
+.ni{width:38px;height:38px;border-radius:10px;background:var(--wa-green);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.nb{flex:1}.nr{display:flex;justify-content:space-between;margin-bottom:2px}
+.na{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px}
+.nw{font-size:11px;color:var(--ink3)}.nt{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.nm{font-size:12px;color:var(--ink2);line-height:1.4}
+
+/* PHONE */
+.phone{width:375px;height:812px;border-radius:52px;position:relative;overflow:hidden;box-shadow:0 0 0 10px #1C1C1E,0 0 0 11px rgba(255,255,255,.1),0 48px 96px rgba(0,0,0,.35);flex-shrink:0;background:#0d0b18}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#1C1C1E;border-radius:20px;z-index:999}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden}
+.screen.active{display:flex;animation:scFade .22s ease both}
+@keyframes scFade{from{opacity:0}to{opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(255,255,255,.3))}50%{filter:drop-shadow(0 0 22px rgba(255,255,255,.7))}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ringPulse{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes timerComplete{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes confettiPop{0%{transform:scale(0) rotate(0);opacity:1}100%{transform:scale(1.5) rotate(180deg);opacity:0}}
+@keyframes progressBar{0%{width:0}100%{width:100%}}
+@keyframes spinEmoji{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}15%{transform:rotate(-12deg)}30%{transform:rotate(10deg)}45%{transform:rotate(-8deg)}60%{transform:rotate(5deg)}75%{transform:rotate(-3deg)}}
+.sb{display:flex;justify-content:space-between;padding:16px 22px 0;flex-shrink:0}
+.sbt{font-size:15px;font-weight:700}.sbr{font-size:12px;opacity:.7}
+
+/* HOME */
+#sh{background:linear-gradient(155deg,#C4A8D8,#E0B090 35%,#F0D080 65%,#90C8E0)}
+.htime{font-size:76px;font-weight:200;color:rgba(20,10,0,.78);letter-spacing:-4px;line-height:1}
+.hdate{font-size:15px;color:rgba(20,10,0,.52);font-weight:600;margin-top:4px}
+.hclock{text-align:center;margin:16px 0 4px;flex-shrink:0}
+.apps{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:20px 8px;padding:20px 14px 0;align-content:start}
+.app{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.aico{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 2px 10px rgba(0,0,0,.2);flex-shrink:0}
+.albl{font-size:10px;color:rgba(20,10,0,.65);font-weight:600;text-align:center}
+.dock{background:rgba(255,255,255,.3);backdrop-filter:blur(24px);margin:8px 14px 28px;border-radius:26px;padding:12px 20px;display:flex;justify-content:space-around;flex-shrink:0}
+
+/* WA */
+.wah{background:var(--wa-hdr);padding:36px 14px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wabk{color:white;font-size:28px;cursor:pointer;line-height:1}
+.waav{width:40px;height:40px;border-radius:50%;background:var(--wa-green);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.wamt{flex:1}.watl{font-size:15px;font-weight:700;color:white}.wasl{font-size:12px;color:rgba(255,255,255,.65)}
+.waac{display:flex;gap:18px;color:white;font-size:18px}
+.wachat{flex:1;overflow-y:auto;padding:10px 12px 16px;display:flex;flex-direction:column;gap:4px;background:var(--wa-bg)}
+.wachat::-webkit-scrollbar{width:0}
+.wday{text-align:center;margin:8px 0}.wdp{background:rgba(255,255,255,.72);color:var(--ink3);font-size:11px;font-weight:600;padding:3px 12px;border-radius:8px;display:inline-block}
+.bb{max-width:83%;padding:9px 12px 5px;border-radius:12px;font-size:13.5px;line-height:1.55;color:var(--ink);font-family:inherit}
+.bb.i{background:white;align-self:flex-start;border-bottom-left-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.bb.o{background:var(--wa-in);align-self:flex-end;border-bottom-right-radius:3px}
+.bbf{font-size:12px;font-weight:700;color:#128C7E;margin-bottom:3px}
+.bbm{text-align:right;font-size:10px;color:var(--ink3);margin-top:4px}
+.walink{background:white;border-radius:14px;overflow:hidden;margin-top:8px;cursor:pointer;border:1px solid #E0E0E0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.walink:active{opacity:.8}
+.walth{height:70px;background:linear-gradient(135deg,#45BE93,#2D8A6A);display:flex;align-items:center;justify-content:center;font-size:30px}
+.walb{padding:11px 13px}.walbt{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}.walbu{font-size:11px;color:var(--brand)}
+
+/* ═══════════════════════════════════
+   LUMI SCENE SYSTEM
+   Structure: scene (top 42%) + panel (bottom 58%)
+   ═══════════════════════════════════ */
+.ls-wrap{position:absolute;inset:0}
+/* Scene — gradient background + blobs + hero */
+.ls-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.scene-blob{position:absolute;border-radius:50%;pointer-events:none}
+.scene-hero{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:88px;line-height:1;animation:floatY 4s ease-in-out infinite;filter:drop-shadow(0 6px 24px rgba(0,0,0,.35));z-index:5}
+/* Dark glass panel */
+.ls-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:20px 22px 32px;overflow-y:auto;z-index:10}
+.ls-panel::-webkit-scrollbar{width:0}
+/* Floating top controls */
+.ls-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.ls-top>*{pointer-events:auto}
+.ls-back{width:40px;height:40px;background:rgba(0,0,0,.35);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;color:white;font-family:inherit}
+.ls-back:active{background:rgba(0,0,0,.55)}
+.ls-pill{background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:6px 16px;color:rgba(255,255,255,.9);font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.ls-pill-dot{width:6px;height:6px;border-radius:50%;background:#FFD700;flex-shrink:0}
+.ls-count{background:rgba(0,0,0,.35);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:5px 12px;color:rgba(255,255,255,.8);font-size:12px;font-weight:800}
+/* Panel text styles */
+.p-eyebrow{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.p-h{font-size:24px;font-weight:900;color:white;line-height:1.2;margin-bottom:10px;letter-spacing:-.3px}
+.p-sub{font-size:15px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:18px}
+.p-note{font-size:12px;color:rgba(255,255,255,.4);text-align:center;margin-top:14px;line-height:1.5}
+/* Buttons inside panel */
+.p-btn{width:100%;padding:17px;background:white;color:#18181B;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px}
+.p-btn:active{transform:scale(.975);background:#F0F0F0}
+.p-btn-ghost{width:100%;padding:15px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.2);border-radius:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px;backdrop-filter:blur(8px)}
+.p-btn-ghost:active{background:rgba(255,255,255,.2)}
+/* Context box */
+.p-ctx{background:rgba(255,255,255,.08);border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid rgba(255,255,255,.1)}
+.p-ctx-lbl{font-size:10px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.p-ctx-txt{font-size:14px;color:rgba(255,255,255,.82);line-height:1.6}
+/* Dots */
+.p-dots{display:flex;justify-content:center;gap:7px;margin-top:10px;padding-top:6px}
+.pdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s;flex-shrink:0}
+.pdot.on{background:white;width:22px;border-radius:4px}
+
+/* Gradient scene backgrounds */
+.g-coral{background:linear-gradient(165deg,#C41818 0%,#E83030 40%,#FF6868 75%,#FFB0B0 100%)}
+.g-night{background:linear-gradient(165deg,#08051E 0%,#180E50 40%,#2E1A88 75%,#4A30A8 100%)}
+.g-forest{background:linear-gradient(165deg,#082A14 0%,#1A5E30 40%,#2E9050 75%,#50C878 100%)}
+.g-amber{background:linear-gradient(165deg,#7A2E00 0%,#B84800 40%,#E86800 75%,#FFA840 100%)}
+.g-ocean{background:linear-gradient(165deg,#032050 0%,#0850A0 40%,#1080D8 75%,#38B0FF 100%)}
+.g-violet{background:linear-gradient(165deg,#2A0A5E 0%,#4A1898 40%,#6A30CC 75%,#9A68FF 100%)}
+.g-teal{background:linear-gradient(165deg,#042828 0%,#0A5858 40%,#1090A0 75%,#30C8CC 100%)}
+.g-rose{background:linear-gradient(165deg,#5E0828 0%,#9A1048 40%,#CC2868 75%,#FF70A8 100%)}
+.g-sky{background:linear-gradient(165deg,#083858 0%,#1068A8 40%,#28A0E8 75%,#70D0FF 100%)}
+
+/* ═══ ONBOARDING ═══ */
+#s-onboard .ls-panel{height:58%;padding-top:22px}
+.ob-logo{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.ob-logo-ico{width:38px;height:38px;background:var(--brand);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ob-logo-txt{font-size:15px;font-weight:800;color:white}
+.ob-logo-sub{font-size:11px;color:rgba(255,255,255,.5)}
+
+/* ═══ PROFILE ═══ */
+#s-profile{background:var(--bg)}
+.app-bar{padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;background:var(--bg)}
+.app-back{width:40px;height:40px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);flex-shrink:0;border:none;font-family:inherit;color:var(--ink)}
+.app-title{font-size:18px;font-weight:800;color:var(--ink)}
+.pscroll{flex:1;overflow-y:auto;padding:4px 22px 44px}
+.pscroll::-webkit-scrollbar{width:0}
+.phd{font-size:24px;font-weight:900;color:var(--ink);margin-bottom:5px;letter-spacing:-.4px}
+.psd{font-size:14px;color:var(--ink3);margin-bottom:22px}
+.ccard{background:white;border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 3px 16px rgba(0,0,0,.07)}
+.ccard-h{font-size:12px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+.flbl{font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.finput{width:100%;padding:13px 15px;border:2px solid var(--line);border-radius:14px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;background:var(--bg);margin-bottom:16px;transition:border-color .15s}
+.finput:focus{border-color:var(--brand);background:white}
+.srow{display:flex;flex-direction:column;gap:8px}
+.spill{padding:12px 15px;border:2px solid var(--line);border-radius:13px;background:var(--bg);cursor:pointer;font-family:inherit;text-align:left;transition:all .12s}
+.spill.sel{border-color:var(--brand);background:var(--brand-lt)}
+.spill-t{font-size:14px;font-weight:700;color:var(--ink)}
+.spill.sel .spill-t{color:var(--brand)}
+.add-ch{display:flex;align-items:center;gap:8px;width:100%;padding:15px;background:transparent;border:2px dashed var(--line);border-radius:16px;font-size:14px;font-weight:700;color:var(--ink3);cursor:pointer;font-family:inherit;margin-bottom:22px}
+.add-ch:active{border-color:var(--brand);color:var(--brand)}
+.btn-p{width:100%;padding:17px;background:var(--brand);color:white;border:none;border-radius:18px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:12px;box-shadow:0 6px 20px rgba(42,107,90,.3);transition:all .15s}
+.btn-p:active{transform:scale(.975);box-shadow:none}
+.skip-btn{width:100%;padding:12px;background:transparent;color:var(--ink3);border:none;font-size:13px;cursor:pointer;font-family:inherit}
+
+/* ═══ CHILD TOGGLE ═══ */
+.ctw{padding:8px 22px 4px;flex-shrink:0}
+.ctr{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.ctr::-webkit-scrollbar{display:none}
+.ctp{flex-shrink:0;padding:7px 16px;border-radius:20px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);font-size:13px;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .12s;backdrop-filter:blur(8px)}
+.ctp.on{background:rgba(255,255,255,.92);border-color:white;color:var(--ink)}
+/* landing variant */
+.ctp-light{border-color:var(--line);background:white;color:var(--ink2)}
+.ctp-light.on{background:var(--brand);border-color:var(--brand);color:white}
+
+/* ═══ LANDING ═══ */
+#slanding{background:var(--bg)}
+.land-scene{position:absolute;top:0;left:0;right:0;height:200px;overflow:hidden}
+.land-card{position:absolute;bottom:0;left:0;right:0;background:white;border-radius:28px 28px 0 0;padding:22px 22px 36px;box-shadow:0 -4px 32px rgba(0,0,0,.1)}
+.land-ey{font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.land-h{font-size:26px;font-weight:900;color:var(--ink);line-height:1.18;margin-bottom:6px;letter-spacing:-.4px}
+.land-sub{font-size:14px;color:var(--ink3);margin-bottom:20px;line-height:1.5}
+.tcards{display:flex;flex-direction:column;gap:10px}
+.tc{border-radius:18px;padding:16px;display:flex;gap:14px;align-items:center;cursor:pointer;background:var(--bg);border:2px solid transparent;transition:all .12s}
+.tc:active{border-color:var(--brand);transform:scale(.977)}
+.tico{width:48px;height:48px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.tca .tico{background:linear-gradient(135deg,#FFE4CC,#FFD0A8)}
+.tcb .tico{background:linear-gradient(135deg,#CCE8FF,#B8D8FF)}
+.tcc .tico{background:linear-gradient(135deg,#D0FFEE,#A8F0D8)}
+.tc-b{flex:1}.ttl{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:2px}
+.tsub{font-size:12px;color:var(--ink3)}
+.tarrw{font-size:20px;color:#CCC}
+.ct-land{position:absolute;top:54px;left:0;right:0;z-index:20;display:none}
+
+/* ═══ CHALLENGES ═══ */
+#schall{background:var(--bg)}
+.chw{flex:1;overflow-y:auto;padding:4px 22px 40px}
+.chw::-webkit-scrollbar{width:0}
+.proof-bar{background:transparent;border-radius:0;padding:0 0 14px;margin-bottom:14px;font-size:13px;color:var(--brand);font-weight:700;display:flex;align-items:center;gap:8px}
+.chlist{display:flex;flex-direction:column;gap:10px}
+.chi{background:white;border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.06);transition:all .12s;border:1px solid var(--line)}
+.chi:active{border-color:var(--brand);transform:scale(.977)}
+.che{font-size:26px;width:38px;text-align:center;flex-shrink:0}
+.chb{flex:1}.cht{font-size:15px;font-weight:800;color:var(--ink)}.chs{font-size:13px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.chev{font-size:20px;color:#CCC}
+
+/* ═══ VIDEO REELS ═══ */
+#svideo{position:absolute;inset:0}
+.reel-slide{position:absolute;inset:0;display:flex;flex-direction:column}
+.reel-scene{position:absolute;top:0;left:0;right:0;height:55%;overflow:hidden}
+.reel-face{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:96px;line-height:1;animation:floatY 4s ease-in-out infinite;filter:drop-shadow(0 6px 24px rgba(0,0,0,.4));z-index:5}
+.reel-panel{position:absolute;bottom:0;left:0;right:0;height:50%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:22px 22px 28px;z-index:10}
+.reel-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between}
+.reel-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(0,0,0,.35);color:rgba(255,255,255,.8);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;backdrop-filter:blur(8px);margin-bottom:10px}
+.reel-name{font-size:20px;font-weight:900;color:white;margin-bottom:2px;letter-spacing:-.2px}
+.reel-role{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:12px;font-weight:600}
+.reel-quote{font-size:16px;color:rgba(255,255,255,.9);line-height:1.6;font-style:italic;margin-bottom:16px}
+.reel-bar{height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.reel-prog{height:100%;background:rgba(255,255,255,.8);border-radius:2px;width:0;transition:width .5s}
+.reel-hint{font-size:12px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:4px}
+.reel-next-btn{width:100%;padding:14px;background:white;color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+.reel-dots{display:flex;gap:5px;margin-bottom:10px}
+.rdot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s}
+.rdot.on{background:white;width:16px;border-radius:3px}
+/* swipe hints */
+.reel-sh{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);color:white;font-size:11px;font-weight:800;padding:5px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .1s;z-index:20;text-transform:uppercase;letter-spacing:.4px}
+.reel-sh-n{right:14px}
+.reel-sh-b{left:14px}
+
+/* ═══ TIP PLAYER ═══ */
+#s-tips{position:absolute;inset:0}
+.tp-slide{position:absolute;inset:0;display:flex;flex-direction:column}
+.tp-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.tp-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:18px 22px 28px;overflow-y:auto;z-index:10}
+.tp-panel::-webkit-scrollbar{width:0}
+.tp-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between}
+.tp-tonight{display:inline-flex;align-items:center;gap:5px;background:rgba(255,200,0,.25);color:rgba(255,230,100,.95);font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,200,0,.3);width:fit-content}
+.tp-h{font-size:21px;font-weight:900;color:white;line-height:1.22;margin-bottom:10px;letter-spacing:-.2px}
+.tp-b{font-size:14px;color:rgba(255,255,255,.78);line-height:1.65;margin-bottom:12px}
+.tp-why{background:rgba(255,255,255,.07);border-radius:12px;padding:11px 13px;margin-bottom:14px;border:1px solid rgba(255,255,255,.1)}
+.tp-why-l{font-size:10px;font-weight:800;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.tp-why-t{font-size:13px;color:rgba(255,255,255,.78);line-height:1.5}
+.tp-try{width:100%;padding:15px;background:white;color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px}
+.tp-try:active{transform:scale(.975)}
+.tp-saved-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 28px 40px;z-index:25;animation:slideUp .4s ease both}
+.tp-saved-ico{font-size:64px;margin-bottom:16px;animation:pulseGlow 2s ease-in-out infinite}
+.tp-saved-h{font-size:22px;font-weight:900;color:white;margin-bottom:8px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.tp-saved-s{font-size:14px;color:rgba(255,255,255,.75);line-height:1.55;margin-bottom:6px}
+.tp-saved-sub{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:24px}
+.tp-saved-next{width:100%;padding:14px;background:rgba(255,255,255,.9);color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+
+/* ═══ PREMIUM TIMER ═══ */
+.timer-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0 4px}
+.timer-rings{position:relative;width:190px;height:190px;margin-bottom:22px}
+.timer-svg{width:190px;height:190px}
+.tr-outer{fill:none;stroke:rgba(255,255,255,.05);stroke-width:2}
+.tr-track{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.tr-prog{fill:none;stroke:white;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.tr-prog.running{animation:ringPulse 1.5s ease-in-out infinite}
+.timer-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.t-time{font-size:40px;font-weight:900;color:white;letter-spacing:-2px;line-height:1;text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.t-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.6px}
+.timer-controls{display:flex;gap:10px;align-items:center}
+.timer-start{height:52px;padding:0 32px;background:white;color:var(--ink);border:none;border-radius:26px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.timer-start:active{transform:scale(.96)}
+.timer-rst{width:44px;height:44px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:white;border:none;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);font-family:inherit;transition:all .15s}
+.timer-rst:active{background:rgba(255,255,255,.25)}
+.timer-done{display:flex;flex-direction:column;align-items:center;text-align:center;animation:timerComplete .6s ease}
+.td-ico{font-size:60px;margin-bottom:14px}
+.td-h{font-size:22px;font-weight:900;color:white;margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.td-s{font-size:14px;color:rgba(255,255,255,.7);line-height:1.55;margin-bottom:22px}
+
+/* ═══ GROUNDING ═══ */
+#s-grounding{position:absolute;inset:0}
+.gp-slide{position:absolute;inset:0;display:flex;flex-direction:column}
+.gp-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.gp-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:18px 22px 28px;overflow-y:auto;z-index:10}
+.gp-panel::-webkit-scrollbar{width:0}
+.gp-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between}
+.gp-for-you{font-size:11px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.gp-h{font-size:22px;font-weight:900;color:white;line-height:1.22;margin-bottom:8px;letter-spacing:-.2px}
+.gp-b{font-size:14px;color:rgba(255,255,255,.75);line-height:1.65;margin-bottom:16px}
+
+/* ═══ THREE SHIFTS ═══ */
+#s-shifts{position:absolute;inset:0}
+.sh-slide{position:absolute;inset:0}
+.sh-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.sh-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:18px 22px 32px;overflow-y:auto;z-index:10}
+.sh-panel::-webkit-scrollbar{width:0}
+.sk-item{display:flex;align-items:flex-start;gap:13px;padding:14px;background:rgba(255,255,255,.08);border-radius:16px;margin-bottom:10px;cursor:pointer;transition:all .14s;border:1.5px solid rgba(255,255,255,.1)}
+.sk-item.chk{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3)}
+.sk-chk{width:26px;height:26px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;color:white}
+.sk-item.chk .sk-chk{background:white;border-color:white;color:var(--brand)}
+.sk-txt{font-size:14px;color:rgba(255,255,255,.85);line-height:1.5;font-weight:600}
+.sk-item.chk .sk-txt{color:rgba(255,255,255,.55)}
+
+/* ═══ WELLBITS ALLY INVITE ═══ */
+#s-ally{background:#FFFFFF;overflow:hidden}
+.ally-topbar{padding:48px 0 8px;text-align:center;font-size:11px;color:#6B7280;font-weight:700;letter-spacing:.4px;flex-shrink:0}
+.ally-scroll{flex:1;overflow-y:auto;padding:0 24px 60px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ally-scroll::-webkit-scrollbar{width:0}
+.ally-avatar{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 0 8px}
+.ally-avatar img{width:64px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2))}
+.ally-h{font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;font-family:'Plus Jakarta Sans',sans-serif}
+.ally-h span{color:#845EF7}
+.ally-sub{font-size:12px;color:#6B7280;margin-bottom:16px}
+.ally-input{width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:14px;font-size:14px;font-family:inherit;color:#1A1B2E;background:white;outline:none;margin-bottom:12px;text-align:center;transition:border .2s}
+.ally-input:focus{border-color:#845EF7}
+.ally-chars{display:flex;gap:8px;width:100%;margin-bottom:16px}
+.ally-char{flex:1;background:#fff;border:2px solid #E5E7EB;border-radius:16px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.ally-char.sel{border-color:#845EF7;background:#F2EEFF;box-shadow:0 0 16px rgba(132,94,247,.25)}
+.ally-char-ico{margin-bottom:4px}
+.ally-char-ico img{width:36px;height:auto}
+.ally-char-name{font-size:11px;font-weight:800;color:#1A1B2E}
+.ally-char-desc{font-size:9px;color:#6B7280;margin-top:2px;line-height:1.3}
+.ally-section{width:100%;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px 16px;margin-bottom:16px;text-align:left}
+.ally-section-h{font-size:12px;font-weight:700;color:#1A1B2E;margin-bottom:6px}
+.ally-section-p{font-size:11px;color:#6B7280;line-height:1.5}
+.ally-section-p b{color:#845EF7}
+.ally-btn-primary{width:100%;padding:16px;background:#51CF66;color:white;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:default;font-family:inherit;margin-bottom:10px;box-shadow:0 4px 0 #3BA556,0 0 16px rgba(81,207,102,.25)}
+.ally-bridge{width:100%;background:#F0FAF5;border:2px solid var(--brand);border-radius:14px;padding:14px 16px;cursor:pointer;font-family:inherit;transition:all .12s;text-align:left}
+.ally-bridge:active{background:#DCFCE7;transform:scale(.977)}
+.ally-bridge-q{font-size:13px;color:var(--ink2);margin-bottom:4px;line-height:1.4}
+.ally-bridge-cta{font-size:14px;font-weight:800;color:var(--brand)}
+
+/* ═══ WEEK LATER ═══ */
+#slater{background:url(Assets/Images/wallpaper/6acda8c72bc8b5b3a2dd1acf50b4d0a2.jpg) center/cover no-repeat}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.28)}
+.linner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%}
+.lclock{text-align:center;margin:44px 0 18px}
+.ltime{font-size:72px;font-weight:200;color:white;letter-spacing:-2px;line-height:1}
+.ldate{font-size:15px;color:rgba(255,255,255,.85);font-weight:600;margin-top:4px}
+.lbadge{background:rgba(255,255,255,.22);color:white;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;display:inline-block;margin-top:10px}
+.lnotif{background:rgba(255,255,255,.97);border-radius:20px;padding:15px 16px;display:flex;gap:12px;align-items:flex-start;margin:18px 16px 0;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.2);animation:slideUp .4s .2s ease both}
+.breakopt{text-align:center;margin-top:16px;padding:0 24px}
+.breaktxt{font-size:13px;color:rgba(255,255,255,.55);line-height:1.5}
+.breaklink{color:rgba(255,255,255,.85);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.ciopts-w{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.ciopt{background:white;border:2px solid var(--line);border-radius:14px;padding:13px 16px;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;transition:all .12s;font-family:inherit;width:100%;text-align:left}
+.ciopt:active{background:var(--brand-lt);border-color:var(--brand)}
+
+/* ═══ FLAT SCREEN SYSTEM ═══ */
+.screen.flat{background:var(--bg);position:absolute;inset:0;flex-direction:column}
+.screen.flat.active{display:flex}
+.flat .app-bar{background:var(--bg)}
+.flat-scroll{flex:1;overflow-y:auto;padding:4px 22px 44px}
+.flat-scroll::-webkit-scrollbar{width:0}
+/* Flat text */
+.f-pill{display:inline-flex;align-items:center;gap:6px;background:var(--brand-lt);color:var(--brand);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.3px}
+.f-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);flex-shrink:0}
+.f-h{font-size:24px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:10px;letter-spacing:-.3px}
+.f-sub{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:18px}
+.f-note{font-size:12px;color:var(--ink3);text-align:center;margin-top:14px;line-height:1.5}
+.f-eyebrow{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+/* Flat cards */
+.f-card{background:white;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--line)}
+.f-card-lbl{font-size:10px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.f-card-txt{font-size:14px;color:var(--ink2);line-height:1.6}
+/* Flat buttons */
+.f-btn{width:100%;padding:17px;background:var(--brand);color:white;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px;box-shadow:0 4px 16px rgba(69,190,147,.25)}
+.f-btn:active{transform:scale(.975);box-shadow:none}
+.f-btn-ghost{width:100%;padding:15px;background:white;color:var(--ink2);border:2px solid var(--line);border-radius:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px}
+.f-btn-ghost:active{background:var(--brand-lt);border-color:var(--brand)}
+.f-btn-white{width:100%;padding:15px;background:white;color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.f-btn-white:active{transform:scale(.975)}
+/* Flat dots */
+.f-dots{display:flex;justify-content:center;gap:7px;margin-top:10px;padding-top:6px}
+.fdot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:all .25s;flex-shrink:0}
+.fdot.on{background:var(--brand);width:22px;border-radius:4px}
+/* Flat counter */
+.f-count{background:white;border:1px solid var(--line);border-radius:12px;padding:5px 12px;color:var(--ink3);font-size:12px;font-weight:800}
+/* Flat quote */
+.f-quote{background:white;border-radius:14px;padding:14px;margin-bottom:16px;border-left:4px solid var(--brand);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.f-quote-txt{font-size:14px;color:var(--ink);line-height:1.65;font-style:italic;margin-bottom:6px}
+.f-quote-attr{font-size:11px;color:var(--ink3)}
+/* Flat tip styles */
+.f-tonight{display:inline-flex;align-items:center;gap:5px;background:#FFF7E6;color:#B8860B;font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.3px;border:1px solid #FFE4A0;width:fit-content}
+.f-why{background:white;border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1px solid var(--line)}
+.f-why-l{font-size:10px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.f-why-t{font-size:13px;color:var(--ink2);line-height:1.5}
+/* Flat reel */
+.f-reel-tag{display:inline-flex;align-items:center;gap:5px;background:var(--brand-lt);color:var(--brand);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.f-reel-name{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:2px;letter-spacing:-.2px}
+.f-reel-role{font-size:13px;color:var(--ink3);margin-bottom:12px;font-weight:600}
+.f-reel-quote{font-size:16px;color:var(--ink2);line-height:1.6;font-style:italic;margin-bottom:16px}
+.f-reel-bar{height:3px;background:var(--line);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.f-reel-prog{height:100%;background:var(--brand);border-radius:2px;width:0;transition:width .5s}
+/* Flat timer */
+.f-timer .tr-track{stroke:var(--line)}
+.f-timer .tr-prog{stroke:var(--brand)}
+.f-timer .tr-prog.running{animation:ringPulse 1.5s ease-in-out infinite}
+.f-timer .t-time{color:var(--ink);text-shadow:none}
+.f-timer .t-lbl{color:var(--ink3)}
+.f-timer .timer-start{background:var(--brand);color:white;box-shadow:0 4px 16px rgba(69,190,147,.3)}
+.f-timer .timer-rst{background:white;color:var(--ink2);border:1.5px solid var(--line);backdrop-filter:none}
+/* Flat saved overlay */
+.f-saved{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 28px 40px;z-index:25;animation:slideUp .4s ease both;background:var(--bg)}
+.f-saved-ico{font-size:64px;margin-bottom:16px}
+.f-saved-h{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:8px}
+.f-saved-s{font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:6px}
+.f-saved-sub{font-size:12px;color:var(--ink3);margin-bottom:24px}
+/* Flat starter kit items */
+.f-sk-item{display:flex;align-items:flex-start;gap:13px;padding:14px;background:white;border-radius:16px;margin-bottom:10px;cursor:pointer;transition:all .14s;border:2px solid var(--line)}
+.f-sk-item.chk{background:var(--brand-lt);border-color:var(--brand)}
+.f-sk-chk{width:26px;height:26px;border-radius:50%;border:2.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;color:var(--brand)}
+.f-sk-item.chk .f-sk-chk{background:var(--brand);border-color:var(--brand);color:white}
+.f-sk-txt{font-size:14px;color:var(--ink);line-height:1.5;font-weight:600}
+.f-sk-item.chk .f-sk-txt{color:var(--brand)}
+/* Swipe hints flat */
+.f-sh{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.06);color:var(--ink2);font-size:11px;font-weight:800;padding:5px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .1s;z-index:20;text-transform:uppercase;letter-spacing:.4px}
+.f-sh-n{right:14px}.f-sh-b{left:14px}
+/* Flat grounding timer done */
+.f-td-ico{font-size:60px;margin-bottom:14px}
+.f-td-h{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:8px}
+.f-td-s{font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:22px}
+</style>
+</head>
+<body>
+
+
+<div class="phone"><div class="notch"></div>
+
+<!-- LOCK SCREEN — Wellbits Invite -->
+<div class="screen active" id="sh" style="background:url(Assets/Images/wallpaper/6acda8c72bc8b5b3a2dd1acf50b4d0a2.jpg) center/cover no-repeat">
+  <div class="dim"></div>
+  <div class="linner">
+    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">▲▲ WiFi 🔋</span></div>
+    <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Monday, 23 March</div></div>
+    <div class="lnotif" onclick="go('s-ally')" style="animation:slideUp .4s 2.5s ease both">
+      <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Icon/Icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
+      <div class="nb"><div class="nr"><span class="na">Wellbits</span><span class="nw">now</span></div><div class="nt">Ethan invited you to join!</div><div class="nm">Your child wants you as their Quest Ally. Tap to join.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ALLY INVITE -->
+<div class="screen" id="s-ally">
+  <div class="ally-topbar"><button class="app-back" onclick="go('sh')" style="position:absolute;left:18px;top:46px">‹</button></div>
+  <div class="ally-scroll">
+    <div class="ally-avatar"><img src="Assets/Characters/AURA.png"></div>
+    <div class="ally-h"><span>Ethan</span> wants you<br>on their quest!</div>
+    <div class="ally-sub">Choose your Ally character</div>
+    <input class="ally-input" type="text" placeholder="Enter your name" value="Sarah" readonly>
+    <div class="ally-chars">
+      <div class="ally-char sel" onclick="pickChar(this)">
+        <div class="ally-char-ico"><img src="Assets/Parent_Allies/Aegis.png"></div>
+        <div class="ally-char-name">Aegis</div>
+        <div class="ally-char-desc">Blocks 1 boss attack</div>
+      </div>
+      <div class="ally-char" onclick="pickChar(this)">
+        <div class="ally-char-ico"><img src="Assets/Parent_Allies/Oracle.png"></div>
+        <div class="ally-char-name">Oracle</div>
+        <div class="ally-char-desc">Reveals boss weakness</div>
+      </div>
+      <div class="ally-char" onclick="pickChar(this)">
+        <div class="ally-char-ico"><img src="Assets/Parent_Allies/Valor.png"></div>
+        <div class="ally-char-name">Valor</div>
+        <div class="ally-char-desc">+50% boss damage</div>
+      </div>
+    </div>
+    <div class="ally-section">
+      <div class="ally-section-h">🎯 What you'll do</div>
+      <div class="ally-section-p">Complete simple co-op challenges with <b>Ethan</b> — like cooking together or going for a walk. Takes 10–15 mins. No app needed — everything runs in your browser.</div>
+    </div>
+    <button class="ally-btn-primary">Join as Quest Ally</button>
+    <button class="ally-bridge" onclick="go('s-onboard')">
+      <div class="ally-bridge-q">Want to stay connected as they grow?</div>
+      <div class="ally-bridge-cta">Tips from parents like you</div>
+    </button>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="screen" id="s-onboard">
+  <div class="ls-wrap">
+    <div class="ls-scene g-teal" id="ob-scene"></div>
+    <div class="ls-top"><button class="ls-back" onclick="go('s-ally')">‹</button></div>
+    <div class="ls-panel" style="height:58%">
+      <div class="ob-logo"><div class="ob-logo-ico" style="padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div><div class="ob-logo-txt">Parent for Parent</div><div class="ob-logo-sub">From one parent to another</div></div></div>
+      <div class="p-h">Your child is changing.<br>So is your role.</div>
+      <div class="p-sub">Real stories, honest tips, and small shifts — matched to where you and your child actually are.</div>
+      <button class="p-btn" onclick="go('s-profile')">Set up my profile</button>
+      <button class="p-btn-ghost" onclick="go('slanding')">Just browse for now</button>
+      <div class="p-note">Nothing you enter is shared. A profile just helps us match content to your stage.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="s-profile">
+  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">‹</button><div class="app-title">Your family</div></div>
+  <div class="pscroll">
+    <div class="phd">Tell us about your youth</div>
+    <div class="psd">Optional — skip any time.</div>
+    <div id="children-list"></div>
+    <button class="add-ch" id="add-ch-btn" onclick="addChild()"><span style="font-size:18px">＋</span> Add another child</button>
+    <button class="btn-p" id="save-btn" onclick="saveProfile()" disabled style="opacity:.4;cursor:not-allowed">Save and continue</button>
+    <button class="skip-btn" onclick="go('slanding')">Skip this</button>
+  </div>
+</div>
+
+<!-- LANDING -->
+<div class="screen" id="slanding" style="background:var(--bg)">
+  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">‹</button><div class="app-title">Parent for Parent</div></div>
+  <div id="ct-land" class="ct-land" style="position:relative;top:auto;left:auto;right:auto"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-land"></div></div></div>
+  <div style="flex:1;overflow-y:auto;padding:4px 22px 40px">
+    <div class="phd" id="land-h">Where is your family right now?</div>
+    <div class="psd">Pick your child's stage. We'll show you what other parents in the same place actually tried.</div>
+    <div class="tcards">
+      <div class="tc tca" onclick="pickT(1)"><div class="tico">🌱</div><div class="tc-b"><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">›</div></div>
+      <div class="tc tcb" onclick="pickT(2)"><div class="tico">🔄</div><div class="tc-b"><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">›</div></div>
+      <div class="tc tcc" onclick="pickT(3)"><div class="tico">🚀</div><div class="tc-b"><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">›</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHALLENGES -->
+<div class="screen" id="schall" style="background:var(--bg)">
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('spov')">‹</button><div class="app-title">What's on your mind?</div></div>
+  <div id="ct-ch" style="display:none"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-ch"></div></div></div>
+  <div class="chw">
+    <div class="proof-bar">👥 <span id="proof-txt"></span></div>
+    <div class="chlist" id="chlist"></div>
+  </div>
+</div>
+
+<!-- SELF-CHECK -->
+<div class="screen" id="spov" style="background:var(--bg)">
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slanding')">‹</button></div>
+  <!-- Background content -->
+  <div style="flex:1;padding:4px 22px 44px">
+    <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What most parents notice at this stage</div>
+    <div style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px" id="sc-title"></div>
+    <div style="font-size:15px;color:var(--ink2);line-height:1.65" id="sc-txt"></div>
+  </div>
+  <!-- Overlay popup (dark) -->
+  <div id="spov-overlay" style="position:absolute;bottom:0;left:0;right:0;z-index:30;transform:translateY(100%);opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1), opacity .3s ease">
+    <div style="background:rgba(8,6,18,.95);backdrop-filter:blur(28px);border-radius:24px 24px 0 0;padding:28px 22px 36px;box-shadow:0 -8px 40px rgba(0,0,0,.25);text-align:center">
+      <div style="width:40px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:0 auto 16px"></div>
+      <div style="font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Before you go in</div>
+      <div style="font-size:22px;font-weight:900;color:white;line-height:1.2;margin-bottom:8px;letter-spacing:-.3px">How are you doing<br>right now?</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:22px">What you bring to the conversation matters as much as what you say.</div>
+      <button class="p-btn" onclick="go('schall')">I'm good</button>
+      <button class="p-btn-ghost" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
+      <div style="font-size:12px;color:rgba(255,255,255,.35);margin-top:12px;line-height:1.5">No judgement. Both paths lead to the same place.</div>
+    </div>
+  </div>
+</div>
+
+<!-- YOUTH POV -->
+<div class="screen flat" id="s-pov">
+  <div class="app-bar"><button class="app-back" onclick="go('schall')">‹</button><div class="app-title">Their world right now</div></div>
+  <div class="flat-scroll">
+    <div class="f-eyebrow">From their side</div>
+    <div class="f-sub" id="pov-insight" style="font-size:17px;font-weight:700;color:var(--ink);line-height:1.65;letter-spacing:0"></div>
+    <div class="f-quote" style="margin-bottom:18px">
+      <div class="f-quote-txt" id="pov-quote"></div>
+      <div class="f-quote-attr" id="pov-attr"></div>
+    </div>
+    <button class="f-btn" onclick="buildVideoScreen();go('svideo')">See what parents tried</button>
+  </div>
+</div>
+
+<!-- VIDEO REELS -->
+<div class="screen flat" id="svideo">
+  <div id="reel-container" style="flex:1;position:relative;overflow:hidden"></div>
+</div>
+
+<!-- TIP PLAYER -->
+<div class="screen flat" id="s-tips">
+  <div id="tp-container" style="flex:1;position:relative;overflow:hidden"></div>
+</div>
+
+<!-- THREE SHIFTS -->
+<div class="screen" id="s-shifts" style="background:#0d0b18">
+  <div style="padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0">
+    <button class="ls-back" onclick="go('svideo')">‹</button>
+    <div style="font-size:18px;font-weight:800;color:white;flex:1">Your starter kit</div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:4px 22px 44px;scrollbar-width:none">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,255,255,.15)"><div style="width:6px;height:6px;border-radius:50%;background:var(--brand)"></div>Almost done</div>
+    <div style="font-size:24px;font-weight:900;color:white;line-height:1.2;margin-bottom:10px;letter-spacing:-.3px">Three things to try this week</div>
+    <div style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:18px">Tick what feels doable. One is enough to start.</div>
+    <div id="sk-items"></div>
+    <button class="p-btn" style="margin-top:6px" onclick="go('slater')">Done</button>
+    <div style="font-size:13px;color:rgba(255,255,255,.4);text-align:center;margin-top:14px;line-height:1.5">We'll check in next week</div>
+  </div>
+</div>
+
+<!-- GROUNDING PLAYER -->
+<div class="screen flat" id="s-grounding">
+  <div id="gp-container" style="flex:1;position:relative;overflow:hidden"></div>
+</div>
+
+<!-- WEEK LATER -->
+<div class="screen" id="slater">
+  <div class="dim"></div>
+  <div class="linner">
+    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">▲▲ WiFi 🔋</span></div>
+    <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Sunday, 30 March</div><div><span class="lbadge">One week on</span></div></div>
+    <div class="lnotif" onclick="go('swaci')">
+      <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
+      <div class="nb"><div class="nr"><span class="na">Parent for Parent</span><span class="nw">now</span></div><div class="nt">Let's check in</div><div class="nm">How did last week go? Even if nothing changed, that's worth knowing.</div></div>
+    </div>
+    <div class="breakopt"><p class="breaktxt">Life got busy? <span class="breaklink" onclick="showBreak()">Pause for a month — no pressure.</span></p></div>
+  </div>
+</div>
+
+<!-- CHECK-IN -->
+<div class="screen flat" id="swaci" style="background:var(--bg)">
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">‹</button><div class="app-title">Check-in</div></div>
+  <div class="flat-scroll" id="ci-scroll">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="width:56px;height:56px;border-radius:16px;overflow:hidden;margin:0 auto 12px;box-shadow:0 2px 12px rgba(0,0,0,.1)"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div>
+      <div style="font-size:11px;color:var(--ink3);font-weight:600">Sunday, 30 March</div>
+    </div>
+    <div style="background:white;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--line)" id="ci-q">
+      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div>
+      <div style="font-size:16px;color:var(--ink);line-height:1.55">Hey — how did the week go? Even if nothing shifted, that's fine to say.</div>
+    </div>
+    <div id="ciopts">
+      <div style="font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">How are you feeling?</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="ciopt" onclick="checkin('w')">Something actually shifted</button>
+        <button class="ciopt" onclick="checkin('t')">Still figuring it out</button>
+        <button class="ciopt" onclick="checkin('r')">Honestly it was a rough week</button>
+        <button class="ciopt" onclick="checkin('role')">I feel like how I show up needs to change</button>
+        <button class="ciopt" onclick="checkin('m')">I need something different</button>
+      </div>
+    </div>
+    <div id="ci-response"></div>
+  </div>
+</div>
+
+</div><!-- /phone -->
+<script>
+// ════ DATA ════
+const PROOF={1:'Over 400 Sec 1 parents found something useful here this week',2:'Over 300 Sec 2–3 parents found something here this week',3:'Over 250 parents heading to JC or Poly found something useful'};
+const STAGE_TITLE={1:'The rules that worked before are shifting.',2:'The distance is real — but it\'s not rejection.',3:'They\'re almost grown. The relationship is evolving.'};
+const STAGE_SUB={1:'Sec 1',2:'Sec 2–3',3:'JC / Poly'};
+const STAGE_CTX={1:'The structure that worked in primary school is shifting. Most parents feel a mix of relief and worry — that\'s normal. The question is how to loosen the right things at the right time.',2:'Sec 2–3 is often when parents feel most shut out. The distance is real, but it\'s not rejection. Parents who stay connected at this stage stay curious rather than pushing.',3:'By JC or Poly, conversations either evolve or they stop. Parents who stay in the picture tend to become someone their child chooses to talk to — not someone they have to report to.'};
+const CHALLENGES={1:[{e:'📱',t:'The phone never goes down',s:'Before school, after school, at dinner. Always there.'},{e:'🌙',t:'Bedtime keeps getting later',s:'10pm became 11, then midnight. Not sure how.'},{e:'🤐',t:'They\'ve gone quiet on me',s:'Short answers. Closed door. Hard to reach.'},{e:'⏰',t:'After school is a black hole',s:'Student care ended. Those hours are unaccounted for.'}],2:[{e:'🔥',t:'Every conversation becomes a fight',s:'You say one thing. They react to something else entirely.'},{e:'📱',t:'Screen time has gone out of control',s:'Phone during dinner, homework, past midnight.'},{e:'🙈',t:'I feel like I\'m always the bad guy',s:'Every limit I set causes a fight.'},{e:'😴',t:'They\'re exhausted but won\'t sleep',s:'Up past 1am. Impossible to wake up in the morning.'}],3:[{e:'💬',t:'I want to help but don\'t know how',s:'Anything I say lands wrong or gets brushed off.'},{e:'🤫',t:'They say they\'re fine — but they\'re not',s:'You can see it. They won\'t let you in.'},{e:'🌙',t:'Sleep has completely broken down',s:'Studying past 2am, crashing on weekends.'},{e:'📏',t:'They push back on everything',s:'Every suggestion becomes a negotiation.'}]};
+const POV={'1-0':{insight:'After a full day of new school and new pressures, the phone is the one thing that feels familiar and fully theirs. It\'s how they decompress.',quote:'"I know it\'s a bad habit. But if I can\'t sleep I just get fed up and use my phone. I feel like it makes me tired eventually."',attr:'Youth participant, 13yo, M — Discovery IDI'},'1-2':{insight:'Coming home and going quiet is often the first moment of the day they\'ve had to just be, without being watched or evaluated.',quote:'"Every time my mom talks to me it\'s "did you eat", "go sleep", "stop your phone." I just tune it out now."',attr:'Youth participant, 14yo, F — Discovery IDI'},'2-0':{insight:'When conversations always end in a fight, youth learn to skip the conversation. They\'re not dismissing you — they\'re anticipating the script.',quote:'"I trust my friends\' opinions more. They understand what I\'m going through. My parents... they just don\'t get it."',attr:'Youth participant, 15yo, M — Discovery IDI'},'2-2':{insight:'By Sec 2, friends understand the same pressures and speak the same language. This isn\'t rejection — it\'s development.',quote:'"We go to the library to \'study\' but honestly half the time everyone is on their phone. It\'s just being together."',attr:'Youth participant, 15yo, M — Discovery IDI'},'3-0':{insight:'Youth at this stage are holding more than they show. Academic pressure, anxiety, worry about the future — most of it invisible to parents.',quote:'"Sec 3 was the worst year. Homework, tuition, CCA, then study for streaming. There\'s no time for anything else."',attr:'Youth participant, 16yo, M — Discovery IDI'}};
+const POV_DEFAULT={insight:'Whatever behaviour you\'re seeing, there\'s usually something underneath it. What looks like defiance is often exhaustion.',quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',attr:'Youth participant, 15yo, F — Discovery IDI'};
+
+const CONTENT={
+  '1-0':{e:'#C84020',videos:[{f:'🧕',n:'Norita',r:'Mum of 13yo',c:'"One small thing changed bedtime without a single argument."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'👨',n:'Ryan',r:'Dad of 14yo',c:'"I stopped making it a rule. I made it a routine instead."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Kartika',r:'Mum of 13yo',c:'"The wind-down took two weeks. Then it just happened."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'👨',n:'Augustine',r:'Dad of 14yo',c:'"A 30-min heads-up instead of a command. That was it."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    empathy:'The phone fills a gap. After a full day of new school and new pressures, it\'s the one thing that feels familiar and fully theirs.',
+    tips:[{g:'g-coral',icon:'🌙',tonight:true,h:'Give a heads-up, not a command.',b:'Tonight: "30 more minutes, then phones to charge." Not a rule — just a heads-up. Removes most of the friction.',why:'Moving from command to heads-up is the first step from rule-setter to guide.'},{g:'g-forest',icon:'✨',tonight:false,h:'A physical cue works better than a rule.',b:'Something beside the bed — a book, skincare, anything — signals wind-down without needing a conversation.',why:'When structure lives in the environment, it stops being about your relationship.'},{g:'g-violet',icon:'📊',tonight:false,h:'Let the data do the talking.',b:'Track sleep together for a week. When they own the reason, they own the habit.',why:'When they own it, you\'ve made the handover. That\'s the goal.'}]},
+  '1-2':{e:'#205880',videos:[{f:'🧕',n:'Sureena',r:'Mum of 13yo',c:'"I stopped asking how school was. That actually helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'👨',n:'Calvin',r:'Dad of 13yo',c:'"Being in the same room, not talking, rebuilt things slowly."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Bhavani',r:'Mum of 13yo',c:'"I changed one thing. The rest followed on its own."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'👨',n:'Ryan',r:'Dad of 14yo',c:'"I learned to read the room before I opened my mouth."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    empathy:'Coming home and going quiet isn\'t shutting you out. It\'s often the first moment of the day they\'ve had to just be.',
+    tips:[{g:'g-amber',icon:'🛋️',tonight:true,h:'Be in the room without needing anything.',b:'No questions. No phone checks. Just physical presence. That\'s the loudest signal you can send to a closed-door kid.',why:'Present without needing a response signals "I\'m here when you\'re ready."'},{g:'g-sky',icon:'💬',tonight:false,h:'Ask about one small thing, not about them.',b:'"Did you watch anything lately?" opens space. "How was school?" puts them on the spot.',why:'Curiosity instead of check-in changes what kind of parent you are in the room.'},{g:'g-forest',icon:'🌱',tonight:false,h:'Small routines beat big conversations.',b:'One show together, a snack at the same time every day. Consistent small moments rebuild connection.',why:'Connection at this age happens sideways, not face-to-face.'}]},
+  '2-0':{e:'#802020',videos:[{f:'🧕',n:'Han Tien',r:'Mum of 15yo',c:'"I stopped arguing. I started asking. Took a month to feel normal."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'},{f:'🧕',n:'Kartika',r:'Mum of 14yo',c:'"I gave up being right. That\'s what kept us connected."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'👨',n:'Ryan',r:'Dad of 15yo',c:'"Months of silence at dinner. This is what changed it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'👨',n:'Calvin',r:'Dad of 14yo',c:'"I used to come in with a point. Now I come in with a question."',bg:'linear-gradient(165deg,#203888,#3060C8,#6098F8)'}],
+    empathy:'What keeps the cycle going is coming in with a point to make. A genuine question changes the dynamic more than any rule.',
+    tips:[{g:'g-coral',icon:'🤫',tonight:true,h:'Ask one question. Then stop.',b:'Ask — then let the silence sit. They\'ll fill it. But only if you don\'t.',why:'Sitting with silence is the hardest part of becoming a guide instead of an enforcer.'},{g:'g-violet',icon:'👁️',tonight:false,h:'Name what you see, not what you want changed.',b:'"I noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open at this stage.'},{g:'g-forest',icon:'📅',tonight:false,h:'Once a week is enough.',b:'One genuinely good conversation a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust. They notice.'}]},
+  '2-2':{e:'#605008',videos:[{f:'🧕',n:'Sureena',r:'Mum of 14yo',c:'"One question unlocked our conversations. I still use it."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'👨',n:'Calvin',r:'Dad of 15yo',c:'"I stopped being the last to know things."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Bhavani',r:'Mum of 14yo',c:'"I made home somewhere she wanted to bring her friends."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'👨',n:'Ryan',r:'Dad of 14yo',c:'"What I stopped doing helped more than what I started."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    empathy:'When friends become everything, the way you matter has shifted. Stay curious, not involved. There\'s a real difference.',
+    tips:[{g:'g-rose',icon:'👫',tonight:true,h:'Ask about their friends, not them.',b:'"How\'s Jamie doing?" lands differently. They reveal more through other people.',why:'Interest in their world without managing it keeps you in the picture.'},{g:'g-amber',icon:'🏠',tonight:false,h:'Make home somewhere friends are welcome.',b:'When home is where nobody gets a lecture, it stays in the picture.',why:'Being in the background of their social life is the right position right now.'},{g:'g-ocean',icon:'🔍',tonight:false,h:'Small signals over formal conversations.',b:'A comment about something they mentioned last week. Small attention tells them the relationship is safe.',why:'Consistency in small things tells them they can come to you when it matters.'}]},
+  '3-0':{e:'#204050',videos:[{f:'🧕',n:'Norita',r:'Mum of 17yo',c:'"I just stayed available. That was enough."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'👨',n:'David',r:'Dad of 16yo',c:'"I made it clear the door was open. That was it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Sureena',r:'Mum of 17yo',c:'"He didn\'t come to me until I stopped pushing. Then he came."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'🧕',n:'Han Tien',r:'Mum of 16yo',c:'"I became someone she chose to talk to."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'}],
+    empathy:'Most youth at this stage are holding more than they show. Being available without pushing is the skill that keeps the door open.',
+    tips:[{g:'g-forest',icon:'🚪',tonight:true,h:'Say it plainly: "I\'m here if you want to."',b:'Sounds like giving up. It isn\'t. It\'s the clearest signal the relationship is safe.',why:'You\'re becoming someone they choose. That\'s the full version of the change.'},{g:'g-ocean',icon:'🤝',tonight:false,h:'Stop solving. Start witnessing.',b:'"That sounds really hard" is a complete response. Sitting with them without fixing is what most parents underestimate.',why:'When you stop fixing, they stop withholding. That\'s the trade at this stage.'},{g:'g-night',icon:'📱',tonight:false,h:'Make contact without a reason.',b:'A voice note, a meme, lunch with no agenda. Low-stakes contact keeps the channel warm.',why:'This is how you stay close without adding to their pressure.'}]}
+};
+const DEFAULT={e:'#383050',videos:[{f:'🧕',n:'Sureena',r:'Mum of 13yo',c:'"I was at my limit too. This is what helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'👨',n:'Calvin',r:'Dad of 14yo',c:'"One small thing changed the whole tone at home."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Bhavani',r:'Mum of 13yo',c:'"I stopped trying to fix it. That\'s when things shifted."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'}],
+  empathy:'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.',
+  tips:[{g:'g-coral',icon:'💡',tonight:true,h:'Try one thing you haven\'t tried before.',b:'Put your own phone down first. Ask one question and stop there. Small shifts change the tone.',why:'Willingness to try something different is the beginning of the change.'},{g:'g-forest',icon:'👁️',tonight:false,h:'Name what you see, not what you want changed.',b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open.'},{g:'g-violet',icon:'📅',tonight:false,h:'Once a week is enough to start.',b:'One good moment a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust.'}]};
+
+const PARENT_IMG={
+  'Norita':'Assets/Images/Videos screenshot/malay_parent_1.png',
+  'Kartika':'Assets/Images/Videos screenshot/indian_parent_2.png',
+  'Sureena':'Assets/Images/Videos screenshot/ig_video_parent_1.png',
+  'Han Tien':'Assets/Images/Videos screenshot/singapore_parent_female_tshirt.png',
+  'Bhavani':'Assets/Images/Videos screenshot/ig_video_parent_4.png',
+  'Ryan':'Assets/Images/Videos screenshot/singapore_parent_male_35.png',
+  'Calvin':'Assets/Images/Videos screenshot/singapore_parent_male_35.png',
+  'Augustine':'Assets/Images/Videos screenshot/singapore_parent_male_35.png',
+  'David':'Assets/Images/Videos screenshot/singapore_parent_male_35.png'
+};
+const STARTER_KIT=[{txt:'One thing I\'m letting them decide for themselves this week.'},{txt:'One conversation I\'m having as a question, not a comment.'},{txt:'One moment I\'m showing up without needing anything back.'}];
+const GROUNDING=[
+  {g:'g-night',icon:'📵',h:'Put your phone down for 10 minutes.',b:'Your nervous system needs a break. Ten minutes. That\'s all.',timer:10},
+  {g:'g-amber',icon:'💌',h:'Text one friend — not about your child.',b:'A meme, a voice note, a "how are you?". You\'ve been pouring out without anyone asking about you.',timer:0},
+  {g:'g-teal',icon:'💧',h:'Get a glass of water. Sit somewhere different.',b:'Not at your desk. Your body carries stress even when your mind thinks it\'s coping.',timer:0}
+];
+const ENCOUR=[{h:'You\'ve got this.',s:'One small step is still a step.'},{h:'You\'re doing more than you think.',s:'Most parents never look this hard for a better way.'},{h:'Good luck.',s:'Even if it\'s messy the first time, you showing up is what matters.'},{h:'Here\'s to a better evening.',s:'Small shifts start exactly like this.'},{h:'One week.',s:'Give it a few days. You might surprise yourself.'}];
+
+// ════ STATE ════
+let T=1,I=0,TITLE='',children=[],activeChild=0,childCount=0;
+let tipIdx=0,tipData=[];let kitItems=[];let videoIdx=0,videoData=[];let groundIdx=0;
+let timerSec=0,timerMax=0,timerInt=null,timerRunning=false;
+const CIRC=2*Math.PI*82; // r=82 → ≈515.2
+
+// ════ SCENE BUILDER ════
+function buildScene(el,gradClass,heroIcon){
+  el.className='ls-scene '+gradClass;
+  el.innerHTML='';
+  // Soft glow blobs
+  const blobs=[{t:-50,r:-40,s:180},{t:30,l:-50,s:130},{b:-30,r:10,s:110}];
+  blobs.forEach(b=>{
+    const d=document.createElement('div');d.className='scene-blob';
+    d.style.cssText=`width:${b.s}px;height:${b.s}px;background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 70%);filter:blur(30px);pointer-events:none;${b.t!==undefined?'top:'+b.t+'px;':''}${b.b!==undefined?'bottom:'+b.b+'px;':''}${b.l!==undefined?'left:'+b.l+'px;':''}${b.r!==undefined?'right:'+b.r+'px;':''}`;
+    el.appendChild(d);
+  });
+  if(heroIcon){
+    const h=document.createElement('div');h.className='scene-hero';h.innerHTML=heroIcon;
+    el.appendChild(h);
+  }
+}
+function buildReelScene(el,bgGrad,faceEmoji){
+  el.className='reel-scene';el.style.background=bgGrad;el.innerHTML='';
+  const blobs=[{t:-30,r:-20,s:150},{t:20,l:-30,s:100}];
+  blobs.forEach(b=>{const d=document.createElement('div');d.style.cssText=`position:absolute;width:${b.s}px;height:${b.s}px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%);filter:blur(25px);pointer-events:none;${b.t!==undefined?'top:'+b.t+'px;':''}${b.l!==undefined?'left:'+b.l+'px;':''}${b.r!==undefined?'right:'+b.r+'px;':''}`;el.appendChild(d);});
+  const face=document.createElement('div');face.className='reel-face';face.textContent=faceEmoji;el.appendChild(face);
+}
+
+// ════ NAV ════
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='swaci')loadCheckin();
+  if(id==='spov'){
+    const overlay=document.getElementById('spov-overlay');
+    if(overlay){overlay.style.transform='translateY(100%)';overlay.style.opacity='0';}
+    setTimeout(()=>{
+      if(overlay){overlay.style.transform='translateY(0)';overlay.style.opacity='1';}
+    },600);
+  }
+}
+function tapNotif(){const n=document.getElementById('notif');n.style.opacity='0';n.style.pointerEvents='none';setTimeout(()=>go('swa'),300);}
+function pickChar(el){document.querySelectorAll('.ally-char').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+
+// ════ PROFILE ════
+function initProfile(){document.getElementById('children-list').innerHTML='';childCount=0;addChild();}
+function addChild(){
+  if(childCount>=3)return;
+  const idx=childCount++;
+  const list=document.getElementById('children-list');
+  const c=document.createElement('div');c.className='ccard';
+  c.innerHTML=`<div class="ccard-h">Child ${idx+1}</div><div class="flbl">Name (optional)</div><input class="finput" id="cn${idx}" placeholder="e.g. Aiden" autocomplete="off"><div class="flbl">Stage</div><div class="srow" id="sr${idx}"><button class="spill" data-t="1" onclick="selStage(${idx},1,this)"><div class="spill-t">Just started Sec 1</div></button><button class="spill" data-t="2" onclick="selStage(${idx},2,this)"><div class="spill-t">Sec 2 or Sec 3</div></button><button class="spill" data-t="3" onclick="selStage(${idx},3,this)"><div class="spill-t">JC or Poly</div></button></div>`;
+  list.appendChild(c);
+  document.getElementById(`cn${idx}`).addEventListener('input',checkProfileValid);
+  if(childCount>=3)document.getElementById('add-ch-btn').style.display='none';
+}
+function selStage(ci,t,btn){document.querySelectorAll(`#sr${ci} .spill`).forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');if(!children[ci])children[ci]={name:'',stage:0};children[ci].stage=t;checkProfileValid();}
+function checkProfileValid(){
+  let valid=false;
+  for(let i=0;i<childCount;i++){const n=document.getElementById(`cn${i}`)?.value.trim();const s=document.querySelector(`#sr${i} .spill.sel`);if(n||s)valid=true;}
+  const btn=document.getElementById('save-btn');if(btn){btn.disabled=!valid;btn.style.opacity=valid?'1':'.4';btn.style.cursor=valid?'pointer':'not-allowed';}
+}
+function saveProfile(){
+  children=[];
+  for(let i=0;i<childCount;i++){const n=document.getElementById(`cn${i}`)?.value.trim()||'';const s=parseInt(document.querySelector(`#sr${i} .spill.sel`)?.dataset.t||0);if(n||s)children.push({name:n||`Child ${i+1}`,stage:s});}
+  buildToggles();
+  if(children.length>0&&children[0].stage){T=children[activeChild].stage||1;loadChallenges(T);go('schall');}else go('slanding');
+}
+function buildToggles(){
+  const show=children.length>=2;
+  document.getElementById('ct-land').style.display=show?'block':'none';
+  document.getElementById('ct-ch').style.display=show?'block':'none';
+  ['ctr-land','ctr-ch'].forEach(rid=>{
+    const row=document.getElementById(rid);if(!row)return;row.innerHTML='';
+    children.forEach((c,i)=>{const p=document.createElement('button');p.className='ctp ctp-light'+(i===activeChild?' on':'');const sl={1:'Sec 1',2:'Sec 2–3',3:'JC/Poly'}[c.stage]||'';p.textContent=c.name+(sl?' · '+sl:'');p.onclick=()=>switchChild(i);row.appendChild(p);});
+  });
+}
+function switchChild(i){activeChild=i;T=children[i].stage||1;buildToggles();loadChallenges(T);}
+
+// ════ CHALLENGES ════
+function pickT(t){T=t;loadChallenges(t);setSelfCheck(t);go('spov');}
+function setSelfCheck(t){
+  document.getElementById('sc-title').textContent=STAGE_TITLE[t]||STAGE_TITLE[1];
+  document.getElementById('sc-txt').textContent=STAGE_CTX[t]||STAGE_CTX[1];
+}
+function loadChallenges(t){
+  document.getElementById('proof-txt').textContent=PROOF[t];
+  const list=document.getElementById('chlist');list.innerHTML='';
+  CHALLENGES[t].forEach((c,i)=>{const d=document.createElement('div');d.className='chi';d.onclick=()=>pickC(t,i,c.t);d.innerHTML=`<div class="che">${c.e}</div><div class="chb"><div class="cht">${c.t}</div><div class="chs">${c.s}</div></div><div class="chev">›</div>`;list.appendChild(d);});
+}
+function pickC(t,i,title){
+  T=t;I=i;TITLE=title;
+  loadPOV();
+}
+function loadPOV(){
+  const key=`${T}-${I}`;const p=POV[key]||POV_DEFAULT;
+  document.getElementById('pov-insight').textContent=p.insight;
+  document.getElementById('pov-quote').textContent=p.quote.replace(/^"|"$/g,'');
+  document.getElementById('pov-attr').textContent=p.attr;
+  go('s-pov');
+}
+
+// ════ VIDEO REELS ════
+function buildVideoScreen(){
+  const key=`${T}-${I}`;videoData=(CONTENT[key]||DEFAULT).videos;videoIdx=0;renderReel();
+}
+function renderReel(){
+  const container=document.getElementById('reel-container');container.innerHTML='';
+  const v=videoData[videoIdx];
+  const imgSrc=PARENT_IMG[v.n]||'Assets/Images/Videos screenshot/ig_video_parent_1.png';
+  const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
+
+  // Top bar
+  const bar=document.createElement('div');bar.className='app-bar';bar.style.background='var(--bg)';
+  bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0';
+  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">‹</button><div class="app-title" style="flex:1">Parent stories</div><div onclick="buildTips();go('s-shifts')" style="width:40px;height:40px;background:var(--brand-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);border:none;font-size:20px;position:relative;flex-shrink:0">✋<span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:var(--brand);color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:none">0</span></div>`;
+  wrap.appendChild(bar);
+
+  const scroll=document.createElement('div');scroll.className='flat-scroll';scroll.style.cssText='padding:4px 16px 44px';
+  const key=`${T}-${I}`;const c=CONTENT[key]||DEFAULT;
+
+  // Build tips carousel HTML
+  const tipsHtml=c.tips.map((tip,ti)=>`
+    <div style="flex-shrink:0;width:210px;background:white;border-radius:16px;padding:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line)">
+      ${tip.tonight?'<div style="font-size:9px;font-weight:800;color:#B8860B;background:#FFF7E6;padding:3px 8px;border-radius:8px;display:inline-block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">Try tonight</div>':''}
+      <div style="font-size:14px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:6px">${tip.h}</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.4;margin-bottom:10px">${tip.b.length>80?tip.b.substring(0,80)+'…':tip.b}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div onclick="buildTips();tipIdx=${ti};renderTip();go('s-tips')" style="font-size:12px;font-weight:700;color:var(--brand);cursor:pointer">Read more</div>
+        <div onclick="event.stopPropagation();addToKit('${tip.h.replace(/'/g,"\\'")}')" style="width:32px;height:32px;background:var(--brand-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .15s" title="Add to starter kit">✋</div>
+      </div>
+    </div>`).join('');
+
+  // Card with image + content
+  scroll.innerHTML=`
+    <div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.1);border:1px solid var(--line);margin-bottom:14px">
+      <div style="position:relative;width:100%;height:260px;overflow:hidden">
+        <img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.2);cursor:pointer"><div style="width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent var(--ink);margin-left:3px"></div></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.5));padding:16px 16px 12px">
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);color:white;font-size:11px;font-weight:700;padding:4px 10px;border-radius:16px;margin-bottom:6px">🎬 At home · 1:02</div>
+          <div style="font-size:18px;font-weight:900;color:white">${v.n}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.8);font-weight:600">${v.r}</div>
+        </div>
+      </div>
+      <div style="padding:16px 18px 18px">
+        <div style="font-size:16px;color:var(--ink);line-height:1.6;font-style:italic;margin-bottom:12px">${v.c}</div>
+        <div class="f-reel-bar"><div class="f-reel-prog" id="rprog" style="animation:progressBar 8s linear forwards"></div></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px">
+      <button onclick="reelPrev()" style="width:36px;height:36px;background:${videoIdx===0?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===0?'default':'pointer'};font-family:inherit;color:${videoIdx===0?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===0?'.4':'1'}">‹</button>
+      <div class="f-dots" style="margin:0">${videoData.map((_,j)=>`<div class="fdot${j===videoIdx?' on':''}"></div>`).join('')}</div>
+      <button onclick="reelNext()" style="width:36px;height:36px;background:${videoIdx===videoData.length-1?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===videoData.length-1?'default':'pointer'};font-family:inherit;color:${videoIdx===videoData.length-1?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===videoData.length-1?'.4':'1'}">›</button>
+    </div>
+
+    <!-- Tips carousel -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:13px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">What they tried</div>
+    </div>
+    <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 4px" class="tips-carousel">${tipsHtml}</div>
+    <div style="height:16px"></div>
+    <button class="f-btn" onclick="buildTips();go('s-shifts')">See your starter kit</button>`;
+  wrap.appendChild(scroll);
+
+  // Hide scrollbar on carousel
+  const style=document.createElement('style');style.textContent='.tips-carousel::-webkit-scrollbar{display:none}';wrap.appendChild(style);
+
+  container.appendChild(wrap);
+  initReelTouch(container);
+}
+function reelNext(){if(videoIdx<videoData.length-1){videoIdx++;renderReel();}}
+function reelPrev(){if(videoIdx>0){videoIdx--;renderReel();}}
+function initReelTouch(el){
+  let sx=0,dx=0,dr=false;
+  function s(x){dr=true;sx=x;dx=0;}
+  function m(x){if(!dr)return;dx=x-sx;const hn=document.getElementById('rsh-n'),hb=document.getElementById('rsh-b');const p=Math.min(1,Math.abs(dx)/70);if(hn)hn.style.opacity=dx<-20?p:0;if(hb)hb.style.opacity=dx>20?p:0;}
+  function e(){if(!dr)return;dr=false;const hn=document.getElementById('rsh-n'),hb=document.getElementById('rsh-b');if(hn)hn.style.opacity=0;if(hb)hb.style.opacity=0;if(dx<-80)reelNext();else if(dx>80)reelPrev();dx=0;}
+  el.addEventListener('mousedown',ev=>{if(!ev.target.closest('button'))s(ev.clientX);});
+  document.addEventListener('mousemove',ev=>{if(dr)m(ev.clientX);});
+  document.addEventListener('mouseup',e);
+  el.addEventListener('touchstart',ev=>{if(!ev.target.closest('button'))s(ev.touches[0].clientX);},{passive:true});
+  document.addEventListener('touchmove',ev=>{if(dr){m(ev.touches[0].clientX);ev.preventDefault();}},{passive:false});
+  document.addEventListener('touchend',e);
+}
+
+// ════ TIP PLAYER ════
+function buildTips(){
+  const key=`${T}-${I}`;tipData=(CONTENT[key]||DEFAULT).tips;tipIdx=0;renderTip();
+  const sk=document.getElementById('sk-items');sk.innerHTML='';
+  STARTER_KIT.forEach(item=>{const d=document.createElement('div');d.className='sk-item';d.onclick=function(){this.classList.toggle('chk');this.querySelector('.sk-chk').textContent=this.classList.contains('chk')?'✓':''};d.innerHTML=`<div class="sk-chk"></div><div class="sk-txt">${item.txt}</div>`;sk.appendChild(d);});
+}
+function renderTip(){
+  const container=document.getElementById('tp-container');container.innerHTML='';
+  const tip=tipData[tipIdx];
+  const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
+
+  const bar=document.createElement('div');bar.className='app-bar';bar.style.background='var(--bg)';
+  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">‹</button><div class="app-title">Tips</div><div style="width:40px;height:40px;background:var(--brand-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;animation:wiggle 2s ease-in-out infinite">✋</div>`;
+  wrap.appendChild(bar);
+
+  const scroll=document.createElement('div');scroll.className='flat-scroll';
+  const isLast=tipIdx===tipData.length-1;
+  const isFirst=tipIdx===0;
+  scroll.innerHTML=`
+    ${tip.tonight?'<div class="f-tonight">🌙 Try tonight</div>':''}
+    <div class="f-h">${tip.h}</div>
+    <div class="f-sub">${tip.b}</div>
+    ${tip.why?`<div class="f-why"><div class="f-why-l">Why this matters</div><div class="f-why-t">${tip.why}</div></div>`:''}
+    <button class="f-btn" id="tp-try-btn" onclick="saveTip('${tip.h.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:20px">✋</span> I want to try this</button>
+    <div class="f-dots">${tipData.map((_,j)=>`<div class="fdot${j===tipIdx?' on':''}"></div>`).join('')}</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding-top:10px">
+      <button onclick="tipPrev()" style="width:40px;height:40px;background:${isFirst?'var(--line)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${isFirst?'default':'pointer'};font-family:inherit;color:${isFirst?'var(--ink3)':'var(--ink)'};opacity:${isFirst?'.4':'1'}">‹</button>
+      <div style="font-size:13px;color:var(--ink3);font-weight:600">${tipIdx+1} of ${tipData.length}</div>
+      <button onclick="${isLast?'go(\'s-shifts\')':'tipNext()'}" style="width:40px;height:40px;background:white;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;font-family:inherit;color:var(--ink)">›</button>
+    </div>`;
+  wrap.appendChild(scroll);
+  container.appendChild(wrap);
+  initTipTouch(container);
+}
+function tipNext(){if(tipIdx<tipData.length-1){tipIdx++;renderTip();}}
+function tipPrev(){if(tipIdx>0){tipIdx--;renderTip();}else go('svideo');}
+function saveTip(label){
+  const btn=document.getElementById('tp-try-btn');if(!btn||btn.dataset.saved)return;
+  btn.dataset.saved='1';
+  const enc=ENCOUR[Math.floor(Math.random()*ENCOUR.length)];
+  const slide=document.querySelector('#tp-container > div');
+  const saved=document.createElement('div');saved.className='f-saved';
+  saved.innerHTML=`<div class="f-saved-ico">🌿</div><div class="f-saved-h">${enc.h}</div><div class="f-saved-s">${enc.s}</div><div class="f-saved-sub" style="margin-bottom:24px">We'll check in with you in a few days.</div><button class="f-btn" onclick="tipNext()">Continue</button>`;
+  slide.appendChild(saved);
+  try{window.storage.set('saved-tip',JSON.stringify({label,savedAt:Date.now()}));}catch(e){window._savedTip={label,savedAt:Date.now()};}
+}
+function initTipTouch(el){
+  let sx=0,dx=0,dr=false;
+  function s(x){dr=true;sx=x;dx=0;}
+  function m(x){if(!dr)return;dx=x-sx;const p=Math.min(1,Math.abs(dx)/70);const hn=document.getElementById('tsh-n'),hb=document.getElementById('tsh-b');if(hn)hn.style.opacity=dx<-20?p:0;if(hb)hb.style.opacity=dx>20?p:0;}
+  function e(){if(!dr)return;dr=false;const hn=document.getElementById('tsh-n'),hb=document.getElementById('tsh-b');if(hn)hn.style.opacity=0;if(hb)hb.style.opacity=0;if(dx<-80)tipNext();else if(dx>80)tipPrev();dx=0;}
+  el.addEventListener('mousedown',ev=>{if(!ev.target.closest('button'))s(ev.clientX);});
+  document.addEventListener('mousemove',ev=>{if(dr)m(ev.clientX);});
+  document.addEventListener('mouseup',e);
+  el.addEventListener('touchstart',ev=>{if(!ev.target.closest('button'))s(ev.touches[0].clientX);},{passive:true});
+  document.addEventListener('touchmove',ev=>{if(dr){m(ev.touches[0].clientX);ev.preventDefault();}},{passive:false});
+  document.addEventListener('touchend',e);
+}
+
+// ════ TIMER ════
+function updateTimerDisplay(){
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  const el=document.getElementById('t-time');if(el)el.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  const ring=document.getElementById('t-ring');
+  if(ring){const offset=CIRC*(1-timerSec/timerMax);ring.style.strokeDashoffset=Math.max(0,offset);}
+}
+function toggleTimer(){
+  if(timerRunning){clearInterval(timerInt);timerRunning=false;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>▶</span><span>Resume</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.remove('running');}
+  else{timerRunning=true;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>⏸</span><span>Pause</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.add('running');
+    timerInt=setInterval(()=>{timerSec--;updateTimerDisplay();if(timerSec<=0){clearInterval(timerInt);timerRunning=false;timerDone();}},1000);}
+}
+function resetTimer(){clearInterval(timerInt);timerRunning=false;timerSec=timerMax;updateTimerDisplay();const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>▶</span><span>Start</span>';const ring=document.getElementById('t-ring');if(ring){ring.classList.remove('running');ring.style.strokeDashoffset='0';}}
+function timerDone(){
+  const wrap=document.getElementById('timer-main');if(!wrap)return;
+  wrap.innerHTML=`<div class="timer-done" style="text-align:center"><div class="f-td-ico">🎉</div><div class="f-td-h">10 minutes. Done.</div><div class="f-td-s">That was just for you. How do you feel?</div><button class="f-btn" onclick="go('schall')">Ready — show me what's on your mind</button></div>`;
+}
+
+// ════ GROUNDING ════
+function buildGrounding(){groundIdx=0;renderGround();}
+function renderGround(){
+  const container=document.getElementById('gp-container');container.innerHTML='';
+  const g=GROUNDING[groundIdx];
+  const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
+
+  const bar=document.createElement('div');bar.className='app-bar';bar.style.background='var(--bg)';
+  bar.innerHTML=`<button class="app-back" onclick="${groundIdx===0?"go('spov')":"groundPrev()"}">${groundIdx===0?'✕':'‹'}</button><div class="app-title">Just for you</div><div class="f-count">${groundIdx+1}/${GROUNDING.length}</div>`;
+  wrap.appendChild(bar);
+
+  const scroll=document.createElement('div');scroll.className='flat-scroll f-timer';
+  let html=`<div class="f-eyebrow">Take a moment</div>`;
+
+  if(g.timer>0){
+    html+=`<div class="f-h">${g.h}</div><div class="f-sub">${g.b}</div>
+    <div id="timer-main">
+      <div class="timer-wrap" style="padding:8px 0 4px">
+        <div class="timer-rings">
+          <svg class="timer-svg" viewBox="0 0 200 200">
+            <circle class="tr-outer" cx="100" cy="100" r="94" style="stroke:var(--line)"/>
+            <circle class="tr-track" cx="100" cy="100" r="82"/>
+            <circle class="tr-prog" id="t-ring" cx="100" cy="100" r="82" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+          </svg>
+          <div class="timer-face"><div class="t-time" id="t-time">${g.timer}:00</div><div class="t-lbl">minutes</div></div>
+        </div>
+        <div class="timer-controls">
+          <button class="timer-start" id="t-btn" onclick="toggleTimer()"><span>▶</span><span>Start</span></button>
+          <button class="timer-rst" onclick="resetTimer()">↺</button>
+        </div>
+      </div>
+    </div>
+    <div class="f-dots" style="margin-top:16px">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>`;
+    timerSec=g.timer*60;timerMax=g.timer*60;
+  } else {
+    html+=`<div class="f-h">${g.h}</div><div class="f-sub">${g.b}</div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--brand-lt);color:var(--brand);font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;margin-bottom:16px;border:1px solid var(--brand)">⏱ A couple of minutes</div>
+    <div class="f-dots">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>`;
+  }
+
+  html+=`<button class="f-btn" style="margin-top:16px" onclick="go('schall')">I'm ready — show me what's on your mind</button><button class="f-btn-ghost" style="margin-top:0" onclick="groundNext()">Show me another</button>`;
+  scroll.innerHTML=html;
+  wrap.appendChild(scroll);
+  container.appendChild(wrap);
+  initGTouch(container);
+}
+function groundNext(){if(groundIdx<GROUNDING.length-1){groundIdx++;renderGround();}}
+function groundPrev(){if(groundIdx>0){groundIdx--;renderGround();}else go('spov');}
+function initGTouch(el){
+  let sx=0,dx=0,dr=false;
+  function s(x){dr=true;sx=x;dx=0;}
+  function m(x){if(!dr)return;dx=x-sx;}
+  function e(){if(!dr)return;dr=false;if(dx<-80)groundNext();else if(dx>80)groundPrev();dx=0;}
+  el.addEventListener('mousedown',ev=>{if(!ev.target.closest('button'))s(ev.clientX);});
+  document.addEventListener('mousemove',ev=>{if(dr)m(ev.clientX);});
+  document.addEventListener('mouseup',e);
+  el.addEventListener('touchstart',ev=>{if(!ev.target.closest('button'))s(ev.touches[0].clientX);},{passive:true});
+  document.addEventListener('touchmove',ev=>{if(dr)m(ev.touches[0].clientX);},{passive:false});
+  document.addEventListener('touchend',e);
+}
+
+// ════ CHECK-IN ════
+async function loadCheckin(){
+  let saved=null;try{const r=await window.storage.get('saved-tip');if(r)saved=JSON.parse(r.value);}catch(e){saved=window._savedTip||null;}
+  const who=children[activeChild]?.name||'there';
+  const q=document.getElementById('ci-q');
+  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'…':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} — you saved a tip last week: <em>"${sh}"</em><br><br>Did anything shift? Even something small counts.</div>`;}
+  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} — how did the week go? Even if nothing shifted, that's fine to say.</div>`;
+}
+function checkin(type){
+  let lbl=null;try{lbl=window._savedTip?.label;}catch(e){}
+  const ref=lbl?`trying "${lbl.length>45?lbl.substring(0,42)+'…':lbl}"`:'trying something new';
+  const r={w:{sent:'Something actually shifted',resp:`That's real. Even one small shift from ${ref} is worth building on. We'll send something new next week.`},t:{sent:'Still figuring it out',resp:`Completely fine. These things rarely click in one week. We'll try a different angle.`},r:{sent:'Honestly it was a rough week',resp:`Rough weeks happen. You're still here, which matters more. We'll come back lighter next week.`},role:{sent:'I feel like how I show up needs to change',resp:`That feeling is the work. Noticing it is the first step. We'll send something next week that speaks to exactly that.`},m:{sent:'I need something different',resp:`Noted. We'll match you with something else next week.`}}[type];
+  document.getElementById('ciopts').innerHTML='';
+  // Show selected answer
+  const sel=document.createElement('div');sel.style.cssText='background:var(--brand);color:white;border-radius:14px;padding:14px 16px;font-size:14px;font-weight:700;margin-bottom:16px;animation:slideUp .3s ease both';sel.textContent=r.sent;
+  document.getElementById('ciopts').appendChild(sel);
+  // Show response after delay
+  setTimeout(()=>{
+    const resp=document.createElement('div');resp.style.cssText='background:white;border-radius:18px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--line);animation:slideUp .3s ease both';
+    resp.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:15px;color:var(--ink);line-height:1.6">${r.resp}</div>`;
+    document.getElementById('ci-response').appendChild(resp);
+    document.getElementById('ci-scroll').scrollTop=document.getElementById('ci-scroll').scrollHeight;
+  },800);
+}
+function addToKit(label){
+  if(kitItems.includes(label))return;
+  kitItems.push(label);
+  const badge=document.getElementById('sk-badge');
+  if(badge){badge.style.display='flex';badge.textContent=kitItems.length;}
+  // Animate the hand button that was clicked
+  event.target.style.background='var(--brand)';event.target.style.color='white';event.target.textContent='✓';
+}
+function showBreak(){alert('Taking a break is completely fine.\n\nWe\'ll check back in a month. No guilt, no catching up required.');}
+
+// ════ INIT ════
+window.addEventListener('load',()=>{
+  initProfile();
+  document.getElementById('ob-scene').style.cssText='background:url(Assets/Images/pfp_icon.png) center/cover no-repeat;';document.getElementById('ob-scene').innerHTML='';
+  // landing is now flat — no gradient scene needed
+});
+</script>
+</body>
+</html>

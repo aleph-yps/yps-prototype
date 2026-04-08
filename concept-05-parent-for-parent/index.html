@@ -600,23 +600,27 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <!-- CHECK-IN -->
 <div class="screen flat" id="swaci" style="background:var(--bg)">
   <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">‹</button><div class="app-title">Check-in</div></div>
-  <div class="flat-scroll" id="ci-scroll">
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="width:56px;height:56px;border-radius:16px;overflow:hidden;margin:0 auto 12px;box-shadow:0 2px 12px rgba(0,0,0,.1)"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div>
+  <div class="flat-scroll" id="ci-scroll" style="display:flex;flex-direction:column;gap:8px">
+    <div style="text-align:center;margin-bottom:12px">
       <div style="font-size:11px;color:var(--ink3);font-weight:600">Sunday, 30 March</div>
     </div>
-    <div style="background:white;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--line)" id="ci-q">
-      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div>
-      <div style="font-size:16px;color:var(--ink);line-height:1.55">Hey — how did the week go? Even if nothing shifted, that's fine to say.</div>
+    <!-- Incoming message bubble -->
+    <div style="display:flex;gap:10px;align-items:flex-end;max-width:85%">
+      <div style="width:32px;height:32px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div>
+      <div id="ci-q" style="background:white;border-radius:18px 18px 18px 4px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--line)">
+        <div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div>
+        <div style="font-size:15px;color:var(--ink);line-height:1.55">Hey — how did the week go? Even if nothing shifted, that's fine to say.</div>
+      </div>
     </div>
+    <div style="height:8px"></div>
+    <!-- Response options -->
     <div id="ciopts">
-      <div style="font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">How are you feeling?</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="ciopt" onclick="checkin('w')">Something actually shifted</button>
-        <button class="ciopt" onclick="checkin('t')">Still figuring it out</button>
-        <button class="ciopt" onclick="checkin('r')">Honestly it was a rough week</button>
-        <button class="ciopt" onclick="checkin('role')">I feel like how I show up needs to change</button>
-        <button class="ciopt" onclick="checkin('m')">I need something different</button>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <button class="ciopt" onclick="checkin('w')" style="max-width:85%;text-align:right">Something actually shifted</button>
+        <button class="ciopt" onclick="checkin('t')" style="max-width:85%;text-align:right">Still figuring it out</button>
+        <button class="ciopt" onclick="checkin('r')" style="max-width:85%;text-align:right">Honestly it was a rough week</button>
+        <button class="ciopt" onclick="checkin('role')" style="max-width:85%;text-align:right">I feel like how I show up needs to change</button>
+        <button class="ciopt" onclick="checkin('m')" style="max-width:85%;text-align:right">I need something different</button>
       </div>
     </div>
     <div id="ci-response"></div>
@@ -1004,21 +1008,22 @@ async function loadCheckin(){
   let saved=null;try{const r=await window.storage.get('saved-tip');if(r)saved=JSON.parse(r.value);}catch(e){saved=window._savedTip||null;}
   const who=children[activeChild]?.name||'there';
   const q=document.getElementById('ci-q');
-  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'…':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} — you saved a tip last week: <em>"${sh}"</em><br><br>Did anything shift? Even something small counts.</div>`;}
-  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} — how did the week go? Even if nothing shifted, that's fine to say.</div>`;
+  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'…':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div><div style="font-size:15px;color:var(--ink);line-height:1.55">Hey ${who} — you saved a tip last week: <em>"${sh}"</em><br><br>Did anything shift? Even something small counts.</div>`;}
+  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div><div style="font-size:15px;color:var(--ink);line-height:1.55">Hey ${who} — how did the week go? Even if nothing shifted, that's fine to say.</div>`;
 }
 function checkin(type){
   let lbl=null;try{lbl=window._savedTip?.label;}catch(e){}
   const ref=lbl?`trying "${lbl.length>45?lbl.substring(0,42)+'…':lbl}"`:'trying something new';
   const r={w:{sent:'Something actually shifted',resp:`That's real. Even one small shift from ${ref} is worth building on. We'll send something new next week.`},t:{sent:'Still figuring it out',resp:`Completely fine. These things rarely click in one week. We'll try a different angle.`},r:{sent:'Honestly it was a rough week',resp:`Rough weeks happen. You're still here, which matters more. We'll come back lighter next week.`},role:{sent:'I feel like how I show up needs to change',resp:`That feeling is the work. Noticing it is the first step. We'll send something next week that speaks to exactly that.`},m:{sent:'I need something different',resp:`Noted. We'll match you with something else next week.`}}[type];
   document.getElementById('ciopts').innerHTML='';
-  // Show selected answer
-  const sel=document.createElement('div');sel.style.cssText='background:var(--brand);color:white;border-radius:14px;padding:14px 16px;font-size:14px;font-weight:700;margin-bottom:16px;animation:slideUp .3s ease both';sel.textContent=r.sent;
+  // Show selected answer as outgoing bubble (right-aligned)
+  const sel=document.createElement('div');sel.style.cssText='display:flex;justify-content:flex-end;margin-bottom:8px;animation:slideUp .3s ease both';
+  sel.innerHTML=`<div style="background:var(--brand);color:white;border-radius:18px 18px 4px 18px;padding:14px 16px;font-size:14px;font-weight:700;max-width:85%">${r.sent}</div>`;
   document.getElementById('ciopts').appendChild(sel);
-  // Show response after delay
+  // Show response as incoming bubble after delay
   setTimeout(()=>{
-    const resp=document.createElement('div');resp.style.cssText='background:white;border-radius:18px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--line);animation:slideUp .3s ease both';
-    resp.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:15px;color:var(--ink);line-height:1.6">${r.resp}</div>`;
+    const resp=document.createElement('div');resp.style.cssText='display:flex;gap:10px;align-items:flex-end;max-width:85%;animation:slideUp .3s ease both';
+    resp.innerHTML=`<div style="width:32px;height:32px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div style="background:white;border-radius:18px 18px 18px 4px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--line)"><div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div><div style="font-size:15px;color:var(--ink);line-height:1.6">${r.resp}</div></div>`;
     document.getElementById('ci-response').appendChild(resp);
     document.getElementById('ci-scroll').scrollTop=document.getElementById('ci-scroll').scrollHeight;
   },800);

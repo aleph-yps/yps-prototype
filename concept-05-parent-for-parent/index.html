@@ -524,16 +524,16 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px" id="sc-title"></div>
     <div style="font-size:15px;color:var(--ink2);line-height:1.65" id="sc-txt"></div>
   </div>
-  <!-- Overlay popup (dark) -->
+  <!-- Overlay popup -->
   <div id="spov-overlay" style="position:absolute;bottom:0;left:0;right:0;z-index:30;transform:translateY(100%);opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1), opacity .3s ease">
-    <div style="background:rgba(8,6,18,.95);backdrop-filter:blur(28px);border-radius:24px 24px 0 0;padding:28px 22px 36px;box-shadow:0 -8px 40px rgba(0,0,0,.25);text-align:center">
-      <div style="width:40px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:0 auto 16px"></div>
+    <div style="background:white;border-radius:24px 24px 0 0;padding:28px 22px 36px;box-shadow:0 -8px 40px rgba(0,0,0,.12);text-align:center">
+      <div style="width:40px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 16px"></div>
       <div style="font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Before you go in</div>
-      <div style="font-size:22px;font-weight:900;color:white;line-height:1.2;margin-bottom:8px;letter-spacing:-.3px">How are you doing<br>right now?</div>
-      <div style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:22px">What you bring to the conversation matters as much as what you say.</div>
-      <button class="p-btn" onclick="go('schall')">I'm good</button>
-      <button class="p-btn-ghost" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
-      <div style="font-size:12px;color:rgba(255,255,255,.35);margin-top:12px;line-height:1.5">No judgement. Both paths lead to the same place.</div>
+      <div style="font-size:22px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:8px;letter-spacing:-.3px">How are you doing<br>right now?</div>
+      <div style="font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:22px">What you bring to the conversation matters as much as what you say.</div>
+      <button class="f-btn" onclick="go('schall')">I'm good</button>
+      <button class="f-btn-ghost" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
+      <div style="font-size:12px;color:var(--ink3);margin-top:12px;line-height:1.5">No judgement. Both paths lead to the same place.</div>
     </div>
   </div>
 </div>
@@ -563,18 +563,15 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 </div>
 
 <!-- THREE SHIFTS -->
-<div class="screen" id="s-shifts" style="background:#0d0b18">
-  <div style="padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0">
-    <button class="ls-back" onclick="go('svideo')">‹</button>
-    <div style="font-size:18px;font-weight:800;color:white;flex:1">Your starter kit</div>
-  </div>
-  <div style="flex:1;overflow-y:auto;padding:4px 22px 44px;scrollbar-width:none">
-    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,255,255,.15)"><div style="width:6px;height:6px;border-radius:50%;background:var(--brand)"></div>Almost done</div>
-    <div style="font-size:24px;font-weight:900;color:white;line-height:1.2;margin-bottom:10px;letter-spacing:-.3px">Three things to try this week</div>
-    <div style="font-size:15px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:18px">Tick what feels doable. One is enough to start.</div>
+<div class="screen flat" id="s-shifts">
+  <div class="app-bar"><button class="app-back" onclick="go('svideo')">‹</button><div class="app-title" style="flex:1">Your starter kit</div></div>
+  <div class="flat-scroll">
+    <div class="f-pill"><div class="f-pill-dot"></div>Almost done</div>
+    <div class="f-h">Three things to try this week</div>
+    <div class="f-sub" style="margin-bottom:16px">Tick what feels doable. One is enough to start.</div>
     <div id="sk-items"></div>
-    <button class="p-btn" style="margin-top:6px" onclick="go('slater')">Done</button>
-    <div style="font-size:13px;color:rgba(255,255,255,.4);text-align:center;margin-top:14px;line-height:1.5">We'll check in next week</div>
+    <button class="f-btn" style="margin-top:6px" onclick="go('slater')">Done</button>
+    <div class="f-note" style="margin-top:14px">We'll check in next week</div>
   </div>
 </div>
 
@@ -867,7 +864,7 @@ function initReelTouch(el){
 function buildTips(){
   const key=`${T}-${I}`;tipData=(CONTENT[key]||DEFAULT).tips;tipIdx=0;renderTip();
   const sk=document.getElementById('sk-items');sk.innerHTML='';
-  STARTER_KIT.forEach(item=>{const d=document.createElement('div');d.className='sk-item';d.onclick=function(){this.classList.toggle('chk');this.querySelector('.sk-chk').textContent=this.classList.contains('chk')?'✓':''};d.innerHTML=`<div class="sk-chk"></div><div class="sk-txt">${item.txt}</div>`;sk.appendChild(d);});
+  STARTER_KIT.forEach(item=>{const d=document.createElement('div');d.className='f-sk-item';d.onclick=function(){this.classList.toggle('chk');this.querySelector('.f-sk-chk').textContent=this.classList.contains('chk')?'✓':''};d.innerHTML=`<div class="f-sk-chk"></div><div class="f-sk-txt">${item.txt}</div>`;sk.appendChild(d);});
 }
 function renderTip(){
   const container=document.getElementById('tp-container');container.innerHTML='';

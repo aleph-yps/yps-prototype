@@ -782,6 +782,12 @@ function pickT(t){T=t;loadChallenges(t);setSelfCheck(t);go('spov');}
 function setSelfCheck(t){
   const container=document.getElementById('sc-cards');
   container.innerHTML='';
+  // Section title — centered, outside cards
+  const heading=document.createElement('div');
+  heading.id='sc-heading';
+  heading.style.cssText='font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-bottom:16px;transition:all .5s ease';
+  heading.textContent='What most parents notice at this stage';
+  container.appendChild(heading);
   // Build cards: if children exist, one per child; else single card for selected stage
   const cards=children.length>0?children.map(c=>({stage:c.stage,name:c.name})):[{stage:t,name:null}];
   cards.forEach((c,i)=>{
@@ -792,9 +798,8 @@ function setSelfCheck(t){
     const card=document.createElement('div');
     card.className='sc-card-item';
     card.style.cssText='background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%;transition:all .5s cubic-bezier(.22,1,.36,1);'+(i>0?'margin-top:12px;':'');
-    card.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px">What most parents notice at this stage</div>
-      <div style="font-size:10px;font-weight:800;color:white;background:var(--brand);padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap">${c.name?c.name+' · ':''}${tag}</div>
+    card.innerHTML=`<div style="margin-bottom:12px">
+      <div style="font-size:10px;font-weight:800;color:white;background:var(--brand);padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;display:inline-block">${c.name?c.name+' · ':''}${tag}</div>
     </div>
     <div class="sc-card-title" style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px;transition:all .5s ease;overflow:hidden">${title}</div>
     <div class="sc-card-txt" style="font-size:15px;color:var(--ink2);line-height:1.65;transition:all .5s ease;overflow:hidden;max-height:200px">${ctx}</div>`;

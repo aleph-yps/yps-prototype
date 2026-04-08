@@ -1820,17 +1820,21 @@ function setupBossVictory(){
   const b2=document.getElementById('bossVicBtn2');
   const b3=document.getElementById('bossVicBtn3');
   g.style.display='none';p.style.display='none';
-  b2.style.display='block';b3.style.display='none';
+  b1.style.display='block';b2.style.display='block';b3.style.display='none';
   b2.onclick=function(){goTo(9);};
   if(currentBossLevel===5){
+    b1.style.display='block';
     b2.textContent='Back to quest map';
   } else if(currentBossLevel===15){
     g.style.display='block';
+    b1.style.display='block';
     b2.textContent='Back to quest map';
   } else if(currentBossLevel===20){
     p.style.display='block';
+    b1.style.display='none';
     b2.style.display='none';
     b3.style.display='block';
+    b3.textContent='Complete Quest';
   }
 }
 function setBossImage(name){

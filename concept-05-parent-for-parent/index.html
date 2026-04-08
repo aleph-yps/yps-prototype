@@ -523,6 +523,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What most parents notice at this stage</div>
     <div style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px" id="sc-title"></div>
     <div style="font-size:15px;color:var(--ink2);line-height:1.65" id="sc-txt"></div>
+    <button class="f-btn" id="spov-continue" style="margin-top:24px" onclick="showSelfCheck()">Continue</button>
   </div>
   <!-- Overlay popup -->
   <div id="spov-overlay" style="position:absolute;bottom:0;left:0;right:0;z-index:30;transform:translateY(100%);opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1), opacity .3s ease">
@@ -710,10 +711,15 @@ function go(id){
   if(id==='spov'){
     const overlay=document.getElementById('spov-overlay');
     if(overlay){overlay.style.transform='translateY(100%)';overlay.style.opacity='0';}
-    setTimeout(()=>{
-      if(overlay){overlay.style.transform='translateY(0)';overlay.style.opacity='1';}
-    },600);
+    const btn=document.getElementById('spov-continue');
+    if(btn)btn.style.display='';
   }
+}
+function showSelfCheck(){
+  const btn=document.getElementById('spov-continue');
+  if(btn)btn.style.display='none';
+  const overlay=document.getElementById('spov-overlay');
+  if(overlay){overlay.style.transform='translateY(0)';overlay.style.opacity='1';}
 }
 function tapNotif(){const n=document.getElementById('notif');n.style.opacity='0';n.style.pointerEvents='none';setTimeout(()=>go('swa'),300);}
 function pickChar(el){document.querySelectorAll('.ally-char').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}

@@ -677,11 +677,16 @@ const STAGE_CTX={
   3:'Academically they\'re managing. Socially they seem fine. But at home you see the cracks: sleep is broken, stress is constant, meals are skipped or rushed. They say "I\'m fine" but the energy is flat. They don\'t ask for help \u2014 not because they don\'t need it, but because they think they shouldn\'t. You want to stay relevant without adding to their pressure. Most parents at this stage are figuring out how to matter to someone who\'s learning to not need you.'
 };
 const WELLS=[
-  {id:'sleep',name:'Sleeping Well',color:'#6366F1',icon:'\uD83C\uDF19'},
-  {id:'eating',name:'Eating Well',color:'#F97316',icon:'\uD83C\uDF4E'},
-  {id:'exercise',name:'Exercise Well',color:'#10B981',icon:'\uD83C\uDFC3'},
-  {id:'screen',name:'Balanced Screen Use',color:'#F59E0B',icon:'\uD83D\uDCF1'},
-  {id:'relationship',name:'Relationship with Parents',color:'#EC4899',icon:'\uD83D\uDCAC'}
+  {id:'sleep',name:'Sleeping Well',color:'#6366F1',icon:'\uD83C\uDF19',
+    desc:{1:'Bedtime has shifted by an hour and counting.',2:'They\'re up past midnight and hard to wake.',3:'Sleep is broken — studying past 2am, crashing on weekends.'}},
+  {id:'screen',name:'Balanced Screen Use',color:'#F59E0B',icon:'\uD83D\uDCF1',
+    desc:{1:'The phone is always there — before school, at dinner, past midnight.',2:'The phone is always there — before school, at dinner, past midnight.',3:'Screen time is the one thing they won\'t negotiate on.'}},
+  {id:'relationship',name:'Relationship with Parents',color:'#EC4899',icon:'\uD83D\uDCAC',
+    desc:{1:'They\'ve gone quiet. Short answers. Closed door.',2:'Every conversation turns into a lecture — or a fight.',3:'They don\'t ask for help. Not because they don\'t need it.'}},
+  {id:'exercise',name:'Exercise Well',color:'#10B981',icon:'\uD83C\uDFC3',
+    desc:{1:'CCA just started but free time is shrinking.',2:'They used to be active. CCA ended or tuition took over.',3:'Physical activity has disappeared. Too busy, too tired.'}},
+  {id:'eating',name:'Eating Well',color:'#F97316',icon:'\uD83C\uDF4E',
+    desc:{1:'They eat less at dinner, snack more alone.',2:'Meals are skipped when they\'re busy or stressed.',3:'Meals are skipped or rushed. Eating is reactive, not planned.'}}
 ];
 const CHALLENGES={1:[
   {well:'screen',e:'\uD83D\uDCF1',t:'The phone never goes down',s:'Before school, after school, at dinner. Always there.'},
@@ -921,7 +926,8 @@ function loadChallenges(t){
     const count=stageChallenges.filter(c=>c.well===w.id).length;
     const d=document.createElement('div');d.className='chi';
     d.onclick=()=>showWellChallenges(t,w.id);
-    d.innerHTML=`<div style="width:48px;height:48px;border-radius:14px;background:${w.color}15;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${w.icon}</div><div class="chb"><div class="cht">${w.name}</div><div class="chs">${count} topic${count>1?'s':''}</div></div><div class="chev">\u203A</div>`;
+    const desc=w.desc[t]||w.desc[1];
+    d.innerHTML=`<div style="width:48px;height:48px;border-radius:14px;background:${w.color}15;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${w.icon}</div><div class="chb"><div class="cht">${w.name}</div><div class="chs">${desc}</div></div><div class="chev">\u203A</div>`;
     list.appendChild(d);
   });
 }

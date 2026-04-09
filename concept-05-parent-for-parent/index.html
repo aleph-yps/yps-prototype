@@ -931,8 +931,7 @@ function renderReel(){
     <div onclick="openTipDetail(${ti})" style="flex-shrink:0;width:210px;background:white;border-radius:16px;padding:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);cursor:pointer;transition:all .12s" onmousedown="this.style.transform='scale(.97)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
       ${tip.tonight?'<div style="font-size:9px;font-weight:800;color:#B8860B;background:#FFF7E6;padding:3px 8px;border-radius:8px;display:inline-block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">Try tonight</div>':''}
       <div style="font-size:14px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:6px">${tip.h}</div>
-      <div style="font-size:12px;color:var(--ink3);line-height:1.4;margin-bottom:10px">${tip.b.length>80?tip.b.substring(0,80)+'\u2026':tip.b}</div>
-      <div onclick="event.stopPropagation();openTipDetail(${ti})" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;padding:6px 12px;background:var(--brand-lt);border-radius:10px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="19" width="16" height="2" rx="1"/></svg> I want to try this</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.4">${tip.b.length>80?tip.b.substring(0,80)+'\u2026':tip.b}</div>
     </div>`).join('');
 
   // Card with image + content

@@ -133,11 +133,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 #s-profile{background:var(--bg)}
 .app-bar{padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;background:var(--bg)}
 .app-back{width:40px;height:40px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);flex-shrink:0;border:none;font-family:inherit;color:var(--ink)}
-.app-title{font-size:18px;font-weight:800;color:var(--ink)}
+.app-title{font-size:16px;font-weight:700;color:var(--ink)}
 .pscroll{flex:1;overflow-y:auto;padding:4px 22px 44px}
 .pscroll::-webkit-scrollbar{width:0}
-.phd{font-size:24px;font-weight:900;color:var(--ink);margin-bottom:5px;letter-spacing:-.4px}
-.psd{font-size:14px;color:var(--ink3);margin-bottom:22px}
+.phd{font-size:24px;font-weight:900;color:var(--ink);margin-bottom:5px;letter-spacing:-.4px;text-align:left}
+.psd{font-size:14px;color:var(--ink3);margin-bottom:22px;text-align:left}
 .ccard{background:white;border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 3px 16px rgba(0,0,0,.07)}
 .ccard-h{font-size:12px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
 .flbl{font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
@@ -194,6 +194,8 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 .che{font-size:26px;width:38px;text-align:center;flex-shrink:0}
 .chb{flex:1}.cht{font-size:15px;font-weight:800;color:var(--ink)}.chs{font-size:13px;color:var(--ink3);margin-top:2px;line-height:1.4}
 .chev{font-size:20px;color:#CCC}
+/* Well tag pill */
+.well-tag{display:inline-block;font-size:10px;font-weight:800;color:white;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
 
 /* ═══ VIDEO REELS ═══ */
 #svideo{position:absolute;inset:0}
@@ -339,10 +341,10 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 /* Flat text */
 .f-pill{display:inline-flex;align-items:center;gap:6px;background:var(--brand-lt);color:var(--brand);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.3px}
 .f-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);flex-shrink:0}
-.f-h{font-size:24px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:10px;letter-spacing:-.3px}
-.f-sub{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:18px}
+.f-h{font-size:24px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:10px;letter-spacing:-.3px;text-align:left}
+.f-sub{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:18px;text-align:left}
 .f-note{font-size:12px;color:var(--ink3);text-align:center;margin-top:14px;line-height:1.5}
-.f-eyebrow{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.f-eyebrow{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;text-align:center}
 /* Flat cards */
 .f-card{background:white;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--line)}
 .f-card-lbl{font-size:10px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
@@ -427,6 +429,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 .f-td-ico{font-size:60px;margin-bottom:14px}
 .f-td-h{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:8px}
 .f-td-s{font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:22px}
+/* Grounding card backgrounds */
+.ground-card{background:white;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ground-card-cream{background:#FFF8F0;border:1px solid #F0E4D4}
+.ground-card-sage{background:#F0F8F4;border:1px solid #D4E8DC}
+.ground-card-lavender{background:#F4F0FA;border:1px solid #DCD4F0}
 </style>
 </head>
 <body>
@@ -438,7 +445,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <div class="screen active" id="sh" style="background:url(Assets/Images/wallpaper/6acda8c72bc8b5b3a2dd1acf50b4d0a2.jpg) center/cover no-repeat">
   <div class="dim"></div>
   <div class="linner">
-    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">▲▲ WiFi 🔋</span></div>
+    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">&#9650;&#9650; WiFi &#128267;</span></div>
     <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Monday, 23 March</div></div>
     <div class="lnotif" onclick="go('s-ally')" style="animation:slideUp .4s 2.5s ease both">
       <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Icon/Icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
@@ -449,7 +456,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- ALLY INVITE -->
 <div class="screen" id="s-ally">
-  <div class="ally-topbar"><button class="app-back" onclick="go('sh')" style="position:absolute;left:18px;top:46px">‹</button></div>
+  <div class="ally-topbar"><button class="app-back" onclick="go('sh')" style="position:absolute;left:18px;top:46px">&#8249;</button></div>
   <div class="ally-scroll">
     <div class="ally-avatar"><img src="Assets/Characters/AURA.png"></div>
     <div class="ally-h"><span>Ethan</span> wants you<br>on their quest!</div>
@@ -473,7 +480,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
       </div>
     </div>
     <div class="ally-section">
-      <div class="ally-section-h">🎯 What you'll do</div>
+      <div class="ally-section-h">&#127919; What you'll do</div>
       <div class="ally-section-p">Complete simple co-op challenges with <b>Ethan</b> — like cooking together or going for a walk. Takes 10–15 mins. No app needed — everything runs in your browser.</div>
     </div>
     <button class="ally-btn-primary">Join as Quest Ally</button>
@@ -488,7 +495,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <div class="screen" id="s-onboard">
   <div class="ls-wrap">
     <div class="ls-scene g-teal" id="ob-scene"></div>
-    <div class="ls-top"><button class="ls-back" onclick="go('s-ally')">‹</button></div>
+    <div class="ls-top"><button class="ls-back" onclick="go('s-ally')">&#8249;</button></div>
     <div class="ls-panel" style="height:58%">
       <div class="ob-logo"><div class="ob-logo-ico" style="padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div><div class="ob-logo-txt">Parent for Parent</div><div class="ob-logo-sub">From one parent to another</div></div></div>
       <div class="p-h">Your child is changing.<br>So is your role.</div>
@@ -502,12 +509,12 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- PROFILE -->
 <div class="screen" id="s-profile">
-  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">‹</button><div class="app-title">Your family</div></div>
+  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Your family</div></div>
   <div class="pscroll">
     <div class="phd">Tell us about your youth</div>
     <div class="psd">Optional — skip any time.</div>
     <div id="children-list"></div>
-    <button class="add-ch" id="add-ch-btn" onclick="addChild()"><span style="font-size:18px">＋</span> Add another child</button>
+    <button class="add-ch" id="add-ch-btn" onclick="addChild()"><span style="font-size:18px">&#65291;</span> Add another child</button>
     <button class="btn-p" id="save-btn" onclick="saveProfile()" disabled style="opacity:.4;cursor:not-allowed">Save and continue</button>
     <button class="skip-btn" onclick="go('slanding')">Skip this</button>
   </div>
@@ -515,41 +522,48 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- LANDING -->
 <div class="screen" id="slanding" style="background:var(--bg)">
-  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">‹</button><div class="app-title">Parent for Parent</div></div>
+  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div id="ct-land" class="ct-land" style="position:relative;top:auto;left:auto;right:auto"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-land"></div></div></div>
   <div style="flex:1;overflow-y:auto;padding:4px 22px 40px">
     <div class="phd" id="land-h">Where is your family right now?</div>
     <div class="psd">Pick your child's stage. We'll show you what other parents in the same place actually tried.</div>
     <div class="tcards">
-      <div class="tc tca" onclick="pickT(1)"><div class="tico">🌱</div><div class="tc-b"><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">›</div></div>
-      <div class="tc tcb" onclick="pickT(2)"><div class="tico">🔄</div><div class="tc-b"><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">›</div></div>
-      <div class="tc tcc" onclick="pickT(3)"><div class="tico">🚀</div><div class="tc-b"><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">›</div></div>
+      <div class="tc tca" onclick="pickT(1)"><div class="tico">&#127793;</div><div class="tc-b"><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcb" onclick="pickT(2)"><div class="tico">&#128260;</div><div class="tc-b"><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcc" onclick="pickT(3)"><div class="tico">&#128640;</div><div class="tc-b"><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">&#8250;</div></div>
     </div>
   </div>
 </div>
 
-<!-- CHALLENGES -->
+<!-- CHALLENGES (schall) -->
 <div class="screen" id="schall" style="background:var(--bg)">
-  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('spov')">‹</button><div class="app-title">What's on your mind?</div></div>
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('s-selfcheck')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div id="ct-ch" style="display:none"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-ch"></div></div></div>
   <div class="chw">
-    <div class="proof-bar">👥 <span id="proof-txt"></span></div>
+    <div class="f-h" style="margin-bottom:6px">What's on your mind?</div>
+    <div class="proof-bar"><span id="proof-txt"></span></div>
     <div class="chlist" id="chlist"></div>
   </div>
 </div>
 
-<!-- SELF-CHECK (unified) -->
+<!-- SELF-CHECK: Context Cards (spov) -->
 <div class="screen flat" id="spov">
-  <div class="app-bar"><button class="app-back" onclick="spovBack()">‹</button></div>
+  <div class="app-bar"><button class="app-back" onclick="go('slanding')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div class="flat-scroll" style="padding:22px;overflow-y:auto">
     <!-- Dynamic context cards container (1-3 cards) -->
     <div id="sc-cards"></div>
-    <button class="f-btn" id="sc-continue" style="margin-top:24px;width:100%" onclick="expandSelfCheck()">Continue</button>
-    <!-- Self-check: hidden initially, fades in after continue -->
-    <div id="sc-checkin" style="opacity:0;max-height:0;overflow:hidden;transition:all .5s cubic-bezier(.22,1,.36,1);text-align:center;padding:0 4px">
-      <div style="font-size:12px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Before you go in</div>
-      <div style="font-size:24px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:8px;letter-spacing:-.3px">How are you doing<br>right now?</div>
-      <div style="font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:28px">What you bring to the conversation matters as much as what you say.</div>
+    <button class="f-btn" id="sc-continue" style="margin-top:24px;width:100%" onclick="go('s-selfcheck')">Continue</button>
+  </div>
+</div>
+
+<!-- SELF-CHECK: Dedicated screen (s-selfcheck) -->
+<div class="screen flat" id="s-selfcheck">
+  <div class="app-bar"><button class="app-back" onclick="go('spov')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="flat-scroll" style="padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100%">
+    <div style="width:100%;max-width:320px">
+      <div class="f-eyebrow" style="margin-bottom:16px">Before you go in</div>
+      <div class="f-h" style="text-align:left;margin-bottom:8px">How are you doing right now?</div>
+      <div class="f-sub" style="text-align:left;margin-bottom:28px">What you bring to the conversation matters as much as what you say.</div>
       <button class="f-btn" style="width:100%" onclick="go('schall')">I'm good</button>
       <button class="f-btn-ghost" style="width:100%" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
       <div style="font-size:12px;color:var(--ink3);margin-top:14px;line-height:1.5">No judgement. Both paths lead to the same place.</div>
@@ -559,10 +573,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- YOUTH POV -->
 <div class="screen flat" id="s-pov">
-  <div class="app-bar"><button class="app-back" onclick="go('schall')">‹</button><div class="app-title">Their world right now</div></div>
+  <div class="app-bar"><button class="app-back" onclick="go('schall')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div class="flat-scroll">
     <div class="f-eyebrow">From their side</div>
-    <div class="f-sub" id="pov-insight" style="font-size:17px;font-weight:700;color:var(--ink);line-height:1.65;letter-spacing:0"></div>
+    <div class="f-h" style="margin-bottom:10px">Their world right now</div>
+    <div class="f-sub" id="pov-insight" style="font-size:15px;font-weight:600;color:var(--ink);line-height:1.65;letter-spacing:0"></div>
     <div class="f-quote" style="margin-bottom:18px">
       <div class="f-quote-txt" id="pov-quote"></div>
       <div class="f-quote-attr" id="pov-attr"></div>
@@ -583,7 +598,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- STARTER KIT -->
 <div class="screen flat" id="s-shifts">
-  <div class="app-bar"><button class="app-back" onclick="go('svideo')">‹</button><div class="app-title" style="flex:1">Your starter kit</div></div>
+  <div class="app-bar"><button class="app-back" onclick="go('svideo')">&#8249;</button><div class="app-title" style="flex:1">Your starter kit</div></div>
   <div class="flat-scroll">
     <div class="f-pill"><div class="f-pill-dot"></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg> Starter Kit</div>
     <div class="f-h">Things you want to try</div>
@@ -591,6 +606,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div id="sk-items"></div>
     <button class="f-btn" style="margin-top:6px" onclick="go('slater')">Done</button>
     <div class="f-note" style="margin-top:14px">We'll check in next week</div>
+    <div style="text-align:center;margin-top:8px">
+      <a style="font-size:13px;color:var(--brand);font-weight:700;text-decoration:none;cursor:pointer">See related HPB resources &#8594;</a>
+    </div>
   </div>
 </div>
 
@@ -603,7 +621,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <div class="screen" id="slater">
   <div class="dim"></div>
   <div class="linner">
-    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">▲▲ WiFi 🔋</span></div>
+    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">&#9650;&#9650; WiFi &#128267;</span></div>
     <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Sunday, 30 March</div><div><span class="lbadge">One week on</span></div></div>
     <div class="lnotif" onclick="go('swaci')">
       <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
@@ -615,7 +633,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- CHECK-IN -->
 <div class="screen flat" id="swaci" style="background:var(--bg)">
-  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">‹</button><div class="app-title">Check-in</div></div>
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">&#8249;</button><div class="app-title">Check-in</div></div>
   <div class="flat-scroll" id="ci-scroll" style="display:flex;flex-direction:column;gap:8px">
     <div style="text-align:center;margin-bottom:12px">
       <div style="font-size:11px;color:var(--ink3);font-weight:600">Sunday, 30 March</div>
@@ -644,34 +662,59 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 </div><!-- /phone -->
 <script>
 // ════ DATA ════
-const PROOF={1:'Over 400 Sec 1 parents found something useful here this week',2:'Over 300 Sec 2–3 parents found something here this week',3:'Over 250 parents heading to JC or Poly found something useful'};
-const STAGE_TITLE={1:'The rules that worked before are shifting.',2:'The distance is real — but it\'s not rejection.',3:'They\'re almost grown. The relationship is evolving.'};
-const STAGE_SUB={1:'Sec 1',2:'Sec 2–3',3:'JC / Poly'};
-const STAGE_CTX={1:'The structure that worked in primary school is shifting. Most parents feel a mix of relief and worry — that\'s normal. The question is how to loosen the right things at the right time.',2:'Sec 2–3 is often when parents feel most shut out. The distance is real, but it\'s not rejection. Parents who stay connected at this stage stay curious rather than pushing.',3:'By JC or Poly, conversations either evolve or they stop. Parents who stay in the picture tend to become someone their child chooses to talk to — not someone they have to report to.'};
-const CHALLENGES={1:[{e:'📱',t:'The phone never goes down',s:'Before school, after school, at dinner. Always there.'},{e:'🌙',t:'Bedtime keeps getting later',s:'10pm became 11, then midnight. Not sure how.'},{e:'🤐',t:'They\'ve gone quiet on me',s:'Short answers. Closed door. Hard to reach.'},{e:'⏰',t:'After school is a black hole',s:'Student care ended. Those hours are unaccounted for.'}],2:[{e:'🔥',t:'Every conversation becomes a fight',s:'You say one thing. They react to something else entirely.'},{e:'📱',t:'Screen time has gone out of control',s:'Phone during dinner, homework, past midnight.'},{e:'🙈',t:'I feel like I\'m always the bad guy',s:'Every limit I set causes a fight.'},{e:'😴',t:'They\'re exhausted but won\'t sleep',s:'Up past 1am. Impossible to wake up in the morning.'}],3:[{e:'💬',t:'I want to help but don\'t know how',s:'Anything I say lands wrong or gets brushed off.'},{e:'🤫',t:'They say they\'re fine — but they\'re not',s:'You can see it. They won\'t let you in.'},{e:'🌙',t:'Sleep has completely broken down',s:'Studying past 2am, crashing on weekends.'},{e:'📏',t:'They push back on everything',s:'Every suggestion becomes a negotiation.'}]};
-const POV={'1-0':{insight:'After a full day of new school and new pressures, the phone is the one thing that feels familiar and fully theirs. It\'s how they decompress.',quote:'"I know it\'s a bad habit. But if I can\'t sleep I just get fed up and use my phone. I feel like it makes me tired eventually."',attr:'Youth participant, 13yo, M — Discovery IDI'},'1-2':{insight:'Coming home and going quiet is often the first moment of the day they\'ve had to just be, without being watched or evaluated.',quote:'"Every time my mom talks to me it\'s "did you eat", "go sleep", "stop your phone." I just tune it out now."',attr:'Youth participant, 14yo, F — Discovery IDI'},'2-0':{insight:'When conversations always end in a fight, youth learn to skip the conversation. They\'re not dismissing you — they\'re anticipating the script.',quote:'"I trust my friends\' opinions more. They understand what I\'m going through. My parents... they just don\'t get it."',attr:'Youth participant, 15yo, M — Discovery IDI'},'2-2':{insight:'By Sec 2, friends understand the same pressures and speak the same language. This isn\'t rejection — it\'s development.',quote:'"We go to the library to \'study\' but honestly half the time everyone is on their phone. It\'s just being together."',attr:'Youth participant, 15yo, M — Discovery IDI'},'3-0':{insight:'Youth at this stage are holding more than they show. Academic pressure, anxiety, worry about the future — most of it invisible to parents.',quote:'"Sec 3 was the worst year. Homework, tuition, CCA, then study for streaming. There\'s no time for anything else."',attr:'Youth participant, 16yo, M — Discovery IDI'}};
-const POV_DEFAULT={insight:'Whatever behaviour you\'re seeing, there\'s usually something underneath it. What looks like defiance is often exhaustion.',quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',attr:'Youth participant, 15yo, F — Discovery IDI'};
+const PROOF={1:'Over 400 Sec 1 parents found something useful here this week',2:'Over 300 Sec 2\u20133 parents found something here this week',3:'Over 250 parents heading to JC or Poly found something useful'};
+const STAGE_TITLE={
+  1:'The rules that worked before don\'t land anymore.',
+  2:'You\'re talking more, but connecting less.',
+  3:'They\'re handling everything \u2014 except themselves.'
+};
+const STAGE_SUB={1:'Sec 1',2:'Sec 2\u20133',3:'JC / Poly'};
+const TAG_COLORS={1:'#45BE93',2:'#4A90D9',3:'#8B5CF6'};
+const STAGE_CTX={
+  1:'They come home and go straight to their room. The phone is always in their hand. Bedtime has shifted by an hour and counting. They eat less at dinner, snack more alone. You\'re not sure if they\'ve made real friends yet \u2014 and they won\'t tell you. You feel a mix of pride and quiet panic: they\'re growing up, but you can\'t see where they\'re going. Most parents at this stage feel like they\'re losing grip on routines that used to just work.',
+  2:'Every suggestion becomes a negotiation. They trust their friends\' opinions over yours. Sleep is inconsistent \u2014 up past midnight, hard to wake. They\'re moody in ways that feel personal but probably aren\'t. You\'ve noticed they eat differently \u2014 skipping meals or eating alone. Physical activity has dropped off. The hardest part: you can see they\'re struggling, but they won\'t let you in. Most parents at this stage feel shut out \u2014 and wonder if pushing harder or pulling back is the right call.',
+  3:'Academically they\'re managing. Socially they seem fine. But at home you see the cracks: sleep is broken, stress is constant, meals are skipped or rushed. They say "I\'m fine" but the energy is flat. They don\'t ask for help \u2014 not because they don\'t need it, but because they think they shouldn\'t. You want to stay relevant without adding to their pressure. Most parents at this stage are figuring out how to matter to someone who\'s learning to not need you.'
+};
+const WELL_COLORS={Sleep:'#6366F1','Screen Use':'#F59E0B',Relationship:'#EC4899',Exercise:'#10B981',Eating:'#F97316'};
+const CHALLENGES={1:[
+  {well:'Screen Use',t:'The phone never goes down',s:'Before school, after school, at dinner. Always there.'},
+  {well:'Sleep',t:'Bedtime keeps getting later',s:'10pm became 11, then midnight. Not sure how.'},
+  {well:'Relationship',t:'They\'ve gone quiet on me',s:'Short answers. Closed door. Hard to reach.'},
+  {well:'Screen Use',t:'After school is a black hole',s:'Student care ended. Those hours are unaccounted for.'}
+],2:[
+  {well:'Relationship',t:'Every conversation becomes a fight',s:'You say one thing. They react to something else entirely.'},
+  {well:'Screen Use',t:'Screen time has gone out of control',s:'Phone during dinner, homework, past midnight.'},
+  {well:'Relationship',t:'I feel like I\'m always the bad guy',s:'Every limit I set causes a fight.'},
+  {well:'Sleep',t:'They\'re exhausted but won\'t sleep',s:'Up past midnight, hard to wake in the morning.'}
+],3:[
+  {well:'Relationship',t:'I want to help but don\'t know how',s:'Anything I say lands wrong or gets brushed off.'},
+  {well:'Relationship',t:'They say they\'re fine \u2014 but they\'re not',s:'You can see it. They won\'t let you in.'},
+  {well:'Sleep',t:'Sleep has completely broken down',s:'Studying past 2am, crashing on weekends.'},
+  {well:'Relationship',t:'They push back on everything',s:'Every suggestion becomes a negotiation.'}
+]};
+const POV={'1-0':{insight:'After a full day of new school and new pressures, the phone is the one thing that feels familiar and fully theirs. It\'s how they decompress.',quote:'"I know it\'s a bad habit. But if I can\'t sleep I just get fed up and use my phone. I feel like it makes me tired eventually."',attr:'Youth, 13yo, M'},'1-2':{insight:'Coming home and going quiet is often the first moment of the day they\'ve had to just be, without being watched or evaluated.',quote:'"Every time my mom talks to me it\'s "did you eat", "go sleep", "stop your phone." I just tune it out now."',attr:'Youth, 14yo, F'},'2-0':{insight:'When conversations always end in a fight, youth learn to skip the conversation. They\'re not dismissing you \u2014 they\'re anticipating the script.',quote:'"I trust my friends\' opinions more. They understand what I\'m going through. My parents... they just don\'t get it."',attr:'Youth, 15yo, M'},'2-2':{insight:'By Sec 2, friends understand the same pressures and speak the same language. This isn\'t rejection \u2014 it\'s development.',quote:'"We go to the library to \'study\' but honestly half the time everyone is on their phone. It\'s just being together."',attr:'Youth, 15yo, M'},'3-0':{insight:'Youth at this stage are holding more than they show. Academic pressure, anxiety, worry about the future \u2014 most of it invisible to parents.',quote:'"Sec 3 was the worst year. Homework, tuition, CCA, then study for streaming. There\'s no time for anything else."',attr:'Youth, 16yo, M'}};
+const POV_DEFAULT={insight:'Whatever behaviour you\'re seeing, there\'s usually something underneath it. What looks like defiance is often exhaustion.',quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',attr:'Youth, 15yo, F'};
 
 const CONTENT={
-  '1-0':{e:'#C84020',videos:[{f:'🧕',n:'Norita',r:'Mum of 13yo',c:'"One small thing changed bedtime without a single argument."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'👨',n:'Ryan',r:'Dad of 14yo',c:'"I stopped making it a rule. I made it a routine instead."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Kartika',r:'Mum of 13yo',c:'"The wind-down took two weeks. Then it just happened."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'👨',n:'Augustine',r:'Dad of 14yo',c:'"A 30-min heads-up instead of a command. That was it."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+  '1-0':{e:'#C84020',videos:[{f:'\uD83E\uDDD5',n:'Norita',r:'Mum of 13yo',c:'"One small thing changed bedtime without a single argument."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'\uD83D\uDC68',n:'Ryan',r:'Dad of 14yo',c:'"I stopped making it a rule. I made it a routine instead."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'\uD83E\uDDD5',n:'Kartika',r:'Mum of 13yo',c:'"The wind-down took two weeks. Then it just happened."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'\uD83D\uDC68',n:'Augustine',r:'Dad of 14yo',c:'"A 30-min heads-up instead of a command. That was it."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
     empathy:'The phone fills a gap. After a full day of new school and new pressures, it\'s the one thing that feels familiar and fully theirs.',
-    tips:[{g:'g-coral',icon:'🌙',tonight:true,h:'Give a heads-up, not a command.',b:'Tonight: "30 more minutes, then phones to charge." Not a rule — just a heads-up. Removes most of the friction.',why:'Moving from command to heads-up is the first step from rule-setter to guide.'},{g:'g-forest',icon:'✨',tonight:false,h:'A physical cue works better than a rule.',b:'Something beside the bed — a book, skincare, anything — signals wind-down without needing a conversation.',why:'When structure lives in the environment, it stops being about your relationship.'},{g:'g-violet',icon:'📊',tonight:false,h:'Let the data do the talking.',b:'Track sleep together for a week. When they own the reason, they own the habit.',why:'When they own it, you\'ve made the handover. That\'s the goal.'}]},
-  '1-2':{e:'#205880',videos:[{f:'🧕',n:'Sureena',r:'Mum of 13yo',c:'"I stopped asking how school was. That actually helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'👨',n:'Calvin',r:'Dad of 13yo',c:'"Being in the same room, not talking, rebuilt things slowly."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Bhavani',r:'Mum of 13yo',c:'"I changed one thing. The rest followed on its own."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'👨',n:'Ryan',r:'Dad of 14yo',c:'"I learned to read the room before I opened my mouth."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    tips:[{g:'g-coral',icon:'\uD83C\uDF19',tonight:true,h:'Give a heads-up, not a command.',b:'Tonight: "30 more minutes, then phones to charge." Not a rule \u2014 just a heads-up. Removes most of the friction.',why:'Moving from command to heads-up is the first step from rule-setter to guide.'},{g:'g-forest',icon:'\u2728',tonight:false,h:'A physical cue works better than a rule.',b:'Something beside the bed \u2014 a book, skincare, anything \u2014 signals wind-down without needing a conversation.',why:'When structure lives in the environment, it stops being about your relationship.'},{g:'g-violet',icon:'\uD83D\uDCCA',tonight:false,h:'Let the data do the talking.',b:'Track sleep together for a week. When they own the reason, they own the habit.',why:'When they own it, you\'ve made the handover. That\'s the goal.'}]},
+  '1-2':{e:'#205880',videos:[{f:'\uD83E\uDDD5',n:'Sureena',r:'Mum of 13yo',c:'"I stopped asking how school was. That actually helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'\uD83D\uDC68',n:'Calvin',r:'Dad of 13yo',c:'"Being in the same room, not talking, rebuilt things slowly."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'\uD83E\uDDD5',n:'Bhavani',r:'Mum of 13yo',c:'"I changed one thing. The rest followed on its own."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'\uD83D\uDC68',n:'Ryan',r:'Dad of 14yo',c:'"I learned to read the room before I opened my mouth."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
     empathy:'Coming home and going quiet isn\'t shutting you out. It\'s often the first moment of the day they\'ve had to just be.',
-    tips:[{g:'g-amber',icon:'🛋️',tonight:true,h:'Be in the room without needing anything.',b:'No questions. No phone checks. Just physical presence. That\'s the loudest signal you can send to a closed-door kid.',why:'Present without needing a response signals "I\'m here when you\'re ready."'},{g:'g-sky',icon:'💬',tonight:false,h:'Ask about one small thing, not about them.',b:'"Did you watch anything lately?" opens space. "How was school?" puts them on the spot.',why:'Curiosity instead of check-in changes what kind of parent you are in the room.'},{g:'g-forest',icon:'🌱',tonight:false,h:'Small routines beat big conversations.',b:'One show together, a snack at the same time every day. Consistent small moments rebuild connection.',why:'Connection at this age happens sideways, not face-to-face.'}]},
-  '2-0':{e:'#802020',videos:[{f:'🧕',n:'Han Tien',r:'Mum of 15yo',c:'"I stopped arguing. I started asking. Took a month to feel normal."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'},{f:'🧕',n:'Kartika',r:'Mum of 14yo',c:'"I gave up being right. That\'s what kept us connected."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'👨',n:'Ryan',r:'Dad of 15yo',c:'"Months of silence at dinner. This is what changed it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'👨',n:'Calvin',r:'Dad of 14yo',c:'"I used to come in with a point. Now I come in with a question."',bg:'linear-gradient(165deg,#203888,#3060C8,#6098F8)'}],
+    tips:[{g:'g-amber',icon:'\uD83D\uDECB\uFE0F',tonight:true,h:'Be in the room without needing anything.',b:'No questions. No phone checks. Just physical presence. That\'s the loudest signal you can send to a closed-door kid.',why:'Present without needing a response signals "I\'m here when you\'re ready."'},{g:'g-sky',icon:'\uD83D\uDCAC',tonight:false,h:'Ask about one small thing, not about them.',b:'"Did you watch anything lately?" opens space. "How was school?" puts them on the spot.',why:'Curiosity instead of check-in changes what kind of parent you are in the room.'},{g:'g-forest',icon:'\uD83C\uDF31',tonight:false,h:'Small routines beat big conversations.',b:'One show together, a snack at the same time every day. Consistent small moments rebuild connection.',why:'Connection at this age happens sideways, not face-to-face.'}]},
+  '2-0':{e:'#802020',videos:[{f:'\uD83E\uDDD5',n:'Han Tien',r:'Mum of 15yo',c:'"I stopped arguing. I started asking. Took a month to feel normal."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'},{f:'\uD83E\uDDD5',n:'Kartika',r:'Mum of 14yo',c:'"I gave up being right. That\'s what kept us connected."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'\uD83D\uDC68',n:'Ryan',r:'Dad of 15yo',c:'"Months of silence at dinner. This is what changed it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'\uD83D\uDC68',n:'Calvin',r:'Dad of 14yo',c:'"I used to come in with a point. Now I come in with a question."',bg:'linear-gradient(165deg,#203888,#3060C8,#6098F8)'}],
     empathy:'What keeps the cycle going is coming in with a point to make. A genuine question changes the dynamic more than any rule.',
-    tips:[{g:'g-coral',icon:'🤫',tonight:true,h:'Ask one question. Then stop.',b:'Ask — then let the silence sit. They\'ll fill it. But only if you don\'t.',why:'Sitting with silence is the hardest part of becoming a guide instead of an enforcer.'},{g:'g-violet',icon:'👁️',tonight:false,h:'Name what you see, not what you want changed.',b:'"I noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open at this stage.'},{g:'g-forest',icon:'📅',tonight:false,h:'Once a week is enough.',b:'One genuinely good conversation a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust. They notice.'}]},
-  '2-2':{e:'#605008',videos:[{f:'🧕',n:'Sureena',r:'Mum of 14yo',c:'"One question unlocked our conversations. I still use it."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'👨',n:'Calvin',r:'Dad of 15yo',c:'"I stopped being the last to know things."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Bhavani',r:'Mum of 14yo',c:'"I made home somewhere she wanted to bring her friends."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'👨',n:'Ryan',r:'Dad of 14yo',c:'"What I stopped doing helped more than what I started."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    tips:[{g:'g-coral',icon:'\uD83E\uDD2B',tonight:true,h:'Ask one question. Then stop.',b:'Ask \u2014 then let the silence sit. They\'ll fill it. But only if you don\'t.',why:'Sitting with silence is the hardest part of becoming a guide instead of an enforcer.'},{g:'g-violet',icon:'\uD83D\uDC41\uFE0F',tonight:false,h:'Name what you see, not what you want changed.',b:'"I noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open at this stage.'},{g:'g-forest',icon:'\uD83D\uDCC5',tonight:false,h:'Once a week is enough.',b:'One genuinely good conversation a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust. They notice.'}]},
+  '2-2':{e:'#605008',videos:[{f:'\uD83E\uDDD5',n:'Sureena',r:'Mum of 14yo',c:'"One question unlocked our conversations. I still use it."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'\uD83D\uDC68',n:'Calvin',r:'Dad of 15yo',c:'"I stopped being the last to know things."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'\uD83E\uDDD5',n:'Bhavani',r:'Mum of 14yo',c:'"I made home somewhere she wanted to bring her friends."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{f:'\uD83D\uDC68',n:'Ryan',r:'Dad of 14yo',c:'"What I stopped doing helped more than what I started."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
     empathy:'When friends become everything, the way you matter has shifted. Stay curious, not involved. There\'s a real difference.',
-    tips:[{g:'g-rose',icon:'👫',tonight:true,h:'Ask about their friends, not them.',b:'"How\'s Jamie doing?" lands differently. They reveal more through other people.',why:'Interest in their world without managing it keeps you in the picture.'},{g:'g-amber',icon:'🏠',tonight:false,h:'Make home somewhere friends are welcome.',b:'When home is where nobody gets a lecture, it stays in the picture.',why:'Being in the background of their social life is the right position right now.'},{g:'g-ocean',icon:'🔍',tonight:false,h:'Small signals over formal conversations.',b:'A comment about something they mentioned last week. Small attention tells them the relationship is safe.',why:'Consistency in small things tells them they can come to you when it matters.'}]},
-  '3-0':{e:'#204050',videos:[{f:'🧕',n:'Norita',r:'Mum of 17yo',c:'"I just stayed available. That was enough."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'👨',n:'David',r:'Dad of 16yo',c:'"I made it clear the door was open. That was it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Sureena',r:'Mum of 17yo',c:'"He didn\'t come to me until I stopped pushing. Then he came."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'🧕',n:'Han Tien',r:'Mum of 16yo',c:'"I became someone she chose to talk to."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'}],
+    tips:[{g:'g-rose',icon:'\uD83D\uDC6B',tonight:true,h:'Ask about their friends, not them.',b:'"How\'s Jamie doing?" lands differently. They reveal more through other people.',why:'Interest in their world without managing it keeps you in the picture.'},{g:'g-amber',icon:'\uD83C\uDFE0',tonight:false,h:'Make home somewhere friends are welcome.',b:'When home is where nobody gets a lecture, it stays in the picture.',why:'Being in the background of their social life is the right position right now.'},{g:'g-ocean',icon:'\uD83D\uDD0D',tonight:false,h:'Small signals over formal conversations.',b:'A comment about something they mentioned last week. Small attention tells them the relationship is safe.',why:'Consistency in small things tells them they can come to you when it matters.'}]},
+  '3-0':{e:'#204050',videos:[{f:'\uD83E\uDDD5',n:'Norita',r:'Mum of 17yo',c:'"I just stayed available. That was enough."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{f:'\uD83D\uDC68',n:'David',r:'Dad of 16yo',c:'"I made it clear the door was open. That was it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'\uD83E\uDDD5',n:'Sureena',r:'Mum of 17yo',c:'"He didn\'t come to me until I stopped pushing. Then he came."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'\uD83E\uDDD5',n:'Han Tien',r:'Mum of 16yo',c:'"I became someone she chose to talk to."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'}],
     empathy:'Most youth at this stage are holding more than they show. Being available without pushing is the skill that keeps the door open.',
-    tips:[{g:'g-forest',icon:'🚪',tonight:true,h:'Say it plainly: "I\'m here if you want to."',b:'Sounds like giving up. It isn\'t. It\'s the clearest signal the relationship is safe.',why:'You\'re becoming someone they choose. That\'s the full version of the change.'},{g:'g-ocean',icon:'🤝',tonight:false,h:'Stop solving. Start witnessing.',b:'"That sounds really hard" is a complete response. Sitting with them without fixing is what most parents underestimate.',why:'When you stop fixing, they stop withholding. That\'s the trade at this stage.'},{g:'g-night',icon:'📱',tonight:false,h:'Make contact without a reason.',b:'A voice note, a meme, lunch with no agenda. Low-stakes contact keeps the channel warm.',why:'This is how you stay close without adding to their pressure.'}]}
+    tips:[{g:'g-forest',icon:'\uD83D\uDEAA',tonight:true,h:'Say it plainly: "I\'m here if you want to."',b:'Sounds like giving up. It isn\'t. It\'s the clearest signal the relationship is safe.',why:'You\'re becoming someone they choose. That\'s the full version of the change.'},{g:'g-ocean',icon:'\uD83E\uDD1D',tonight:false,h:'Stop solving. Start witnessing.',b:'"That sounds really hard" is a complete response. Sitting with them without fixing is what most parents underestimate.',why:'When you stop fixing, they stop withholding. That\'s the trade at this stage.'},{g:'g-night',icon:'\uD83D\uDCF1',tonight:false,h:'Make contact without a reason.',b:'A voice note, a meme, lunch with no agenda. Low-stakes contact keeps the channel warm.',why:'This is how you stay close without adding to their pressure.'}]}
 };
-const DEFAULT={e:'#383050',videos:[{f:'🧕',n:'Sureena',r:'Mum of 13yo',c:'"I was at my limit too. This is what helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'👨',n:'Calvin',r:'Dad of 14yo',c:'"One small thing changed the whole tone at home."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'🧕',n:'Bhavani',r:'Mum of 13yo',c:'"I stopped trying to fix it. That\'s when things shifted."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'}],
+const DEFAULT={e:'#383050',videos:[{f:'\uD83E\uDDD5',n:'Sureena',r:'Mum of 13yo',c:'"I was at my limit too. This is what helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{f:'\uD83D\uDC68',n:'Calvin',r:'Dad of 14yo',c:'"One small thing changed the whole tone at home."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{f:'\uD83E\uDDD5',n:'Bhavani',r:'Mum of 13yo',c:'"I stopped trying to fix it. That\'s when things shifted."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'}],
   empathy:'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.',
-  tips:[{g:'g-coral',icon:'💡',tonight:true,h:'Try one thing you haven\'t tried before.',b:'Put your own phone down first. Ask one question and stop there. Small shifts change the tone.',why:'Willingness to try something different is the beginning of the change.'},{g:'g-forest',icon:'👁️',tonight:false,h:'Name what you see, not what you want changed.',b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open.'},{g:'g-violet',icon:'📅',tonight:false,h:'Once a week is enough to start.',b:'One good moment a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust.'}]};
+  tips:[{g:'g-coral',icon:'\uD83D\uDCA1',tonight:true,h:'Try one thing you haven\'t tried before.',b:'Put your own phone down first. Ask one question and stop there. Small shifts change the tone.',why:'Willingness to try something different is the beginning of the change.'},{g:'g-forest',icon:'\uD83D\uDC41\uFE0F',tonight:false,h:'Name what you see, not what you want changed.',b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open.'},{g:'g-violet',icon:'\uD83D\uDCC5',tonight:false,h:'Once a week is enough to start.',b:'One good moment a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust.'}]};
 
 const PARENT_IMG={
   'Norita':'Assets/Images/Videos screenshot/malay_parent_1.png',
@@ -745,10 +788,14 @@ const MICRO_ACTIONS = {
   ]
 };
 const GROUNDING=[
-  {g:'g-night',icon:'📵',h:'Put your phone down for 10 minutes.',b:'Your nervous system needs a break. Ten minutes. That\'s all.',timer:10},
-  {g:'g-amber',icon:'💌',h:'Text one friend — not about your child.',b:'A meme, a voice note, a "how are you?". You\'ve been pouring out without anyone asking about you.',timer:0},
-  {g:'g-teal',icon:'💧',h:'Get a glass of water. Sit somewhere different.',b:'Not at your desk. Your body carries stress even when your mind thinks it\'s coping.',timer:0}
+  {g:'g-night',icon:'\uD83D\uDCF5',h:'Put your phone down for 10 minutes.',b:'Your nervous system needs a break. Ten minutes. That\'s all.',timer:10},
+  {g:'g-amber',icon:'\uD83D\uDC8C',h:'Text one friend \u2014 not about your child.',b:'A meme, a voice note, a "how are you?". You\'ve been pouring out without anyone asking about you.',timer:0},
+  {g:'g-teal',icon:'\uD83D\uDCA7',h:'Get a glass of water. Sit somewhere different.',b:'Not at your desk. Your body carries stress even when your mind thinks it\'s coping.',timer:0},
+  {g:'g-forest',icon:'\uD83D\uDCDD',h:'Write down three things that went okay today.',b:'Not great things. Just okay things. Shifts focus from what\'s failing to what\'s holding.',timer:0},
+  {g:'g-sky',icon:'\uD83C\uDF33',h:'Step outside for 3 minutes. No phone.',b:'Cold air or sunlight interrupts the stress loop. Three minutes is enough.',timer:0},
+  {g:'g-rose',icon:'\uD83D\uDCAC',h:'Name the feeling out loud.',b:'"I\'m frustrated." "I\'m scared." Saying it reduces it. Sounds simple, works fast.',timer:0}
 ];
+const GROUND_CARD_CLASSES=['ground-card-cream','ground-card-sage','ground-card-lavender','ground-card-cream','ground-card-sage','ground-card-lavender'];
 const ENCOUR=[{h:'You\'ve got this.',s:'One small step is still a step.'},{h:'You\'re doing more than you think.',s:'Most parents never look this hard for a better way.'},{h:'Good luck.',s:'Even if it\'s messy the first time, you showing up is what matters.'},{h:'Here\'s to a better evening.',s:'Small shifts start exactly like this.'},{h:'One week.',s:'Give it a few days. You might surprise yourself.'}];
 
 // ════ STATE ════
@@ -785,42 +832,10 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if(id==='swaci')loadCheckin();
-  if(id==='spov')resetSelfCheck();
   if(id==='s-shifts')renderStarterKit();
 }
-let spovExpanded=false;
 function spovBack(){
-  if(spovExpanded){resetSelfCheck();spovExpanded=false;}
-  else{go('slanding');}
-}
-function resetSelfCheck(){
-  const btn=document.getElementById('sc-continue');
-  const checkin=document.getElementById('sc-checkin');
-  // Expand all cards back
-  document.querySelectorAll('.sc-card-item').forEach(card=>{
-    card.style.padding='24px';
-    const t=card.querySelector('.sc-card-title');if(t){t.style.fontSize='20px';t.style.marginBottom='12px';}
-    const x=card.querySelector('.sc-card-txt');if(x){x.style.maxHeight='200px';x.style.opacity='1';x.style.marginBottom='';}
-  });
-  if(btn){btn.style.display='block';btn.style.opacity='1';btn.style.pointerEvents='auto';}
-  if(checkin){checkin.style.opacity='0';checkin.style.maxHeight='0';checkin.style.marginTop='0';checkin.style.overflow='hidden';}
-}
-function expandSelfCheck(){
-  spovExpanded=true;
-  const btn=document.getElementById('sc-continue');
-  const checkin=document.getElementById('sc-checkin');
-  // Compact all cards
-  document.querySelectorAll('.sc-card-item').forEach(card=>{
-    card.style.padding='14px 20px';
-    const t=card.querySelector('.sc-card-title');if(t){t.style.fontSize='14px';t.style.marginBottom='0';}
-    const x=card.querySelector('.sc-card-txt');if(x){x.style.maxHeight='0';x.style.opacity='0';x.style.marginBottom='0';}
-  });
-  // Hide continue button
-  if(btn){btn.style.opacity='0';btn.style.pointerEvents='none';setTimeout(()=>{btn.style.display='none'},400);}
-  // Reveal self-check
-  setTimeout(()=>{
-    if(checkin){checkin.style.opacity='1';checkin.style.maxHeight='500px';checkin.style.marginTop='28px';checkin.style.overflow='visible';}
-  },300);
+  go('slanding');
 }
 function tapNotif(){const n=document.getElementById('notif');n.style.opacity='0';n.style.pointerEvents='none';setTimeout(()=>go('swa'),300);}
 function pickChar(el){document.querySelectorAll('.ally-char').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
@@ -855,7 +870,7 @@ function buildToggles(){
   document.getElementById('ct-ch').style.display=show?'block':'none';
   ['ctr-land','ctr-ch'].forEach(rid=>{
     const row=document.getElementById(rid);if(!row)return;row.innerHTML='';
-    children.forEach((c,i)=>{const p=document.createElement('button');p.className='ctp ctp-light'+(i===activeChild?' on':'');const sl={1:'Sec 1',2:'Sec 2–3',3:'JC/Poly'}[c.stage]||'';p.textContent=c.name+(sl?' · '+sl:'');p.onclick=()=>switchChild(i);row.appendChild(p);});
+    children.forEach((c,i)=>{const p=document.createElement('button');p.className='ctp ctp-light'+(i===activeChild?' on':'');const sl={1:'Sec 1',2:'Sec 2\u20133',3:'JC/Poly'}[c.stage]||'';p.textContent=c.name+(sl?' \u00B7 '+sl:'');p.onclick=()=>switchChild(i);row.appendChild(p);});
   });
 }
 function switchChild(i){activeChild=i;T=children[i].stage||1;buildToggles();loadChallenges(T);}
@@ -868,7 +883,7 @@ function setSelfCheck(t){
   // Section title — centered, outside cards
   const heading=document.createElement('div');
   heading.id='sc-heading';
-  heading.style.cssText='font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-bottom:16px;transition:all .5s ease';
+  heading.style.cssText='font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;text-align:center;margin-bottom:16px;transition:all .5s ease';
   heading.textContent='What most parents notice at this stage';
   container.appendChild(heading);
   // Build cards: if children exist, one per child; else single card for selected stage
@@ -876,23 +891,29 @@ function setSelfCheck(t){
   cards.forEach((c,i)=>{
     const s=c.stage||1;
     const tag=STAGE_SUB[s]||'Sec 1';
+    const tagColor=TAG_COLORS[s]||'#45BE93';
     const title=STAGE_TITLE[s]||STAGE_TITLE[1];
     const ctx=STAGE_CTX[s]||STAGE_CTX[1];
     const card=document.createElement('div');
     card.className='sc-card-item';
     card.style.cssText='background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%;transition:all .5s cubic-bezier(.22,1,.36,1);'+(i>0?'margin-top:12px;':'');
     card.innerHTML=`<div style="margin-bottom:12px">
-      <div style="font-size:10px;font-weight:800;color:white;background:var(--brand);padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;display:inline-block">${c.name?c.name+' · ':''}${tag}</div>
+      <div style="font-size:10px;font-weight:800;color:white;background:${tagColor};padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;display:inline-block">${tag}</div>
     </div>
     <div class="sc-card-title" style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px;transition:all .5s ease;overflow:hidden">${title}</div>
-    <div class="sc-card-txt" style="font-size:15px;color:var(--ink2);line-height:1.65;transition:all .5s ease;overflow:hidden;max-height:200px">${ctx}</div>`;
+    <div class="sc-card-txt" style="font-size:15px;color:var(--ink2);line-height:1.65;transition:all .5s ease;overflow:hidden;max-height:400px">${ctx}</div>`;
     container.appendChild(card);
   });
 }
 function loadChallenges(t){
   document.getElementById('proof-txt').textContent=PROOF[t];
   const list=document.getElementById('chlist');list.innerHTML='';
-  CHALLENGES[t].forEach((c,i)=>{const d=document.createElement('div');d.className='chi';d.onclick=()=>pickC(t,i,c.t);d.innerHTML=`<div class="che">${c.e}</div><div class="chb"><div class="cht">${c.t}</div><div class="chs">${c.s}</div></div><div class="chev">›</div>`;list.appendChild(d);});
+  CHALLENGES[t].forEach((c,i)=>{
+    const wellColor=WELL_COLORS[c.well]||'var(--brand)';
+    const d=document.createElement('div');d.className='chi';d.onclick=()=>pickC(t,i,c.t);
+    d.innerHTML=`<div class="chb"><div class="well-tag" style="background:${wellColor}">${c.well.toUpperCase()}</div><div class="cht">${c.t}</div><div class="chs">${c.s}</div></div><div class="chev">\u203A</div>`;
+    list.appendChild(d);
+  });
 }
 function pickC(t,i,title){
   T=t;I=i;TITLE=title;
@@ -920,7 +941,7 @@ function renderReel(){
   const bar=document.createElement('div');bar.className='app-bar sticky-nav';
   bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0';
   const kitHasItems=kitItems.length>0;
-  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">‹</button><div class="app-title" style="flex:1">Parent stories</div><div onclick="go('s-shifts')" class="kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
+  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">\u2039</button><div class="app-title" style="flex:1">Stories from other parents</div><div onclick="go('s-shifts')" class="kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll';scroll.style.cssText='padding:4px 16px 44px';
@@ -940,7 +961,7 @@ function renderReel(){
         <img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.55)">
         <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.2);cursor:pointer"><div style="width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent var(--ink);margin-left:3px"></div></div>
         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.5));padding:16px 16px 12px">
-          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);color:white;font-size:11px;font-weight:700;padding:4px 10px;border-radius:16px;margin-bottom:6px">🎬 At home · 1:02</div>
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);color:white;font-size:11px;font-weight:700;padding:4px 10px;border-radius:16px;margin-bottom:6px">\uD83C\uDFAC At home \u00B7 1:02</div>
           <div style="font-size:18px;font-weight:900;color:white">${v.n}</div>
           <div style="font-size:12px;color:rgba(255,255,255,.8);font-weight:600">${v.r}</div>
         </div>
@@ -951,9 +972,9 @@ function renderReel(){
       </div>
     </div>
     <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px">
-      <button onclick="reelPrev()" style="width:36px;height:36px;background:${videoIdx===0?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===0?'default':'pointer'};font-family:inherit;color:${videoIdx===0?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===0?'.4':'1'}">‹</button>
+      <button onclick="reelPrev()" style="width:36px;height:36px;background:${videoIdx===0?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===0?'default':'pointer'};font-family:inherit;color:${videoIdx===0?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===0?'.4':'1'}">\u2039</button>
       <div class="f-dots" style="margin:0">${videoData.map((_,j)=>`<div class="fdot${j===videoIdx?' on':''}"></div>`).join('')}</div>
-      <button onclick="reelNext()" style="width:36px;height:36px;background:${videoIdx===videoData.length-1?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===videoData.length-1?'default':'pointer'};font-family:inherit;color:${videoIdx===videoData.length-1?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===videoData.length-1?'.4':'1'}">›</button>
+      <button onclick="reelNext()" style="width:36px;height:36px;background:${videoIdx===videoData.length-1?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===videoData.length-1?'default':'pointer'};font-family:inherit;color:${videoIdx===videoData.length-1?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===videoData.length-1?'.4':'1'}">\u203A</button>
     </div>
 
     <!-- Tips carousel with arrows -->
@@ -1015,7 +1036,7 @@ function renderTip(){
   const bar=document.createElement('div');bar.className='app-bar sticky-nav';
   bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0';
   const kitHasItems=kitItems.length>0;
-  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">‹</button><div class="app-title" style="flex:1">Tips</div><div onclick="go('s-shifts')" class="kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
+  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">\u2039</button><div class="app-title" style="flex:1">Tips</div><div onclick="go('s-shifts')" class="kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll';
@@ -1080,14 +1101,14 @@ function updateTimerDisplay(){
   if(ring){const offset=CIRC*(1-timerSec/timerMax);ring.style.strokeDashoffset=Math.max(0,offset);}
 }
 function toggleTimer(){
-  if(timerRunning){clearInterval(timerInt);timerRunning=false;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>▶</span><span>Resume</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.remove('running');}
-  else{timerRunning=true;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>⏸</span><span>Pause</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.add('running');
+  if(timerRunning){clearInterval(timerInt);timerRunning=false;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>\u25B6</span><span>Resume</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.remove('running');}
+  else{timerRunning=true;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>\u23F8</span><span>Pause</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.add('running');
     timerInt=setInterval(()=>{timerSec--;updateTimerDisplay();if(timerSec<=0){clearInterval(timerInt);timerRunning=false;timerDone();}},1000);}
 }
-function resetTimer(){clearInterval(timerInt);timerRunning=false;timerSec=timerMax;updateTimerDisplay();const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>▶</span><span>Start</span>';const ring=document.getElementById('t-ring');if(ring){ring.classList.remove('running');ring.style.strokeDashoffset='0';}}
+function resetTimer(){clearInterval(timerInt);timerRunning=false;timerSec=timerMax;updateTimerDisplay();const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>\u25B6</span><span>Start</span>';const ring=document.getElementById('t-ring');if(ring){ring.classList.remove('running');ring.style.strokeDashoffset='0';}}
 function timerDone(){
   const wrap=document.getElementById('timer-main');if(!wrap)return;
-  wrap.innerHTML=`<div class="timer-done" style="text-align:center"><div class="f-td-ico">🎉</div><div class="f-td-h">10 minutes. Done.</div><div class="f-td-s">That was just for you. How do you feel?</div><button class="f-btn" onclick="go('schall')">Ready — show me what's on your mind</button></div>`;
+  wrap.innerHTML=`<div class="timer-done" style="text-align:center"><div class="f-td-ico">\uD83C\uDF89</div><div class="f-td-h">10 minutes. Done.</div><div class="f-td-s">That was just for you. How do you feel?</div><button class="f-btn" onclick="go('schall')">Ready \u2014 show me what's on your mind</button></div>`;
 }
 
 // ════ GROUNDING ════
@@ -1095,17 +1116,22 @@ function buildGrounding(){groundIdx=0;renderGround();}
 function renderGround(){
   const container=document.getElementById('gp-container');container.innerHTML='';
   const g=GROUNDING[groundIdx];
+  const cardClass=GROUND_CARD_CLASSES[groundIdx%GROUND_CARD_CLASSES.length];
   const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
 
   const bar=document.createElement('div');bar.className='app-bar';bar.style.background='var(--bg)';
-  bar.innerHTML=`<button class="app-back" onclick="${groundIdx===0?"go('spov')":"groundPrev()"}">${groundIdx===0?'✕':'‹'}</button><div class="app-title">Just for you</div><div class="f-count">${groundIdx+1}/${GROUNDING.length}</div>`;
+  bar.innerHTML=`<button class="app-back" onclick="${groundIdx===0?"go('s-selfcheck')":"groundPrev()"}">\u2039</button><div class="app-title">Just for you</div><div style="width:40px"></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll f-timer';
   let html=`<div class="f-eyebrow">Take a moment</div>`;
 
   if(g.timer>0){
-    html+=`<div class="f-h">${g.h}</div><div class="f-sub">${g.b}</div>
+    html+=`<div class="ground-card ${cardClass}" style="border-radius:18px;padding:20px;margin-bottom:16px">
+    <div style="font-size:28px;margin-bottom:8px">${g.icon}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:0">${g.b}</div>
+    </div>
     <div id="timer-main">
       <div class="timer-wrap" style="padding:8px 0 4px">
         <div class="timer-rings">
@@ -1117,27 +1143,39 @@ function renderGround(){
           <div class="timer-face"><div class="t-time" id="t-time">${g.timer}:00</div><div class="t-lbl">minutes</div></div>
         </div>
         <div class="timer-controls">
-          <button class="timer-start" id="t-btn" onclick="toggleTimer()"><span>▶</span><span>Start</span></button>
-          <button class="timer-rst" onclick="resetTimer()">↺</button>
+          <button class="timer-start" id="t-btn" onclick="toggleTimer()"><span>\u25B6</span><span>Start</span></button>
+          <button class="timer-rst" onclick="resetTimer()">\u21BA</button>
         </div>
       </div>
     </div>
-    <div class="f-dots" style="margin-top:16px">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>`;
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px">
+      <button onclick="groundPrev()" style="width:36px;height:36px;background:${groundIdx===0?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${groundIdx===0?'default':'pointer'};font-family:inherit;color:${groundIdx===0?'var(--ink3)':'var(--ink)'};opacity:${groundIdx===0?'.4':'1'}">\u2039</button>
+      <div class="f-dots" style="margin:0">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>
+      <button onclick="groundNext()" style="width:36px;height:36px;background:${groundIdx===GROUNDING.length-1?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${groundIdx===GROUNDING.length-1?'default':'pointer'};font-family:inherit;color:${groundIdx===GROUNDING.length-1?'var(--ink3)':'var(--ink)'};opacity:${groundIdx===GROUNDING.length-1?'.4':'1'}">\u203A</button>
+    </div>`;
     timerSec=g.timer*60;timerMax=g.timer*60;
   } else {
-    html+=`<div class="f-h">${g.h}</div><div class="f-sub">${g.b}</div>
-    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--brand-lt);color:var(--brand);font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;margin-bottom:16px;border:1px solid var(--brand)">⏱ A couple of minutes</div>
-    <div class="f-dots">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>`;
+    html+=`<div class="ground-card ${cardClass}" style="border-radius:18px;padding:20px;margin-bottom:16px">
+    <div style="font-size:28px;margin-bottom:8px">${g.icon}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:0">${g.b}</div>
+    </div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--brand-lt);color:var(--brand);font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;margin-bottom:16px;border:1px solid var(--brand)">\u23F1 A couple of minutes</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:0;margin-bottom:16px">
+      <button onclick="groundPrev()" style="width:36px;height:36px;background:${groundIdx===0?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${groundIdx===0?'default':'pointer'};font-family:inherit;color:${groundIdx===0?'var(--ink3)':'var(--ink)'};opacity:${groundIdx===0?'.4':'1'}">\u2039</button>
+      <div class="f-dots" style="margin:0">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>
+      <button onclick="groundNext()" style="width:36px;height:36px;background:${groundIdx===GROUNDING.length-1?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${groundIdx===GROUNDING.length-1?'default':'pointer'};font-family:inherit;color:${groundIdx===GROUNDING.length-1?'var(--ink3)':'var(--ink)'};opacity:${groundIdx===GROUNDING.length-1?'.4':'1'}">\u203A</button>
+    </div>`;
   }
 
-  html+=`<button class="f-btn-ghost" style="margin-top:16px" onclick="groundNext()">Show me another</button><button class="f-btn" style="margin-top:0" onclick="go('schall')">I'm ready</button>`;
+  html+=`<button class="f-btn-ghost" style="margin-top:8px" onclick="groundNext()">Next tip</button><button class="f-btn" style="margin-top:0" onclick="go('schall')">I'm ready</button>`;
   scroll.innerHTML=html;
   wrap.appendChild(scroll);
   container.appendChild(wrap);
   initGTouch(container);
 }
-function groundNext(){if(groundIdx<GROUNDING.length-1){groundIdx++;renderGround();}}
-function groundPrev(){if(groundIdx>0){groundIdx--;renderGround();}else go('spov');}
+function groundNext(){if(groundIdx<GROUNDING.length-1){groundIdx++;renderGround();}else{groundIdx=0;renderGround();}}
+function groundPrev(){if(groundIdx>0){groundIdx--;renderGround();}else go('s-selfcheck');}
 function initGTouch(el){
   let sx=0,dx=0,dr=false;
   function s(x){dr=true;sx=x;dx=0;}
@@ -1156,12 +1194,12 @@ async function loadCheckin(){
   let saved=null;try{const r=await window.storage.get('saved-tip');if(r)saved=JSON.parse(r.value);}catch(e){saved=window._savedTip||null;}
   const who=children[activeChild]?.name||'there';
   const q=document.getElementById('ci-q');
-  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'…':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} — you saved a tip last week: <em>"${sh}"</em><br><br>Did anything shift? Even something small counts.</div>`;}
-  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} — how did the week go? Even if nothing shifted, that's fine to say.</div>`;
+  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'\u2026':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 you saved a tip last week: <em>"${sh}"</em><br><br>Did anything shift? Even something small counts.</div>`;}
+  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 how did the week go? Even if nothing shifted, that's fine to say.</div>`;
 }
 function checkin(type){
   let lbl=null;try{lbl=window._savedTip?.label;}catch(e){}
-  const ref=lbl?`trying "${lbl.length>45?lbl.substring(0,42)+'…':lbl}"`:'trying something new';
+  const ref=lbl?`trying "${lbl.length>45?lbl.substring(0,42)+'\u2026':lbl}"`:'trying something new';
   const r={w:{sent:'Something actually shifted',resp:`That's real. Even one small shift from ${ref} is worth building on. We'll send something new next week.`},t:{sent:'Still figuring it out',resp:`Completely fine. These things rarely click in one week. We'll try a different angle.`},r:{sent:'Honestly it was a rough week',resp:`Rough weeks happen. You're still here, which matters more. We'll come back lighter next week.`},role:{sent:'I feel like how I show up needs to change',resp:`That feeling is the work. Noticing it is the first step. We'll send something next week that speaks to exactly that.`},m:{sent:'I need something different',resp:`Noted. We'll match you with something else next week.`}}[type];
   document.getElementById('ciopts').innerHTML='';
   // Show selected answer as outgoing bubble (right-aligned)
@@ -1173,12 +1211,12 @@ function checkin(type){
     const resp=document.createElement('div');resp.style.cssText='display:flex;gap:10px;align-items:flex-end;max-width:85%;animation:slideUp .3s ease both';
     resp.innerHTML=`<div style="width:32px;height:32px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div style="background:white;border-radius:18px 18px 18px 4px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--line)"><div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div><div style="font-size:15px;color:var(--ink);line-height:1.6">${r.resp}</div></div>`;
     document.getElementById('ci-response').appendChild(resp);
-    // Add "back to stories" button after response
+    // Add "back to context" button after response — routes to spov for new cycle
     setTimeout(()=>{
       const divider=document.createElement('div');divider.style.cssText='width:100%;height:1px;background:var(--line);margin:24px 0 16px';
       document.getElementById('ci-response').appendChild(divider);
       const cta=document.createElement('div');cta.style.cssText='text-align:center;padding:8px 0;animation:slideUp .3s ease both';
-      cta.innerHTML=`<button class="f-btn" style="width:100%;max-width:280px;margin:0 auto" onclick="buildVideoScreen();go('svideo')">Explore more parent stories</button><div style="font-size:12px;color:var(--ink3);margin-top:10px">We'll be here when you need us.</div>`;
+      cta.innerHTML=`<button class="f-btn" style="width:100%;max-width:280px;margin:0 auto" onclick="setSelfCheck(T);go('spov')">Start a new cycle</button><div style="font-size:12px;color:var(--ink3);margin-top:10px">We'll be here when you need us.</div>`;
       document.getElementById('ci-response').appendChild(cta);
       document.getElementById('ci-scroll').scrollTop=document.getElementById('ci-scroll').scrollHeight;
     },600);

@@ -397,6 +397,29 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 .f-sk-item.chk .f-sk-chk{background:var(--brand);border-color:var(--brand);color:white}
 .f-sk-txt{font-size:14px;color:var(--ink);line-height:1.5;font-weight:600}
 .f-sk-item.chk .f-sk-txt{color:var(--brand)}
+/* ═══ MICRO ACTIONS ═══ */
+.ma-section{margin-top:16px;margin-bottom:14px}
+.ma-label{font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.ma-card{background:white;border-radius:14px;padding:14px 16px;margin-bottom:10px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.ma-card-txt{font-size:14px;color:var(--ink);line-height:1.55;margin-bottom:10px}
+.ma-try-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:var(--brand);color:white;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.ma-try-btn:active{transform:scale(.96)}
+.ma-try-btn.added{background:var(--brand-lt);color:var(--brand);pointer-events:none}
+@keyframes maCheck{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.ma-check-anim{display:inline-flex;animation:maCheck .4s ease both}
+/* Kit icon styles */
+.kit-icon-wrap{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);border:none;position:relative;flex-shrink:0;transition:background .2s}
+.kit-icon-wrap.neutral{background:var(--brand-lt)}
+.kit-icon-wrap.active{background:var(--brand)}
+.kit-icon-wrap.neutral svg{stroke:var(--brand)}
+.kit-icon-wrap.active svg{stroke:white}
+/* Sticky nav for parent stories */
+.sticky-nav{position:sticky;top:0;z-index:50;background:white}
+/* Empty kit state */
+.kit-empty{text-align:center;padding:40px 20px;color:var(--ink3)}
+.kit-empty-ico{font-size:48px;margin-bottom:16px;opacity:.4}
+.kit-empty-h{font-size:16px;font-weight:700;color:var(--ink2);margin-bottom:8px}
+.kit-empty-sub{font-size:14px;line-height:1.55}
 /* Swipe hints flat */
 .f-sh{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.06);color:var(--ink2);font-size:11px;font-weight:800;padding:5px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .1s;z-index:20;text-transform:uppercase;letter-spacing:.4px}
 .f-sh-n{right:14px}.f-sh-b{left:14px}
@@ -558,12 +581,12 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
   <div id="tp-container" style="flex:1;position:relative;overflow:hidden"></div>
 </div>
 
-<!-- THREE SHIFTS -->
+<!-- STARTER KIT -->
 <div class="screen flat" id="s-shifts">
   <div class="app-bar"><button class="app-back" onclick="go('svideo')">‹</button><div class="app-title" style="flex:1">Your starter kit</div></div>
   <div class="flat-scroll">
-    <div class="f-pill"><div class="f-pill-dot"></div>Almost done</div>
-    <div class="f-h">Three things to try this week</div>
+    <div class="f-pill"><div class="f-pill-dot"></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg> Starter Kit</div>
+    <div class="f-h">Things you want to try</div>
     <div class="f-sub" style="margin-bottom:16px">Tick what feels doable. One is enough to start.</div>
     <div id="sk-items"></div>
     <button class="f-btn" style="margin-top:6px" onclick="go('slater')">Done</button>
@@ -662,6 +685,65 @@ const PARENT_IMG={
   'David':'Assets/Images/Videos screenshot/singapore_parent_male_35.png'
 };
 const STARTER_KIT=[{txt:'One thing I\'m letting them decide for themselves this week.'},{txt:'One conversation I\'m having as a question, not a comment.'},{txt:'One moment I\'m showing up without needing anything back.'}];
+const MICRO_ACTIONS = {
+  'Give a heads-up, not a command.': [
+    {txt: 'Tonight at dinner, say "30 more minutes" instead of "Put the phone down now."', short: '30-min heads-up instead of command'},
+    {txt: 'Before bed, say "Phones charge in the kitchen tonight" \u2014 as a routine, not a rule.', short: 'Phones charge in the kitchen'}
+  ],
+  'A physical cue works better than a rule.': [
+    {txt: 'Put a book or magazine on their bedside table tonight. Don\'t say anything about it.', short: 'Book on bedside table'},
+  ],
+  'Let the data do the talking.': [
+    {txt: 'Ask "Want to check your screen time together this weekend?" \u2014 no judgment, just curiosity.', short: 'Check screen time together'}
+  ],
+  'Be in the room without needing anything.': [
+    {txt: 'Sit in the living room while they\'re there. No questions. Just be present for 15 minutes.', short: '15 min quiet presence'},
+    {txt: 'Do your own thing nearby \u2014 read, fold laundry. Let them see you\'re just there.', short: 'Do your own thing nearby'}
+  ],
+  'Ask about one small thing, not about them.': [
+    {txt: 'Tonight ask "Watched anything good lately?" instead of "How was school?"', short: 'Ask about shows, not school'},
+  ],
+  'Small routines beat big conversations.': [
+    {txt: 'Pick one 10-minute thing to do at the same time every day this week \u2014 a snack, a show, a walk.', short: 'One 10-min daily ritual'}
+  ],
+  'Ask one question. Then stop.': [
+    {txt: 'At dinner, ask one question. When they answer, count to 5 silently. Don\'t follow up.', short: 'One question, then silence'},
+    {txt: 'Next time they share something, say "Tell me more" instead of giving advice.', short: '"Tell me more" instead of advice'}
+  ],
+  'Name what you see, not what you want changed.': [
+    {txt: 'Replace "You should..." with "I noticed..." once today.', short: '"I noticed..." instead of "You should..."'},
+    {txt: 'Text them one thing you noticed they did well. No "but" attached.', short: 'Text one positive thing'}
+  ],
+  'Once a week is enough.': [
+    {txt: 'Pick one evening this week. That\'s your conversation night. Let the other 6 be easy.', short: 'One conversation night this week'}
+  ],
+  'Ask about their friends, not them.': [
+    {txt: 'Tonight ask "How\'s [friend name] doing?" and just listen to what comes out.', short: 'Ask about a friend by name'},
+  ],
+  'Make home somewhere friends are welcome.': [
+    {txt: 'Next time they mention a friend, say "They should come over sometime." Mean it.', short: 'Invite a friend over'}
+  ],
+  'Small signals over formal conversations.': [
+    {txt: 'Mention something they told you last week. Just casually. Show you were listening.', short: 'Reference something from last week'},
+  ],
+  'Say it plainly: "I\'m here if you want to."': [
+    {txt: 'Say "I\'m around if you want to talk. No pressure." Once. Then drop it.', short: '"I\'m around" \u2014 then drop it'},
+  ],
+  'Stop solving. Start witnessing.': [
+    {txt: 'When they complain about something, say "That sounds really hard" and nothing else.', short: '"That sounds hard" \u2014 full stop'},
+    {txt: 'Be in the same room while they stress. No advice. Just presence.', short: 'Present without solving'}
+  ],
+  'Make contact without a reason.': [
+    {txt: 'Send them a meme or a voice note. No question attached. Just "saw this, thought of you."', short: 'Send a meme, no strings'},
+  ],
+  'Try one thing you haven\'t tried before.': [
+    {txt: 'Put your own phone down first tonight. See what happens.', short: 'Put your phone down first'},
+    {txt: 'Ask one question and stop there. Don\'t follow up.', short: 'One question, then stop'}
+  ],
+  'Once a week is enough to start.': [
+    {txt: 'Pick one evening this week. That\'s your conversation night. Let the other 6 be easy.', short: 'One conversation night this week'}
+  ]
+};
 const GROUNDING=[
   {g:'g-night',icon:'📵',h:'Put your phone down for 10 minutes.',b:'Your nervous system needs a break. Ten minutes. That\'s all.',timer:10},
   {g:'g-amber',icon:'💌',h:'Text one friend — not about your child.',b:'A meme, a voice note, a "how are you?". You\'ve been pouring out without anyone asking about you.',timer:0},
@@ -704,6 +786,7 @@ function go(id){
   document.getElementById(id).classList.add('active');
   if(id==='swaci')loadCheckin();
   if(id==='spov')resetSelfCheck();
+  if(id==='s-shifts')renderStarterKit();
 }
 let spovExpanded=false;
 function spovBack(){
@@ -833,25 +916,23 @@ function renderReel(){
   const imgSrc=PARENT_IMG[v.n]||'Assets/Images/Videos screenshot/ig_video_parent_1.png';
   const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
 
-  // Top bar
-  const bar=document.createElement('div');bar.className='app-bar';bar.style.background='var(--bg)';
+  // Top bar — sticky white background
+  const bar=document.createElement('div');bar.className='app-bar sticky-nav';
   bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0';
-  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">‹</button><div class="app-title" style="flex:1">Parent stories</div><div onclick="buildTips();go('s-shifts')" style="width:40px;height:40px;background:var(--brand-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);border:none;position:relative;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:var(--brand);color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:none">0</span></div>`;
+  const kitHasItems=kitItems.length>0;
+  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">‹</button><div class="app-title" style="flex:1">Parent stories</div><div onclick="go('s-shifts')" class="kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll';scroll.style.cssText='padding:4px 16px 44px';
   const key=`${T}-${I}`;const c=CONTENT[key]||DEFAULT;
 
-  // Build tips carousel HTML
+  // Build tips carousel HTML — cards are clickable to open tip detail with micro actions
   const tipsHtml=c.tips.map((tip,ti)=>`
-    <div style="flex-shrink:0;width:210px;background:white;border-radius:16px;padding:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line)">
+    <div onclick="openTipDetail(${ti})" style="flex-shrink:0;width:210px;background:white;border-radius:16px;padding:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);cursor:pointer;transition:all .12s" onmousedown="this.style.transform='scale(.97)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
       ${tip.tonight?'<div style="font-size:9px;font-weight:800;color:#B8860B;background:#FFF7E6;padding:3px 8px;border-radius:8px;display:inline-block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">Try tonight</div>':''}
       <div style="font-size:14px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:6px">${tip.h}</div>
-      <div style="font-size:12px;color:var(--ink3);line-height:1.4;margin-bottom:10px">${tip.b.length>80?tip.b.substring(0,80)+'…':tip.b}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div onclick="buildTips();tipIdx=${ti};renderTip();go('s-tips')" style="font-size:12px;font-weight:700;color:var(--brand);cursor:pointer">Read more</div>
-        <div onclick="event.stopPropagation();addToKit('${tip.h.replace(/'/g,"\\'")}')" style="width:32px;height:32px;background:var(--brand-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .15s" title="Add to starter kit">✋</div>
-      </div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.4;margin-bottom:10px">${tip.b.length>80?tip.b.substring(0,80)+'\u2026':tip.b}</div>
+      <div onclick="event.stopPropagation();openTipDetail(${ti})" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;padding:6px 12px;background:var(--brand-lt);border-radius:10px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="19" width="16" height="2" rx="1"/></svg> I want to try this</div>
     </div>`).join('');
 
   // Card with image + content
@@ -877,13 +958,17 @@ function renderReel(){
       <button onclick="reelNext()" style="width:36px;height:36px;background:${videoIdx===videoData.length-1?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===videoData.length-1?'default':'pointer'};font-family:inherit;color:${videoIdx===videoData.length-1?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===videoData.length-1?'.4':'1'}">›</button>
     </div>
 
-    <!-- Tips carousel -->
+    <!-- Tips carousel with arrows -->
     <div style="margin-bottom:16px">
       <div style="font-size:13px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">What they tried</div>
     </div>
-    <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 4px" class="tips-carousel">${tipsHtml}</div>
+    <div style="position:relative">
+      <button onclick="scrollCarousel(-1)" style="position:absolute;left:-6px;top:50%;transform:translateY(-50%);z-index:5;width:30px;height:30px;background:white;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;font-family:inherit;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.1)">\u2039</button>
+      <div id="tips-carousel-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 28px 4px" class="tips-carousel">${tipsHtml}</div>
+      <button onclick="scrollCarousel(1)" style="position:absolute;right:-6px;top:50%;transform:translateY(-50%);z-index:5;width:30px;height:30px;background:white;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;font-family:inherit;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.1)">\u203A</button>
+    </div>
     <div style="height:16px"></div>
-    <button class="f-btn" onclick="buildTips();go('s-shifts')">See your starter kit</button>`;
+    <button class="f-btn" onclick="go('s-shifts')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>See your starter kit</button>`;
   wrap.appendChild(scroll);
 
   // Hide scrollbar on carousel
@@ -910,32 +995,62 @@ function initReelTouch(el){
 // ════ TIP PLAYER ════
 function buildTips(){
   const key=`${T}-${I}`;tipData=(CONTENT[key]||DEFAULT).tips;tipIdx=0;renderTip();
+}
+function renderStarterKit(){
   const sk=document.getElementById('sk-items');sk.innerHTML='';
-  STARTER_KIT.forEach(item=>{const d=document.createElement('div');d.className='f-sk-item';d.onclick=function(){this.classList.toggle('chk');this.querySelector('.f-sk-chk').textContent=this.classList.contains('chk')?'✓':''};d.innerHTML=`<div class="f-sk-chk"></div><div class="f-sk-txt">${item.txt}</div>`;sk.appendChild(d);});
+  if(kitItems.length===0){
+    sk.innerHTML=`<div class="kit-empty"><div class="kit-empty-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div><div class="kit-empty-h">No micro actions saved yet</div><div class="kit-empty-sub">Go back and explore some tips. Tap "I want to try this" on any micro action to add it here.</div></div>`;
+    return;
+  }
+  kitItems.forEach((txt,i)=>{
+    const d=document.createElement('div');d.className='f-sk-item';
+    d.onclick=function(){this.classList.toggle('chk');this.querySelector('.f-sk-chk').textContent=this.classList.contains('chk')?'\u2713':'';};
+    d.innerHTML=`<div class="f-sk-chk"></div><div class="f-sk-txt">${txt}</div>`;
+    sk.appendChild(d);
+  });
 }
 function renderTip(){
   const container=document.getElementById('tp-container');container.innerHTML='';
   const tip=tipData[tipIdx];
   const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
 
-  const bar=document.createElement('div');bar.className='app-bar';bar.style.background='var(--bg)';
-  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">‹</button><div class="app-title">Tips</div><div style="width:40px;height:40px;background:var(--brand-lt);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>`;
+  const bar=document.createElement('div');bar.className='app-bar sticky-nav';
+  bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0';
+  const kitHasItems=kitItems.length>0;
+  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">‹</button><div class="app-title" style="flex:1">Tips</div><div onclick="go('s-shifts')" class="kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll';
   const isLast=tipIdx===tipData.length-1;
   const isFirst=tipIdx===0;
+
+  // Build micro actions HTML for this tip
+  const actions=MICRO_ACTIONS[tip.h]||[];
+  const maHtml=actions.length>0?`
+    <div class="ma-section">
+      <div class="ma-label">Micro actions</div>
+      ${actions.map((a,ai)=>{
+        const alreadyAdded=kitItems.includes(a.txt);
+        return `<div class="ma-card">
+          <div class="ma-card-txt">${a.txt}</div>
+          <button class="ma-try-btn${alreadyAdded?' added':''}" id="ma-btn-${tipIdx}-${ai}" onclick="addMicroAction(${tipIdx},${ai},this)">
+            ${alreadyAdded?'<span class="ma-check-anim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Added':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="19" width="16" height="2" rx="1"/></svg> I want to try this'}
+          </button>
+        </div>`;
+      }).join('')}
+    </div>`:'';
+
   scroll.innerHTML=`
-    ${tip.tonight?'<div class="f-tonight">🌙 Try tonight</div>':''}
+    ${tip.tonight?'<div class="f-tonight">&#127769; Try tonight</div>':''}
     <div class="f-h">${tip.h}</div>
     <div class="f-sub">${tip.b}</div>
     ${tip.why?`<div class="f-why"><div class="f-why-l">Why this matters</div><div class="f-why-t">${tip.why}</div></div>`:''}
-    <button class="f-btn" id="tp-try-btn" onclick="saveTip('${tip.h.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')" style="display:flex;align-items:center;justify-content:center;gap:8px"><span style="font-size:20px">✋</span> I want to try this</button>
+    ${maHtml}
     <div class="f-dots">${tipData.map((_,j)=>`<div class="fdot${j===tipIdx?' on':''}"></div>`).join('')}</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding-top:10px">
-      <button onclick="tipPrev()" style="width:40px;height:40px;background:${isFirst?'var(--line)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${isFirst?'default':'pointer'};font-family:inherit;color:${isFirst?'var(--ink3)':'var(--ink)'};opacity:${isFirst?'.4':'1'}">‹</button>
+      <button onclick="tipPrev()" style="width:40px;height:40px;background:${isFirst?'var(--line)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${isFirst?'default':'pointer'};font-family:inherit;color:${isFirst?'var(--ink3)':'var(--ink)'};opacity:${isFirst?'.4':'1'}">\u2039</button>
       <div style="font-size:13px;color:var(--ink3);font-weight:600">${tipIdx+1} of ${tipData.length}</div>
-      <button onclick="${isLast?'go(\'s-shifts\')':'tipNext()'}" style="width:40px;height:40px;background:white;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;font-family:inherit;color:var(--ink)">›</button>
+      <button onclick="${isLast?'go(\'s-shifts\')':'tipNext()'}" style="width:40px;height:40px;background:white;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;font-family:inherit;color:var(--ink)">\u203A</button>
     </div>`;
   wrap.appendChild(scroll);
   container.appendChild(wrap);
@@ -944,13 +1059,6 @@ function renderTip(){
 function tipNext(){if(tipIdx<tipData.length-1){tipIdx++;renderTip();}}
 function tipPrev(){if(tipIdx>0){tipIdx--;renderTip();}else go('svideo');}
 function saveTip(label){
-  const btn=document.getElementById('tp-try-btn');if(!btn||btn.dataset.saved)return;
-  btn.dataset.saved='1';
-  const enc=ENCOUR[Math.floor(Math.random()*ENCOUR.length)];
-  const slide=document.querySelector('#tp-container > div');
-  const saved=document.createElement('div');saved.className='f-saved';
-  saved.innerHTML=`<div class="f-saved-ico">🌿</div><div class="f-saved-h">${enc.h}</div><div class="f-saved-s">${enc.s}</div><div class="f-saved-sub" style="margin-bottom:24px">We'll check in with you in a few days.</div><button class="f-btn" onclick="tipNext()">Continue</button>`;
-  slide.appendChild(saved);
   try{window.storage.set('saved-tip',JSON.stringify({label,savedAt:Date.now()}));}catch(e){window._savedTip={label,savedAt:Date.now()};}
 }
 function initTipTouch(el){
@@ -1079,13 +1187,42 @@ function checkin(type){
     document.getElementById('ci-scroll').scrollTop=document.getElementById('ci-scroll').scrollHeight;
   },800);
 }
-function addToKit(label){
-  if(kitItems.includes(label))return;
-  kitItems.push(label);
-  const badge=document.getElementById('sk-badge');
-  if(badge){badge.style.display='flex';badge.textContent=kitItems.length;}
-  // Animate the hand button that was clicked
-  event.target.style.background='var(--brand)';event.target.style.color='white';event.target.textContent='✓';
+function addToKit(text){
+  if(kitItems.includes(text))return;
+  kitItems.push(text);
+  updateKitBadge();
+}
+function addMicroAction(tipI,actionI,btn){
+  const tip=tipData[tipI];
+  const actions=MICRO_ACTIONS[tip.h]||[];
+  if(!actions[actionI])return;
+  const a=actions[actionI];
+  if(kitItems.includes(a.txt))return;
+  kitItems.push(a.txt);
+  updateKitBadge();
+  // Brief check animation on button
+  btn.classList.add('added');
+  btn.innerHTML='<span class="ma-check-anim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Added';
+}
+function updateKitBadge(){
+  const count=kitItems.length;
+  // Update all badge instances
+  ['sk-badge','sk-badge-tip'].forEach(id=>{
+    const badge=document.getElementById(id);
+    if(badge){badge.style.display=count>0?'flex':'none';badge.textContent=count;}
+  });
+  // Update icon wrap state
+  document.querySelectorAll('.kit-icon-wrap').forEach(el=>{
+    if(count>0){el.classList.remove('neutral');el.classList.add('active');el.querySelector('svg').setAttribute('stroke','white');}
+    else{el.classList.remove('active');el.classList.add('neutral');el.querySelector('svg').setAttribute('stroke','var(--brand)');}
+  });
+}
+function openTipDetail(ti){
+  const key=`${T}-${I}`;tipData=(CONTENT[key]||DEFAULT).tips;tipIdx=ti;renderTip();go('s-tips');
+}
+function scrollCarousel(dir){
+  const el=document.getElementById('tips-carousel-scroll');
+  if(el)el.scrollBy({left:dir*220,behavior:'smooth'});
 }
 function showBreak(){alert('Taking a break is completely fine.\n\nWe\'ll check back in a month. No guilt, no catching up required.');}
 

@@ -719,7 +719,7 @@ function resetSelfCheck(){
     const t=card.querySelector('.sc-card-title');if(t){t.style.fontSize='20px';t.style.marginBottom='12px';}
     const x=card.querySelector('.sc-card-txt');if(x){x.style.maxHeight='200px';x.style.opacity='1';x.style.marginBottom='';}
   });
-  if(btn){btn.style.display='';btn.style.opacity='1';btn.style.pointerEvents='';}
+  if(btn){btn.style.display='block';btn.style.opacity='1';btn.style.pointerEvents='auto';}
   if(checkin){checkin.style.opacity='0';checkin.style.maxHeight='0';checkin.style.marginTop='0';checkin.style.overflow='hidden';}
 }
 function expandSelfCheck(){

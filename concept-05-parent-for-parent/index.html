@@ -558,17 +558,18 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 </div>
 
 <!-- SELF-CHECK: Dedicated screen (s-selfcheck) -->
-<div class="screen flat" id="s-selfcheck">
-  <div class="app-bar"><button class="app-back" onclick="go('spov')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
-  <div class="flat-scroll" style="padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100%">
-    <div style="width:100%;max-width:320px">
+<div class="screen flat" id="s-selfcheck" style="background:#F5F0EB">
+  <div class="app-bar" style="background:#F5F0EB"><button class="app-back" onclick="go('spov')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="flat-scroll" style="padding:22px">
+    <div style="background:white;border-radius:20px;padding:28px 24px;box-shadow:0 2px 16px rgba(0,0,0,.06);border:1px solid var(--line);margin-top:24px">
       <div class="f-eyebrow" style="margin-bottom:16px;text-align:left">Before you go in</div>
-      <div class="f-h" style="text-align:left;margin-bottom:8px">How are you doing right now?</div>
-      <div class="f-sub" style="text-align:left;margin-bottom:28px">What you bring to the conversation matters as much as what you say.</div>
+      <div class="f-h" style="text-align:left;margin-bottom:10px">How are you doing right now?</div>
+      <div class="f-sub" style="text-align:left;margin-bottom:24px">What you bring to the conversation matters as much as what you say.</div>
+      <div style="height:1px;background:var(--line);margin-bottom:24px"></div>
       <button class="f-btn" style="width:100%" onclick="go('schall')">I'm good</button>
       <button class="f-btn-ghost" style="width:100%" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
-      <div style="font-size:12px;color:var(--ink3);margin-top:14px;line-height:1.5">No judgement. Both paths lead to the same place.</div>
     </div>
+    <div style="font-size:12px;color:var(--ink3);margin-top:16px;line-height:1.5;text-align:center">No judgement. Both paths lead to the same place.</div>
   </div>
 </div>
 
@@ -920,14 +921,11 @@ function setSelfCheck(t){
 function loadChallenges(t){
   document.getElementById('proof-txt').textContent=PROOF[t];
   const list=document.getElementById('chlist');list.innerHTML='';
-  const stageChallenges=CHALLENGES[t];
-  const activeWells=WELLS.filter(w=>stageChallenges.some(c=>c.well===w.id));
-  activeWells.forEach(w=>{
-    const count=stageChallenges.filter(c=>c.well===w.id).length;
+  WELLS.forEach(w=>{
+    const desc=w.desc[t]||w.desc[1];
     const d=document.createElement('div');d.className='chi';
     d.onclick=()=>showWellChallenges(t,w.id);
-    const desc=w.desc[t]||w.desc[1];
-    d.innerHTML=`<div style="width:48px;height:48px;border-radius:14px;background:${w.color}15;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${w.icon}</div><div class="chb"><div class="cht">${w.name}</div><div class="chs">${desc}</div></div><div class="chev">\u203A</div>`;
+    d.innerHTML=`<div class="chb"><div class="cht">${desc}</div></div><div class="chev">\u203A</div>`;
     list.appendChild(d);
   });
 }
@@ -939,10 +937,6 @@ function showWellChallenges(t,wellId){
   backBtn.onclick=()=>loadChallenges(t);
   list.appendChild(backBtn);
   const well=WELLS.find(w=>w.id===wellId);
-  const wellLabel=document.createElement('div');
-  wellLabel.style.cssText='display:inline-flex;align-items:center;gap:6px;background:'+well.color+'15;color:'+well.color+';font-size:12px;font-weight:800;padding:5px 12px;border-radius:12px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.3px';
-  wellLabel.innerHTML=well.icon+' '+well.name;
-  list.appendChild(wellLabel);
   const challenges=CHALLENGES[t].filter(c=>c.well===wellId);
   challenges.forEach((c)=>{
     const origIdx=CHALLENGES[t].indexOf(c);

@@ -652,13 +652,39 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:12px;">
       <div onclick="showFreezeCardMenu()" style="background:var(--bg-card);border:1px solid rgba(51,154,240,.2);border-radius:20px;padding:6px 16px;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);cursor:pointer;transition:all .2s;">🧊 <span id="freezeCardCount">0</span> Freeze Cards</div>
     </div>
-    <!-- Character companion (large) -->
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:16px;padding:16px 0;">
-      <div style="width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.18) 0%,rgba(132,94,247,.05) 50%,transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;">
-        <img id="mapCompanionImg" src="Assets/Characters/AURA.png" style="width:160px;height:auto;filter:drop-shadow(0 8px 24px rgba(132,94,247,.3));transition:filter .5s;animation:float 4s ease-in-out infinite;">
+    <!-- Progress bar with glow-up milestones -->
+    <div style="margin-bottom:8px;padding:0 12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <span style="font-size:9px;color:var(--text-dim);font-weight:600;">DAY <span id="mapDayProgress">3</span> / 10</span>
+        <span style="font-size:9px;color:var(--violet);font-weight:600;" id="mapGlowLabel">Next: Glow-up 1 at Day 5</span>
+      </div>
+      <div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:4px;position:relative;overflow:visible;">
+        <div id="mapProgressFill" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),var(--blue));width:30%;transition:width .8s ease-out;"></div>
+        <!-- Day 5 marker -->
+        <div style="position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:6px;color:var(--violet);">✨</span>
+        </div>
+        <!-- Day 10 marker -->
+        <div style="position:absolute;top:-3px;right:0;transform:translateX(50%);width:14px;height:14px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:6px;color:var(--gold);">🌟</span>
+        </div>
+      </div>
+    </div>
+    <!-- Character companion (large) with glow ring -->
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:16px;padding:12px 0;">
+      <div id="mapCompanionRing" style="width:190px;height:190px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:8px;position:relative;transition:all .8s ease-out;background:radial-gradient(circle,rgba(132,94,247,.12) 0%,transparent 70%);border:2px solid rgba(132,94,247,.1);">
+        <!-- Glow particles (hidden initially, shown on glow-up) -->
+        <div id="glowParticles" style="position:absolute;inset:-10px;border-radius:50%;opacity:0;transition:opacity .8s;pointer-events:none;"></div>
+        <img id="mapCompanionImg" src="Assets/Characters/AURA.png" style="width:160px;height:auto;transition:all .8s ease-out;filter:drop-shadow(0 8px 24px rgba(0,0,0,.3));animation:float 4s ease-in-out infinite;">
       </div>
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text);" id="mapCompanionName">Aura</div>
-      <div style="font-size:11px;color:var(--violet);font-weight:700;letter-spacing:.04em;" id="mapCompanionStage">Teen</div>
+      <div id="mapCompanionStage" style="font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 12px;border-radius:12px;transition:all .5s;color:var(--text-dim);background:rgba(255,255,255,.04);">Teen</div>
+      <!-- Glow-up demo toggle (for prototype testing) -->
+      <div style="display:flex;gap:6px;margin-top:10px;">
+        <div onclick="updateCharacterGlow(1)" style="padding:4px 10px;border-radius:8px;font-size:9px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text-dim);border:1px solid rgba(255,255,255,.08);">Teen</div>
+        <div onclick="updateCharacterGlow(5)" style="padding:4px 10px;border-radius:8px;font-size:9px;font-weight:700;cursor:pointer;background:rgba(132,94,247,.1);color:var(--violet);border:1px solid rgba(132,94,247,.2);">Glow 1 ✨</div>
+        <div onclick="updateCharacterGlow(10)" style="padding:4px 10px;border-radius:8px;font-size:9px;font-weight:700;cursor:pointer;background:rgba(255,212,59,.1);color:var(--gold);border:1px solid rgba(255,212,59,.2);">Glow 2 🌟</div>
+      </div>
     </div>
     <div id="questMapNodes"></div>
   </div>
@@ -2180,20 +2206,88 @@ function useFreezeOnAlly() {
 // === CHARACTER GLOW-UP ===
 let characterGlowStage = 0;
 function updateCharacterGlow(day) {
+  var prev = characterGlowStage;
   if (day >= 10) characterGlowStage = 2;
   else if (day >= 5) characterGlowStage = 1;
   else characterGlowStage = 0;
-  const comp = document.getElementById('mapCompanionImg');
-  const label = document.getElementById('mapCompanionStage');
-  if (comp) {
-    const filters = ['drop-shadow(0 2px 6px rgba(0,0,0,.3))',
-      'drop-shadow(0 2px 8px rgba(132,94,247,.3)) brightness(1.05)',
-      'drop-shadow(0 4px 16px rgba(255,212,59,.4)) brightness(1.1)'];
-    comp.style.filter = filters[characterGlowStage];
+
+  var comp = document.getElementById('mapCompanionImg');
+  var ring = document.getElementById('mapCompanionRing');
+  var label = document.getElementById('mapCompanionStage');
+  var particles = document.getElementById('glowParticles');
+  var progressFill = document.getElementById('mapProgressFill');
+  var dayLabel = document.getElementById('mapDayProgress');
+  var glowLabel = document.getElementById('mapGlowLabel');
+
+  // Update progress bar
+  var pct = Math.min((day / 10) * 100, 100);
+  if (progressFill) progressFill.style.width = pct + '%';
+  if (dayLabel) dayLabel.textContent = day;
+
+  // Stage 0: Teen (starting — muted, no glow)
+  if (characterGlowStage === 0) {
+    if (comp) {
+      comp.style.filter = 'drop-shadow(0 4px 12px rgba(0,0,0,.3)) saturate(0.85)';
+      comp.style.transform = '';
+    }
+    if (ring) {
+      ring.style.background = 'radial-gradient(circle,rgba(132,94,247,.08) 0%,transparent 70%)';
+      ring.style.border = '2px solid rgba(132,94,247,.08)';
+      ring.style.boxShadow = 'none';
+    }
+    if (label) {
+      label.textContent = 'Teen';
+      label.style.color = 'var(--text-dim)';
+      label.style.background = 'rgba(255,255,255,.04)';
+    }
+    if (particles) particles.style.opacity = '0';
+    if (glowLabel) { glowLabel.textContent = 'Next: Glow-up 1 at Day 5'; glowLabel.style.color = 'var(--violet)'; }
   }
-  if (label) {
-    const labels = ['Teen', 'Glow-up 1 \u2728', 'Glow-up 2 \ud83c\udf1f'];
-    label.textContent = labels[characterGlowStage];
+  // Stage 1: First Glow-up (Day 5+) — violet glow, brighter, ring pulses
+  else if (characterGlowStage === 1) {
+    if (comp) {
+      comp.style.filter = 'drop-shadow(0 8px 24px rgba(132,94,247,.5)) brightness(1.08) saturate(1.1)';
+    }
+    if (ring) {
+      ring.style.background = 'radial-gradient(circle,rgba(132,94,247,.2) 0%,rgba(132,94,247,.05) 50%,transparent 70%)';
+      ring.style.border = '2px solid rgba(132,94,247,.35)';
+      ring.style.boxShadow = '0 0 30px rgba(132,94,247,.15), inset 0 0 30px rgba(132,94,247,.05)';
+    }
+    if (label) {
+      label.innerHTML = 'Glow-up 1 ✨';
+      label.style.color = 'var(--violet)';
+      label.style.background = 'rgba(132,94,247,.12)';
+    }
+    if (particles) {
+      particles.style.opacity = '1';
+      particles.style.background = 'conic-gradient(from 0deg,transparent,rgba(132,94,247,.08),transparent,rgba(132,94,247,.05),transparent)';
+      particles.style.animation = 'spin 8s linear infinite';
+    }
+    if (glowLabel) { glowLabel.textContent = 'Next: Glow-up 2 at Day 10'; glowLabel.style.color = 'var(--gold)'; }
+    if (progressFill) progressFill.style.background = 'linear-gradient(90deg,var(--violet),var(--blue),var(--violet))';
+  }
+  // Stage 2: Second Glow-up (Day 10) — golden glow, full radiance, big aura
+  else if (characterGlowStage === 2) {
+    if (comp) {
+      comp.style.filter = 'drop-shadow(0 12px 32px rgba(255,212,59,.5)) drop-shadow(0 0 20px rgba(132,94,247,.3)) brightness(1.15) saturate(1.2)';
+    }
+    if (ring) {
+      ring.style.background = 'radial-gradient(circle,rgba(255,212,59,.15) 0%,rgba(132,94,247,.1) 40%,transparent 70%)';
+      ring.style.border = '2px solid rgba(255,212,59,.4)';
+      ring.style.boxShadow = '0 0 40px rgba(255,212,59,.2), 0 0 80px rgba(132,94,247,.1), inset 0 0 40px rgba(255,212,59,.05)';
+    }
+    if (label) {
+      label.innerHTML = 'Glow-up 2 🌟';
+      label.style.color = 'var(--gold)';
+      label.style.background = 'linear-gradient(135deg,rgba(255,212,59,.15),rgba(132,94,247,.1))';
+    }
+    if (particles) {
+      particles.style.opacity = '1';
+      particles.style.background = 'conic-gradient(from 0deg,transparent,rgba(255,212,59,.1),transparent,rgba(132,94,247,.08),transparent,rgba(255,212,59,.06),transparent)';
+      particles.style.animation = 'spin 6s linear infinite';
+    }
+    if (glowLabel) { glowLabel.textContent = '✨ Fully evolved!'; glowLabel.style.color = 'var(--gold)'; }
+    if (progressFill) progressFill.style.background = 'linear-gradient(90deg,var(--violet),var(--gold),var(--violet))';
   }
 }
 

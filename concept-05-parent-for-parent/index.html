@@ -863,7 +863,7 @@ const GROUNDING=[
   {g:'g-teal',icon:'droplet',h:'Get a glass of water. Sit somewhere different.',b:'Not at your desk. Your body carries stress even when your mind thinks it\'s coping.',timer:0},
   {g:'g-forest',icon:'pen-line',h:'Write down three things that went okay today.',b:'Not great things. Just okay things. Shifts focus from what\'s failing to what\'s holding.',timer:0},
   {g:'g-sky',icon:'trees',h:'Step outside for 3 minutes. No phone.',b:'Cold air or sunlight interrupts the stress loop. Three minutes is enough.',timer:3},
-  {g:'g-rose',icon:'speech',h:'Name the feeling out loud.',b:'"I\'m frustrated." "I\'m scared." Saying it reduces it. Sounds simple, works fast.',timer:0}
+  {g:'g-rose',icon:'wind',h:'Breathe with me.',b:'4 seconds in. 7 seconds hold. 8 seconds out. Three rounds is all it takes.',timer:0,breathe:true}
 ];
 const GROUND_CARD_CLASSES=['ground-card-cream','ground-card-sage','ground-card-lavender','ground-card-cream','ground-card-sage','ground-card-lavender'];
 const ENCOUR=[{h:'You\'ve got this.',s:'One small step is still a step.'},{h:'You\'re doing more than you think.',s:'Most parents never look this hard for a better way.'},{h:'Good luck.',s:'Even if it\'s messy the first time, you showing up is what matters.'},{h:'Here\'s to a better evening.',s:'Small shifts start exactly like this.'},{h:'One week.',s:'Give it a few days. You might surprise yourself.'}];
@@ -1246,6 +1246,45 @@ function save3Things(){
   const el=document.getElementById('g3t-saved');if(el){el.style.opacity='1';clearTimeout(window._g3tTO);window._g3tTO=setTimeout(()=>{el.style.opacity='0';},1500);}
 }
 
+let breatheInt=null,breatheRound=0;
+function startBreathe(){
+  const btn=document.getElementById('breathe-btn');if(btn)btn.style.display='none';
+  breatheRound=0;breatheCycle();
+}
+function breatheCycle(){
+  if(breatheRound>=3){breatheDone();return;}
+  const circle=document.getElementById('breathe-circle');
+  const label=document.getElementById('breathe-label');
+  const roundEl=document.getElementById('breathe-round');
+  if(!circle||!label)return;
+  // Inhale 4s
+  label.textContent='Breathe in';
+  circle.style.transition='all 4s ease-in-out';
+  circle.style.transform='scale(1.35)';
+  circle.style.background='rgba(69,190,147,.2)';
+  circle.style.borderColor='var(--brand)';
+  let count=4;label.textContent='Breathe in \u2014 '+count;
+  const inhaleInt=setInterval(()=>{count--;if(count>0)label.textContent='Breathe in \u2014 '+count;else{clearInterval(inhaleInt);holdPhase();}},1000);
+  function holdPhase(){
+    label.textContent='Hold';
+    circle.style.transition='none';
+    let hc=7;label.textContent='Hold \u2014 '+hc;
+    const holdInt=setInterval(()=>{hc--;if(hc>0)label.textContent='Hold \u2014 '+hc;else{clearInterval(holdInt);exhalePhase();}},1000);
+  }
+  function exhalePhase(){
+    label.textContent='Breathe out';
+    circle.style.transition='all 8s ease-in-out';
+    circle.style.transform='scale(1)';
+    circle.style.background='var(--brand-lt)';
+    let ec=8;label.textContent='Breathe out \u2014 '+ec;
+    const exInt=setInterval(()=>{ec--;if(ec>0)label.textContent='Breathe out \u2014 '+ec;else{clearInterval(exInt);breatheRound++;if(roundEl)roundEl.textContent='Round '+(breatheRound)+' of 3';setTimeout(breatheCycle,500);}},1000);
+  }
+}
+function breatheDone(){
+  const main=document.getElementById('breathe-main');if(!main)return;
+  main.innerHTML=`<div style="text-align:center;padding:16px 0"><div style="font-size:48px;margin-bottom:12px;color:var(--brand)">${lucide('sparkles',48,'var(--brand)')}</div><div style="font-size:20px;font-weight:900;color:var(--ink);margin-bottom:6px">Three rounds. Done.</div><div style="font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:18px">Your body is a little calmer now. That's enough.</div><button class="f-btn" onclick="go('schall')">I'm ready</button></div>`;
+}
+
 // ════ GROUNDING ════
 function buildGrounding(){groundIdx=0;renderGround();}
 function renderGround(){
@@ -1297,13 +1336,29 @@ function renderGround(){
     </div>
     <div id="g3t-saved" style="text-align:center;font-size:12px;color:var(--brand);font-weight:700;margin-top:12px;opacity:0;transition:opacity .3s">Saved \u2713</div>
     </div>`;
+  } else if(g.breathe){
+    // Breathing exercise — 4-7-8
+    html+=`<div class="ground-card" style="background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)">
+    <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
+    <div id="breathe-main">
+      <div style="display:flex;flex-direction:column;align-items:center;padding:8px 0">
+        <div id="breathe-circle" style="width:140px;height:140px;border-radius:50%;background:var(--brand-lt);border:3px solid var(--brand);display:flex;align-items:center;justify-content:center;transition:all 4s ease-in-out">
+          <div id="breathe-label" style="font-size:16px;font-weight:800;color:var(--brand);text-align:center">Ready</div>
+        </div>
+        <div id="breathe-round" style="font-size:12px;color:var(--ink3);font-weight:700;margin-top:14px">3 rounds</div>
+        <button id="breathe-btn" onclick="startBreathe()" style="margin-top:14px;padding:14px 40px;background:var(--brand);color:white;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(69,190,147,.3)">Start</button>
+      </div>
+    </div>
+    </div>`;
   } else {
     // Standard non-timer card — with illustration area for visual height parity
     html+=`<div class="ground-card" style="background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);min-height:340px;display:flex;flex-direction:column">
     <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
     <div class="f-h" style="margin-bottom:6px">${g.h}</div>
     <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
-    <div style="flex:1;display:flex;align-items:center;justify-content:center;opacity:.15;font-size:80px;line-height:1">${g.icon==='send'?'\uD83D\uDCAC':g.icon==='droplet'?'\uD83D\uDCA7':g.icon==='speech'?'\uD83D\uDDE3\uFE0F':'\u2728'}</div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;opacity:.15;font-size:80px;line-height:1">${g.icon==='send'?'\uD83D\uDCAC':g.icon==='droplet'?'\uD83D\uDCA7':'\u2728'}</div>
     </div>`;
   }
 

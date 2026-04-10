@@ -1062,11 +1062,11 @@ function loadPOV(){
   scroll.innerHTML=`
     <!-- Hero insight section — distinct background -->
     <div style="background:linear-gradient(165deg,#EDE9FE,#DBEAFE);margin:-20px -22px 0;padding:28px 22px 28px;border-radius:0 0 28px 28px">
-      <div class="f-eyebrow" style="color:rgba(99,102,241,.6)">From the youth side</div>
-      <div class="f-h" style="margin-bottom:16px;color:var(--ink)">Their world right now</div>
+      <div class="f-eyebrow" style="color:var(--ink3);text-align:left">From the youth side</div>
+      <div class="f-h" style="margin-bottom:16px;color:var(--ink);text-align:left">Their world right now</div>
       <div style="background:white;border-radius:20px;padding:24px 22px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-          <div style="width:32px;height:32px;border-radius:10px;background:#EDE9FE;display:flex;align-items:center;justify-content:center">${lucide('eye',16,'#6366F1')}</div>
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center">${lucide('eye',16,'var(--brand)')}</div>
           <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">What\u2019s actually going on</div>
         </div>
         <div style="font-size:15px;color:var(--ink);line-height:1.7">${p.insight}</div>
@@ -1085,13 +1085,18 @@ function loadPOV(){
       <div id="pov-quotes-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${youthStoriesHtml}</div>
     </div>
 
-    <button class="f-btn" onclick="buildVideoScreen();go('svideo')">${lucide('users',16,'white')} See tips from other parents</button>
+    <button class="f-btn" onclick="buildVideoScreen();go('svideo')">See tips from other parents</button>
   `;
 
   // Hide scrollbars
   const styleEl=document.createElement('style');
   styleEl.textContent='#pov-quotes-scroll::-webkit-scrollbar{display:none}#pov-videos-scroll::-webkit-scrollbar{display:none}';
   scroll.appendChild(styleEl);
+  // Enable drag-to-scroll on carousels
+  setTimeout(()=>{
+    initDragScroll(document.getElementById('pov-videos-scroll'));
+    initDragScroll(document.getElementById('pov-quotes-scroll'));
+  },50);
 
   go('s-pov');
 }
@@ -1164,11 +1169,12 @@ function renderReel(){
     <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What they tried</div>
     ${tipsCardsHtml}
 
-    <button class="f-btn" style="margin-top:8px" onclick="go('s-shifts')">${lucide('sparkles',16,'white')} See your starter kit</button>`;
+    <button class="f-btn" style="margin-top:8px" onclick="go('s-shifts')">See your starter kit</button>`;
   wrap.appendChild(scroll);
 
   // Hide scrollbar on carousel
   const style=document.createElement('style');style.textContent='.tips-carousel::-webkit-scrollbar{display:none}';wrap.appendChild(style);
+  setTimeout(()=>initDragScroll(document.getElementById('tips-carousel-scroll')),50);
 
   container.appendChild(wrap);
   initReelTouch(container);
@@ -1512,6 +1518,17 @@ function scrollCarousel(dir){
   if(el)el.scrollBy({left:dir*220,behavior:'smooth'});
 }
 function showBreak(){alert('Taking a break is completely fine.\n\nWe\'ll check back in a month. No guilt, no catching up required.');}
+
+// ════ DRAG SCROLL ════
+function initDragScroll(el){
+  if(!el)return;
+  let isDown=false,startX,scrollLeft;
+  el.style.cursor='grab';
+  el.addEventListener('mousedown',e=>{if(e.target.closest('button,a,input'))return;isDown=true;el.style.cursor='grabbing';startX=e.pageX-el.offsetLeft;scrollLeft=el.scrollLeft;});
+  el.addEventListener('mouseleave',()=>{isDown=false;el.style.cursor='grab';});
+  el.addEventListener('mouseup',()=>{isDown=false;el.style.cursor='grab';});
+  el.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-el.offsetLeft;el.scrollLeft=scrollLeft-(x-startX);});
+}
 
 // ════ INIT ════
 window.addEventListener('load',()=>{

@@ -815,14 +815,14 @@ const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my 
 
 const PARENT_IMG={
   'Norita':'Assets/Images/Videos screenshot/malay_parent_1.png',
-  'Kartika':'Assets/Images/Videos screenshot/indian_parent_2.png',
-  'Sureena':'Assets/Images/Videos screenshot/ig_video_parent_1.png',
+  'Kartika':'Assets/Images/Videos screenshot/Parent/indian_parent_2.png',
+  'Sureena':'Assets/Images/Videos screenshot/Parent/Sureena.png',
   'Han Tien':'Assets/Images/Videos screenshot/singapore_parent_female_tshirt.png',
-  'Bhavani':'Assets/Images/Videos screenshot/ig_video_parent_4.png',
-  'Ryan':'Assets/Images/Videos screenshot/singapore_parent_male_35.png',
-  'Calvin':'Assets/Images/Videos screenshot/singapore_parent_male_35.png',
-  'Augustine':'Assets/Images/Videos screenshot/singapore_parent_male_35.png',
-  'David':'Assets/Images/Videos screenshot/singapore_parent_male_35.png'
+  'Bhavani':'Assets/Images/Videos screenshot/Parent/Bhavani.png',
+  'Ryan':'Assets/Images/Videos screenshot/Parent/Ryan.png',
+  'Calvin':'Assets/Images/Videos screenshot/Parent/Calvin.png',
+  'Augustine':'Assets/Images/Videos screenshot/Parent/Calvin.png',
+  'David':'Assets/Images/Videos screenshot/Parent/Ryan.png'
 };
 const STARTER_KIT=[{txt:'One thing I\'m letting them decide for themselves this week.'},{txt:'One conversation I\'m having as a question, not a comment.'},{txt:'One moment I\'m showing up without needing anything back.'}];
 const MICRO_ACTIONS = {
@@ -1159,12 +1159,11 @@ function renderReel(){
   const empathyLine=c.empathy||'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.';
 
   scroll.innerHTML=`
-    <div class="f-eyebrow" style="color:var(--ink3);text-align:left">Tips from other parents</div>
-    <div class="f-h" style="margin-bottom:16px;text-align:left">What other parents tried</div>
-
-    <!-- Empathy card -->
-    <div style="background:linear-gradient(165deg,#EDF5F0,#DCE8E0);border-radius:20px;padding:24px 22px;margin-bottom:28px">
-      <div style="background:white;border-radius:16px;padding:20px 18px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+    <!-- Hero section — edge-to-edge gradient matching youth screen -->
+    <div style="background:linear-gradient(165deg,#EDF5F0,#DCE8E0);margin:-20px -22px 0;padding:28px 22px 28px;border-radius:0 0 28px 28px">
+      <div class="f-eyebrow" style="color:var(--ink3);text-align:left">Tips from other parents</div>
+      <div class="f-h" style="margin-bottom:16px;color:var(--ink);text-align:left">What other parents tried</div>
+      <div style="background:white;border-radius:20px;padding:24px 22px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
           <div style="width:32px;height:32px;border-radius:10px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center">${lucide('heart',16,'var(--brand)')}</div>
           <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">You\'re not alone in this</div>

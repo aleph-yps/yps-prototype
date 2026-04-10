@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wellbits 3.0 — Interactive Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --violet:#845EF7; --violet-dark:#5B3DB8; --violet-glow:rgba(132,94,247,.25);
+  --blue:#339AF0; --blue-dark:#1971C2;
+  --coral:#FF6B6B; --coral-dark:#D94040; --coral-glow:rgba(255,107,107,.25);
+  --mint:#51CF66; --mint-dark:#2F9E44; --mint-dim:#3ba052; --mint-glow:rgba(81,207,102,.25);
+  --gold:#FFD43B; --gold-dark:#F59F00;
+  --pink:#F06595; --pink-glow:rgba(240,101,149,.25);
+  --bg-deep:#0D0E1A; --bg-game:linear-gradient(160deg,#1a1040 0%,#0f0e24 40%,#12082e 100%); --bg-card:rgba(255,255,255,.04); --bg-card-hover:rgba(255,255,255,.08);
+  --text:#F1F3F5; --text-dim:#9CA3AF; --text-muted:#6B7280;
+  --grad-fire:linear-gradient(135deg,#FF6B6B,#FFD43B);
+  --grad-buddy:linear-gradient(135deg,#845EF7,#339AF0);
+  --grad-celebration:linear-gradient(135deg,#FF6B6B,#845EF7,#339AF0);
+  --grad-holo:linear-gradient(90deg,#FF6B6B,#FFD43B,#51CF66,#339AF0,#845EF7,#FF6B6B);
+  --grad-glow:linear-gradient(135deg,#F06595,#FF6B6B,#FFD43B);
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px;
+  --sp-4:4px; --sp-8:8px; --sp-12:12px; --sp-16:16px; --sp-24:24px;
+  --shadow-sm:0 2px 8px rgba(0,0,0,.12); --shadow-md:0 4px 16px rgba(0,0,0,.2); --shadow-lg:0 8px 32px rgba(0,0,0,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:var(--text);overflow:hidden;height:100vh;}
+h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
+.data,.counter{font-family:'Space Grotesk',monospace;}
+
+.gold-coin{display:inline-block;width:1em;height:1em;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.4);vertical-align:middle;position:relative;}.gold-coin::after{content:'$';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.55em;color:#8B6914;font-weight:900;}
+/* === PHONE === */
+.phone-container{display:flex;justify-content:center;align-items:center;height:100vh;}
+.phone-frame{width:375px;height:812px;background:var(--bg-deep);border-radius:44px;border:3px solid #2a2b3d;overflow:hidden;position:relative;box-shadow:0 0 0 2px #1a1b2e,0 20px 60px rgba(0,0,0,.5);}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:126px;height:28px;background:#000;border-radius:0 0 18px 18px;z-index:10;}
+.phone-home{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:134px;height:5px;background:rgba(255,255,255,.15);border-radius:3px;z-index:10;pointer-events:none;}
+.screen-wrap{width:100%;height:100%;overflow:hidden;position:relative;}
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s;overflow-y:auto;overflow-x:hidden;padding-bottom:64px;}
+.screen::-webkit-scrollbar{display:none;}
+.screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none;}
+.screen.hidden-left{transform:translateX(-100%);opacity:0;pointer-events:none;}
+.screen.active{transform:translateX(0);opacity:1;pointer-events:auto;}
+
+/* === COMMON === */
+.back-btn{position:absolute;top:44px;left:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:16px;color:var(--text);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);transition:background .2s;}
+.back-btn:hover{background:rgba(255,255,255,.15);}
+.notif-btn{position:absolute;top:44px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:16px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);transition:all .2s;}
+.notif-btn:hover{background:rgba(255,255,255,.15);}
+.notif-btn .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--coral);border:2px solid var(--bg-deep);}
+.notif-panel{display:none;position:absolute;top:88px;right:16px;width:260px;background:rgba(20,18,40,.95);border:1px solid rgba(132,94,247,.2);border-radius:var(--r-lg);padding:12px;z-index:20;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.4);animation:slideUp .2s ease-out;}
+.notif-panel.show{display:block;}
+.notif-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.notif-item:last-child{border-bottom:none;}
+.notif-item .ni-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.notif-item .ni-text{font-size:11px;color:var(--text-dim);line-height:1.4;}
+.notif-item .ni-text b{color:var(--text);}
+.notif-item .ni-time{font-size:9px;color:var(--text-muted);margin-top:2px;}
+.content{padding:92px 20px 16px;flex:1;display:flex;flex-direction:column;min-height:0;}
+.btn{width:100%;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;padding:14px;border-radius:var(--r-md);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:var(--sp-8);letter-spacing:.01em;margin-top:16px;flex-shrink:0;}
+.btn:last-child{margin-bottom:24px;}
+.btn-primary{background:var(--violet);color:#fff;box-shadow:0 4px 0 var(--violet-dark),0 0 20px var(--violet-glow);}
+.btn-primary:active{transform:translateY(2px);box-shadow:0 2px 0 var(--violet-dark);}
+.btn-mint{background:var(--mint);color:#fff;box-shadow:0 4px 0 var(--mint-dim),0 0 20px var(--mint-glow);}
+.btn-coral{background:var(--coral);color:#fff;box-shadow:0 4px 0 var(--coral-dark),0 0 20px var(--coral-glow);}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--text-dim);border:1px solid rgba(255,255,255,.08);}
+.btn-bottom-action{width:100% !important;margin:24px 0 56px !important;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chip{display:inline-block;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+
+/* === ANIMATIONS === */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes arrowBounce{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(3px);opacity:1}}
+@keyframes glow-pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes nodeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes monsterIdle{0%,100%{transform:translateY(0) scale(1)}25%{transform:translateY(-4px) scale(1.02)}75%{transform:translateY(2px) scale(.98)}}
+@keyframes attackShake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-4px)}20%,40%,60%,80%{transform:translateX(4px)}}
+@keyframes fadeInLine{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes evolveFlash{0%{opacity:0;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(1.5)}}
+@keyframes barFill{from{width:0}to{width:var(--fill)}}
+
+/* === S0: LANDING === */
+.s0{background:var(--bg-deep);padding:24px 20px 24px;align-items:center;text-align:center;justify-content:center;}
+.s0 .hero-img{width:220px;height:220px;border-radius:24px;object-fit:cover;margin-bottom:24px;filter:drop-shadow(0 16px 40px rgba(132,94,247,.3));animation:float 4s ease-in-out infinite;}
+.s0 .hero-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1.15;background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.s0 .hero-sub{font-size:13px;color:var(--text-dim);margin-bottom:32px;line-height:1.5;}
+
+/* === WELCOME SCREENS === */
+.welcome-bg{background:linear-gradient(180deg,#12132a 0%,#1a1040 50%,#0D0E1A 100%);}
+.story-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:50px 28px 8px;overflow:hidden;min-height:0;}
+.welcome-bg{display:flex;flex-direction:column;padding-bottom:0 !important;}
+.game-bg{background:linear-gradient(160deg,#1a1040 0%,#0f0e24 40%,#12082e 100%) !important;}
+.welcome-bg .btn{margin:0 20px 28px;flex-shrink:0;width:calc(100% - 40px);}
+.story-step{font-family:'Space Grotesk',monospace;font-size:10px;color:var(--violet);font-weight:600;margin-bottom:12px;letter-spacing:.08em;}
+.story-icon{margin-bottom:16px;}
+.story-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:10px;}
+.story-desc{font-size:13px;color:var(--text-dim);line-height:1.6;max-width:280px;}
+.story-dots{display:flex;gap:6px;justify-content:center;margin:20px 0 16px;}
+.story-dot{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.15);}
+.story-dot.on{background:var(--violet);width:18px;}
+
+/* === QUIZ === */
+.quiz-bg{background:linear-gradient(180deg,#0f1025 0%,#1a0e30 100%);}
+.quiz-q{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text);text-align:center;margin:16px 0 20px;letter-spacing:-.02em;}
+.quiz-sub{font-size:11px;color:var(--text-dim);text-align:center;margin-bottom:20px;}
+.quiz-opt{background:var(--bg-card);border:2px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;}
+.quiz-opt:hover{background:var(--bg-card-hover);border-color:rgba(132,94,247,.3);}
+.quiz-opt.sel{border-color:var(--violet);background:rgba(132,94,247,.1);box-shadow:0 0 20px var(--violet-glow);}
+.quiz-opt .qicon{font-size:24px;flex-shrink:0;}
+.quiz-opt .qlabel{font-size:13px;font-weight:600;color:var(--text);}
+.quiz-progress{display:flex;gap:4px;margin-bottom:16px;}
+.quiz-progress .qbar{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.08);}
+.quiz-progress .qbar.done{background:var(--violet);}
+.quiz-progress .qbar.cur{background:linear-gradient(90deg,var(--violet),rgba(132,94,247,.3));}
+
+/* === CHARACTER SELECT === */
+.char-select-bg{background:var(--bg-deep);}
+.char-card-wrap{position:relative;display:flex;align-items:center;justify-content:center;padding:8px 0;}
+.char-card{text-align:center;transition:all .3s;}
+.char-card .char-img-wrap{width:180px;height:180px;margin:0 auto 4px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.15),transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;}
+.char-card .char-img-wrap img{width:170px;height:170px;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;}
+.char-card .char-img-wrap .rec-badge{position:absolute;top:-4px;right:-4px;background:var(--gold);color:#1A1B2E;font-size:8px;font-weight:800;padding:3px 8px;border-radius:10px;letter-spacing:.04em;}
+.char-nm{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em;}
+.char-tp{font-size:11px;color:var(--text-dim);margin-bottom:6px;}
+.char-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--text-dim);transition:all .2s;z-index:3;}
+.char-arrow:hover{background:rgba(255,255,255,.12);color:var(--text);}
+.char-arrow.left{left:8px;}
+.char-arrow.right{right:8px;}
+.stat-rows{padding:0 8px;}
+.stat-row{display:flex;align-items:center;gap:6px;margin-bottom:2px;}
+.stat-row .slbl{font-size:10px;color:var(--text-dim);width:60px;text-align:right;}
+.stat-row .sbar-bg{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.stat-row .sbar{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.stat-row .sbar.sleep{background:var(--blue);}
+.stat-row .sbar.eat{background:var(--mint);}
+.stat-row .sbar.move{background:var(--coral);}
+.stat-row .sbar.mind{background:var(--violet);}
+.stat-row .sbar.skin{background:var(--pink);}
+.stat-row .sval{font-family:'Space Grotesk',monospace;font-size:11px;font-weight:700;width:16px;}
+
+/* === EVOLVE === */
+.evolve-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:56px 20px 0;}
+.evolve-circle{width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
+.evolve-circle img{width:280px;height:280px;object-fit:contain;transition:all .5s;}
+.evolve-flash{position:absolute;inset:0;background:radial-gradient(circle,rgba(132,94,247,.4),transparent 70%);border-radius:50%;opacity:0;pointer-events:none;}
+.evolve-stages{display:flex;gap:12px;align-items:center;margin-top:24px;}
+.evolve-stage{text-align:center;opacity:.4;}
+.evolve-stage.active{opacity:1;}
+.evolve-stage .es-dot{width:10px;height:10px;border-radius:50%;margin:0 auto 4px;}
+.evolve-stage .es-label{font-size:9px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;}
+.evolve-stage .es-line{width:40px;height:2px;background:rgba(255,255,255,.1);margin:0 -6px;}
+
+/* === INVITE === */
+.invite-opt{background:var(--bg-card);border:2px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:20px 16px;margin-bottom:10px;flex:1;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;}
+.invite-opt:hover{border-color:rgba(132,94,247,.3);background:var(--bg-card-hover);}
+.invite-opt .inv-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.invite-opt .inv-icon.parent{background:linear-gradient(135deg,rgba(132,94,247,.2),rgba(51,154,240,.2));}
+.invite-opt .inv-icon.friend{background:linear-gradient(135deg,rgba(81,207,102,.2),rgba(51,154,240,.2));}
+.invite-opt .inv-icon.other{background:linear-gradient(135deg,rgba(255,212,59,.2),rgba(255,107,107,.2));}
+.invite-opt .inv-text .inv-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.invite-opt .inv-text .inv-desc{font-size:11px;color:var(--text-dim);}
+.invite-opt .inv-bonus{font-family:'Space Grotesk',monospace;font-size:10px;font-weight:700;color:var(--gold);background:rgba(255,212,59,.1);padding:3px 8px;border-radius:6px;margin-left:auto;flex-shrink:0;}
+
+/* === PARENT VIEW === */
+.parent-bg{background:#FFFFFF;}
+.parent-bg .content{color:#1A1B2E;}
+.p-top{text-align:center;margin-bottom:20px;}
+.p-top h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#1A1B2E;letter-spacing:-.02em;}
+.p-top .p-sub{font-size:12px;color:#6B7280;margin-top:4px;}
+.ally-pick{display:flex;gap:8px;margin-bottom:16px;}
+.ally-opt{flex:1;background:#fff;border:2px solid #E5E7EB;border-radius:var(--r-lg);padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.ally-opt.sel{border-color:var(--violet);background:#F2EEFF;box-shadow:0 0 16px var(--violet-glow);}
+.ally-opt .av{font-size:28px;margin-bottom:4px;}
+.ally-opt .nm{font-size:11px;font-weight:800;color:#1A1B2E;}
+.ally-opt .ds{font-size:9px;color:#6B7280;margin-top:2px;line-height:1.3;}
+.p-input{width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:var(--r-md);font-size:14px;font-family:'DM Sans',sans-serif;background:#fff;color:#1A1B2E;margin-bottom:12px;outline:none;transition:border .2s;}
+.p-input:focus{border-color:var(--violet);}
+.btn-parent{width:100%;background:var(--mint);color:#fff;border:none;padding:16px;border-radius:var(--r-md);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 0 var(--mint-dim),0 0 16px var(--mint-glow);margin-top:auto;}
+
+/* === TEAM READY === */
+.team-ready{align-items:center;text-align:center;}
+.tm-row{display:flex;align-items:center;gap:16px;margin:16px 0;}
+.tm-spr{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite;}
+.tm-spr.hero{background:linear-gradient(135deg,rgba(81,207,102,.15),rgba(81,207,102,.05));border:2px solid rgba(81,207,102,.3);box-shadow:0 0 20px var(--mint-glow);}
+.tm-spr.ally{background:linear-gradient(135deg,rgba(132,94,247,.15),rgba(132,94,247,.05));border:2px solid rgba(132,94,247,.3);box-shadow:0 0 20px var(--violet-glow);animation-delay:.4s;}
+.tm-spr img{width:84px;height:84px;object-fit:contain;}
+.tm-lbl{font-weight:700;font-size:13px;}
+.tm-sub{font-size:10px;color:var(--text-dim);}
+.char-img{width:40px;height:auto;object-fit:contain;}
+.char-img-sm{width:32px;height:32px;object-fit:contain;}
+.char-img-md{width:50px;height:auto;object-fit:contain;}
+.char-img-lg{width:60px;height:auto;object-fit:contain;}
+
+/* === QUEST MAP === */
+.quest-bg{position:relative;}
+.quest-bg::before{content:'';position:absolute;inset:0;background:url('Assets/Backgrounds_Map/94f08e75bc6911a9f682e178d6986af4.jpg') center/cover;opacity:.3;z-index:0;pointer-events:none;}
+.quest-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,14,26,.7) 0%,rgba(13,14,26,.4) 40%,rgba(13,14,26,.7) 100%);z-index:0;pointer-events:none;}
+.quest-bg .content{position:relative;z-index:1;}
+.quest-bg .back-btn{z-index:2;}
+.mh{text-align:center;margin-bottom:8px;}
+.mh h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#fff;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.8);}
+.zone{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:var(--gold);text-align:center;padding:12px 0 8px;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.7);}
+.zone-locked{opacity:.5;}
+.mn{display:flex;align-items:center;gap:14px;width:100%;padding:8px 0;cursor:pointer;position:relative;z-index:2;}
+.nc{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',monospace;font-weight:700;font-size:15px;flex-shrink:0;transition:all .2s;pointer-events:none;}
+.ni{pointer-events:none;}
+.nc.done{background:var(--mint);color:#fff;box-shadow:0 0 16px var(--mint-glow),0 4px 12px rgba(0,0,0,.3);animation:nodeFloat 3s ease-in-out infinite;}
+.nc.now{background:var(--violet);color:#fff;box-shadow:0 0 20px var(--violet-glow),0 4px 12px rgba(0,0,0,.3);animation:nodeFloat 2s ease-in-out infinite;}
+.nc.lock{background:rgba(255,255,255,.06);color:var(--text-muted);border:2px dashed rgba(255,255,255,.15);box-shadow:0 4px 12px rgba(0,0,0,.3);}
+.nc.boss{width:54px;height:54px;font-size:22px;border:2.5px solid var(--coral);background:rgba(255,107,107,.15);box-shadow:0 0 20px var(--coral-glow),0 4px 12px rgba(0,0,0,.3);animation:nodeFloat 2.5s ease-in-out infinite;overflow:hidden;}
+.nc.boss img{width:100%;height:100%;object-fit:cover;}
+.nc.boss.lock{border-style:dashed;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:.7;animation:none;}
+.ni{flex:1;}
+.nt{font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6);}
+.ns{font-size:11px;color:rgba(255,255,255,.5);}
+.conn{width:2px;height:20px;background:rgba(255,255,255,.08);margin-left:23px;}
+.conn.on{background:var(--mint);}
+.zone-arrow{text-align:center;padding:8px 0;font-size:18px;color:rgba(255,255,255,.2);}
+
+/* === DAILY CHALLENGE === */
+.ch-card{background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-xl);padding:20px;margin-bottom:12px;backdrop-filter:blur(8px);}
+.ch-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.ch-txt{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.3;margin-bottom:8px;}
+.ch-reward{display:flex;gap:12px;margin-top:8px;}
+.ch-rew-item{display:flex;align-items:center;gap:4px;font-family:'Space Grotesk',monospace;font-size:11px;font-weight:600;}
+.ch-photo{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.04);}
+
+/* === BATTLE === */
+.battle-arena{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px 0;}
+.battle-char{text-align:center;}
+.battle-char img{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 4px 16px rgba(0,0,0,.4));}
+.battle-char.hero img{animation:float 2s ease-in-out infinite;}
+.battle-char.monster img{animation:monsterIdle 2.5s ease-in-out infinite;}
+.battle-char .blbl{font-size:11px;font-weight:700;margin-top:6px;}
+.battle-vs{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hp-bar-wrap{width:100%;margin:4px 0;}
+.hp-bar-bg{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+.hp-bar{height:100%;border-radius:3px;transition:width 1s;}
+.hp-bar.hero-hp{background:var(--mint);}
+.hp-bar.monster-hp{background:var(--coral);}
+.battle-log{background:var(--bg-card);border:1px solid rgba(255,255,255,.04);border-radius:var(--r-lg);padding:14px;margin:12px 0;}
+.blog-line{font-size:12px;color:var(--text-dim);padding:3px 0;opacity:0;animation:fadeInLine .4s forwards;}
+.blog-line b{color:var(--text);}
+.blog-line.d{color:var(--coral);}
+
+/* === LEADERBOARD === */
+.lb-tabs{display:flex;gap:4px;margin-bottom:16px;}
+.lb-tab{flex:1;padding:8px;border-radius:var(--r-sm);background:var(--bg-card);text-align:center;font-size:10px;font-weight:700;color:var(--text-dim);cursor:pointer;border:1px solid transparent;transition:all .2s;}
+.lb-tab.active{background:rgba(132,94,247,.15);color:var(--violet);border-color:rgba(132,94,247,.3);}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card);border-radius:var(--r-md);margin-bottom:6px;border:1px solid rgba(255,255,255,.04);}
+.lb-row.me{border-color:rgba(132,94,247,.3);background:rgba(132,94,247,.08);}
+.lb-rank{font-family:'Space Grotesk',monospace;font-size:14px;font-weight:700;width:24px;text-align:center;}
+.lb-rank.gold{color:var(--gold);}
+.lb-rank.silver{color:#C0C0C0;}
+.lb-rank.bronze{color:#CD7F32;}
+.lb-av{width:32px;height:32px;border-radius:50%;background:var(--bg-card-hover);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.lb-info{flex:1;}
+.lb-name{font-size:12px;font-weight:700;}
+.lb-stat{font-family:'Space Grotesk',monospace;font-size:10px;color:var(--text-dim);}
+.lb-pts{font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;color:var(--gold);}
+
+/* === GACHA === */
+.gacha-card{background:linear-gradient(135deg,rgba(132,94,247,.1),rgba(255,107,107,.1));border:2px solid rgba(132,94,247,.2);border-radius:var(--r-xl);padding:24px;text-align:center;position:relative;overflow:hidden;}
+.gacha-card::before{content:'';position:absolute;inset:0;background:var(--grad-holo);background-size:400% 100%;opacity:.05;animation:shimmer 4s linear infinite;}
+.gacha-card .gc-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px;}
+.gacha-card .gc-sub{font-size:11px;color:var(--text-dim);margin-bottom:16px;}
+.code-input{width:100%;padding:14px;border:2px solid rgba(132,94,247,.3);border-radius:var(--r-md);background:rgba(0,0,0,.3);color:var(--text);font-family:'Space Grotesk',monospace;font-size:16px;text-align:center;letter-spacing:.2em;outline:none;}
+.code-input::placeholder{color:var(--text-muted);letter-spacing:.1em;font-size:13px;}
+
+/* === BACKPACK === */
+.bp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.bp-slot{aspect-ratio:1;background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-md);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:28px;position:relative;}
+.bp-slot.equipped{border-color:rgba(81,207,102,.3);background:rgba(81,207,102,.06);}
+.bp-slot .bp-label{font-size:8px;font-weight:700;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:.04em;}
+.bp-slot .bp-badge{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--mint);}
+
+/* === VICTORY === */
+.victory-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.vic-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;background:var(--grad-celebration);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.vic-sub{font-size:13px;color:var(--text-dim);margin-bottom:20px;}
+.reward-row{display:flex;gap:12px;justify-content:center;margin-bottom:16px;}
+.reward-item{background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-md);padding:12px 16px;text-align:center;}
+.reward-item .ri-icon{font-size:24px;margin-bottom:4px;}
+.reward-item .ri-val{font-family:'Space Grotesk',monospace;font-size:14px;font-weight:700;}
+.reward-item .ri-label{font-size:9px;color:var(--text-dim);}
+
+/* === HOLO CARD === */
+.holo-card-big{width:200px;height:280px;border-radius:16px;background:linear-gradient(135deg,#1a1040,#0f1025);border:2px solid rgba(132,94,247,.3);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:16px auto;box-shadow:0 8px 40px rgba(132,94,247,.3);}
+.holo-card-big::before{content:'';position:absolute;inset:0;background:var(--grad-holo);background-size:600% 100%;opacity:.08;animation:shimmer 3s linear infinite;}
+.holo-card-big img{width:100px;height:auto;filter:drop-shadow(0 4px 16px rgba(0,0,0,.4));}
+.holo-card-big .hc-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;margin-top:8px;background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite;}
+.holo-card-big .hc-badge{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-top:4px;}
+
+/* === TRANSITION === */
+.transition-screen{background:linear-gradient(180deg,#0D0E1A,#1a1040);align-items:center;justify-content:center;text-align:center;}
+.trans-phone{font-size:48px;margin-bottom:16px;animation:float 2s ease-in-out infinite;}
+.trans-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--text-dim);line-height:1.5;}
+.trans-name{color:var(--violet);font-weight:800;}
+</style>
+</head>
+<body>
+
+<div class="phone-container">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-home"></div>
+<!-- Persistent top-right nav (profile + notification) -->
+<div id="topNav" style="display:none;position:absolute;top:44px;right:16px;z-index:20;gap:8px;">
+  <div onclick="toggleNotif()" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);position:relative;">🔔<div id="topNotifDot" style="position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--coral);border:2px solid var(--bg-deep);"></div></div>
+  <div onclick="goTo(13)" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);overflow:hidden;"><img id="topNavAvatar" src="Assets/Characters/AURA.png" style="width:28px;height:28px;object-fit:contain;"></div>
+</div>
+<!-- Notification panel (shared) -->
+<div class="notif-panel" id="notifPanel" style="z-index:25;">
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px;">Notifications</div>
+  <div class="notif-item"><div class="ni-icon" style="background:rgba(81,207,102,.15);">✅</div><div><div class="ni-text"><b>Sarah</b> joined as your ally! Aegis is ready.</div><div class="ni-time">2 min ago</div></div></div>
+  <div class="notif-item"><div class="ni-icon" style="background:rgba(132,94,247,.15);">📨</div><div><div class="ni-text">Invite link sent</div><div class="ni-time">5 min ago</div></div></div>
+  <div class="notif-item"><div class="ni-icon" style="background:rgba(255,212,59,.15);">🔥</div><div><div class="ni-text"><b>3-day streak!</b> Keep going for a power-up</div><div class="ni-time">1 hr ago</div></div></div>
+  <div class="notif-item"><div class="ni-icon" style="background:rgba(255,107,107,.15);">⚔️</div><div><div class="ni-text"><b>Snack Gremlin</b> awaits at Day 5...</div><div class="ni-time">Today</div></div></div>
+</div>
+<div class="screen-wrap" id="screenWrap">
+
+<!-- S0: LANDING -->
+<div class="screen s0 active" id="screen0">
+  <img src="Assets/Icon/Icon.png" class="hero-img" alt="Wellbits">
+  <div class="hero-text">Wellbits</div>
+  <div class="hero-sub">Team up, take on real-life challenges,<br>collect bits, and level up your Wellbits.</div>
+  <button class="btn btn-primary" onclick="goTo(1)" style="margin-top:24px;">Enter</button>
+</div>
+
+<!-- S1: WELCOME - Scrollable -->
+<div class="screen welcome-bg hidden" id="screen1" style="padding-bottom:0;">
+  <div class="back-btn" onclick="goTo(0)">←</div>
+  <div style="flex:1;overflow-y:auto;padding:92px 20px 0;-webkit-overflow-scrolling:touch;">
+    <div style="text-align:center;margin-bottom:8px;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.02em;">How it works</div>
+    </div>
+
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(132,94,247,.12);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Choose a Wellbit</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Pick your character and quest path. Each Wellbit has unique challenges and adventures.</div></div>
+    </div>
+    <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
+
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(81,207,102,.12);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🤝</div>
+      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Invite an Ally</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Send a link to your parent, friend, or anyone. They'll become your <b style="color:var(--violet)">Quest Ally</b> — you need them to defeat bosses!</div></div>
+    </div>
+    <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
+
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,212,59,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:float 2s ease-in-out infinite;"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 8px rgba(255,212,59,.5);"></div></div>
+      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Complete Daily Bits</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Every day, a new challenge. Earn <b style="color:var(--gold)">Digital Coins</b> and <b style="color:var(--violet)">XP</b>. Your character grows stronger with every bit.</div></div>
+    </div>
+    <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
+
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,107,107,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="Assets/Monsters/SNACK GREMLIN.png" style="width:36px;height:auto;"></div>
+      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Fight Bosses Together</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Battle unhealthy monsters. At boss levels, you and your ally complete a <b style="color:var(--coral)">co-op challenge</b> together!</div></div>
+    </div>
+    <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
+
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,212,59,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="Assets/MockUp_Physical/HPB Roadshow.png" style="width:44px;height:44px;object-fit:cover;border-radius:10px;"></div>
+      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Gacha Rewards</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Hit milestones and earn <b style="color:var(--gold)">Gacha Tokens</b>. Redeem for <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">holographic power-up cards</b>!</div></div>
+    </div>
+    <div style="text-align:center;padding:6px 0;margin-left:14px;"><div style="font-size:14px;color:#9CA3AF;animation:arrowBounce 1.5s ease-in-out infinite;">↓</div></div>
+
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(132,94,247,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><img src="Assets/Items/Blind Box Figurines.png" style="width:44px;height:44px;object-fit:cover;border-radius:10px;"></div>
+      <div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;">Your Ultimate Reward</div><div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Complete 20 days → collect your <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">blind box figurine</b> + <b style="color:var(--gold);">Master Holographic Card</b>.</div></div>
+    </div>
+
+    <div style="text-align:center;padding:0;">
+      <button class="btn btn-primary btn-bottom-action" onclick="goTo(2)" style="margin-left:auto;margin-right:auto;">Let's Go</button>
+    </div>
+  </div>
+</div>
+
+<!-- S2: PICK YOUR QUEST -->
+<div class="screen game-bg hidden" id="screen2" style="background:var(--bg-deep);display:flex;flex-direction:column;">
+  <div class="back-btn" onclick="goTo(1)">←</div>
+  <div class="content" style="overflow-y:auto;flex:1;min-height:0;padding-bottom:8px;">
+    <div style="text-align:center;margin-top:8px;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;">Choose a Wellbit</div>
+    </div>
+    <div class="char-card-wrap">
+      <div class="char-arrow left" onclick="prevChar()">‹</div>
+      <div class="char-card" id="charCard">
+        <div class="char-img-wrap" id="charImgWrap">
+          <img id="charImg" src="Assets/Baby_Versions/Baby AURA.png">
+        </div>
+        <div class="char-nm" id="charName">Aura</div>
+        <div class="char-tp" id="charType">The Radiant One</div>
+      </div>
+      <div class="char-arrow right" onclick="nextChar()">›</div>
+    </div>
+    <!-- Quest info card -->
+    <div style="background:linear-gradient(135deg,rgba(132,94,247,.08),rgba(51,154,240,.06));border:1.5px solid rgba(132,94,247,.25);border-radius:var(--r-lg);padding:16px 20px;margin:16px 0 12px;box-shadow:0 0 20px rgba(132,94,247,.08);text-align:center;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;" id="questName">Aura wants to Glow Up</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.6;font-weight:500;" id="questDesc">Journey through the Crystal Caverns. Battle monsters that drain your glow. Earn radiant armour along the way.</div>
+    </div>
+    <!-- Stats -->
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px 14px 10px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--blue);width:52px;font-weight:700;">Rest</span>
+        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statSleep" style="height:100%;border-radius:4px;background:var(--blue);box-shadow:0 0 8px rgba(51,154,240,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--blue);" id="valSleep">2</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--mint);width:52px;font-weight:700;">Fuel</span>
+        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statEat" style="height:100%;border-radius:4px;background:var(--mint);box-shadow:0 0 8px rgba(81,207,102,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--mint);" id="valEat">2</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--coral);width:52px;font-weight:700;">Power</span>
+        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statMove" style="height:100%;border-radius:4px;background:var(--coral);box-shadow:0 0 8px rgba(255,107,107,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--coral);" id="valMove">2</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--gold);width:52px;font-weight:700;">Heart</span>
+        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statMind" style="height:100%;border-radius:4px;background:var(--gold);box-shadow:0 0 8px rgba(255,212,59,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--gold);" id="valMind">2</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <span style="font-size:11px;color:var(--violet);width:52px;font-weight:700;">Focus</span>
+        <div style="flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="statSkin" style="height:100%;border-radius:4px;background:var(--violet);box-shadow:0 0 8px rgba(132,94,247,.4);width:40%;transition:width .5s cubic-bezier(.4,0,.2,1);"></div></div>
+        <span style="font-family:'Space Grotesk',monospace;font-size:13px;font-weight:700;width:18px;text-align:right;color:var(--violet);" id="valSkin">2</span>
+      </div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:700;display:flex;align-items:center;gap:4px;" id="questBuff"><div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.5);flex-shrink:0;"></div> +1 bonus coin on Fuel challenges</div>
+    </div>
+    <button class="btn btn-primary btn-bottom-action" onclick="goTo(3)">Select</button>
+  </div>
+</div>
+
+<!-- S3: EVOLVE -->
+<div class="screen game-bg hidden" id="screen3" style="display:flex;flex-direction:column;overflow-y:auto;">
+  <div class="back-btn" onclick="goTo(2)">←</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px 0;min-height:0;">
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text-dim);margin-bottom:12px;">Your character</div>
+    <div class="evolve-circle" id="evolveCircle" onclick="evolveChar()">
+      <img id="evolveBaby" src="Assets/Baby_Versions/Baby AURA.png">
+      <img id="evolveTeen" src="Assets/Characters/AURA.png" style="display:none;">
+      <div class="evolve-flash" id="evolveFlash"></div>
+    </div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-top:10px;" id="evolveNameLbl">Glow Up</div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:4px;" id="evolveTapText">Tap to evolve</p>
+    <!-- Evolution path (hidden until evolved) -->
+    <div id="evoGoalSection" style="display:none;margin-top:20px;animation:slideUp .5s ease-out;">
+      <div style="display:flex;align-items:flex-end;gap:10px;justify-content:center;margin-bottom:16px;">
+        <div style="text-align:center;opacity:.5;">
+          <div style="width:50px;height:50px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="goalBaby" src="" style="width:36px;height:auto;"></div>
+          <div style="font-size:7px;color:var(--text-muted);">Baby</div>
+          <div style="font-size:7px;color:var(--mint);">✓</div>
+        </div>
+        <div style="width:16px;height:2px;background:rgba(255,255,255,.15);margin-bottom:16px;"></div>
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(132,94,247,.1);border:2px solid var(--violet);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;box-shadow:0 0 16px var(--violet-glow);"><img id="goalTeen" src="" style="width:44px;height:auto;"></div>
+          <div style="font-size:7px;color:var(--violet);font-weight:700;">Current</div>
+        </div>
+        <div style="width:16px;height:2px;background:rgba(255,255,255,.15);margin-bottom:16px;"></div>
+        <div style="text-align:center;opacity:.4;">
+          <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,212,59,.06);border:2px dashed rgba(255,212,59,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><span style="font-size:20px;">👑</span></div>
+          <div style="font-size:7px;color:var(--gold);">Champion</div>
+          <div style="font-size:7px;color:var(--text-muted);">🔒 Day 20</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);max-width:260px;line-height:1.5;" id="goalCharName">Complete all 20 days to unlock your <b style="color:var(--gold);">Champion form</b> — fully geared with the armour you earned along the way.</div>
+    </div>
+    <button class="btn btn-primary btn-bottom-action" id="evolveNextBtn" onclick="goTo(4)" style="opacity:.3;pointer-events:none;">Start My Quest</button>
+  </div>
+</div>
+
+<!-- S4: INVITE -->
+<div class="screen game-bg hidden" id="screen4">
+  <div class="back-btn" onclick="goTo(3)">←</div>
+  <div class="content">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;">Invite your allies</div>
+      <div style="font-size:12px;color:var(--text-dim);">You'll need allies to defeat bosses.<br>Who's joining your quest?</div>
+    </div>
+    <div onclick="setAllyType('parent');goTo(5)" style="background:linear-gradient(135deg,rgba(132,94,247,.1),rgba(51,154,240,.06));border:1.5px solid rgba(132,94,247,.25);border-radius:var(--r-lg);padding:18px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;box-shadow:0 0 16px rgba(132,94,247,.08);">
+      <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;">Invite Parent</div><div style="font-size:11px;color:var(--text-dim);">Your strongest ally. Unlocks parent co-op challenges.</div></div>
+      <div style="font-family:'Space Grotesk',monospace;font-size:9px;font-weight:700;color:var(--gold);background:rgba(255,212,59,.1);padding:4px 8px;border-radius:6px;">★ Best</div>
+    </div>
+    <div onclick="setAllyType('friend');goTo(5)" style="background:var(--bg-card);border:1.5px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:18px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;">
+      <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;">Invite Friends</div><div style="font-size:11px;color:var(--text-dim);">Peer challenges & leaderboard rivalry.</div></div>
+    </div>
+    <div onclick="setAllyType('link');goTo(5)" style="background:var(--bg-card);border:1.5px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:18px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;">
+      <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;">Invite Others</div><div style="font-size:11px;color:var(--text-dim);">Share a link with anyone.</div></div>
+    </div>
+    <div style="text-align:center;margin-top:12px;">
+      <span style="font-size:13px;color:var(--text-dim);cursor:pointer;text-decoration:underline;font-weight:500;" onclick="goTo(8)">Skip for now</span>
+    </div>
+  </div>
+</div>
+
+<!-- S5: INVITE LINK (Wellbits style) -->
+<div class="screen game-bg hidden" id="screen5">
+  <div class="back-btn" onclick="goTo(4)">←</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px 0;">
+    <div style="width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+      <img id="inviteCharImg" src="Assets/Characters/AURA.png" style="width:130px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">
+    </div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;line-height:1.2;margin-bottom:8px;">Now invite your<br><span style="background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Quest Ally</span></div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:24px;line-height:1.5;" id="inviteLinkSubtitle">Send this link to a parent — they'll help<br>you fight bosses!</div>
+    <div style="background:var(--bg-card);border:1.5px solid rgba(132,94,247,.2);border-radius:var(--r-lg);padding:16px;width:100%;margin-bottom:16px;">
+      <div style="font-size:9px;font-weight:700;color:var(--text-dim);text-align:left;margin-bottom:8px;letter-spacing:.04em;">Invite link</div>
+      <div style="background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="font-size:12px;color:var(--text-dim);flex:1;font-family:'Space Grotesk',monospace;">wellbits.hpb.gov.sg/join/X7kQ2m</span>
+        <span style="font-size:14px;cursor:pointer;">📋</span>
+      </div>
+      <button class="btn btn-primary" onclick="goToAllyView()" style="margin-top:0;">🔗 Copy & Send Link</button>
+    </div>
+  </div>
+  <div style="padding:0 24px 44px;flex-shrink:0;">
+    <div style="background:rgba(81,207,102,.06);border:1px solid rgba(81,207,102,.15);border-radius:var(--r-md);padding:12px 16px;display:flex;align-items:center;gap:10px;">
+      <div style="width:16px;height:16px;border:2px solid var(--mint);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;"></div>
+      <span style="font-size:12px;color:var(--mint);font-weight:600;">Waiting for ally to join...</span>
+    </div>
+  </div>
+</div>
+
+<!-- S6: PARENT VIEW -->
+<div class="screen parent-bg hidden" id="screen6">
+  <div class="back-btn" onclick="goTo(5)" style="color:#1A1B2E;">←</div>
+  <div style="flex:1;overflow-y:auto;padding:92px 24px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;">
+    <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="parentCharImg" src="Assets/Characters/AURA.png" style="width:64px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2));"></div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;"><span style="color:var(--violet);" id="parentYouthName">Ethan</span> wants you<br>on their quest!</div>
+    <div style="font-size:12px;color:#6B7280;margin-bottom:20px;">Choose your Ally character</div>
+
+    <input class="p-input" placeholder="Enter your name" value="Sarah" style="width:100%;margin-bottom:12px;">
+
+    <div class="ally-pick" style="width:100%;margin-bottom:16px;">
+      <div class="ally-opt sel" onclick="pickAlly(this)"><div class="av"><img src="Assets/Parent_Allies/Aegis.png" style="width:36px;height:auto;"></div><div class="nm">Aegis</div><div class="ds">Blocks 1 boss attack</div></div>
+      <div class="ally-opt" onclick="pickAlly(this)"><div class="av"><img src="Assets/Parent_Allies/Oracle.png" style="width:36px;height:auto;"></div><div class="nm">Oracle</div><div class="ds">Reveals boss weakness</div></div>
+      <div class="ally-opt" onclick="pickAlly(this)"><div class="av"><img src="Assets/Parent_Allies/Valor.png" style="width:36px;height:auto;"></div><div class="nm">Valor</div><div class="ds">+50% boss damage</div></div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E5E7EB;border-radius:var(--r-lg);padding:14px 16px;width:100%;margin-bottom:16px;text-align:left;">
+      <div style="font-size:12px;font-weight:700;color:#1A1B2E;margin-bottom:6px;">🎯 What you'll do</div>
+      <div style="font-size:11px;color:#6B7280;line-height:1.5;">Complete simple co-op challenges with <b style="color:var(--violet);">Ethan</b> — like cooking together or going for a walk. Takes 10–15 mins. No app needed — everything runs in your browser.</div>
+    </div>
+  </div>
+
+  <div style="padding:0 24px 44px;flex-shrink:0;">
+    <button class="btn-parent" onclick="goTo(8)">✅ Join as Quest Ally</button>
+  </div>
+</div>
+
+<!-- S7: FRIEND/LINK ALLY VIEW -->
+<div class="screen parent-bg hidden" id="screen7">
+  <div class="back-btn" onclick="goTo(4)" style="color:#1A1B2E;">←</div>
+  <div style="flex:1;overflow-y:auto;padding:48px 24px 0;display:flex;flex-direction:column;align-items:center;text-align:center;">
+    <div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><img id="friendCharImg" src="Assets/Characters/AURA.png" style="width:100px;height:auto;filter:drop-shadow(0 8px 20px rgba(0,0,0,.15));"></div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;"><span style="color:var(--violet);">Ethan</span> wants you<br>on their quest!</div>
+    <div style="font-size:12px;color:#6B7280;margin-bottom:20px;">Choose your Ally character</div>
+
+    <input class="p-input" placeholder="Enter your name" value="" style="width:100%;margin-bottom:12px;">
+
+    <div class="ally-pick" style="width:100%;margin-bottom:16px;">
+      <div class="ally-opt sel" onclick="pickAlly(this)"><div class="av"><img src="Assets/Parent_Allies/Aegis.png" style="width:36px;height:auto;"></div><div class="nm">Aegis</div><div class="ds">Reduces 1 boss attack by 50%</div></div>
+      <div class="ally-opt" onclick="pickAlly(this)"><div class="av"><img src="Assets/Parent_Allies/Oracle.png" style="width:36px;height:auto;"></div><div class="nm">Oracle</div><div class="ds">Reveals a hint about the boss</div></div>
+      <div class="ally-opt" onclick="pickAlly(this)"><div class="av"><img src="Assets/Parent_Allies/Valor.png" style="width:36px;height:auto;"></div><div class="nm">Valor</div><div class="ds">+25% boss damage</div></div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E5E7EB;border-radius:var(--r-lg);padding:14px 16px;width:100%;margin-bottom:16px;text-align:left;">
+      <div style="font-size:12px;font-weight:700;color:#1A1B2E;margin-bottom:6px;">🎯 What you'll do</div>
+      <div style="font-size:11px;color:#6B7280;line-height:1.5;">Do quick challenges together — like a plank-off, a water-drinking race, or going phone-free for an hour.</div>
+    </div>
+  </div>
+
+  <div style="padding:0 24px 44px;flex-shrink:0;">
+    <button class="btn-parent" onclick="goTo(8)">✅ Join as Quest Ally</button>
+  </div>
+</div>
+
+<!-- S8: TEAM READY -->
+<div class="screen game-bg hidden" id="screen8">
+  <div class="back-btn" onclick="goTo(5)">←</div>
+  <div class="content team-ready" style="justify-content:center;">
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px;">Team Assembled!</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:24px;">Your quest begins now</div>
+    <div class="tm-row" style="justify-content:center;">
+      <div style="text-align:center;">
+        <div class="tm-spr hero"><img id="teamHeroImg" src="Assets/Characters/AURA.png" class="char-img-lg"></div>
+        <div class="tm-lbl" id="teamHeroName">Glow Up</div>
+        <div class="tm-sub">You</div>
+      </div>
+      <div style="font-size:20px;color:var(--text-dim);">+</div>
+      <div style="text-align:center;">
+        <div class="tm-spr ally"><img src="Assets/Parent_Allies/Aegis.png" style="width:64px;height:auto;"></div>
+        <div class="tm-lbl">Sarah</div>
+        <div class="tm-sub">Aegis</div>
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border-radius:var(--r-md);padding:12px;margin:16px 0;text-align:center;">
+      <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;">Ally ability</div>
+      <div style="font-size:13px;font-weight:700;"><img src="Assets/Parent_Allies/Aegis.png" style="width:18px;height:auto;vertical-align:middle;margin-right:4px;">Aegis — Blocks 1 boss attack</div>
+    </div>
+    <button class="btn btn-primary" onclick="goTo(9)">Begin Quest</button>
+  </div>
+</div>
+
+<!-- S8: QUEST MAP -->
+<div class="screen quest-bg hidden" id="screen9">
+  <div class="back-btn" onclick="goTo(8)">←</div>
+
+  <div class="content" style="padding:92px 16px 24px;">
+    <div class="mh"><h2>Quest Map</h2></div>
+    <!-- Gem inventory bar -->
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
+      <div style="background:var(--bg-card);border:1px solid rgba(51,154,240,.2);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--blue);cursor:pointer;" onclick="showGemActivate('timewarp')">💎 2 Time Warp <span style="font-size:8px;background:rgba(51,154,240,.15);padding:1px 5px;border-radius:6px;">Use</span></div>
+      <div style="background:var(--bg-card);border:1px solid rgba(132,94,247,.2);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--violet);">🛡️ 1 Ally Shield</div>
+    </div>
+    <div id="questMapNodes"></div>
+  </div>
+</div>
+
+<!-- S10: DAILY CHALLENGE (dynamic) -->
+<div class="screen game-bg hidden" id="screen10">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="align-items:center;text-align:center;">
+    <div style="margin-bottom:4px;">
+      <div class="chip" id="dailyChip" style="background:rgba(81,207,102,.15);color:var(--mint);">Day 3 · Solo</div>
+    </div>
+    <div style="margin:8px 0 12px;position:relative;" id="dailyAvatarWrap">
+      <img id="dailyCharImg" src="Assets/Characters/AURA.png" style="width:140px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">
+      <!-- Ally avatar (shown for ally challenges) -->
+      <div id="dailyAllyAvatar" style="display:none;position:absolute;bottom:0;right:calc(50% - 100px);width:50px;height:50px;border-radius:50%;background:rgba(132,94,247,.15);border:2px solid var(--violet);display:none;align-items:center;justify-content:center;font-size:24px;"><img src="Assets/Parent_Allies/Aegis.png" style="width:32px;height:auto;"></div>
+    </div>
+    <div class="ch-card" style="text-align:left;width:100%;">
+      <div class="ch-type" id="dailyTypeLabel" style="color:var(--mint);">Solo challenge</div>
+      <div class="ch-txt" id="dailyChallengeText" style="font-size:18px;margin-bottom:12px;">—</div>
+      <div id="dailyAllyNote" style="display:none;font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.04);">Both you and your ally need to complete this. They'll get a notification!</div>
+      <div class="ch-reward">
+        <div class="ch-rew-item" style="color:var(--gold);" id="dailyCoins"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 4px rgba(255,212,59,.4);font-size:8px;color:#8B6914;font-weight:bold;vertical-align:middle;">W</span> +15 coins</div>
+        <div class="ch-rew-item" style="color:var(--violet);" id="dailyXP">⭐ +10 XP</div>
+      </div>
+    </div>
+    <button class="btn btn-mint" id="dailyCTA" onclick="goTo(12)" style="font-size:16px;">I did it! ✨</button>
+  </div>
+  <!-- Battle popup overlay -->
+  <div id="battlePopup" style="display:none;position:absolute;inset:0;background:rgba(13,14,26,.95);z-index:50;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;backdrop-filter:blur(8px);">
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px;">
+      <div style="text-align:center;">
+        <div id="battleHeroSprite" style="width:110px;height:110px;border-radius:20px;background:rgba(132,94,247,.1);border:2px solid rgba(132,94,247,.25);display:flex;align-items:center;justify-content:center;">
+          <img id="battleHeroImg" src="Assets/Characters/AURA.png" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+        </div>
+        <div style="font-size:11px;font-weight:700;margin-top:6px;" id="battleHeroName">Aura</div>
+      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VS</div>
+      <div style="text-align:center;">
+        <div id="battleMonSprite" style="width:110px;height:110px;border-radius:20px;background:rgba(255,107,107,.1);border:2px solid rgba(255,107,107,.25);display:flex;align-items:center;justify-content:center;">
+          <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:80px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-top:6px;">Snack Gremlin</div>
+      </div>
+    </div>
+    <div style="width:100%;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-bottom:3px;"><span>Snack Gremlin HP</span><span id="bpHpText">100/100</span></div>
+      <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="bpHpBar" style="height:100%;width:100%;background:var(--coral);border-radius:4px;box-shadow:0 0 8px var(--coral-glow);transition:width .8s ease-out;"></div></div>
+    </div>
+    <div id="battleLogPopup" style="width:100%;text-align:left;min-height:120px;background:rgba(255,255,255,.02);border-radius:12px;padding:12px;margin-bottom:12px;"></div>
+    <button onclick="closeBattlePopup()" style="background:none;border:1px solid rgba(255,255,255,.15);color:var(--text-dim);padding:8px 28px;border-radius:var(--r-md);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;" id="battleSkipBtn">Skip</button>
+  </div>
+</div>
+
+<!-- S11: DAY PREVIEW (completed / ally upcoming) -->
+<div class="screen game-bg hidden" id="screen11">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="align-items:center;text-align:center;">
+    <!-- Completed Day View (Day 1) -->
+    <div id="dayCompletedView">
+      <div style="margin-bottom:4px;">
+        <div class="chip" style="background:rgba(81,207,102,.15);color:var(--mint);">Day 1 · Completed ✓</div>
+      </div>
+      <div style="margin:12px 0;"><img id="previewCharImg" src="Assets/Characters/AURA.png" style="width:120px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));"></div>
+      <div class="ch-card" style="text-align:left;width:100%;border:1px solid rgba(81,207,102,.2);background:rgba(81,207,102,.04);">
+        <div class="ch-type" style="color:var(--mint);">✅ Completed</div>
+        <div class="ch-txt" id="previewChallengeText" style="font-size:16px;margin-bottom:12px;">Better skin? Sleep before midnight.</div>
+        <div class="ch-reward">
+          <div class="ch-rew-item" style="color:var(--gold);"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 4px rgba(255,212,59,.4);font-size:8px;color:#8B6914;font-weight:bold;vertical-align:middle;">W</span> +15 earned</div>
+          <div class="ch-rew-item" style="color:var(--violet);">⭐ +10 XP earned</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ally Challenge Preview (Day 4) -->
+    <div id="dayAllyView" style="display:none;">
+      <div style="margin-bottom:4px;">
+        <div class="chip" style="background:rgba(132,94,247,.15);color:var(--violet);">Day 4 · With ally</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0;">
+        <div style="text-align:center;">
+          <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;"><img id="allyPreviewHero" src="Assets/Characters/AURA.png" style="width:60px;height:auto;"></div>
+          <div style="font-size:10px;font-weight:700;margin-top:4px;">You</div>
+        </div>
+        <div style="font-size:14px;color:var(--text-dim);">+</div>
+        <div style="text-align:center;">
+          <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;"><img src="Assets/Parent_Allies/Aegis.png" style="width:48px;height:auto;"></div>
+          <div style="font-size:10px;font-weight:700;margin-top:4px;">Sarah</div>
+        </div>
+      </div>
+      <div class="ch-card" style="text-align:left;width:100%;border:1px solid rgba(132,94,247,.2);background:rgba(132,94,247,.04);">
+        <div class="ch-type" style="color:var(--violet);">🤝 Ally challenge</div>
+        <div class="ch-txt" id="allyPreviewText" style="font-size:16px;margin-bottom:8px;">Add one vegetable to your next meal.</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Both you and your ally need to complete this challenge. You'll get notified when they're done!</div>
+        <div class="ch-reward" style="margin-top:10px;">
+          <div class="ch-rew-item" style="color:var(--gold);"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 4px rgba(255,212,59,.4);font-size:8px;color:#8B6914;font-weight:bold;vertical-align:middle;">W</span> +20 coins</div>
+          <div class="ch-rew-item" style="color:var(--violet);">⭐ +15 XP</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-md);padding:10px;margin-top:12px;width:100%;display:flex;align-items:center;gap:8px;">
+        <div style="font-size:16px;">🔒</div>
+        <div style="font-size:11px;color:var(--text-dim);">Unlocks tomorrow. Complete Day 3 first!</div>
+      </div>
+    </div>
+
+    <button class="btn btn-ghost" onclick="goTo(9)" style="margin-top:16px;">Back to Quest Map</button>
+  </div>
+</div>
+
+<!-- S12: CHALLENGE COMPLETE + REWARDS -->
+<div class="screen game-bg hidden" id="screen12">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="align-items:center;text-align:center;">
+    <!-- Solo complete view -->
+    <div id="soloCompleteView">
+      <div style="font-size:48px;margin-bottom:8px;">🎉</div>
+      <div class="vic-title">Challenge Complete!</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:20px;">You crushed it!</div>
+    </div>
+    <!-- Ally waiting view (shown for ally challenges) -->
+    <div id="allyWaitingView" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;">
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;"><img id="allyCompleteHero" src="Assets/Characters/AURA.png" style="width:44px;height:auto;"></div>
+          <div style="font-size:9px;color:var(--mint);margin-top:4px;">✓ Done</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-dim);">+</div>
+        <div style="text-align:center;">
+          <div id="allyWaitCircle" style="width:60px;height:60px;border-radius:50%;background:rgba(132,94,247,.1);border:2px dashed rgba(132,94,247,.3);display:flex;align-items:center;justify-content:center;font-size:24px;"><img src="Assets/Parent_Allies/Aegis.png" style="width:32px;height:auto;"></div>
+          <div style="font-size:9px;color:var(--text-dim);margin-top:4px;" id="allyWaitStatus">Waiting...</div>
+        </div>
+      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px;" id="allyWaitTitle">Waiting for ally...</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Sarah will get a notification. Once both complete, rewards unlock!</div>
+      <div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:16px;">
+        <div style="width:14px;height:14px;border:2px solid var(--violet);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;"></div>
+        <span style="font-size:11px;color:var(--violet);">Waiting for Sarah...</span>
+      </div>
+      <button class="btn btn-ghost" onclick="allyCompletes()" style="font-size:12px;padding:10px 20px;width:auto;">Demo: Sarah completes ✓</button>
+    </div>
+    <!-- Both completed view -->
+    <div id="bothCompleteView" style="display:none;">
+      <div style="font-size:48px;margin-bottom:8px;">🎉</div>
+      <div class="vic-title">Both completed!</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">You and Sarah crushed it together!</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;">
+        <div style="width:50px;height:50px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;"><img id="bothHeroImg" src="Assets/Characters/AURA.png" style="width:36px;height:auto;"></div>
+        <div style="font-size:14px;color:var(--mint);">✓</div>
+        <div style="width:50px;height:50px;border-radius:50%;background:rgba(81,207,102,.1);border:2px solid var(--mint);display:flex;align-items:center;justify-content:center;"><img src="Assets/Parent_Allies/Aegis.png" style="width:32px;height:auto;"></div>
+      </div>
+    </div>
+
+    <!-- Animated rewards -->
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:16px;">
+      <div style="background:var(--bg-card);border:1px solid rgba(255,212,59,.15);border-radius:var(--r-md);padding:14px 18px;text-align:center;animation:slideUp .5s ease-out .2s both;">
+        <div style="margin-bottom:4px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.4);font-size:13px;color:#8B6914;font-weight:bold;">W</span></div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:18px;font-weight:700;color:var(--gold);">+15</div>
+        <div style="font-size:9px;color:var(--text-dim);">Coins</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(132,94,247,.15);border-radius:var(--r-md);padding:14px 18px;text-align:center;animation:slideUp .5s ease-out .5s both;">
+        <div style="font-size:24px;margin-bottom:4px;">⭐</div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:18px;font-weight:700;color:var(--violet);">+10</div>
+        <div style="font-size:9px;color:var(--text-dim);">XP</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(81,207,102,.15);border-radius:var(--r-md);padding:14px 18px;text-align:center;animation:slideUp .5s ease-out .8s both;">
+        <div style="font-size:24px;margin-bottom:4px;">⛑</div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:18px;font-weight:700;color:var(--mint);">New!</div>
+        <div style="font-size:9px;color:var(--text-dim);">Helmet</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(51,154,240,.15);border-radius:var(--r-md);padding:14px 18px;text-align:center;animation:slideUp .5s ease-out 1.1s both;">
+        <div style="font-size:24px;margin-bottom:4px;">💎</div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:18px;font-weight:700;color:var(--blue);">+1</div>
+        <div style="font-size:9px;color:var(--text-dim);">Time Warp</div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--gold);font-weight:700;margin-bottom:16px;animation:slideUp .5s ease-out 1.1s both;">🔥 3-day streak!</div>
+
+    <!-- XP bar -->
+    <div style="width:100%;background:var(--bg-card);border-radius:var(--r-md);padding:12px 16px;margin-bottom:16px;animation:slideUp .5s ease-out 1.3s both;">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:4px;"><span>Level 3</span><span>285 / 400 XP</span></div>
+      <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div style="width:71%;height:100%;background:var(--violet);border-radius:4px;box-shadow:0 0 8px var(--violet-glow);transition:width 1.5s ease-out;"></div></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goTo(13)">Equip Now</button>
+    <button class="btn btn-ghost" onclick="goTo(14)" style="margin-top:8px;">View Leaderboard</button>
+  </div>
+</div>
+
+<!-- S13: PROFILE / BACKPACK -->
+<div class="screen game-bg hidden" id="screen13">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="overflow-y:auto;">
+    <!-- Profile header -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;">
+        <img id="profileCharImg" src="Assets/Characters/AURA.png" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;" id="profileCharName">Aura</div>
+      <div style="font-size:10px;color:var(--text-dim);">★ Level 3 · 3-day streak</div>
+      <div style="display:flex;gap:4px;justify-content:center;margin-top:8px;">
+        <span style="font-size:10px;background:rgba(255,212,59,.1);color:var(--gold);padding:2px 8px;border-radius:10px;font-weight:700;display:inline-flex;align-items:center;gap:3px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 3px rgba(255,212,59,.4);font-size:6px;color:#8B6914;font-weight:bold;">W</span> 620</span>
+        <span style="font-size:10px;background:rgba(132,94,247,.1);color:var(--violet);padding:2px 8px;border-radius:10px;font-weight:700;">⭐ 285 XP</span>
+        <span style="font-size:10px;background:rgba(51,154,240,.1);color:var(--blue);padding:2px 8px;border-radius:10px;font-weight:700;">💎 2 gems</span>
+      </div>
+    </div>
+
+    <!-- Ally info -->
+    <div style="background:var(--bg-card);border:1.5px solid rgba(81,207,102,.25);border-radius:var(--r-lg);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;box-shadow:0 0 12px rgba(81,207,102,.08);">
+      <div style=""><img src="Assets/Parent_Allies/Aegis.png" style="width:32px;height:auto;"><div style="position:absolute;bottom:0;right:-2px;width:10px;height:10px;border-radius:50%;background:var(--mint);border:2px solid var(--bg-deep);"></div></div>
+      <div style="flex:1;"><div style="font-size:12px;font-weight:700;">Sarah</div><div style="font-size:10px;color:var(--text-dim);">Aegis · Your ally</div></div>
+      <div style="font-size:9px;color:var(--mint);font-weight:700;display:flex;align-items:center;gap:4px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--mint);"></div> Active</div>
+    </div>
+
+    <!-- Equipped gear -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:8px;">Equipped gear</div>
+    <div class="bp-grid" style="margin-bottom:12px;">
+      <div class="bp-slot equipped">⛑<div class="bp-label">Helmet</div><div class="bp-badge"></div></div>
+      <div class="bp-slot equipped">🗡️<div class="bp-label">Sword</div><div class="bp-badge"></div></div>
+      <div class="bp-slot">🛡️<div class="bp-label">Shield</div></div>
+      <div class="bp-slot equipped">👟<div class="bp-label">Boots</div><div class="bp-badge"></div></div>
+      <div class="bp-slot">🧤<div class="bp-label">Gloves</div></div>
+      <div class="bp-slot">💎<div class="bp-label">Gem</div></div>
+    </div>
+
+    <!-- Stats -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:8px;">Character stats</div>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:10px 12px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px;">
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 6px;"><span style="font-size:14px;width:20px;">😴</span><span style="font-size:10px;color:var(--text-dim);width:40px;">Rest</span><div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div style="height:100%;width:80%;background:var(--blue);border-radius:3px;box-shadow:0 0 6px rgba(51,154,240,.4);"></div></div><span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;color:var(--blue);">4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 6px;"><span style="font-size:14px;width:20px;">🥦</span><span style="font-size:10px;color:var(--text-dim);width:40px;">Fuel</span><div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div style="height:100%;width:80%;background:var(--mint);border-radius:3px;box-shadow:0 0 6px rgba(81,207,102,.4);"></div></div><span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;color:var(--mint);">4</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 6px;"><span style="font-size:14px;width:20px;">🏃</span><span style="font-size:10px;color:var(--text-dim);width:40px;">Power</span><div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div style="height:100%;width:20%;background:var(--coral);border-radius:3px;box-shadow:0 0 6px rgba(255,107,107,.4);"></div></div><span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;color:var(--coral);">1</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 6px;"><span style="font-size:14px;width:20px;">💜</span><span style="font-size:10px;color:var(--text-dim);width:40px;">Heart</span><div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div style="height:100%;width:40%;background:var(--gold);border-radius:3px;box-shadow:0 0 6px rgba(255,212,59,.4);"></div></div><span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;color:var(--gold);">2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 6px;"><span style="font-size:14px;width:20px;">📵</span><span style="font-size:10px;color:var(--text-dim);width:40px;">Focus</span><div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;"><div style="height:100%;width:40%;background:var(--violet);border-radius:3px;box-shadow:0 0 6px rgba(132,94,247,.4);"></div></div><span style="font-family:'Space Grotesk',monospace;font-size:12px;font-weight:700;color:var(--violet);">2</span></div>
+    </div>
+
+    <!-- Leaderboard preview -->
+    <!-- Gacha card section -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:8px;">Power-up cards</div>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px;margin-bottom:12px;">
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <div style="flex:1;background:linear-gradient(135deg,rgba(132,94,247,.08),rgba(51,154,240,.06));border:1px solid rgba(132,94,247,.2);border-radius:var(--r-md);padding:10px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:2px;">⚡</div>
+          <div style="font-size:9px;font-weight:700;color:var(--violet);">Stat Boost</div>
+          <div style="font-size:8px;color:var(--text-dim);">+3 Move 24h</div>
+        </div>
+        <div style="flex:1;background:var(--bg-card);border:1px dashed rgba(255,255,255,.1);border-radius:var(--r-md);padding:10px;text-align:center;opacity:.4;">
+          <div style="font-size:20px;margin-bottom:2px;">❓</div>
+          <div style="font-size:9px;font-weight:700;color:var(--text-dim);">Empty slot</div>
+        </div>
+        <div style="flex:1;background:var(--bg-card);border:1px dashed rgba(255,255,255,.1);border-radius:var(--r-md);padding:10px;text-align:center;opacity:.4;">
+          <div style="font-size:20px;margin-bottom:2px;">❓</div>
+          <div style="font-size:9px;font-weight:700;color:var(--text-dim);">Empty slot</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="goTo(21)" style="flex:1;background:var(--violet);color:#fff;border:none;padding:8px;border-radius:var(--r-sm);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Enter gacha code</button>
+        <a href="#" style="flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--violet);font-weight:600;text-decoration:underline;">See gacha locations</a>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:8px;">Leaderboard</div>
+    <div class="lb-row"><div class="lb-rank gold">1</div><div class="lb-av">🏆</div><div class="lb-info"><div class="lb-name">Wei Jie</div><div class="lb-stat">Lvl 5 · 850 pts</div></div><div class="lb-pts">850</div></div>
+    <div class="lb-row me"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbMyImg" src="Assets/Characters/AURA.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat">Lvl 3 · 620 pts</div></div><div class="lb-pts">620</div></div>
+    <div class="lb-row"><div class="lb-rank bronze">3</div><div class="lb-av">🎮</div><div class="lb-info"><div class="lb-name">Priya</div><div class="lb-stat">Lvl 3 · 580 pts</div></div><div class="lb-pts">580</div></div>
+    <button class="btn btn-ghost" onclick="goTo(14)" style="margin-top:8px;">View full leaderboard</button>
+    <button class="btn btn-primary" onclick="goTo(9)">Back to Quest Map</button>
+  </div>
+</div>
+
+<!-- S14: FULL LEADERBOARD -->
+<div class="screen game-bg hidden" id="screen14">
+  <div class="back-btn" onclick="goTo(13)">←</div>
+  <div class="content">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;">Leaderboard</div>
+    </div>
+    <div class="lb-tabs">
+      <div class="lb-tab active">Allies</div>
+      <div class="lb-tab">School</div>
+      <div class="lb-tab">All Players</div>
+    </div>
+    <div class="lb-row"><div class="lb-rank gold">1</div><div class="lb-av">🏆</div><div class="lb-info"><div class="lb-name">Wei Jie</div><div class="lb-stat">Lvl 5 · 7-day streak</div></div><div class="lb-pts">850</div></div>
+    <div class="lb-row me"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbMyImg2" src="Assets/Characters/AURA.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat">Lvl 3 · 3-day streak</div></div><div class="lb-pts">620</div></div>
+    <div class="lb-row"><div class="lb-rank bronze">3</div><div class="lb-av">🎮</div><div class="lb-info"><div class="lb-name">Priya</div><div class="lb-stat">Lvl 3 · 2-day streak</div></div><div class="lb-pts">580</div></div>
+    <div class="lb-row"><div class="lb-rank">4</div><div class="lb-av">🎯</div><div class="lb-info"><div class="lb-name">Amir</div><div class="lb-stat">Lvl 2 · 1-day streak</div></div><div class="lb-pts">410</div></div>
+    <div class="lb-row"><div class="lb-rank">5</div><div class="lb-av">🌟</div><div class="lb-info"><div class="lb-name">Mei Lin</div><div class="lb-stat">Lvl 2 · 3-day streak</div></div><div class="lb-pts">395</div></div>
+    <button class="btn btn-primary" onclick="goTo(9)" style="margin-top:16px;">Back to Quest Map</button>
+  </div>
+</div>
+
+<!-- S15: BOSS ENCOUNTER -->
+<div class="screen game-bg hidden" id="screen15">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="align-items:center;text-align:center;justify-content:center;overflow-y:auto;">
+    <!-- Boss sprite -->
+    <div id="bossEncounterSprite" style="margin-bottom:12px;">
+      <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:130px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));">
+    </div>
+
+    <!-- Boss name & zone -->
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--coral);margin-bottom:2px;" id="bossBattleName1">Snack Gremlin</div>
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:20px;" id="bossZoneLabel">The Foggy Village</div>
+
+    <!-- Co-op challenge text -->
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,107,107,.15);border-radius:var(--r-lg);padding:16px;width:100%;margin-bottom:16px;text-align:center;">
+      <div style="font-size:10px;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Co-op Challenge</div>
+      <div id="bossChallengeText" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--text);line-height:1.4;">Put phone down 30 min before bed</div>
+    </div>
+
+    <!-- Reward preview -->
+    <div style="display:flex;gap:16px;justify-content:center;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:5px;font-family:'Space Grotesk',monospace;font-size:12px;font-weight:600;color:var(--gold);">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 4px rgba(255,212,59,.4);font-size:8px;color:#8B6914;font-weight:bold;">W</span> +50
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;font-family:'Space Grotesk',monospace;font-size:12px;font-weight:600;color:var(--violet);">⭐ +50 XP</div>
+      <div style="display:flex;align-items:center;gap:5px;font-family:'Space Grotesk',monospace;font-size:12px;font-weight:600;color:var(--coral);">🗡️ Legendary</div>
+    </div>
+
+    <!-- Try to fight button -->
+    <button class="btn btn-coral" id="tryFightBtn" onclick="tryFightBoss()" style="width:100%;">⚔️ Try to fight this boss</button>
+  </div>
+
+  <!-- Battle animation popup overlay -->
+  <div id="bossBattlePopup" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.85);z-index:50;flex-direction:column;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(8px);">
+    <!-- Skip button -->
+    <button id="bossPopupSkip" onclick="skipBossBattle()" style="position:absolute;top:48px;right:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:var(--text-dim);font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif;z-index:51;">Skip</button>
+
+    <!-- VS sprites -->
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="text-align:center;">
+        <div style="width:90px;height:90px;border-radius:50%;background:rgba(132,94,247,.12);border:2px solid rgba(132,94,247,.25);display:flex;align-items:center;justify-content:center;">
+          <img id="bossPopupHeroImg" src="Assets/Characters/AURA.png" style="width:64px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:float 2s ease-in-out infinite;">
+        </div>
+        <div id="bossPopupHeroName" style="font-size:11px;font-weight:700;color:var(--violet);margin-top:6px;">Aura</div>
+      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VS</div>
+      <div style="text-align:center;">
+        <div id="bossPopupMonsterSprite" style="width:90px;height:90px;border-radius:50%;background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.25);display:flex;align-items:center;justify-content:center;">
+          <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:64px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:monsterIdle 2.5s ease-in-out infinite;">
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-top:6px;">Snack Gremlin</div>
+      </div>
+    </div>
+
+    <!-- Battle log lines -->
+    <div id="bossPopupLog" style="width:100%;min-height:100px;text-align:left;padding:0 8px;"></div>
+
+    <!-- Post-battle message (hidden initially) -->
+    <div id="bossPopupResult" style="display:none;text-align:center;width:100%;margin-top:16px;">
+      <div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--coral);margin-bottom:4px;">You need your ally!</div>
+        <div style="font-size:12px;color:var(--text-dim);">This boss requires co-op power.</div>
+      </div>
+      <button class="btn btn-coral" onclick="goTo(16)" style="width:100%;">📩 Send notification to ally</button>
+    </div>
+  </div>
+</div>
+
+<!-- S23: TRANSITION TO PARENT -->
+<div class="screen transition-screen hidden" id="screen16">
+  <div class="trans-phone">📱</div>
+  <div class="trans-text">Meanwhile, on<br><span class="trans-name">Sarah's</span> phone...</div>
+  <button class="btn btn-ghost" onclick="goTo(17)" style="width:200px;margin-top:24px;">Continue</button>
+</div>
+
+<!-- S24: PARENT ALERT -->
+<div class="screen parent-bg hidden" id="screen17">
+  <div class="back-btn" onclick="goTo(16)" style="color:#1A1B2E;">←</div>
+  <div class="content" style="align-items:center;text-align:center;padding-top:56px;color:#1A1B2E;">
+    <div style="font-size:11px;color:#6B7280;margin-bottom:8px;">📱 ALLY'S PHONE</div>
+    <div style="background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,212,59,.1));border:2px solid rgba(255,107,107,.2);border-radius:var(--r-xl);padding:20px;margin-bottom:16px;width:100%;">
+      <div style="font-size:40px;margin-bottom:8px;" id="parentAlertIcon">⚔️</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#1A1B2E;margin-bottom:4px;" id="parentAlertTitle"><span id="parentAlertName">Ethan</span> needs your help!</div>
+      <div style="font-size:12px;color:#6B7280;" id="parentAlertSub">Defeat the <b style="color:var(--coral-dark);">Snack Gremlin</b> together</div>
+    </div>
+    <div style="background:#fff;border:2px solid #E5E7EB;border-radius:var(--r-lg);padding:16px;width:100%;text-align:left;">
+      <div style="font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;" id="parentChallengeLabel">👨‍👩‍👧 Co-op challenge</div>
+      <div style="font-size:15px;font-weight:800;color:#1A1B2E;margin-bottom:8px;" id="parentChallengeText">Cook one healthy meal together with 2+ vegetables</div>
+      <div style="display:flex;gap:8px;">
+        <span style="font-size:10px;color:var(--gold-dark);font-weight:700;display:inline-flex;align-items:center;gap:3px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 3px rgba(255,212,59,.4);font-size:6px;color:#8B6914;font-weight:bold;">W</span> +25 coins</span>
+        <span style="font-size:10px;color:var(--violet-dark);font-weight:700;">⭐ +15 XP</span>
+      </div>
+    </div>
+    <button class="btn-parent" onclick="goTo(18)" style="margin-top:16px;">Complete Challenge</button>
+  </div>
+</div>
+
+<!-- S25: CO-OP BATTLE -->
+<div class="screen game-bg hidden" id="screen18">
+  <div class="back-btn" onclick="goTo(17)">←</div>
+  <div class="content" style="align-items:center;text-align:center;">
+    <div class="chip" style="background:rgba(255,212,59,.15);color:var(--gold);margin-bottom:12px;">⚔️ Co-op boss battle</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;">
+      <div style="text-align:center;">
+        <div id="coopHeroSprite" style="width:100px;height:100px;border-radius:16px;background:rgba(132,94,247,.1);border:2px solid rgba(132,94,247,.25);display:flex;align-items:center;justify-content:center;">
+          <img id="coopHeroImg" src="Assets/Characters/AURA.png" style="width:70px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+        </div>
+        <div style="font-size:10px;font-weight:700;margin-top:4px;" id="coopHeroName">Aura</div>
+        <div style="font-size:8px;color:var(--violet);">+ 🦉 Aegis</div>
+      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VS</div>
+      <div style="text-align:center;">
+        <div id="coopMonSprite" style="width:100px;height:100px;border-radius:16px;background:rgba(255,107,107,.1);border:2px solid rgba(255,107,107,.25);display:flex;align-items:center;justify-content:center;">
+          <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:70px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">
+        </div>
+        <div style="font-size:10px;font-weight:700;color:var(--coral);margin-top:4px;">Snack Gremlin</div>
+      </div>
+    </div>
+    <div style="width:100%;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);margin-bottom:2px;"><span>Snack Gremlin HP</span><span id="coopHpText">100/100</span></div>
+      <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="coopHpBar" style="height:100%;width:100%;background:var(--coral);border-radius:4px;box-shadow:0 0 8px var(--coral-glow);transition:width .8s ease-out;"></div></div>
+    </div>
+    <div id="coopBattleLog" style="width:100%;text-align:left;min-height:100px;background:rgba(255,255,255,.02);border-radius:12px;padding:10px;margin-bottom:8px;"></div>
+    <button class="btn btn-ghost" onclick="goTo(19)" style="width:auto;padding:8px 24px;font-size:12px;" id="coopSkipBtn">Skip</button>
+    <button class="btn btn-primary" onclick="goTo(19)" id="coopContinueBtn" style="opacity:0;transition:opacity 1s;">Claim Rewards</button>
+  </div>
+</div>
+
+<!-- S19: BOSS VICTORY -->
+<div class="screen game-bg hidden" id="screen19">
+  <div class="back-btn" onclick="goTo(18)">←</div>
+  <div class="content" style="align-items:center;text-align:center;overflow-y:auto;">
+    <div style="font-size:56px;margin-bottom:8px;">⚔️</div>
+    <div class="vic-title">Boss Defeated!</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Snack Gremlin has fallen!</div>
+
+    <!-- Rewards -->
+    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:12px;">
+      <div style="background:var(--bg-card);border:1px solid rgba(255,212,59,.15);border-radius:var(--r-md);padding:12px 14px;text-align:center;animation:slideUp .5s ease-out .2s both;">
+        <div style="margin-bottom:2px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.4);font-size:12px;color:#8B6914;font-weight:bold;">W</span></div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:16px;font-weight:700;color:var(--gold);">+50</div>
+        <div style="font-size:8px;color:var(--text-dim);">Coins</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(132,94,247,.15);border-radius:var(--r-md);padding:12px 14px;text-align:center;animation:slideUp .5s ease-out .5s both;">
+        <div style="font-size:22px;margin-bottom:2px;">⭐</div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:16px;font-weight:700;color:var(--violet);">+50</div>
+        <div style="font-size:8px;color:var(--text-dim);">XP</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(255,107,107,.15);border-radius:var(--r-md);padding:12px 14px;text-align:center;animation:slideUp .5s ease-out .8s both;">
+        <div style="font-size:22px;margin-bottom:2px;">🗡️</div>
+        <div style="font-family:'Space Grotesk',monospace;font-size:14px;font-weight:700;color:var(--coral);">Legendary</div>
+        <div style="font-size:8px;color:var(--text-dim);">Flame Sword</div>
+      </div>
+    </div>
+
+    <!-- Gacha Token earned (Day 15 only) -->
+    <div id="gachaRewardBox" style="display:none;background:linear-gradient(135deg,rgba(255,212,59,.08),rgba(132,94,247,.06));border:1.5px solid rgba(255,212,59,.25);border-radius:var(--r-lg);padding:16px;width:100%;margin-bottom:12px;animation:slideUp .5s ease-out 1.1s both;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,212,59,.15),transparent 70%);animation:glow-pulse 2s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:28px;margin-bottom:4px;">🎰</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--gold);margin-bottom:4px;">Gacha Token earned!</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;">Visit any HPB partner location to redeem your holographic power-up card.</div>
+        <button onclick="goTo(21)" style="background:var(--gold);color:#1A1B2E;border:none;padding:10px 20px;border-radius:var(--r-md);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Enter gacha code</button>
+      </div>
+    </div>
+
+    <!-- Physical Reward (Day 20 only) -->
+    <div id="physicalRewardBox" style="display:none;background:linear-gradient(135deg,rgba(255,212,59,.1),rgba(132,94,247,.08));border:2px solid rgba(255,212,59,.3);border-radius:var(--r-lg);padding:16px;width:100%;margin-bottom:12px;animation:slideUp .5s ease-out 1.1s both;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,212,59,.2),transparent 60%);animation:glow-pulse 2s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:28px;margin-bottom:4px;">🏆</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;margin-bottom:4px;">Physical Reward Unlocked!</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:6px;">Collect your <b style="color:var(--gold);">blind box figurine</b> + <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Master Holographic Card</b> at any HPB partner location.</div>
+        <a href="#" style="font-size:10px;color:var(--violet);text-decoration:underline;font-weight:600;">See collection locations in Singapore</a>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goTo(13)" id="bossVicBtn1" style="width:100%;">Equip gear</button>
+    <button class="btn btn-ghost" onclick="goTo(9)" id="bossVicBtn2" style="width:100%;margin-top:8px;">Back to quest map</button>
+    <button class="btn btn-primary" onclick="goTo(24)" id="bossVicBtn3" style="display:none;width:100%;margin-top:8px;">Quest Champion →</button>
+  </div>
+</div>
+
+<!-- S27: BACKPACK -->
+<div class="screen game-bg hidden" id="screen20">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="margin-bottom:8px;"><img id="bpCharImg" src="Assets/Characters/AURA.png" style="width:60px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));"></div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;" id="bpCharName">Glow Up</div>
+      <div style="font-size:10px;color:var(--text-dim);">★ LEVEL 3 — THE FOGGY VILLAGE</div>
+      <div style="display:flex;gap:4px;justify-content:center;margin-top:8px;">
+        <span style="font-size:10px;background:rgba(255,212,59,.1);color:var(--gold);padding:2px 8px;border-radius:10px;font-weight:700;display:inline-flex;align-items:center;gap:3px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 3px rgba(255,212,59,.4);font-size:6px;color:#8B6914;font-weight:bold;">W</span> 620</span>
+        <span style="font-size:10px;background:rgba(132,94,247,.1);color:var(--violet);padding:2px 8px;border-radius:10px;font-weight:700;">⭐ 285 XP</span>
+        <span style="font-size:10px;background:rgba(132,94,247,.1);color:var(--violet);padding:2px 8px;border-radius:10px;font-weight:700;">🦉 Aegis</span>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:8px;">Equipped gear</div>
+    <div class="bp-grid">
+      <div class="bp-slot equipped">⛑<div class="bp-label">Helmet</div><div class="bp-badge"></div></div>
+      <div class="bp-slot equipped">🗡️<div class="bp-label">Sword</div><div class="bp-badge"></div></div>
+      <div class="bp-slot">🛡️<div class="bp-label">Shield</div></div>
+      <div class="bp-slot equipped">👟<div class="bp-label">Boots</div><div class="bp-badge"></div></div>
+      <div class="bp-slot">🧤<div class="bp-label">Gloves</div></div>
+      <div class="bp-slot">💎<div class="bp-label">Gem</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="goTo(9)" style="margin-top:16px;">Back to Quest Map</button>
+  </div>
+</div>
+
+<!-- S28: GACHA CODE ENTRY -->
+<div class="screen game-bg hidden" id="screen21">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="align-items:center;text-align:center;justify-content:center;">
+    <div style="font-size:48px;margin-bottom:12px;">🎰</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;">Gacha Time!</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:24px;">Enter the code from your physical card</div>
+    <div class="gacha-card" style="width:100%;margin-bottom:16px;">
+      <input class="code-input" placeholder="XXXX-XXXX-XXXX" value="WB25-GLOW-7X9K" maxlength="14">
+    </div>
+    <button class="btn btn-primary" onclick="goTo(22)">Enter Code</button>
+    <a href="#" style="font-size:11px;color:var(--violet);margin-top:12px;text-decoration:underline;">See list of HPB Gacha locations in Singapore</a>
+  </div>
+</div>
+
+<!-- S29: GACHA REVEAL -->
+<div class="screen game-bg hidden" id="screen22">
+  <div class="back-btn" onclick="goTo(21)">←</div>
+  <div class="content" style="align-items:center;text-align:center;justify-content:center;">
+    <div class="chip" style="background:rgba(255,212,59,.15);color:var(--gold);margin-bottom:12px;">✨ CARD REVEALED!</div>
+    <div class="holo-card-big">
+      <div style="font-size:8px;font-weight:800;color:var(--gold);letter-spacing:.08em;margin-bottom:8px;">Holographic power-up</div>
+      <img id="gachaCardImg" src="Assets/Items/Gacha Token_Freeze Card.png" style="width:160px;height:auto;border-radius:12px;filter:drop-shadow(0 8px 24px rgba(132,94,247,.4));">
+      <div class="hc-name">Freeze Day Card</div>
+      <div class="hc-badge">SKIP 1 DAY WITHOUT BREAKING STREAK</div>
+    </div>
+    <div style="height:12px;"></div>
+    <button class="btn btn-primary" onclick="goTo(23)">Activate</button>
+  </div>
+</div>
+
+<!-- S30: GACHA ACTIVATED -->
+<div class="screen game-bg hidden" id="screen23">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="align-items:center;text-align:center;justify-content:center;">
+    <div style="font-size:56px;margin-bottom:12px;">🎉</div>
+    <div style="margin-bottom:12px;"><img src="Assets/Items/Gacha Token_Freeze Card.png" style="width:120px;height:auto;border-radius:12px;filter:drop-shadow(0 8px 24px rgba(132,94,247,.4));"></div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px;">Freeze Day Activated!</div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:20px;">Skip 1 day without breaking your streak</div>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-md);padding:12px;width:100%;margin-bottom:16px;">
+      <div style="font-size:10px;color:var(--text-dim);margin-bottom:8px;">💡 TIP</div>
+      <div style="font-size:12px;color:var(--text);">Trade cards with friends! If you have a different character's card, swap it for the right power-up.</div>
+    </div>
+    <button class="btn btn-primary" onclick="goTo(9)">Back to Quest Map</button>
+    <a href="#" style="font-size:11px;color:var(--violet);margin-top:12px;text-decoration:underline;">See list of HPB Gacha locations in Singapore</a>
+  </div>
+</div>
+
+<!-- S24: FINAL REWARD (Day 20) -->
+<div class="screen game-bg hidden" id="screen24">
+  <div class="back-btn" onclick="goTo(9)">←</div>
+  <div class="content" style="align-items:center;text-align:center;overflow-y:auto;">
+
+    <!-- Champion evolution -->
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;margin-bottom:4px;">Quest Champion!</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Captain Couch has fallen. You completed all 20 days.</div>
+
+    <!-- Evolution: Baby → Teen → Champion -->
+    <div style="display:flex;align-items:flex-end;gap:8px;justify-content:center;margin-bottom:16px;">
+      <div style="text-align:center;opacity:.4;">
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="finalBabyImg" src="Assets/Baby_Versions/Baby AURA.png" style="width:36px;height:auto;"></div>
+        <div style="font-size:7px;color:var(--text-muted);">Baby</div>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;">→</div>
+      <div style="text-align:center;opacity:.5;">
+        <div style="width:60px;height:60px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="finalTeenImg" src="Assets/Characters/AURA.png" style="width:44px;height:auto;"></div>
+        <div style="font-size:7px;color:var(--text-muted);">Teen</div>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;">→</div>
+      <div style="text-align:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,212,59,.1);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;box-shadow:0 0 20px rgba(255,212,59,.3);">
+          <img id="finalChampImg" src="Assets/Characters/AURA.png" style="width:60px;height:auto;filter:drop-shadow(0 4px 12px rgba(255,212,59,.4));">
+        </div>
+        <div style="font-size:7px;color:var(--gold);font-weight:700;">👑 Champion</div>
+      </div>
+    </div>
+
+    <!-- Share buttons -->
+    <div style="display:flex;gap:8px;width:100%;margin-bottom:16px;">
+      <button onclick="alert('Share link copied!')" style="flex:1;background:var(--violet);color:#fff;border:none;padding:12px;border-radius:var(--r-md);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;">📤 Share</button>
+      <button onclick="alert('Sent to Sarah!')" style="flex:1;background:var(--bg-card);color:var(--text);border:1.5px solid rgba(132,94,247,.25);padding:12px;border-radius:var(--r-md);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;">🦉 Share with ally</button>
+    </div>
+
+    <!-- Physical rewards -->
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;margin-bottom:8px;">Your physical rewards</div>
+
+    <!-- Master holographic card -->
+    <div class="holo-card-big" style="width:180px;height:240px;margin-bottom:10px;">
+      <div style="font-size:8px;font-weight:800;color:var(--gold);letter-spacing:.08em;margin-bottom:4px;">Master holographic card</div>
+      <img id="finalCardImg" src="Assets/Characters/AURA.png" style="width:70px;height:auto;">
+      <div class="hc-name" id="finalCardName">Aura</div>
+      <div class="hc-badge">Quest champion · Level 20</div>
+      <div style="font-size:8px;color:var(--text-dim);margin-top:4px;">⛑ 🗡️ 🛡️ 👟 🧤 💎</div>
+    </div>
+
+    <!-- Physical Reward Unlocked -->
+    <div style="background:linear-gradient(135deg,rgba(255,212,59,.08),rgba(255,168,0,.04));border:1.5px solid rgba(255,212,59,.3);border-radius:var(--r-lg);padding:20px;width:100%;margin-bottom:16px;text-align:center;box-shadow:0 0 30px rgba(255,212,59,.1),inset 0 0 30px rgba(255,212,59,.03);animation:glow-pulse 3s ease-in-out infinite;">
+      <div style="font-size:36px;margin-bottom:8px;">🏆</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(90deg,#FFD43B,#FF922B,#FFD43B);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;margin-bottom:8px;">Physical Reward Unlocked!</div>
+      <div style="font-size:13px;color:var(--text-dim);line-height:1.6;">Collect your <b style="color:var(--text);">blind box figurine</b> + <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;">Master Holographic Card</b> at any HPB partner location.</div>
+      <a href="#" style="display:inline-block;margin-top:12px;font-size:12px;color:var(--gold);font-weight:700;text-decoration:underline;">See collection locations in Singapore</a>
+    </div>
+
+    <!-- Collect all 5 champion cards -->
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">Collect all 5 champion cards</div>
+    <div id="fiveCardsGrid" style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;">
+      <div class="champ-card-mini" id="cc0" style="width:56px;text-align:center;">
+        <div style="width:56px;height:56px;border-radius:12px;background:rgba(240,101,149,.15);border:2px solid var(--pink);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 12px rgba(240,101,149,.3);"><img src="Assets/Characters/AURA.png" id="cc0img" style="width:44px;height:auto;"></div>
+        <div style="font-size:7px;font-weight:700;color:var(--pink);margin-top:3px;" id="cc0name">Aura</div>
+      </div>
+      <div class="champ-card-mini" style="width:56px;text-align:center;opacity:.35;">
+        <div style="width:56px;height:56px;border-radius:12px;background:rgba(51,154,240,.08);border:2px dashed rgba(51,154,240,.3);display:flex;align-items:center;justify-content:center;font-size:16px;">🔒</div>
+        <div style="font-size:7px;font-weight:700;color:var(--text-dim);margin-top:3px;">Titan</div>
+      </div>
+      <div class="champ-card-mini" style="width:56px;text-align:center;opacity:.35;">
+        <div style="width:56px;height:56px;border-radius:12px;background:rgba(81,207,102,.08);border:2px dashed rgba(81,207,102,.3);display:flex;align-items:center;justify-content:center;font-size:16px;">🔒</div>
+        <div style="font-size:7px;font-weight:700;color:var(--text-dim);margin-top:3px;">Sage</div>
+      </div>
+      <div class="champ-card-mini" style="width:56px;text-align:center;opacity:.35;">
+        <div style="width:56px;height:56px;border-radius:12px;background:rgba(255,107,107,.08);border:2px dashed rgba(255,107,107,.3);display:flex;align-items:center;justify-content:center;font-size:16px;">🔒</div>
+        <div style="font-size:7px;font-weight:700;color:var(--text-dim);margin-top:3px;">Spark</div>
+      </div>
+      <div class="champ-card-mini" style="width:56px;text-align:center;opacity:.35;">
+        <div style="width:56px;height:56px;border-radius:12px;background:rgba(132,94,247,.08);border:2px dashed rgba(132,94,247,.3);display:flex;align-items:center;justify-content:center;font-size:16px;">🔒</div>
+        <div style="font-size:7px;font-weight:700;color:var(--text-dim);margin-top:3px;">Luna</div>
+      </div>
+    </div>
+
+    <!-- Try next character -->
+    <div style="background:linear-gradient(135deg,rgba(132,94,247,.08),rgba(51,154,240,.06));border:1.5px solid rgba(132,94,247,.2);border-radius:var(--r-lg);padding:16px;width:100%;margin-bottom:12px;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;">Ready for a new quest?</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:12px;">Try a different character and quest path. Each one has unique challenges and a new champion card to collect!</div>
+      <button class="btn btn-primary" onclick="goTo(2)" style="margin-top:0;">Choose next character</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- screen-wrap -->
+</div><!-- phone-frame -->
+</div><!-- phone-container -->
+
+<script>
+// === CHARACTER + QUEST DATA ===
+const characters = [
+  {name:'Aura',type:'The Radiant One',color:'#F06595',
+   quest:'Aura wants to Glow Up<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Journey through the Crystal Caverns. Battle monsters that drain your glow. Earn radiant armour along the way.',
+   zones:['The Crystal Springs','Dewdrop Valley','The Glow Gardens','The Crystal Caverns'],
+   challenges:['Better skin? Sleep before midnight tonight.','Glow-ups start with water. Drink 2L today.','Take a 10-min walk with a family member'],
+   days:[
+     {t:'Better skin? Sleep before midnight.',type:'Solo'},
+     {t:'Glow-ups start with water. Drink 2L today.',type:'Solo'},
+     {t:'One less sugary drink — choose water or plain tea.',type:'Solo'},
+     {t:'Add one vegetable to your next meal.',type:'Peer'},
+     {t:'Put phone down 30 min before bed.',type:'Boss'},
+     {t:'Apply sunscreen before you leave the house.',type:'Solo'},
+     {t:'Cook a balanced plate together — protein, veg, carbs.',type:'Parent'},
+     {t:'Eat protein today for stronger hair — eggs, fish, tofu.',type:'Solo'},
+     {t:'Change or wash your pillowcase tonight.',type:'Solo'},
+     {t:'Cold splash on your face — tightens pores.',type:'Boss'},
+     {t:'The glow up is 70% sleep. Get 7+ hours tonight.',type:'Solo'},
+     {t:'Brush for the full two minutes. Oral health glow check.',type:'Solo'},
+     {t:'Drink a full glass of water right now. Race your ally.',type:'Peer'},
+     {t:'Healthy family meal — 2+ vegetables.',type:'Parent'},
+     {t:'Both eat clean today — no junk.',type:'Boss'},
+     {t:'Sleep before 11pm tonight.',type:'Solo'},
+     {t:'No sugary drinks all day.',type:'Solo'},
+     {t:'Cook breakfast together.',type:'Parent'},
+     {t:'Sunscreen reminder chain — text 3 allies.',type:'Peer'},
+     {t:'Drink 2L water, eat 2+ vegetables, sleep before 11pm. Write the things that changed.',type:'Boss'},
+   ],
+   wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🍎 Fuel</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(51,154,240,.1);color:#339AF0;">💤 Rest</span>',
+   buff:'+1 bonus coin on Fuel challenges',
+   zones:['The Crystal Springs','Dewdrop Valley','The Glow Gardens','The Crystal Caverns'],
+   days:[
+    {d:1,t:'Better skin? Sleep before midnight tonight.',type:'solo'},
+    {d:2,t:'Glow-ups start with water. Drink at least 2L today.',type:'solo'},
+    {d:3,t:'One less sugary drink today — choose water or plain tea.',type:'solo'},
+    {d:4,t:'Add one vegetable to your next meal. Challenge your ally too.',type:'ally'},
+    {d:5,t:'Put phone down 30 min before bed. Blue light is ageing your skin.',type:'boss',boss:'Snack Gremlin',coop:'Both go screen-free before bed'},
+    {d:6,t:'Apply sunscreen before you leave the house.',type:'solo'},
+    {d:7,t:'No skipping meals today. Cook a balanced plate together.',type:'ally'},
+    {d:8,t:'Eat something with protein today for stronger hair.',type:'solo'},
+    {d:9,t:'Change or wash your pillowcase tonight.',type:'solo'},
+    {d:10,t:'Cold splash on your face — tightens pores, wakes you up.',type:'boss',boss:'Sleepy Tom',coop:'Both commit to 7+ hours sleep tonight'},
+    {d:11,t:'The glow up is 70% sleep. Get 7+ hours tonight.',type:'solo'},
+    {d:12,t:'Brush for the full two minutes. Oral health glow check.',type:'solo'},
+    {d:13,t:'Drink a full glass of water right now. Race your ally.',type:'ally'},
+    {d:14,t:'Healthy family meal — 2+ vegetables.',type:'ally'},
+    {d:15,t:'Both eat clean today — no junk.',type:'boss',boss:'Greasy Gary',coop:'Both eat clean today — no junk'},
+    {d:16,t:'Sleep before 11pm tonight.',type:'solo'},
+    {d:17,t:'No sugary drinks all day.',type:'solo'},
+    {d:18,t:'Cook breakfast together.',type:'ally'},
+    {d:19,t:'Sunscreen reminder chain — text 3 friends.',type:'ally'},
+    {d:20,t:'Drink 2L water, eat 2+ vegetables, sleep before 11pm. Write the things that changed.',type:'boss',boss:'Captain Couch',coop:'Both eat clean today and write the things that changed'}
+   ],
+   baby:'Assets/Baby_Versions/Baby AURA.png',
+   teen:'Assets/Characters/AURA.png',
+   stats:{sleep:4,eat:4,move:1,mind:2,skin:2}},
+  {name:'Titan',type:'The Strong One',color:'#339AF0',
+   quest:'Titan wants to Bulk Up<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Climb the Iron Peaks. Face beasts that test your strength. Forge legendary gear at the summit.',
+   zones:['The Training Ground','Iron Valley','The Forge','The Iron Peaks'],
+   days:[
+     {t:'30 push-ups today — any form. Just show up.',type:'Solo'},
+     {t:'Skip lifts and escalators. Take the stairs.',type:'Solo'},
+     {t:'Add protein to at least one meal — eggs, chicken, tofu.',type:'Solo'},
+     {t:'30-second plank challenge with your ally.',type:'Peer'},
+     {t:'25 push-ups total. Do them with your ally.',type:'Boss'},
+     {t:'20 wall push-ups. Great for shoulders.',type:'Solo'},
+     {t:'Swap one meal for something clean — cook together.',type:'Parent'},
+     {t:'Add 15 minutes of walking to your day.',type:'Solo'},
+     {t:'Finish a full 1.5L water bottle today.',type:'Solo'},
+     {t:'Pick your favourite exercise and go again.',type:'Boss'},
+     {t:'Active recovery — stretch for 5 minutes.',type:'Solo'},
+     {t:'15 squats + 15 push-ups with your ally.',type:'Peer'},
+     {t:'Take the stairs all day. Every floor counts.',type:'Solo'},
+     {t:'Brush for the full two minutes. Oral health check.',type:'Solo'},
+     {t:'Take a 20-min walk together.',type:'Boss'},
+     {t:'Healthy protein-rich dinner together.',type:'Parent'},
+     {t:'40 push-ups today. You\'re stronger now.',type:'Solo'},
+     {t:'Plank challenge round 2 — beat your Day 4 time.',type:'Peer'},
+     {t:'Drink 2L of water.',type:'Solo'},
+     {t:'Two weeks of showing up. How does your body feel?',type:'Boss'},
+   ],
+   wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(255,107,107,.1);color:#FF6B6B;">💪 Power</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🍎 Fuel</span>',
+   buff:'+1 bonus coin on Power challenges',
+   zones:['The Training Ground','Iron Valley','The Forge','The Iron Peaks'],
+   days:[
+    {d:1,t:'30 push-ups today — any form. Just show up.',type:'solo'},
+    {d:2,t:'Skip lifts and escalators today. Take the stairs.',type:'solo'},
+    {d:3,t:'Add protein to at least one meal — eggs, chicken, tofu.',type:'solo'},
+    {d:4,t:'30-second plank challenge with your ally. Who holds longer?',type:'ally'},
+    {d:5,t:'25 push-ups total today.',type:'boss',boss:'Snack Gremlin',coop:'Do them together, count for each other'},
+    {d:6,t:'20 wall push-ups. Easy on joints, great for shoulders.',type:'solo'},
+    {d:7,t:'Swap one meal for something clean — less fried, more grilled.',type:'ally'},
+    {d:8,t:'Add 15 minutes of walking to your day.',type:'solo'},
+    {d:9,t:'Finish a full 1.5L water bottle today.',type:'solo'},
+    {d:10,t:'Pick your favourite exercise and go again. Extra reps.',type:'boss',boss:'Sleepy Tom',coop:'Exercise together for 15 min'},
+    {d:11,t:'Active recovery — stretch for 5 minutes.',type:'solo'},
+    {d:12,t:'15 squats + 15 push-ups with your ally.',type:'ally'},
+    {d:13,t:'Take the stairs all day. Every floor counts.',type:'solo'},
+    {d:14,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:15,t:'Take a 20-min walk together.',type:'boss',boss:'Greasy Gary',coop:'Take a 20-min walk together'},
+    {d:16,t:'Healthy protein-rich dinner together.',type:'ally'},
+    {d:17,t:'40 push-ups today. You are stronger now.',type:'solo'},
+    {d:18,t:'Plank challenge round 2 — beat your Day 4 time.',type:'ally'},
+    {d:19,t:'Drink 2L of water.',type:'solo'},
+    {d:20,t:'Two weeks of showing up. Final check.',type:'boss',boss:'Captain Couch',coop:'Both do 30 push-ups and write the things that changed'}
+   ],
+   baby:'Assets/Baby_Versions/Baby TITAN.png',
+   teen:'Assets/Characters/TITAN.png',
+   stats:{sleep:1,eat:3,move:5,mind:2,skin:2}},
+  {name:'Sage',type:'The Nourished One',color:'#51CF66',
+   quest:'Sage wants a Clean Slate<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Cross the Fresh Fields. Outsmart creatures that feed on bad habits. Reclaim the land.',
+   zones:['The Garden Gate','Processed Plains','The Fresh Fields','The Harvest'],
+   days:[
+     {t:'That 3pm crash? Swap one sugary drink for water.',type:'Solo'},
+     {t:'Eat something real before noon — eggs, toast, fruit.',type:'Solo'},
+     {t:'Skip the fried items today. Swap for steamed or grilled.',type:'Solo'},
+     {t:'Drink water before anything else. Challenge your ally too.',type:'Peer'},
+     {t:'Pick one junk snack you always grab — skip it.',type:'Boss'},
+     {t:'One day without fried food. Soups, salads, grilled.',type:'Solo'},
+     {t:'Snack on a vegetable today — cucumber, carrot sticks.',type:'Solo'},
+     {t:'Try sleeping before midnight. Parent holds you accountable.',type:'Parent'},
+     {t:'Count the sugar in your drinks today — check labels.',type:'Solo'},
+     {t:'No eating after 9pm tonight.',type:'Boss'},
+     {t:'Replace one snack with fruit, nuts, or anything real.',type:'Solo'},
+     {t:'One meal with real nutrients together.',type:'Parent'},
+     {t:'Two less teaspoons of sugar today — just two.',type:'Solo'},
+     {t:'Phone down for one hour. Do something else with your ally.',type:'Peer'},
+     {t:'Healthy hawker meal together.',type:'Boss'},
+     {t:'Brush for the full two minutes. Oral health check.',type:'Solo'},
+     {t:'No screens 30 min before bed.',type:'Solo'},
+     {t:'Grocery shop together — pick 3 healthy items.',type:'Parent'},
+     {t:'Screen-free lunch with your ally.',type:'Peer'},
+     {t:'Cook a meal with 2+ vegetables and a protein with your ally. Write the things that changed.',type:'Boss'},
+   ],
+   wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(81,207,102,.1);color:#51CF66;">🍎 Fuel</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(132,94,247,.1);color:#845EF7;">🧠 Focus</span>',
+   buff:'+1 bonus coin on Rest challenges',
+   zones:['The Garden Gate','Processed Plains','The Fresh Fields','The Harvest'],
+   days:[
+    {d:1,t:'Swap one sugary drink for water or plain tea.',type:'solo'},
+    {d:2,t:'Eat something real before noon — eggs, toast, fruit.',type:'solo'},
+    {d:3,t:'Skip the fried items today. Swap for steamed or grilled.',type:'solo'},
+    {d:4,t:'Drink water before anything else today. Challenge your ally too.',type:'ally'},
+    {d:5,t:'Pick one junk snack you always grab — skip it today.',type:'boss',boss:'Snack Gremlin',coop:'Cook a healthy snack together'},
+    {d:6,t:'One day without fried food. Soups, salads, grilled.',type:'solo'},
+    {d:7,t:'Snack on a vegetable today — cucumber, carrot sticks, edamame.',type:'solo'},
+    {d:8,t:'Try sleeping before midnight. Ask your ally to hold you accountable.',type:'ally'},
+    {d:9,t:'Count the sugar in your drinks today — check labels.',type:'solo'},
+    {d:10,t:'No eating after 9pm tonight.',type:'boss',boss:'Sleepy Tom',coop:'Both commit to 9pm cutoff'},
+    {d:11,t:'Replace one snack with fruit, nuts, or anything real.',type:'solo'},
+    {d:12,t:'One meal with real nutrients together. Protein, greens, carbs.',type:'ally'},
+    {d:13,t:'Two less teaspoons of sugar today — just two.',type:'solo'},
+    {d:14,t:'Phone down for one hour. Do something else with your ally.',type:'ally'},
+    {d:15,t:'Healthy hawker meal together.',type:'boss',boss:'Greasy Gary',coop:'Healthy hawker meal together'},
+    {d:16,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:17,t:'No screens 30 min before bed.',type:'solo'},
+    {d:18,t:'Grocery shop together — pick 3 healthy items.',type:'ally'},
+    {d:19,t:'Screen-free lunch with your ally.',type:'ally'},
+    {d:20,t:'Cook a meal with 2+ vegetables and a protein with your ally. Write the things that changed.',type:'boss',boss:'Captain Couch',coop:'Cook a final meal together'}
+   ],
+   baby:'Assets/Baby_Versions/Baby SAGE.png',
+   teen:'Assets/Characters/SAGE.png',
+   stats:{sleep:3,eat:4,move:1,mind:2,skin:3}},
+  {name:'Spark',type:'The Energetic One',color:'#FF6B6B',
+   quest:'Spark wants Squad Goals<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Explore the Ally Archipelago. Islands only unlock when you and your crew work together.',
+   zones:['The Rally Point','Buddy Basin','The Ally Archipelago','The Summit'],
+   days:[
+     {t:'10 minutes of movement with your ally.',type:'Peer'},
+     {t:'Before coffee, before phone — water first thing.',type:'Solo'},
+     {t:'Go to bed 30 min earlier. Ask your parent to remind you.',type:'Parent'},
+     {t:'Eat a real lunch with your ally. No skipping.',type:'Peer'},
+     {t:'Go outside for 15 minutes with your ally — walk, jog, or stretch.',type:'Boss'},
+     {t:'Skip every sugary snack today.',type:'Solo'},
+     {t:'Compliment someone in your group today. Out loud.',type:'Peer'},
+     {t:'Cook a meal together. Any meal. 2+ veggies.',type:'Parent'},
+     {t:'Eat a proper meal — protein, veg, carbs. Note your energy 30 min after.',type:'Solo'},
+     {t:'15-minute walk with your ally. No music, just talk.',type:'Boss'},
+     {t:'Phone down for one meal today — with someone.',type:'Peer'},
+     {t:'Drink 2 bottles of water today.',type:'Solo'},
+     {t:'Do one thing you\'ve been putting off. Ask parent for help.',type:'Parent'},
+     {t:'Brush for the full two minutes. Oral health check.',type:'Solo'},
+     {t:'Exercise together for 15 min.',type:'Boss'},
+     {t:'Walk a different route to school with your ally.',type:'Peer'},
+     {t:'Family dinner — no phones on the table.',type:'Parent'},
+     {t:'10-minute stretch session.',type:'Solo'},
+     {t:'Challenge your ally to a plank hold.',type:'Peer'},
+     {t:'Do 15 minutes of activity with your ally. Write the things that changed.',type:'Boss'},
+   ],
+   wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(240,101,149,.1);color:#F06595;">💜 Heart</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(255,107,107,.1);color:#FF6B6B;">💪 Power</span>',
+   buff:'+1 bonus coin on Heart challenges',
+   zones:['The Rally Point','Buddy Basin','The Ally Archipelago','The Summit'],
+   days:[
+    {d:1,t:'10 minutes of movement with your ally — walk, stretch, your pick.',type:'ally'},
+    {d:2,t:'Before coffee, before phone — a glass of water first thing.',type:'solo'},
+    {d:3,t:'Go to bed 30 min earlier tonight.',type:'solo'},
+    {d:4,t:'Eat a real lunch today with your ally. No skipping.',type:'ally'},
+    {d:5,t:'Go outside for 15 minutes with your ally — walk, jog, or stretch.',type:'boss',boss:'Snack Gremlin',coop:'Do one activity together outside'},
+    {d:6,t:'Skip every sugary snack today.',type:'solo'},
+    {d:7,t:'Compliment someone in your group today. Out loud. Mean it.',type:'solo'},
+    {d:8,t:'Cook a meal together. Any meal. 2+ veggies.',type:'ally'},
+    {d:9,t:'Eat a proper meal — protein, veg, carbs. Note your energy 30 min after.',type:'solo'},
+    {d:10,t:'15-minute walk with your ally. No music, just talk.',type:'boss',boss:'Sleepy Tom',coop:'Walk together, no phones'},
+    {d:11,t:'Phone down for one meal today — with someone.',type:'ally'},
+    {d:12,t:'Drink 2 bottles of water today.',type:'solo'},
+    {d:13,t:'Do one thing you have been putting off. Ask your ally for help.',type:'ally'},
+    {d:14,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:15,t:'Exercise together for 15 min.',type:'boss',boss:'Greasy Gary',coop:'Exercise together for 15 min'},
+    {d:16,t:'Walk a different route to school with your ally.',type:'ally'},
+    {d:17,t:'Family dinner — no phones on the table.',type:'ally'},
+    {d:18,t:'10-minute stretch session.',type:'solo'},
+    {d:19,t:'Challenge your ally to a plank hold.',type:'ally'},
+    {d:20,t:'Do 15 minutes of activity with your ally. Write the things that changed.',type:'boss',boss:'Captain Couch',coop:'Do 15 minutes of activity together and write the things that changed'}
+   ],
+   baby:'Assets/Baby_Versions/Baby SPARK.png',
+   teen:'Assets/Characters/SPARK.png',
+   stats:{sleep:2,eat:2,move:4,mind:4,skin:1}},
+  {name:'Luna',type:'The Restful One',color:'#845EF7',
+   quest:'Luna wants to Chill<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Drift through the Dreamscape. Silence the noise monsters. Restore the night sky.',
+   zones:['The Quiet Shore','Midnight Meadow','The Scroll Swamp','The Dreamscape'],
+   days:[
+     {t:'Phones down at 10:30pm. Your brain needs the wind-down.',type:'Solo'},
+     {t:'Maybe you\'re not a night owl. Limit social media tonight.',type:'Solo'},
+     {t:'Better mornings start the night before. Set up your morning.',type:'Solo'},
+     {t:'Leave the phone outside your room. Challenge your ally too.',type:'Peer'},
+     {t:'The morning glow might just be 8 hours of sleep.',type:'Boss'},
+     {t:'Not just kopi — eat a real breakfast.',type:'Solo'},
+     {t:'The last thing before lights out — no phone.',type:'Solo'},
+     {t:'One screen-free hour today with a family member.',type:'Parent'},
+     {t:'A 15-20 minute power nap boosts alertness. Set a timer.',type:'Solo'},
+     {t:'Step out for 10 minutes. Sunshine, no earphones.',type:'Boss'},
+     {t:'Drink water when you wake up — before anything else.',type:'Solo'},
+     {t:'Protect the hour before bed. No news, no doom scrolling.',type:'Solo'},
+     {t:'One hour with no deadlines, no screen. Do it with your ally.',type:'Peer'},
+     {t:'Brush for the full two minutes. Oral health check.',type:'Solo'},
+     {t:'Cook a healthy dinner together.',type:'Boss'},
+     {t:'No screens for 30 minutes before bed.',type:'Solo'},
+     {t:'Drink 2L of water today.',type:'Solo'},
+     {t:'Phone-free lunch with your ally.',type:'Peer'},
+     {t:'Family walk — 15 minutes, no phones.',type:'Parent'},
+     {t:'No screens after 10pm, sleep before 11pm. Write the things that changed.',type:'Boss'},
+   ],
+   wells:'<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(51,154,240,.1);color:#339AF0;">💤 Rest</span><span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(132,94,247,.1);color:#845EF7;">🧠 Focus</span>',
+   buff:'+1 bonus coin on Focus challenges',
+   zones:['The Quiet Shore','Midnight Meadow','The Scroll Swamp','The Dreamscape'],
+   days:[
+    {d:1,t:'Phones down at 10:30pm tonight.',type:'solo'},
+    {d:2,t:'Limit social media tonight.',type:'solo'},
+    {d:3,t:'Better mornings start the night before. Set up your morning tonight.',type:'solo'},
+    {d:4,t:'Leave the phone outside your room tonight. Challenge your ally too.',type:'ally'},
+    {d:5,t:'The morning glow might just be 8 hours of sleep.',type:'boss',boss:'Snack Gremlin',coop:'Both commit to 8hrs tonight'},
+    {d:6,t:'Not just kopi — eat a real breakfast. Eggs, toast, fruit.',type:'solo'},
+    {d:7,t:'The last thing before lights out — no phone.',type:'solo'},
+    {d:8,t:'One screen-free hour today with your ally.',type:'ally'},
+    {d:9,t:'A 15-20 minute power nap boosts alertness. Set a timer.',type:'solo'},
+    {d:10,t:'Step out for 10 minutes. Sunshine, no earphones.',type:'boss',boss:'Sleepy Tom',coop:'Walk together'},
+    {d:11,t:'Drink water when you wake up — before anything else.',type:'solo'},
+    {d:12,t:'Protect the hour before bed. No news, no doom scrolling.',type:'solo'},
+    {d:13,t:'One hour today with no deadlines, no screen. Real rest.',type:'ally'},
+    {d:14,t:'Brush for the full two minutes. Oral health check-in.',type:'solo'},
+    {d:15,t:'Cook a healthy dinner together.',type:'boss',boss:'Greasy Gary',coop:'Cook a healthy dinner together'},
+    {d:16,t:'No screens for 30 minutes before bed.',type:'solo'},
+    {d:17,t:'Drink 2L of water today.',type:'solo'},
+    {d:18,t:'Phone-free lunch with your ally.',type:'ally'},
+    {d:19,t:'15-minute walk, no phones.',type:'ally'},
+    {d:20,t:'No screens after 10pm, sleep before 11pm. Write the things that changed.',type:'boss',boss:'Captain Couch',coop:'Both go screen-free after 10pm and write the things that changed'}
+   ],
+   baby:'Assets/Baby_Versions/Baby LUNA.png',
+   teen:'Assets/Characters/LUNA.png',
+   stats:{sleep:5,eat:1,move:1,mind:3,skin:3}},
+];
+let curChar = 0;
+let curScreen = 0;
+let evolved = false;
+
+// === NAVIGATION ===
+function goTo(n){
+  const screens = document.querySelectorAll('.screen');
+  screens.forEach((s,i)=>{
+    // Extract only the base classes (everything that is not a screen-state class)
+    const base=s.className.replace(/\b(hidden-left|hidden|active)\b/g,'').replace(/\s+/g,' ').trim();
+    if(i===n){s.className=base+' active';s.scrollTop=0;}
+    else if(i<n){s.className=base+' hidden-left';}
+    else{s.className=base+' hidden';}
+  });
+  curScreen=n;
+  if(n===3)resetEvolve();
+  if(n===8)updateAllScreens(); // rebuild quest map when team ready screen loads
+  if(n===9)updateAllScreens(); // rebuild quest map when quest map loads
+  if(n===15){document.getElementById('tryFightBtn').style.display='';document.getElementById('bossBattlePopup').style.display='none';bossPopupTimers.forEach(function(t){clearTimeout(t);});bossPopupTimers=[];}
+  if(n===18)setTimeout(startCoopBattle,300);
+  if(n===19)setupBossVictory();
+  // Show/hide persistent top nav (visible from screen 8 onwards, hide on parent/transition screens)
+  const topNav=document.getElementById('topNav');
+  const hideScreens=[0,1,2,3,4,5,6,7,16,17]; // onboarding + parent/transition
+  if(!hideScreens.includes(n)){
+    topNav.style.display='flex';
+  } else {
+    topNav.style.display='none';
+  }
+  // Close notif panel on screen change
+  document.getElementById('notifPanel').classList.remove('show');
+}
+
+// === QUEST + CHARACTER SELECT ===
+function updateCharDisplay(){
+  const c=characters[curChar];
+  document.getElementById('charImg').src=c.baby;
+  document.getElementById('charName').textContent=c.name;
+  document.getElementById('charType').textContent=c.type;
+  // Quest info
+  document.getElementById('questName').innerHTML=c.quest;
+  document.getElementById('questDesc').textContent=c.questDesc;
+  // wells tags removed from UI
+  document.getElementById('questBuff').innerHTML='<div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 6px rgba(255,212,59,.5);flex-shrink:0;"></div> '+c.buff;
+  // Stats
+  const max=5;
+  ['sleep','eat','move','mind','skin'].forEach(s=>{
+    const pct=(c.stats[s]/max)*100;
+    document.getElementById('stat'+s.charAt(0).toUpperCase()+s.slice(1)).style.width=pct+'%';
+    document.getElementById('val'+s.charAt(0).toUpperCase()+s.slice(1)).textContent=c.stats[s];
+  });
+  // Update char image wrap glow color
+  document.getElementById('charImgWrap').style.background='radial-gradient(circle,'+c.color+'22,transparent 70%)';
+}
+function nextChar(){curChar=(curChar+1)%characters.length;updateCharDisplay();}
+function prevChar(){curChar=(curChar-1+characters.length)%characters.length;updateCharDisplay();}
+
+// === EVOLVE ===
+function resetEvolve(){
+  const c=characters[curChar];
+  evolved=false;
+  document.getElementById('evolveBaby').src=c.baby;
+  document.getElementById('evolveBaby').style.display='block';
+  document.getElementById('evolveTeen').src=c.teen;
+  document.getElementById('evolveTeen').style.display='none';
+  document.getElementById('evolveNameLbl').textContent=c.name;
+  document.getElementById('evolveTapText').textContent='Tap to evolve';
+  document.getElementById('evolveNextBtn').style.opacity='.3';
+  document.getElementById('evolveNextBtn').style.pointerEvents='none';
+  // Update goal section (now inline)
+  document.getElementById('goalBaby').src=c.baby;
+  document.getElementById('goalTeen').src=c.teen;
+  document.getElementById('evoGoalSection').style.display='none';
+  // Update all downstream screens
+  updateAllScreens();
+}
+function evolveChar(){
+  if(evolved)return;
+  evolved=true;
+  const flash=document.getElementById('evolveFlash');
+  flash.style.animation='evolveFlash .8s ease-out';
+  setTimeout(()=>{
+    document.getElementById('evolveBaby').style.display='none';
+    document.getElementById('evolveTeen').style.display='block';
+    document.getElementById('evolveTapText').textContent='Evolved!';
+    document.getElementById('evolveNextBtn').style.opacity='1';
+    document.getElementById('evolveNextBtn').style.pointerEvents='auto';
+    // Show evolution path inline
+    document.getElementById('evoGoalSection').style.display='block';
+    // Make evolve circle smaller to fit path
+    // Circle stays same size (320px from CSS)
+    // Teen stays same size as baby (280px from CSS)
+  },400);
+  setTimeout(()=>{flash.style.animation='';},900);
+}
+
+// === UPDATE ALL SCREENS WITH CHOSEN CHARACTER ===
+function updateAllScreens(){
+  const c=characters[curChar];
+  // Build quest map
+  buildQuestMap(c);
+  // Daily challenge screen (day 3 as demo)
+  if(c.days){
+    document.getElementById('dailyChallengeText').textContent=c.days[2].t;
+    const typeMap={Solo:'Solo challenge',Peer:'Ally challenge',Parent:'Parent co-op',Boss:'Boss battle'};
+    document.getElementById('dailyTypeLabel').textContent=typeMap[c.days[2].type]||'Solo challenge';
+    document.getElementById('dailyChip').textContent='Day 3 · '+c.days[2].type;
+  }
+  // Invite screen
+  document.getElementById('inviteCharImg').src=c.teen;
+  // Friend ally screen
+  document.getElementById('friendCharImg').src=c.teen;
+  // Parent screen
+  document.getElementById('parentCharImg').src=c.teen;
+  // Team ready
+  document.getElementById('teamHeroImg').src=c.teen;
+  document.getElementById('teamHeroName').textContent=c.name;
+  // Daily challenge
+  document.getElementById('dailyCharImg').src=c.teen;
+  // Boss battle names
+  document.getElementById('bossBattleName1').textContent=c.name;
+  // Co-op
+  document.getElementById('coopHeroImg').src=c.teen;
+  document.getElementById('coopHeroName').textContent=c.name;
+  // These IDs may not exist in all screen configurations — guard against null
+  var _el;
+  _el=document.getElementById('coopBattleName1'); if(_el) _el.textContent=c.name;
+  _el=document.getElementById('coopBattleName2'); if(_el) _el.textContent=c.name;
+  // Top nav avatar
+  document.getElementById('topNavAvatar').src=c.teen;
+  // Battle + Profile
+  document.getElementById('battleHeroImg').src=c.teen;
+  document.getElementById('battleHeroName').textContent=c.name;
+  _el=document.getElementById('animHeroName1'); if(_el) _el.textContent=c.name;
+  _el=document.getElementById('animHeroName2'); if(_el) _el.textContent=c.name;
+  document.getElementById('profileCharImg').src=c.teen;
+  document.getElementById('profileCharName').textContent=c.name;
+  // Leaderboard
+  document.getElementById('lbMyImg').src=c.teen;
+  try{document.getElementById('lbMyImg2').src=c.teen;}catch(e){}
+  // Backpack
+  document.getElementById('bpCharImg').src=c.teen;
+  document.getElementById('bpCharName').textContent=c.name;
+  // Gacha
+  document.getElementById('gachaCardImg').src=c.teen;
+  // Final
+  document.getElementById('finalCardImg').src=c.teen;
+  document.getElementById('finalCardName').textContent=c.name;
+  document.getElementById('finalBabyImg').src=c.baby;
+  document.getElementById('finalTeenImg').src=c.teen;
+  document.getElementById('finalChampImg').src=c.teen;
+}
+
+// === BUILD QUEST MAP ===
+function buildQuestMap(c){
+  const el=document.getElementById('questMapNodes');
+  if(!el||!c.days||!c.zones)return;
+  const bossDays=[5,10,15,20];
+  const bossNames=['Snack Gremlin','Sleepy Tom','Greasy Gary','Captain Couch'];
+  const bossEmoji=['\ud83d\udc79','\ud83e\udda5','\ud83c\udf54','\ud83d\udecb'];
+  const zoneStarts=[1,6,11,16];
+  const zoneIcons=['\u26f0\ufe0f','\ud83c\udf34','\ud83c\udf2b\ufe0f','\u26f0\ufe0f'];
+  const cur=3;
+  let h='';
+  for(let d=1;d<=20;d++){
+    const zi=zoneStarts.indexOf(d);
+    if(zi>=0) h+='<div class="zone'+(d>cur+2?' zone-locked':'')+'">'+zoneIcons[zi]+' '+c.zones[zi]+'</div>';
+    const isBoss=bossDays.includes(d);
+    const done=d<cur,now=d===cur,lock=d>cur;
+    const day=c.days[d-1];
+    const desc=day?day.t:'\u2014';
+    const short=desc.length>42?desc.substring(0,42)+'...':desc;
+    const isAlly=day&&(day.type==='Peer'||day.type==='Parent'||day.type==='Boss');
+    const typeLabel=isAlly?'With ally':'Solo';
+    const typeColor=isAlly?'#845EF7':'#51CF66';
+    const clickable=(d===1)||(d===4)||(d===5&&isBoss)||(d===15&&isBoss)||(d===20&&isBoss);
+    if(isBoss){
+      const bi=bossDays.indexOf(d);
+      const bossClickable=(d===5)||(d===15)||(d===20);
+      let bossAction='showBossPreview()';
+      if(d===15) bossAction='showBoss15()';
+      if(d===20) bossAction='showBoss20()';
+      const cl=bossClickable?' onclick="'+bossAction+'" style="cursor:pointer;"':'';
+      const bossImgs=['Assets/Monsters/SNACK GREMLIN.png','','Assets/Monsters/Greasy Gary .png','Assets/Monsters/Captain Couch.png'];
+      const bossInner=bossImgs[bi]?'<img src="'+bossImgs[bi]+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none;">':bossEmoji[bi];
+      const pulseStyle=bossClickable?' style="font-size:18px;box-shadow:0 0 20px var(--coral-glow),0 0 40px rgba(255,107,107,.15);cursor:pointer;"':' style="font-size:18px;"';
+      let tapLabel='tap';
+      if(d===15) tapLabel='\ud83c\udfb0 gacha';
+      if(d===20) tapLabel='\ud83c\udfc6 collect';
+      const tapB=bossClickable?'<span style="font-size:9px;color:#fff;margin-left:6px;background:'+(d===20?'var(--gold)':'var(--coral)')+';padding:2px 8px;border-radius:10px;animation:glow-pulse 1.5s infinite;box-shadow:0 0 12px '+(d===20?'rgba(255,212,59,.4)':'var(--coral-glow)')+';'+(d===20?'color:#1A1B2E;':'')+'">'+tapLabel+'</span>':'';
+      if(bossClickable){
+        h+='<div onclick="'+bossAction+'" style="display:flex;align-items:center;gap:14px;width:100%;padding:8px 0;cursor:pointer;position:relative;z-index:5;"><div class="nc boss" style="font-size:18px;box-shadow:0 0 20px var(--coral-glow),0 0 40px rgba(255,107,107,.15);pointer-events:none;">'+bossInner+'</div><div style="pointer-events:none;flex:1;"><div style="font-size:14px;font-weight:700;color:var(--coral);">Boss \u2014 '+bossNames[bi]+tapB+'</div><div style="color:var(--text-dim);font-size:10px;">'+short+'</div></div></div>';
+      } else {
+        h+='<div class="mn"><div class="nc boss lock" style="font-size:18px;">'+bossInner+'</div><div class="ni"><div class="nt" style="color:var(--text-dim);">Boss \u2014 '+bossNames[bi]+'</div><div class="ns" style="color:var(--text-dim);">'+short+'</div></div></div>';
+      }
+    } else {
+      const nc=done?'done':now?'now':(clickable?'now':'lock');
+      // Day 1 -> challenge with "I did it", Day 3 -> current challenge, Day 4 -> ally challenge with complete
+      let cl='';
+      if(d===1&&clickable) cl=' onclick="showDayChallenge(1)"';
+      else if(d===4&&clickable) cl=' onclick="showDayChallenge(4)"';
+      else if(clickable) cl=' onclick="goTo(10)"';
+      const badge='<span style="font-size:8px;color:'+typeColor+';font-weight:700;background:'+typeColor+'15;padding:1px 5px;border-radius:4px;margin-left:4px;">'+typeLabel+'</span>';
+      const tapHint=clickable?'<span style="font-size:9px;color:#fff;margin-left:6px;background:var(--violet);padding:2px 8px;border-radius:10px;animation:glow-pulse 1.5s infinite;box-shadow:0 0 12px var(--violet-glow);">tap</span>':'';
+      if(clickable){
+        h+='<div style="display:flex;align-items:center;gap:14px;width:100%;padding:8px 0;cursor:pointer;position:relative;z-index:5;" '+cl+'><div class="nc '+nc+'" style="pointer-events:none;">'+(done?'\u2713':d)+'</div><div style="pointer-events:none;flex:1;"><div style="font-size:14px;font-weight:700;'+(lock&&!clickable?'color:var(--text-dim);':'color:var(--text);')+'">Day '+d+badge+tapHint+'</div><div style="color:var(--text-dim);font-size:10px;">'+short+'</div></div></div>';
+      } else {
+        h+='<div class="mn"><div class="nc '+nc+'">'+d+'</div><div class="ni"><div class="nt"'+(lock?' style="color:var(--text-dim)"':'')+'>Day '+d+badge+'</div><div class="ns" style="color:var(--text-dim);font-size:10px;">'+short+'</div></div></div>';
+      }
+    }
+    if(d<20){
+      const gem=(d===1||d===4||d===8||d===16)&&(done||d===4);
+      h+='<div class="conn'+(done?' on':'')+'"'+(gem?' style="position:relative;"':'')+'>';
+      if(gem) h+='<div style="position:absolute;left:15px;top:2px;font-size:10px;cursor:pointer;animation:float 2s ease-in-out infinite;" onclick="showGemTooltip()">\ud83d\udc8e</div>';
+      h+='</div>';
+      if(isBoss) h+='<div class="zone-arrow">\u2193</div>';
+    }
+  }
+  h+='<div style="height:80px;"></div>';
+  el.innerHTML=h;
+}
+
+// === ALLY COMPLETE DEMO ===
+let lastChallengeDay=0;
+function showAllyParentScreen(challengeText){
+  setupParentScreen('ally', challengeText);
+  goTo(16); // transition screen
+}
+function allyCompletes(){
+  document.getElementById('allyWaitingView').style.display='none';
+  document.getElementById('bothCompleteView').style.display='block';
+  const c=characters[curChar];
+  document.getElementById('bothHeroImg').src=c.teen;
+}
+function showRewardsForDay(isAlly){
+  document.getElementById('soloCompleteView').style.display=isAlly?'none':'block';
+  document.getElementById('allyWaitingView').style.display=isAlly?'block':'none';
+  document.getElementById('bothCompleteView').style.display='none';
+  if(isAlly){
+    const c=characters[curChar];
+    document.getElementById('allyCompleteHero').src=c.teen;
+  }
+  goTo(12);
+}
+
+// === SHOW DAY CHALLENGE ===
+function showDayChallenge(day){
+  if(day===4) parentScreenContext='ally';
+  else parentScreenContext='boss';
+  const c=characters[curChar];
+  const d=c.days[day-1];
+  if(!d)return;
+  const isAlly=d.type==='Peer'||d.type==='Parent';
+  // Update chip
+  document.getElementById('dailyChip').textContent='Day '+day+' · '+(isAlly?'With ally':'Solo');
+  document.getElementById('dailyChip').style.background=isAlly?'rgba(132,94,247,.15)':'rgba(81,207,102,.15)';
+  document.getElementById('dailyChip').style.color=isAlly?'var(--violet)':'var(--mint)';
+  // Update type label
+  document.getElementById('dailyTypeLabel').textContent=isAlly?'With ally':'Solo challenge';
+  document.getElementById('dailyTypeLabel').style.color=isAlly?'var(--violet)':'var(--mint)';
+  // Update challenge text
+  document.getElementById('dailyChallengeText').textContent=d.t;
+  // Update character image
+  document.getElementById('dailyCharImg').src=c.teen;
+  // Ally avatar + note
+  document.getElementById('dailyAllyAvatar').style.display=isAlly?'flex':'none';
+  document.getElementById('dailyAllyNote').style.display=isAlly?'block':'none';
+  // Coins/XP
+  var coinIcon='<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 4px rgba(255,212,59,.4);font-size:8px;color:#8B6914;font-weight:bold;vertical-align:middle;">W</span>';
+  document.getElementById('dailyCoins').innerHTML=isAlly?coinIcon+' +20 coins':coinIcon+' +15 coins';
+  document.getElementById('dailyXP').textContent=isAlly?'⭐ +15 XP':'⭐ +10 XP';
+  // CTA - route to correct reward view
+  lastChallengeDay=day;
+  const cta=document.getElementById('dailyCTA');
+  cta.textContent='I did it! ✨';
+  cta.onclick=function(){showRewardsForDay(isAlly);};
+  goTo(10);
+}
+
+let currentBossLevel=5;
+function setupBossVictory(){
+  const g=document.getElementById('gachaRewardBox');
+  const p=document.getElementById('physicalRewardBox');
+  const b1=document.getElementById('bossVicBtn1');
+  const b2=document.getElementById('bossVicBtn2');
+  const b3=document.getElementById('bossVicBtn3');
+  g.style.display='none';p.style.display='none';
+  b1.style.display='block';b2.style.display='block';b3.style.display='none';
+  b2.onclick=function(){goTo(9);};
+  if(currentBossLevel===5){
+    b1.style.display='block';
+    b2.textContent='Back to quest map';
+  } else if(currentBossLevel===15){
+    g.style.display='block';
+    b1.style.display='block';
+    b2.textContent='Back to quest map';
+  } else if(currentBossLevel===20){
+    // Skip boss victory screen entirely — go straight to Quest Champion
+    goTo(24);
+    return;
+  }
+}
+function setBossImage(name){
+  const bossImgMap={'Snack Gremlin':'Assets/Monsters/SNACK GREMLIN.png','Sleepy Tom':'','Greasy Gary':'Assets/Monsters/Greasy Gary .png','Captain Couch':'Assets/Monsters/Captain Couch.png'};
+  const bossEmojiMap={'Snack Gremlin':'👹','Sleepy Tom':'🦥','Greasy Gary':'🍔','Captain Couch':'🛋'};
+  const sprite=document.getElementById('bossEncounterSprite');
+  if(bossImgMap[name]){
+    sprite.innerHTML='<img src="'+bossImgMap[name]+'" style="width:130px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));">';
+  } else {
+    sprite.innerHTML='<div style="font-size:80px;animation:monsterIdle 2s ease-in-out infinite;">'+bossEmojiMap[name]+'</div>';
+  }
+}
+function showBossPreview(){
+  setupParentScreen('boss');
+  currentBossLevel=5;
+  const c=characters[curChar];
+  if(c.days&&c.days[4]) document.getElementById('bossChallengeText').textContent=c.days[4].t;
+  document.getElementById('bossBattleName1').textContent='Snack Gremlin';
+  setBossImage('Snack Gremlin');
+  if(c.zones) document.getElementById('bossZoneLabel').textContent=c.zones[0];
+  document.getElementById('screen15').style.background='linear-gradient(180deg,#2a0a0a 0%,#1a0505 50%,#0D0E1A 100%)';
+  goTo(15);
+}
+function showBoss15(){
+  setupParentScreen('boss');
+  currentBossLevel=15;
+  const c=characters[curChar];
+  if(c.days&&c.days[14]) document.getElementById('bossChallengeText').textContent=c.days[14].t;
+  document.getElementById('bossBattleName1').textContent='Greasy Gary';
+  setBossImage('Greasy Gary');
+  if(c.zones) document.getElementById('bossZoneLabel').textContent=c.zones[2];
+  document.getElementById('screen15').style.background='linear-gradient(180deg,#2a0a0a 0%,#1a0505 50%,#0D0E1A 100%)';
+  goTo(15);
+}
+function showBoss20(){
+  setupParentScreen('boss');
+  currentBossLevel=20;
+  const c=characters[curChar];
+  if(c.days&&c.days[19]) document.getElementById('bossChallengeText').textContent=c.days[19].t;
+  document.getElementById('bossBattleName1').textContent='Captain Couch';
+  setBossImage('Captain Couch');
+  if(c.zones) document.getElementById('bossZoneLabel').textContent=c.zones[3];
+  document.getElementById('screen15').style.background='linear-gradient(180deg,#2a0a0a 0%,#1a0505 50%,#0D0E1A 100%)';
+  goTo(15);
+}
+
+// === DAY PREVIEW ===
+let previewMode='completed'; // 'completed' or 'ally'
+function showDayPreview(day){
+  const c=characters[curChar];
+  if(day===1){
+    previewMode='completed';
+    document.getElementById('dayCompletedView').style.display='block';
+    document.getElementById('dayAllyView').style.display='none';
+    document.getElementById('previewCharImg').src=c.teen;
+    if(c.days&&c.days[0]) document.getElementById('previewChallengeText').textContent=c.days[0].t;
+  } else if(day===4){
+    previewMode='ally';
+    document.getElementById('dayCompletedView').style.display='none';
+    document.getElementById('dayAllyView').style.display='block';
+    document.getElementById('allyPreviewHero').src=c.teen;
+    if(c.days&&c.days[3]) document.getElementById('allyPreviewText').textContent=c.days[3].t;
+  }
+  goTo(11);
+}
+
+// === BATTLE POPUP ===
+let battleTimer=null;
+function showBattlePopup(){
+  const popup=document.getElementById('battlePopup');
+  popup.style.display='flex';
+  const log=document.getElementById('battleLogPopup');
+  log.innerHTML='';
+  const bar=document.getElementById('bpHpBar');
+  bar.style.width='100%';
+  document.getElementById('bpHpText').textContent='100/100';
+  document.getElementById('battleSkipBtn').textContent='Skip';
+  const c=characters[curChar];
+  const heroSprite=document.getElementById('battleHeroSprite');
+  const monSprite=document.getElementById('battleMonSprite');
+  const lines=[
+    {t:'⚡ <b>'+c.name+'</b> uses <b>Healthy Choice!</b>',hp:75,delay:800,attack:'hero'},
+    {t:'💥 Snack Gremlin takes <b>25 damage!</b>',hp:75,delay:1600,attack:null},
+    {t:'🦠 Snack Gremlin tries to tempt you...',hp:75,delay:2800,attack:'monster'},
+    {t:'🛡️ <b>'+c.name+'</b> resists! <b>Counter attack!</b>',hp:40,delay:4000,attack:'hero'},
+    {t:'💥 <b style="color:var(--gold);">Critical hit! -35 damage!</b>',hp:40,delay:5000,attack:null},
+    {t:'⭐ <b style="color:var(--gold);">Monster weakened!</b>',hp:10,delay:6200,attack:null},
+  ];
+  lines.forEach(l=>{
+    setTimeout(()=>{
+      const p=document.createElement('p');
+      p.style.cssText='font-size:12px;color:#9CA3AF;padding:3px 0;opacity:0;transform:translateX(-10px);transition:all .3s;';
+      p.innerHTML=l.t;
+      log.appendChild(p);
+      log.scrollTop=log.scrollHeight;
+      setTimeout(()=>{p.style.opacity='1';p.style.transform='translateX(0)';},50);
+      if(l.hp<100){bar.style.width=l.hp+'%';document.getElementById('bpHpText').textContent=l.hp+'/100';}
+      if(l.attack==='hero'){heroSprite.style.animation='attackShake .4s ease-out';setTimeout(()=>{heroSprite.style.animation='';},500);}
+      if(l.attack==='monster'){monSprite.style.animation='attackShake .4s ease-out';setTimeout(()=>{monSprite.style.animation='';},500);}
+    },l.delay);
+  });
+  battleTimer=setTimeout(()=>{
+    document.getElementById('battleSkipBtn').textContent='Continue →';
+    document.getElementById('battleSkipBtn').style.background='var(--violet)';
+    document.getElementById('battleSkipBtn').style.color='#fff';
+    document.getElementById('battleSkipBtn').style.border='none';
+    document.getElementById('battleSkipBtn').style.padding='14px 28px';
+    document.getElementById('battleSkipBtn').style.fontSize='14px';
+  },7000);
+}
+function closeBattlePopup(){
+  document.getElementById('battlePopup').style.display='none';
+  if(battleTimer)clearTimeout(battleTimer);
+  goTo(12);
+}
+
+// === BOSS ENCOUNTER ANIMATION ===
+var bossPopupTimers=[];
+function tryFightBoss(){
+  var popup=document.getElementById('bossBattlePopup');
+  if(!popup)return;
+  // Set hero sprite
+  var c=characters[curChar];
+  var heroImg=document.getElementById('bossPopupHeroImg');
+  if(heroImg)heroImg.src='Assets/Characters/'+c.name.toUpperCase()+'.png';
+  var heroName=document.getElementById('bossPopupHeroName');
+  if(heroName)heroName.textContent=c.name;
+  // Update boss monster image in popup
+  var bossPopupMon=document.getElementById('bossPopupMonsterSprite');
+  if(bossPopupMon){
+    var bIM={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
+    var bEM={'5':'👹','10':'🦥','15':'🍔','20':'🛋'};
+    var bKey=String(currentBossLevel);
+    if(bIM[bKey]){bossPopupMon.innerHTML='<img src="'+bIM[bKey]+'" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
+    else{bossPopupMon.innerHTML='<div style="font-size:60px;">'+bEM[bKey]+'</div>';}
+  }
+  // Reset
+  var log=document.getElementById('bossPopupLog');
+  if(log)log.innerHTML='';
+  var result=document.getElementById('bossPopupResult');
+  if(result)result.style.display='none';
+  var skip=document.getElementById('bossPopupSkip');
+  if(skip)skip.style.display='';
+  // Show popup
+  popup.style.display='flex';
+  startBossFailAnimation();
+}
+function startBossFailAnimation(){
+  var log=document.getElementById('bossPopupLog');
+  if(!log)return;
+  log.innerHTML='';
+  bossPopupTimers=[];
+  var monsterSprite=document.getElementById('bossPopupMonsterSprite');
+  var c=characters[curChar];
+  var bossNameMap={5:'Snack Gremlin',10:'Sleepy Tom',15:'Greasy Gary',20:'Captain Couch'};
+  var curBossName=bossNameMap[currentBossLevel]||'Snack Gremlin';
+  var lines=[
+    {t:'\u26a1 <b>'+c.name+'</b> attacks!',delay:600,shake:false},
+    {t:'\ud83d\udca5 '+curBossName+' takes <b>10 damage!</b>',delay:1200,shake:true},
+    {t:'\ud83d\udee1\ufe0f '+curBossName+' blocks! <b>Too strong!</b>',delay:2000,shake:true,color:'var(--coral)'},
+    {t:'\u274c <b>This boss is too powerful to face alone!</b>',delay:2800,shake:false,color:'var(--coral)'},
+  ];
+  lines.forEach(function(l,i){
+    var tid=setTimeout(function(){
+      var p=document.createElement('p');
+      p.style.cssText='font-size:13px;color:'+(l.color||'#9CA3AF')+';padding:5px 0;opacity:0;transform:translateX(-10px);transition:all .4s;';
+      p.innerHTML=l.t;
+      log.appendChild(p);
+      setTimeout(function(){p.style.opacity='1';p.style.transform='translateX(0)';},50);
+      if(l.shake&&monsterSprite){
+        monsterSprite.style.animation='attackShake .5s ease-out';
+        setTimeout(function(){monsterSprite.style.animation='';},600);
+      }
+    },l.delay);
+    bossPopupTimers.push(tid);
+  });
+  // After all lines, show result
+  var finalTid=setTimeout(function(){
+    showBossPopupResult();
+  },3600);
+  bossPopupTimers.push(finalTid);
+}
+function showBossPopupResult(){
+  var skip=document.getElementById('bossPopupSkip');
+  if(skip)skip.style.display='none';
+  var result=document.getElementById('bossPopupResult');
+  if(result){result.style.display='block';result.style.opacity='0';setTimeout(function(){result.style.transition='opacity .4s';result.style.opacity='1';},50);}
+}
+function skipBossBattle(){
+  bossPopupTimers.forEach(function(t){clearTimeout(t);});
+  bossPopupTimers=[];
+  // Show all lines instantly
+  var log=document.getElementById('bossPopupLog');
+  if(log){
+    log.innerHTML='';
+    var c=characters[curChar];
+    var texts=[
+      '\u26a1 <b>'+c.name+'</b> attacks!',
+      '\ud83d\udca5 Snack Gremlin takes <b>10 damage!</b>',
+      '\ud83d\udee1\ufe0f Snack Gremlin blocks! <b>Too strong!</b>',
+      '\u274c <b>This boss is too powerful to face alone!</b>'
+    ];
+    var colors=['#9CA3AF','#9CA3AF','var(--coral)','var(--coral)'];
+    texts.forEach(function(t,i){
+      var p=document.createElement('p');
+      p.style.cssText='font-size:13px;color:'+colors[i]+';padding:5px 0;';
+      p.innerHTML=t;
+      log.appendChild(p);
+    });
+  }
+  showBossPopupResult();
+}
+
+// === GEM ACTIVATE ===
+function showGemActivate(type){
+  if(document.getElementById('gemActivatePopup'))return;
+  var t=document.createElement('div');
+  t.id='gemActivatePopup';
+  t.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,18,40,.96);border:1px solid rgba(51,154,240,.3);border-radius:16px;padding:24px;z-index:100;width:290px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);';
+  if(type==='timewarp'){
+    t.innerHTML='<div style="font-size:36px;margin-bottom:8px;">\ud83d\udc8e</div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#F1F3F5;margin-bottom:6px;">Use Time Warp Gem?</div><div style="font-size:12px;color:#9CA3AF;line-height:1.5;margin-bottom:16px;">This will freeze today without breaking your streak. You have 2 remaining.</div><div style="display:flex;gap:8px;"><button onclick="this.parentElement.parentElement.remove()" style="flex:1;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:#9CA3AF;font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;">Cancel</button><button onclick="this.parentElement.parentElement.innerHTML=\'<div style=padding:20px;text-align:center><div style=font-size:36px;margin-bottom:8px>\u2728</div><div style=font-family:Plus+Jakarta+Sans,sans-serif;font-size:16px;font-weight:800;color:#F1F3F5;margin-bottom:6px>Gem activated!</div><div style=font-size:12px;color:#9CA3AF;margin-bottom:16px>Today is frozen. Your streak is safe.</div><div style=font-size:13px;color:#845EF7;font-weight:700;cursor:pointer onclick=this.parentElement.parentElement.remove()>Done</div></div>\'" style="flex:1;padding:12px;border-radius:8px;border:none;background:#339AF0;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">Activate</button></div>';
+  }
+  document.body.appendChild(t);
+}
+
+// === CO-OP BATTLE ANIMATION ===
+function startCoopBattle(){
+  const log=document.getElementById('coopBattleLog');
+  if(!log)return;
+  log.innerHTML='';
+  const bar=document.getElementById('coopHpBar');
+  if(bar)bar.style.width='100%';
+  const hpT=document.getElementById('coopHpText');
+  if(hpT)hpT.textContent='100/100';
+  const cont=document.getElementById('coopContinueBtn');
+  if(cont)cont.style.opacity='0';
+  const skip=document.getElementById('coopSkipBtn');
+  if(skip){skip.style.display='';skip.textContent='Skip';}
+  const c=characters[curChar];
+  const heroS=document.getElementById('coopHeroSprite');
+  const monS=document.getElementById('coopMonSprite');
+  // Update co-op boss monster image
+  if(monS){
+    const bImgCoop={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
+    const bEmojiCoop={'5':'👹','10':'🦥','15':'🍔','20':'🛋'};
+    const bK=String(currentBossLevel);
+    if(bImgCoop[bK]){monS.innerHTML='<img src="'+bImgCoop[bK]+'" style="width:70px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
+    else{monS.innerHTML='<div style="font-size:50px;animation:monsterIdle 2.5s ease-in-out infinite;">'+bEmojiCoop[bK]+'</div>';}
+  }
+  const bossNM={5:'Snack Gremlin',10:'Sleepy Tom',15:'Greasy Gary',20:'Captain Couch'};
+  const curBN=bossNM[currentBossLevel]||'Snack Gremlin';
+  const lines=[
+    {t:'\u26a1 <b>'+c.name+'</b> + \ud83e\udd89 <b>Aegis</b> combine forces!',hp:100,delay:600,a:null},
+    {t:'\ud83c\udf73 Co-op challenge complete! <b>+50 damage!</b>',hp:50,delay:1400,a:'hero'},
+    {t:'\ud83e\udda0 '+curBN+' retaliates...',hp:50,delay:2400,a:'monster'},
+    {t:'\ud83e\udd89 <b>Aegis Shield blocks</b> the attack!',hp:50,delay:3200,a:null},
+    {t:'\ud83d\udd25 <b>'+c.name+'</b> uses <b>Final Strike!</b>',hp:10,delay:4200,a:'hero'},
+    {t:'\ud83d\udca5 <b style="color:var(--gold);">BOSS DEFEATED!</b> \ud83c\udf89',hp:0,delay:5200,a:null},
+  ];
+  lines.forEach(function(l){
+    setTimeout(function(){
+      var p=document.createElement('p');
+      p.style.cssText='font-size:12px;color:#9CA3AF;padding:3px 0;opacity:0;transform:translateX(-10px);transition:all .3s;';
+      p.innerHTML=l.t;
+      log.appendChild(p);
+      log.scrollTop=log.scrollHeight;
+      setTimeout(function(){p.style.opacity='1';p.style.transform='translateX(0)';},50);
+      if(bar){bar.style.width=l.hp+'%';}
+      if(hpT){hpT.textContent=l.hp+'/100';}
+      if(l.a==='hero'&&heroS){heroS.style.animation='attackShake .4s ease-out';setTimeout(function(){heroS.style.animation='';},500);}
+      if(l.a==='monster'&&monS){monS.style.animation='attackShake .4s ease-out';setTimeout(function(){monS.style.animation='';},500);}
+    },l.delay);
+  });
+  setTimeout(function(){
+    if(cont)cont.style.opacity='1';
+    if(skip)skip.style.display='none';
+  },6000);
+}
+
+// === GEM TOOLTIP ===
+function showGemTooltip(){
+  if(document.getElementById('gemTooltipActive'))return;
+  const t=document.createElement('div');
+  t.id='gemTooltipActive';
+  t.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,18,40,.96);border:1px solid rgba(132,94,247,.3);border-radius:16px;padding:20px;z-index:100;width:280px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);';
+  t.innerHTML='<div style="font-size:28px;margin-bottom:8px;">\u{1F48E}</div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:15px;font-weight:800;color:#F1F3F5;margin-bottom:6px;">You found a Time Warp Gem!</div><div style="font-size:12px;color:#9CA3AF;line-height:1.5;margin-bottom:8px;">Use it to freeze a day without breaking your streak.</div><div style="font-size:10px;color:#845EF7;font-weight:600;margin-bottom:12px;">Max 3 per zone \u00B7 Stored in inventory</div><div style="font-size:13px;color:#845EF7;font-weight:700;cursor:pointer;" onclick="this.parentElement.remove()">Got it</div>';
+  document.body.appendChild(t);
+}
+
+// === PICK ALLY (parent/friend screens) ===
+function pickAlly(el){
+  el.parentElement.querySelectorAll('.ally-opt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
+}
+
+// === ALLY TYPE ===
+let allyType = 'parent';
+function setAllyType(type){
+  allyType = type;
+  const sub = document.getElementById('inviteLinkSubtitle');
+  if(type==='parent'){
+    sub.innerHTML='Send this link to a parent — they\'ll help<br>you fight bosses!';
+  } else if(type==='friend'){
+    sub.innerHTML='Send this link to your friend — team up<br>on challenges together!';
+  } else {
+    sub.innerHTML='Share this link with anyone — they\'ll<br>become your quest ally!';
+  }
+}
+function goToAllyView(){
+  if(allyType==='parent') goTo(6);
+  else goTo(7);
+}
+
+// === NOTIFICATIONS ===
+function toggleNotif(){
+  const p=document.getElementById('notifPanel');
+  p.classList.toggle('show');
+  const dot=document.getElementById('topNotifDot');
+  if(dot)dot.style.display='none';
+}
+// Close notif when clicking outside
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.notif-btn')&&!e.target.closest('.notif-panel')){
+    document.getElementById('notifPanel').classList.remove('show');
+  }
+});
+
+// Init
+updateCharDisplay();
+updateAllScreens();
+
+// Context for parent screen
+var parentScreenContext = 'boss'; // 'ally' or 'boss'
+
+function setupParentScreen(context, challengeText) {
+  parentScreenContext = context;
+  var icon = document.getElementById('parentAlertIcon');
+  var title = document.getElementById('parentAlertTitle');
+  var sub = document.getElementById('parentAlertSub');
+  var label = document.getElementById('parentChallengeLabel');
+  var ctext = document.getElementById('parentChallengeText');
+  
+  if(context === 'ally') {
+    icon.textContent = '🤝';
+    title.innerHTML = '<span id="parentAlertName">Ethan</span> wants to do this with you!';
+    sub.textContent = 'A quick challenge you can do together. Fun and easy!';
+    label.textContent = '🤝 Ally challenge';
+    if(challengeText) ctext.textContent = challengeText;
+  } else {
+    icon.textContent = '⚔️';
+    title.innerHTML = '<span id="parentAlertName">Ethan</span> needs your help!';
+    sub.innerHTML = 'Defeat the <b style="color:#FF6B6B;">Snack Gremlin</b> together';
+    label.textContent = '👨‍👩‍👧 Co-op challenge';
+    if(challengeText) ctext.textContent = challengeText;
+  }
+}
+</script>
+</body>
+</html>

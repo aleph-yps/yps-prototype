@@ -862,7 +862,7 @@ const GROUNDING=[
   {g:'g-amber',icon:'send',h:'Text one friend \u2014 not about your child.',b:'A meme, a voice note, a "how are you?". You\'ve been pouring out without anyone asking about you.',timer:0},
   {g:'g-teal',icon:'droplet',h:'Get a glass of water. Sit somewhere different.',b:'Not at your desk. Your body carries stress even when your mind thinks it\'s coping.',timer:0},
   {g:'g-forest',icon:'pen-line',h:'Write down three things that went okay today.',b:'Not great things. Just okay things. Shifts focus from what\'s failing to what\'s holding.',timer:0},
-  {g:'g-sky',icon:'trees',h:'Step outside for 3 minutes. No phone.',b:'Cold air or sunlight interrupts the stress loop. Three minutes is enough.',timer:0},
+  {g:'g-sky',icon:'trees',h:'Step outside for 3 minutes. No phone.',b:'Cold air or sunlight interrupts the stress loop. Three minutes is enough.',timer:3},
   {g:'g-rose',icon:'speech',h:'Name the feeling out loud.',b:'"I\'m frustrated." "I\'m scared." Saying it reduces it. Sounds simple, works fast.',timer:0}
 ];
 const GROUND_CARD_CLASSES=['ground-card-cream','ground-card-sage','ground-card-lavender','ground-card-cream','ground-card-sage','ground-card-lavender'];
@@ -1236,7 +1236,14 @@ function toggleTimer(){
 function resetTimer(){clearInterval(timerInt);timerRunning=false;timerSec=timerMax;updateTimerDisplay();const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>\u25B6</span><span>Start</span>';const ring=document.getElementById('t-ring');if(ring){ring.classList.remove('running');ring.style.strokeDashoffset='0';}}
 function timerDone(){
   const wrap=document.getElementById('timer-main');if(!wrap)return;
-  wrap.innerHTML=`<div class="timer-done" style="text-align:center"><div class="f-td-ico" style="color:var(--brand)">${lucide('sparkles',60,'var(--brand)')}</div><div class="f-td-h">10 minutes. Done.</div><div class="f-td-s">That was just for you. How do you feel?</div><button class="f-btn" onclick="go('schall')">Ready \u2014 show me what's on your mind</button></div>`;
+  const mins=Math.round(timerMax/60);
+  wrap.innerHTML=`<div class="timer-done" style="text-align:center"><div class="f-td-ico" style="color:var(--brand)">${lucide('sparkles',60,'var(--brand)')}</div><div class="f-td-h">${mins} minute${mins===1?'':'s'}. Done.</div><div class="f-td-s">That was just for you. How do you feel?</div><button class="f-btn" onclick="go('schall')">Ready \u2014 show me what's on your mind</button></div>`;
+}
+
+function save3Things(){
+  const vals=[0,1,2].map(i=>(document.getElementById('g3t-'+i)?.value||''));
+  localStorage.setItem('pfp-3things',JSON.stringify(vals));
+  const el=document.getElementById('g3t-saved');if(el){el.style.opacity='1';clearTimeout(window._g3tTO);window._g3tTO=setTimeout(()=>{el.style.opacity='0';},1500);}
 }
 
 // ════ GROUNDING ════
@@ -1276,11 +1283,27 @@ function renderGround(){
     </div>
     </div>`;
     timerSec=g.timer*60;timerMax=g.timer*60;
-  } else {
+  } else if(g.icon==='pen-line'){
+    // Write down 3 things — with persistent input
+    const saved=JSON.parse(localStorage.getItem('pfp-3things')||'["","",""]');
     html+=`<div class="ground-card" style="background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)">
     <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
     <div class="f-h" style="margin-bottom:6px">${g.h}</div>
-    <div class="f-sub" style="margin-bottom:0">${g.b}</div>
+    <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><input id="g3t-0" class="finput" style="margin-bottom:0;flex:1" placeholder="Something small that went okay..." value="${saved[0].replace(/"/g,'&quot;')}" oninput="save3Things()"></div>
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><input id="g3t-1" class="finput" style="margin-bottom:0;flex:1" placeholder="A moment that wasn\\'t bad..." value="${saved[1].replace(/"/g,'&quot;')}" oninput="save3Things()"></div>
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><input id="g3t-2" class="finput" style="margin-bottom:0;flex:1" placeholder="Anything you\\'re grateful for..." value="${saved[2].replace(/"/g,'&quot;')}" oninput="save3Things()"></div>
+    </div>
+    <div id="g3t-saved" style="text-align:center;font-size:12px;color:var(--brand);font-weight:700;margin-top:12px;opacity:0;transition:opacity .3s">Saved \u2713</div>
+    </div>`;
+  } else {
+    // Standard non-timer card — with illustration area for visual height parity
+    html+=`<div class="ground-card" style="background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);min-height:340px;display:flex;flex-direction:column">
+    <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;opacity:.15;font-size:80px;line-height:1">${g.icon==='send'?'\uD83D\uDCAC':g.icon==='droplet'?'\uD83D\uDCA7':g.icon==='speech'?'\uD83D\uDDE3\uFE0F':'\u2728'}</div>
     </div>`;
   }
 
@@ -1290,7 +1313,7 @@ function renderGround(){
       <button onclick="groundNext()" style="min-width:44px;min-height:44px;width:44px;height:44px;background:${groundIdx===GROUNDING.length-1?'#F5F0EB':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${groundIdx===GROUNDING.length-1?'default':'pointer'};font-family:inherit;color:${groundIdx===GROUNDING.length-1?'var(--ink3)':'var(--ink)'};opacity:${groundIdx===GROUNDING.length-1?'.4':'1'}">\u203A</button>
     </div>`;
 
-  html+=`<button class="f-btn-ghost" style="margin-top:8px" onclick="groundNext()">Next tip</button><button class="f-btn" style="margin-top:0" onclick="go('schall')">I'm ready</button>`;
+  html+=`<button class="f-btn" style="margin-top:8px" onclick="go('schall')">I'm ready</button>`;
   scroll.innerHTML=html;
   wrap.appendChild(scroll);
   container.appendChild(wrap);

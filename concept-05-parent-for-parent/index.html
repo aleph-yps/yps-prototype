@@ -766,10 +766,10 @@ const POV={
 const POV_DEFAULT={insight:'Whatever behaviour you\'re seeing, there\'s usually something underneath it. What looks like defiance is often exhaustion.',quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',attr:'Youth, 15yo, F'};
 
 const YOUTH_IMG={
-  '13-14':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%2013-14.png',
-  '15-16':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%2015-16.png',
-  '17-18':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%2017-18.png',
-  'sibling':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%20with%20Sibling.png'
+  '13-14':'Assets/Images/Videos%20screenshot/Youth/youth_13_14.png',
+  '15-16':'Assets/Images/Videos%20screenshot/Youth/youth_15_16.png',
+  '17-18':'Assets/Images/Videos%20screenshot/Youth/youth_17_18.png',
+  'sibling':'Assets/Images/Videos%20screenshot/Youth/youth_sibling.png'
 };
 const YOUTH_VIDEOS={
   1:[
@@ -1075,13 +1075,13 @@ function loadPOV(){
 
     <!-- Youth video stories carousel -->
     <div style="margin-top:28px;margin-bottom:28px">
-      <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Stories from our youth</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">Stories from our youth</div><div style="font-size:12px;font-weight:600;color:var(--ink2);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
       <div id="pov-videos-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${youthVideoHtml}</div>
     </div>
 
     <!-- Youth quotes carousel -->
     <div style="margin-bottom:28px">
-      <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">In their own words</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">In their own words</div><div style="font-size:12px;font-weight:600;color:var(--ink2);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
       <div id="pov-quotes-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${youthStoriesHtml}</div>
     </div>
 

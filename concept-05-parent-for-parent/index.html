@@ -765,24 +765,30 @@ const POV={
 };
 const POV_DEFAULT={insight:'Whatever behaviour you\'re seeing, there\'s usually something underneath it. What looks like defiance is often exhaustion.',quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',attr:'Youth, 15yo, F'};
 
+const YOUTH_IMG={
+  '13-14':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%2013-14.png',
+  '15-16':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%2015-16.png',
+  '17-18':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%2017-18.png',
+  'sibling':'Assets/Images/Videos%20screenshot/Youth/Singaporean%20Youth%20with%20Sibling.png'
+};
 const YOUTH_VIDEOS={
   1:[
-    {n:'Aiden',age:'13',g:'M',c:'"I just want them to stop asking the same questions every day."',bg:'linear-gradient(135deg,#6366F1,#818CF8)'},
-    {n:'Nurul',age:'14',g:'F',c:'"They think I\'m being rude. I\'m just really tired."',bg:'linear-gradient(135deg,#2DD4BF,#14B8A6)'},
-    {n:'Wei Jie',age:'13',g:'M',c:'"I wish they knew how different Sec 1 is from primary school."',bg:'linear-gradient(135deg,#F59E0B,#FBBF24)'},
-    {n:'Priya',age:'14',g:'F',c:'"I don\'t tell them things because they overreact."',bg:'linear-gradient(135deg,#EC4899,#F472B6)'}
+    {n:'Nurul',age:'13',c:'"I just want them to stop asking the same questions every day."',img:YOUTH_IMG['13-14']},
+    {n:'Wei Jie',age:'14',c:'"They think I\'m being rude. I\'m just really tired."',img:YOUTH_IMG['sibling']},
+    {n:'Priya',age:'13',c:'"I wish they knew how different Sec 1 is from primary school."',img:YOUTH_IMG['15-16']},
+    {n:'Aiden',age:'14',c:'"I don\'t tell them things because they overreact."',img:YOUTH_IMG['17-18']}
   ],
   2:[
-    {n:'Ethan',age:'15',g:'M',c:'"They only talk to me when they want something to change."',bg:'linear-gradient(135deg,#6366F1,#818CF8)'},
-    {n:'Siti',age:'14',g:'F',c:'"I trust my friends more. They actually listen."',bg:'linear-gradient(135deg,#2DD4BF,#14B8A6)'},
-    {n:'Jun Kai',age:'15',g:'M',c:'"I\'m not trying to be difficult. I\'m just stressed."',bg:'linear-gradient(135deg,#F59E0B,#FBBF24)'},
-    {n:'Aisyah',age:'15',g:'F',c:'"Every conversation ends the same way. So I stopped starting them."',bg:'linear-gradient(135deg,#EC4899,#F472B6)'}
+    {n:'Siti',age:'15',c:'"They only talk to me when they want something to change."',img:YOUTH_IMG['15-16']},
+    {n:'Ethan',age:'14',c:'"I trust my friends more. They actually listen."',img:YOUTH_IMG['13-14']},
+    {n:'Jun Kai',age:'15',c:'"I\'m not trying to be difficult. I\'m just stressed."',img:YOUTH_IMG['sibling']},
+    {n:'Aisyah',age:'15',c:'"Every conversation ends the same way. So I stopped starting them."',img:YOUTH_IMG['17-18']}
   ],
   3:[
-    {n:'Ryan',age:'17',g:'M',c:'"I don\'t ask for help because they\'ll just say study harder."',bg:'linear-gradient(135deg,#6366F1,#818CF8)'},
-    {n:'Mei Xin',age:'16',g:'F',c:'"I sleep at 3am most nights. There\'s no other way."',bg:'linear-gradient(135deg,#2DD4BF,#14B8A6)'},
-    {n:'Arjun',age:'17',g:'M',c:'"I wish they\'d just sit with me without fixing anything."',bg:'linear-gradient(135deg,#F59E0B,#FBBF24)'},
-    {n:'Chloe',age:'16',g:'F',c:'"They think I\'m fine because I don\'t cry. I\'m not fine."',bg:'linear-gradient(135deg,#EC4899,#F472B6)'}
+    {n:'Arjun',age:'17',c:'"I don\'t ask for help because they\'ll just say study harder."',img:YOUTH_IMG['17-18']},
+    {n:'Mei Xin',age:'16',c:'"I sleep at 3am most nights. There\'s no other way."',img:YOUTH_IMG['15-16']},
+    {n:'Ryan',age:'17',c:'"I wish they\'d just sit with me without fixing anything."',img:YOUTH_IMG['13-14']},
+    {n:'Chloe',age:'16',c:'"They think I\'m fine because I don\'t cry. I\'m not fine."',img:YOUTH_IMG['sibling']}
   ]
 };
 
@@ -1042,9 +1048,9 @@ function loadPOV(){
   const yVideos=YOUTH_VIDEOS[T]||YOUTH_VIDEOS[1];
   const youthVideoHtml=yVideos.map((v,i)=>`
     <div style="flex-shrink:0;width:220px;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);background:white">
-      <div style="height:120px;background:${v.bg};display:flex;align-items:center;justify-content:center;position:relative">
-        <div style="font-size:40px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))">${v.g==='M'?'\uD83D\uDE4D\u200D\u2642\uFE0F':'\uD83D\uDE4D\u200D\u2640\uFE0F'}</div>
-        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px">${lucide('play',10,'white')} 1:${String(20+i*15).padStart(2,'0')}</div>
+      <div style="height:140px;background:#E8E0F8;position:relative;overflow:hidden">
+        <img src="${v.img}" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',10,'white')} 1:${String(20+i*15).padStart(2,'0')}</div>
       </div>
       <div style="padding:14px 16px">
         <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px">${v.n}</div>

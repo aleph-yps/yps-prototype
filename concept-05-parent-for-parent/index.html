@@ -9,7 +9,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --ink:#18181B;--ink2:#52525B;--ink3:#A1A1AA;
-  --line:#E4E4E7;--bg:#FAF9F7;--white:#FFF;
+  --line:#E4E4E7;--bg:#F5F0EB;--white:#FFF;
   --brand:#45BE93;--brand-lt:#CEEFE4;
   --wa-green:#25D366;--wa-hdr:#075E54;--wa-bg:#ECE5DD;--wa-in:#DCF8C6;
   --panel:rgba(8,6,18,.72);
@@ -598,7 +598,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div class="f-h">Things you want to try</div>
     <div class="f-sub" style="margin-bottom:16px">Tick what feels doable. One is enough to start.</div>
     <div id="sk-items"></div>
-    <button class="f-btn" style="margin-top:6px" onclick="go('slater')">Done</button>
+    <button class="f-btn" style="margin-top:6px" onclick="go('s-weekmsg')">Done</button>
     <div class="f-note" style="margin-top:14px">We'll check in next week</div>
     <div style="text-align:center;margin-top:8px">
       <a style="font-size:13px;color:var(--brand);font-weight:700;text-decoration:none;cursor:pointer">See related HPB resources &#8594;</a>
@@ -609,6 +609,24 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <!-- GROUNDING PLAYER -->
 <div class="screen flat" id="s-grounding">
   <div id="gp-container" style="flex:1;position:relative;overflow:hidden"></div>
+</div>
+
+<!-- WEEK TRANSITION -->
+<div class="screen" id="s-weekmsg" style="background:#F5F0EB">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:60px 32px;text-align:center">
+    <div style="font-size:56px;margin-bottom:24px;opacity:.8">&#128140;</div>
+    <div style="font-size:24px;font-weight:800;color:var(--ink);margin-bottom:12px;line-height:1.3">You're doing something<br>most parents don't.</div>
+    <div style="font-size:15px;color:var(--ink2);line-height:1.65;margin-bottom:8px;max-width:280px">We'll check in with you in one week. Just a short message from Parent for Parent — no pressure, no catch-up.</div>
+    <div style="font-size:13px;color:var(--ink3);line-height:1.5;margin-bottom:32px;max-width:260px">If life gets busy, you can always pause. We'll be here when you're ready.</div>
+    <div style="display:flex;align-items:center;gap:10px;background:white;border-radius:16px;padding:16px 20px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:32px;max-width:300px;width:100%">
+      <div style="width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div>
+      <div style="flex:1;text-align:left">
+        <div style="font-size:12px;font-weight:700;color:var(--ink)">Parent for Parent</div>
+        <div style="font-size:11px;color:var(--ink3)">Will message you in 7 days</div>
+      </div>
+    </div>
+    <button class="f-btn" style="max-width:300px" onclick="go('slater')">See what happens next</button>
+  </div>
 </div>
 
 <!-- WEEK LATER -->

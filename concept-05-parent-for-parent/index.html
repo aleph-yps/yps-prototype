@@ -541,9 +541,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
   <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('s-selfcheck')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div id="ct-ch" style="display:none"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-ch"></div></div></div>
   <div class="chw">
-    <div class="f-h" style="margin-bottom:6px;font-size:24px;text-align:left">What's on your mind?</div>
-    <div class="proof-bar"><span id="proof-txt"></span></div>
+    <div class="f-h" style="margin-bottom:16px;font-size:24px;text-align:left">What's on your mind?</div>
     <div class="chlist" id="chlist"></div>
+    <div class="proof-bar" style="justify-content:center;margin-top:16px;padding:0"><span id="proof-txt"></span></div>
   </div>
 </div>
 
@@ -741,12 +741,12 @@ const CHALLENGES={1:[
 const POV={
   // ── T1: Sec 1 ──
   '1-0':{insight:'After a full day of new school and new pressures, the phone is the one thing that feels familiar and fully theirs. It\'s how they decompress.',quote:'"I know it\'s a bad habit. But if I can\'t sleep I just get fed up and use my phone. I feel like it makes me tired eventually."',attr:'Youth, 13yo, M'},
-  '1-1':{insight:'Screen time at this age isn\'t just entertainment \u2014 it\'s their social lifeline. Group chats, reels, and games are how they stay connected after school.',quote:'"If I don\'t reply the group chat fast enough, I\'m out of the loop the next day. It\'s not just scrolling."',attr:'Youth, 13yo, F'},
+  '1-1':{insight:'Sleep shifts in Sec 1 because the body clock is changing and the phone keeps them stimulated past the point of tiredness.',quote:'"I set my alarm for 6 but I only fell asleep at 1. I was just watching videos and couldn\'t stop."',attr:'Youth, 14yo, M'},
   '1-2':{insight:'Coming home and going quiet is often the first moment of the day they\'ve had to just be, without being watched or evaluated.',quote:'"Every time my mom talks to me it\'s \u201Cdid you eat\u201D, \u201Cgo sleep\u201D, \u201Cstop your phone.\u201D I just tune it out now."',attr:'Youth, 14yo, F'},
   '1-3':{insight:'CCA just started, the schedule is packed, and free time has shrunk. Exercise feels like another obligation, not a release.',quote:'"After school I have CCA, then tuition, then homework. By the time I\'m done it\'s 10pm. I just want to lie down."',attr:'Youth, 13yo, M'},
   '1-4':{insight:'Eating patterns shift in Sec 1 because mealtimes no longer line up with their new routine. Canteen food replaces home meals. Snacking fills gaps.',quote:'"I don\'t eat dinner sometimes because I already ate cup noodles before tuition. My mum gets upset but I\'m just not hungry."',attr:'Youth, 13yo, F'},
   '1-5':{insight:'The transition to secondary school means new faces, new social rules, and a fear of not fitting in that most parents never hear about.',quote:'"In primary school I had the same friends for six years. Now I don\'t know anyone. I just sit with whoever\'s there."',attr:'Youth, 13yo, M'},
-  '1-6':{insight:'Sleep shifts in Sec 1 because the body clock is changing and the phone keeps them stimulated past the point of tiredness.',quote:'"I set my alarm for 6 but I only fell asleep at 1. I was just watching videos and couldn\'t stop."',attr:'Youth, 14yo, M'},
+  '1-6':{insight:'Screen time at this age isn\'t just entertainment \u2014 it\'s their social lifeline. Group chats, reels, and games are how they stay connected after school.',quote:'"If I don\'t reply the group chat fast enough, I\'m out of the loop the next day. It\'s not just scrolling."',attr:'Youth, 13yo, F'},
   // ── T2: Sec 2\u20133 ──
   '2-0':{insight:'When conversations always end in a fight, youth learn to skip the conversation. They\'re not dismissing you \u2014 they\'re anticipating the script.',quote:'"I trust my friends\' opinions more. They understand what I\'m going through. My parents\u2026 they just don\'t get it."',attr:'Youth, 15yo, M'},
   '2-1':{insight:'By Sec 2, screen time is deeply woven into identity. Their feed, their games, their chats \u2014 it\'s where they feel most themselves.',quote:'"My parents say I\'m addicted to my phone. But when I talk to them it\'s always about marks or behaviour. At least my phone doesn\'t judge me."',attr:'Youth, 14yo, F'},
@@ -757,9 +757,9 @@ const POV={
   '2-6':{insight:'At this stage, they want to be seen as capable. Asking for help feels like going backwards.',quote:'"I don\'t tell my parents when I\'m stressed because then they worry and it makes things worse."',attr:'Youth, 15yo, F'},
   // ── T3: JC/Poly ──
   '3-0':{insight:'Youth at this stage are holding more than they show. Academic pressure, anxiety, worry about the future \u2014 most of it invisible to parents.',quote:'"Sec 3 was the worst year. Homework, tuition, CCA, then study for streaming. There\'s no time for anything else."',attr:'Youth, 16yo, M'},
-  '3-1':{insight:'At JC/Poly level, the phone is the one thing they control completely. Taking it away isn\'t an option \u2014 they need a reason to put it down themselves.',quote:'"I know I\'m on my phone too much. But everything is there \u2014 notes, group projects, friends. You can\'t just take it away."',attr:'Youth, 17yo, F'},
-  '3-2':{insight:'They don\'t come to you because they think they shouldn\'t need to. Independence feels like a requirement, not a choice.',quote:'"I don\'t ask my parents for advice anymore. They\'ll just say \u2018study harder\u2019 or \u2018don\'t stress.\u2019 That doesn\'t help."',attr:'Youth, 17yo, M'},
-  '3-3':{insight:'Sleep is the first thing sacrificed and the last thing prioritised. They know it matters but can\'t see how to fix it within the constraints they have.',quote:'"I sleep at 3am most nights. I know it\'s bad. But between mugging and assignments, when am I supposed to sleep?"',attr:'Youth, 16yo, F'},
+  '3-1':{insight:'They don\'t come to you because they think they shouldn\'t need to. Independence feels like a requirement, not a choice.',quote:'"I don\'t ask my parents for advice anymore. They\'ll just say \u2018study harder\u2019 or \u2018don\'t stress.\u2019 That doesn\'t help."',attr:'Youth, 17yo, M'},
+  '3-2':{insight:'Sleep is the first thing sacrificed and the last thing prioritised. They know it matters but can\'t see how to fix it within the constraints they have.',quote:'"I sleep at 3am most nights. I know it\'s bad. But between mugging and assignments, when am I supposed to sleep?"',attr:'Youth, 16yo, F'},
+  '3-3':{insight:'At JC/Poly level, the phone is the one thing they control completely. Taking it away isn\'t an option \u2014 they need a reason to put it down themselves.',quote:'"I know I\'m on my phone too much. But everything is there \u2014 notes, group projects, friends. You can\'t just take it away."',attr:'Youth, 17yo, F'},
   '3-4':{insight:'Exercise has disappeared entirely. It\'s not that they don\'t want to \u2014 it\'s that everything else feels more urgent.',quote:'"I keep telling myself I\'ll start running again after exams. But there\'s always another exam."',attr:'Youth, 17yo, M'},
   '3-5':{insight:'Eating at this stage is purely reactive. Whatever is fast, whatever is close. Nutrition isn\'t even on the radar.',quote:'"I eat prata at 11pm because that\'s when I take a break from studying. I know it\'s not healthy but I\'m just hungry."',attr:'Youth, 16yo, F'}
 };

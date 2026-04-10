@@ -982,11 +982,12 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
     <!-- Post-battle message (hidden initially) -->
     <div id="bossPopupResult" style="display:none;text-align:center;width:100%;margin-top:16px;">
-      <div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
-        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--coral);margin-bottom:4px;">You need your ally!</div>
-        <div style="font-size:12px;color:var(--text-dim);">This boss requires co-op power.</div>
+      <div id="bossResultAlly" style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--coral);margin-bottom:4px;">Invite an ally for bonus rewards!</div>
+        <div style="font-size:12px;color:var(--text-dim);">You can still fight solo — or bring an ally for extra power.</div>
       </div>
       <button class="btn btn-coral" onclick="goTo(SCR.TRANSITION)" style="width:100%;">📩 Send notification to ally</button>
+      <button class="btn btn-primary" onclick="closeBossPopupAndFightSolo()" style="width:100%;margin-top:8px;">⚔️ Fight Solo</button>
     </div>
   </div>
 </div>
@@ -1842,7 +1843,7 @@ function startBossFailAnimation(){
     {t:'\u26a1 <b>'+c.name+'</b> attacks!',delay:600,shake:false},
     {t:'\ud83d\udca5 '+curBossName+' takes <b>10 damage!</b>',delay:1200,shake:true},
     {t:'\ud83d\udee1\ufe0f '+curBossName+' blocks! <b>Too strong!</b>',delay:2000,shake:true,color:'var(--coral)'},
-    {t:'\u274c <b>This boss is too powerful to face alone!</b>',delay:2800,shake:false,color:'var(--coral)'},
+    {t:'💪 <b>You can do this solo — or call an ally for bonus rewards!</b>',delay:2800,shake:false,color:'var(--gold)'},
   ];
   lines.forEach(function(l,i){
     var tid=setTimeout(function(){
@@ -1882,9 +1883,9 @@ function skipBossBattle(){
       '\u26a1 <b>'+c.name+'</b> attacks!',
       '\ud83d\udca5 Snack Gremlin takes <b>10 damage!</b>',
       '\ud83d\udee1\ufe0f Snack Gremlin blocks! <b>Too strong!</b>',
-      '\u274c <b>This boss is too powerful to face alone!</b>'
+      '💪 <b>You can do this solo — or call an ally for bonus rewards!</b>'
     ];
-    var colors=['#9CA3AF','#9CA3AF','var(--coral)','var(--coral)'];
+    var colors=['#9CA3AF','#9CA3AF','var(--coral)','var(--gold)'];
     texts.forEach(function(t,i){
       var p=document.createElement('p');
       p.style.cssText='font-size:13px;color:'+colors[i]+';padding:5px 0;';
@@ -1893,6 +1894,17 @@ function skipBossBattle(){
     });
   }
   showBossPopupResult();
+}
+
+// === SOLO BOSS FIGHT ===
+function closeBossPopupAndFightSolo(){
+  var popup=document.getElementById('bossBattlePopup');
+  if(popup)popup.style.display='none';
+  bossPopupTimers.forEach(function(t){clearTimeout(t);});
+  bossPopupTimers=[];
+  // Go directly to boss victory with reduced rewards (solo)
+  setupBossVictory();
+  goTo(SCR.BOSS_VICTORY);
 }
 
 // === GEM ACTIVATE ===

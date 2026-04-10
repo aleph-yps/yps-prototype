@@ -809,7 +809,7 @@ const CONTENT={
     empathy:'Most youth at this stage are holding more than they show. Being available without pushing is the skill that keeps the door open.',
     tips:[{g:'g-forest',icon:'door-open',tonight:true,h:'Say it plainly: "I\'m here if you want to."',b:'Sounds like giving up. It isn\'t. It\'s the clearest signal the relationship is safe.',why:'You\'re becoming someone they choose. That\'s the full version of the change.'},{g:'g-ocean',icon:'handshake',tonight:false,h:'Stop solving. Start witnessing.',b:'"That sounds really hard" is a complete response. Sitting with them without fixing is what most parents underestimate.',why:'When you stop fixing, they stop withholding. That\'s the trade at this stage.'},{g:'g-night',icon:'smartphone',tonight:false,h:'Make contact without a reason.',b:'A voice note, a meme, lunch with no agenda. Low-stakes contact keeps the channel warm.',why:'This is how you stay close without adding to their pressure.'}]}
 };
-const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my limit too. This is what helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{n:'Calvin',r:'Dad of 14yo',c:'"One small thing changed the whole tone at home."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Bhavani',r:'Mum of 13yo',c:'"I stopped trying to fix it. That\'s when things shifted."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'}],
+const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my limit too. This is what helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{n:'Calvin',r:'Dad of 14yo',c:'"One small thing changed the whole tone at home."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Bhavani',r:'Mum of 13yo',c:'"I stopped trying to fix it. That\'s when things shifted."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{n:'Ryan',r:'Dad of 14yo',c:'"I learned to read the room before I opened my mouth."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
   empathy:'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.',
   tips:[{g:'g-coral',icon:'lightbulb',tonight:true,h:'Try one thing you haven\'t tried before.',b:'Put your own phone down first. Ask one question and stop there. Small shifts change the tone.',why:'Willingness to try something different is the beginning of the change.'},{g:'g-forest',icon:'eye',tonight:false,h:'Name what you see, not what you want changed.',b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open.'},{g:'g-violet',icon:'calendar',tonight:false,h:'Once a week is enough to start.',b:'One good moment a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust.'}]};
 
@@ -1118,14 +1118,14 @@ function renderReel(){
   bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">\u2039</button><div class="app-title">Parent for Parent</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
-  const scroll=document.createElement('div');scroll.className='flat-scroll';scroll.style.cssText='padding:20px 22px 44px';
+  const scroll=document.createElement('div');scroll.className='flat-scroll';scroll.style.cssText='padding:20px 22px 44px;background:white';
   const key=`${T}-${I}`;const c=CONTENT[key]||DEFAULT;
 
-  // Build tips cards — each is a full-width Apple Store-style card
+  // Build tips cards
   const tipsCardsHtml=c.tips.map((tip,ti)=>{
     const actions=MICRO_ACTIONS[tip.h]||[];
     const hasActions=actions.length>0;
-    return `<div onclick="openTipDetail(${ti})" style="background:white;border-radius:20px;padding:22px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);cursor:pointer;transition:all .12s" onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
+    return `<div onclick="openTipDetail(${ti})" style="background:var(--bg);border-radius:20px;padding:22px;margin-bottom:12px;border:1px solid var(--line);cursor:pointer;transition:all .12s" onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
       <div style="display:flex;align-items:flex-start;gap:14px">
         <div style="width:40px;height:40px;border-radius:12px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0">${lucide(tip.icon||'lightbulb',18,'var(--brand)')}</div>
         <div style="flex:1;min-width:0">
@@ -1137,47 +1137,60 @@ function renderReel(){
     </div>`;
   }).join('');
 
-  // Main video card with image
+  // Build parent video carousel cards — consistent with youth screen
+  const parentCardsHtml=videoData.map((vid,i)=>{
+    const img=PARENT_IMG[vid.n]||'Assets/Images/Videos screenshot/ig_video_parent_1.png';
+    return `<div style="flex-shrink:0;width:220px;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);background:white">
+      <div style="height:140px;position:relative;overflow:hidden">
+        <img src="${img}" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',10,'white')} 1:${String(2+i*18).padStart(2,'0')}</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px">${vid.n}</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${vid.r}</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.5;font-style:italic">${vid.c}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Empathy line
+  const empathyLine=c.empathy||'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.';
+
   scroll.innerHTML=`
-    <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Parent ${videoIdx+1} of ${videoData.length}</div>
+    <div class="f-eyebrow" style="color:var(--ink3);text-align:left">Tips from other parents</div>
+    <div class="f-h" style="margin-bottom:16px;text-align:left">What other parents tried</div>
 
-    <!-- Hero video card — Apple Store style -->
-    <div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);border:1px solid var(--line);margin-bottom:16px">
-      <div style="position:relative;width:100%;height:240px;overflow:hidden">
-        <img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.5)">
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.2);cursor:pointer"><div style="width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent var(--ink);margin-left:3px"></div></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.6));padding:20px 18px 16px">
-          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);color:white;font-size:11px;font-weight:700;padding:4px 10px;border-radius:16px;margin-bottom:8px">${lucide('video',12,'white')} 1:02</div>
-          <div style="font-size:20px;font-weight:900;color:white;margin-bottom:2px">${v.n}</div>
-          <div style="font-size:13px;color:rgba(255,255,255,.8);font-weight:600">${v.r}</div>
+    <!-- Empathy card -->
+    <div style="background:linear-gradient(165deg,#CEEFE4,#DBEAFE);border-radius:20px;padding:24px 22px;margin-bottom:28px">
+      <div style="background:white;border-radius:16px;padding:20px 18px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center">${lucide('heart',16,'var(--brand)')}</div>
+          <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">You\'re not alone in this</div>
         </div>
-      </div>
-      <div style="padding:18px 20px 20px">
-        <div style="font-size:16px;color:var(--ink);line-height:1.65;font-style:italic">${v.c}</div>
-        <div class="f-reel-bar" style="margin-top:14px"><div class="f-reel-prog" id="rprog" style="animation:progressBar 8s linear forwards"></div></div>
+        <div style="font-size:15px;color:var(--ink);line-height:1.7">${empathyLine}</div>
       </div>
     </div>
 
-    <!-- Navigation -->
-    <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px">
-      <button onclick="reelPrev()" style="min-width:44px;min-height:44px;width:44px;height:44px;background:${videoIdx===0?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===0?'default':'pointer'};font-family:inherit;color:${videoIdx===0?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===0?'.4':'1'}">\u2039</button>
-      <div class="f-dots" style="margin:0">${videoData.map((_,j)=>`<div class="fdot${j===videoIdx?' on':''}"></div>`).join('')}</div>
-      <button onclick="reelNext()" style="min-width:44px;min-height:44px;width:44px;height:44px;background:${videoIdx===videoData.length-1?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:${videoIdx===videoData.length-1?'default':'pointer'};font-family:inherit;color:${videoIdx===videoData.length-1?'var(--ink3)':'var(--ink)'};opacity:${videoIdx===videoData.length-1?'.4':'1'}">\u203A</button>
+    <!-- Parent video stories carousel -->
+    <div style="margin-bottom:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">Stories from our parents</div><div style="font-size:12px;font-weight:600;color:var(--ink2);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
+      <div id="parent-videos-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${parentCardsHtml}</div>
     </div>
 
-    <!-- What they tried — full-width tip cards -->
-    <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What they tried</div>
-    ${tipsCardsHtml}
+    <!-- What they tried — tip cards -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">What they tried</div>
+      ${tipsCardsHtml}
+    </div>
 
     <button class="f-btn" style="margin-top:8px" onclick="go('s-shifts')">See your starter kit</button>`;
   wrap.appendChild(scroll);
 
-  // Hide scrollbar on carousel
-  const style=document.createElement('style');style.textContent='.tips-carousel::-webkit-scrollbar{display:none}';wrap.appendChild(style);
-  setTimeout(()=>initDragScroll(document.getElementById('tips-carousel-scroll')),50);
+  // Hide scrollbar + drag scroll
+  const style=document.createElement('style');style.textContent='#parent-videos-scroll::-webkit-scrollbar{display:none}';wrap.appendChild(style);
+  setTimeout(()=>initDragScroll(document.getElementById('parent-videos-scroll')),50);
 
   container.appendChild(wrap);
-  initReelTouch(container);
 }
 function reelNext(){if(videoIdx<videoData.length-1){videoIdx++;renderReel();}}
 function reelPrev(){if(videoIdx>0){videoIdx--;renderReel();}}

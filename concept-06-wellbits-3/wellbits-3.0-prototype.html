@@ -2171,19 +2171,40 @@ function updateFreezeDisplay() {
 }
 
 function showFreezeCardMenu() {
-  if (freezeCards <= 0) return;
   if (document.getElementById('freezeCardPopup')) return;
-  var isGoingSolo = !allyType; // true if no ally set
+  var isGoingSolo = !allyType;
   var popup = document.createElement('div');
   popup.id = 'freezeCardPopup';
-  popup.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,18,40,.96);border:1px solid rgba(51,154,240,.3);border-radius:16px;padding:24px;z-index:100;width:290px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);';
-  var allyBtn = isGoingSolo ? '' : '<button onclick="useFreezeOnAlly()" style="width:100%;padding:12px;border-radius:8px;border:none;background:var(--violet);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;margin-top:8px;">🛡️ Use on Ally</button>';
-  popup.innerHTML = '<div style="font-size:36px;margin-bottom:8px;">🧊</div>'
-    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#F1F3F5;margin-bottom:6px;">Use Freeze Card</div>'
-    + '<div style="font-size:12px;color:#9CA3AF;line-height:1.5;margin-bottom:16px;">Skip a day without breaking your streak. You have <b style="color:var(--blue);">' + freezeCards + '</b> remaining.</div>'
-    + '<button onclick="useFreezeOnSelf()" style="width:100%;padding:12px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">🧊 Use on Myself</button>'
-    + allyBtn
-    + '<button onclick="document.getElementById(\'freezeCardPopup\').remove()" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:#9CA3AF;font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-top:8px;">Cancel</button>';
+  popup.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,18,40,.96);border:1px solid rgba(51,154,240,.3);border-radius:16px;padding:24px;z-index:100;width:300px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);';
+
+  // Info section (always shown)
+  var info = '<div style="font-size:40px;margin-bottom:10px;">🧊</div>'
+    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:18px;font-weight:800;color:#F1F3F5;margin-bottom:8px;">Freeze Cards</div>'
+    + '<div style="font-size:12px;color:#9CA3AF;line-height:1.6;margin-bottom:12px;text-align:left;">'
+    + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">❄️</span><span><b style="color:#F1F3F5;">Skip a day</b> without breaking your streak. Life happens — freeze cards keep you on track.</span></div>'
+    + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">🎁</span><span><b style="color:#F1F3F5;">Earn 1 every 3 days</b> — automatically awarded on Days 3, 6, and 9.</span></div>'
+    + (isGoingSolo ? '' : '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">🛡️</span><span><b style="color:#F1F3F5;">Shield your ally</b> — use a card on your ally to freeze their day too.</span></div>')
+    + '</div>';
+
+  // Card count
+  var countSection = '<div style="background:rgba(51,154,240,.08);border:1px solid rgba(51,154,240,.15);border-radius:12px;padding:12px;margin-bottom:16px;">'
+    + '<div style="font-family:Space Grotesk,monospace;font-size:28px;font-weight:800;color:var(--blue);">' + freezeCards + '</div>'
+    + '<div style="font-size:10px;color:#9CA3AF;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">cards available</div>'
+    + '</div>';
+
+  // Action buttons (only if cards available)
+  var actions = '';
+  if (freezeCards > 0) {
+    actions = '<button onclick="useFreezeOnSelf()" style="width:100%;padding:12px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;">🧊 Use on Myself</button>';
+    if (!isGoingSolo) {
+      actions += '<button onclick="useFreezeOnAlly()" style="width:100%;padding:12px;border-radius:10px;border:none;background:var(--violet);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;">🛡️ Use on Ally</button>';
+    }
+  } else {
+    actions = '<div style="padding:10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.1);color:#6B7280;font-size:12px;font-weight:600;">No cards yet — earn your first on Day 3</div>';
+  }
+
+  popup.innerHTML = info + countSection + actions
+    + '<button onclick="document.getElementById(\'freezeCardPopup\').remove()" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:none;color:#9CA3AF;font-size:12px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-top:10px;">Close</button>';
   document.body.appendChild(popup);
 }
 

@@ -510,7 +510,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- PROFILE -->
 <div class="screen" id="s-profile">
-  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Your family</div></div>
+  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div class="pscroll">
     <div class="phd">Tell us about your youth</div>
     <div class="psd">Optional — skip any time.</div>
@@ -591,7 +591,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- STARTER KIT -->
 <div class="screen flat" id="s-shifts">
-  <div class="app-bar"><button class="app-back" onclick="go('svideo')">&#8249;</button><div class="app-title">Your starter kit</div></div>
+  <div class="app-bar"><button class="app-back" onclick="go('svideo')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div class="flat-scroll">
     <div class="f-pill"><div class="f-pill-dot"></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg> Starter Kit</div>
     <div class="f-h">Things you want to try</div>
@@ -626,7 +626,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- CHECK-IN -->
 <div class="screen flat" id="swaci" style="background:var(--bg)">
-  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">&#8249;</button><div class="app-title">Check-in</div></div>
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div class="flat-scroll" id="ci-scroll" style="display:flex;flex-direction:column;gap:8px">
     <div style="text-align:center;margin-bottom:12px">
       <div style="font-size:11px;color:var(--ink3);font-weight:600">Sunday, 30 March</div>
@@ -1061,7 +1061,7 @@ function renderReel(){
   const bar=document.createElement('div');bar.className='app-bar sticky-nav';
   bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative';
   const kitHasItems=kitItems.length>0;
-  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">\u2039</button><div class="app-title">Stories from other parents</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
+  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">\u2039</button><div class="app-title">Parent for Parent</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll';scroll.style.cssText='padding:20px 22px 44px';
@@ -1164,7 +1164,7 @@ function renderTip(){
   const bar=document.createElement('div');bar.className='app-bar sticky-nav';
   bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative';
   const kitHasItems=kitItems.length>0;
-  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">\u2039</button><div class="app-title">Tips</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
+  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">\u2039</button><div class="app-title">Parent for Parent</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll';
@@ -1293,7 +1293,7 @@ function renderGround(){
   const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:#F5F0EB';
 
   const bar=document.createElement('div');bar.className='app-bar';bar.style.background='#F5F0EB';
-  bar.innerHTML=`<button class="app-back" onclick="${groundIdx===0?"go('s-selfcheck')":"groundPrev()"}">\u2039</button><div class="app-title">Just for you</div>`;
+  bar.innerHTML=`<button class="app-back" onclick="${groundIdx===0?"go('s-selfcheck')":"groundPrev()"}">\u2039</button><div class="app-title">Parent for Parent</div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll f-timer';scroll.style.background='#F5F0EB';

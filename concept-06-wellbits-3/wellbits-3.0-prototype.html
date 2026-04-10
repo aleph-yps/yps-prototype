@@ -382,8 +382,8 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="screen quiz-bg hidden" id="screenQuiz1">
   <div class="back-btn" onclick="goTo(SCR.WELCOME)">←</div>
   <div class="content" style="justify-content:center;">
-    <div class="quiz-progress"><div class="qbar cur"></div><div class="qbar"></div><div class="qbar"></div></div>
-    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 1 OF 3</div>
+    <div class="quiz-progress"><div class="qbar cur"></div><div class="qbar"></div><div class="qbar"></div><div class="qbar"></div><div class="qbar"></div></div>
+    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 1 OF 5</div>
     <div class="quiz-q">What's your sleep like?</div>
     <div class="quiz-sub">Pick the one that sounds most like you</div>
     <div class="quiz-opt" onclick="selectQuizOpt(this,0,'sleep_good')"><div class="qicon">😴</div><div class="qlabel">I sleep well most nights</div></div>
@@ -398,8 +398,8 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="screen quiz-bg hidden" id="screenQuiz2">
   <div class="back-btn" onclick="goTo(SCR.QUIZ1)">←</div>
   <div class="content" style="justify-content:center;">
-    <div class="quiz-progress"><div class="qbar done"></div><div class="qbar cur"></div><div class="qbar"></div></div>
-    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 2 OF 3</div>
+    <div class="quiz-progress"><div class="qbar done"></div><div class="qbar cur"></div><div class="qbar"></div><div class="qbar"></div><div class="qbar"></div></div>
+    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 2 OF 5</div>
     <div class="quiz-q">How's your eating?</div>
     <div class="quiz-sub">No wrong answers — just be real</div>
     <div class="quiz-opt" onclick="selectQuizOpt(this,1,'eat_good')"><div class="qicon">🥗</div><div class="qlabel">I eat pretty balanced meals</div></div>
@@ -414,19 +414,51 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="screen quiz-bg hidden" id="screenQuiz3">
   <div class="back-btn" onclick="goTo(SCR.QUIZ2)">←</div>
   <div class="content" style="justify-content:center;">
-    <div class="quiz-progress"><div class="qbar done"></div><div class="qbar done"></div><div class="qbar cur"></div></div>
-    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 3 OF 3</div>
+    <div class="quiz-progress"><div class="qbar done"></div><div class="qbar done"></div><div class="qbar cur"></div><div class="qbar"></div><div class="qbar"></div></div>
+    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 3 OF 5</div>
     <div class="quiz-q">How active are you?</div>
     <div class="quiz-sub">Be honest — your character depends on it</div>
     <div class="quiz-opt" onclick="selectQuizOpt(this,2,'move_good')"><div class="qicon">🏃</div><div class="qlabel">I move or exercise regularly</div></div>
     <div class="quiz-opt" onclick="selectQuizOpt(this,2,'move_ok')"><div class="qicon">🚶</div><div class="qlabel">I walk around but nothing serious</div></div>
     <div class="quiz-opt" onclick="selectQuizOpt(this,2,'move_bad')"><div class="qicon">🛋️</div><div class="qlabel">I'm mostly sitting or lying down</div></div>
     <div class="quiz-opt" onclick="selectQuizOpt(this,2,'move_worst')"><div class="qicon">🎮</div><div class="qlabel">My thumbs get the most exercise</div></div>
-    <button class="btn btn-primary" id="quiz3Next" onclick="assignCharFromQuiz()" style="opacity:.3;pointer-events:none;">See My Character</button>
+    <button class="btn btn-primary" id="quiz3Next" onclick="goTo(SCR.QUIZ4)" style="opacity:.3;pointer-events:none;">Next</button>
   </div>
 </div>
 
-<!-- S5: CHARACTER ASSIGNMENT -->
+<!-- S5: QUIZ 4 - Mind -->
+<div class="screen quiz-bg hidden" id="screenQuiz4">
+  <div class="back-btn" onclick="goTo(SCR.QUIZ3)">←</div>
+  <div class="content" style="justify-content:center;">
+    <div class="quiz-progress"><div class="qbar done"></div><div class="qbar done"></div><div class="qbar done"></div><div class="qbar cur"></div><div class="qbar"></div></div>
+    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 4 OF 5</div>
+    <div class="quiz-q">How's your headspace?</div>
+    <div class="quiz-sub">Screen time, stress, social life</div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,3,'mind_good')"><div class="qicon">🧘</div><div class="qlabel">I manage stress pretty well</div></div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,3,'mind_ok')"><div class="qicon">😤</div><div class="qlabel">I get stressed but push through</div></div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,3,'mind_bad')"><div class="qicon">📱</div><div class="qlabel">I'm on my phone way too much</div></div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,3,'mind_worst')"><div class="qicon">😶‍🌫️</div><div class="qlabel">I feel burnt out most of the time</div></div>
+    <button class="btn btn-primary" id="quiz4Next" onclick="goTo(SCR.QUIZ5)" style="opacity:.3;pointer-events:none;">Next</button>
+  </div>
+</div>
+
+<!-- S6: QUIZ 5 - Skin -->
+<div class="screen quiz-bg hidden" id="screenQuiz5">
+  <div class="back-btn" onclick="goTo(SCR.QUIZ4)">←</div>
+  <div class="content" style="justify-content:center;">
+    <div class="quiz-progress"><div class="qbar done"></div><div class="qbar done"></div><div class="qbar done"></div><div class="qbar done"></div><div class="qbar cur"></div></div>
+    <div style="font-size:11px;color:var(--violet);font-weight:600;text-align:center;margin-bottom:4px;">STEP 5 OF 5</div>
+    <div class="quiz-q">How do you feel about your skin & self-care?</div>
+    <div class="quiz-sub">Hydration, sunscreen, routines</div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,4,'skin_good')"><div class="qicon">✨</div><div class="qlabel">I have a routine and my skin's okay</div></div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,4,'skin_ok')"><div class="qicon">🧴</div><div class="qlabel">I try sometimes but not consistent</div></div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,4,'skin_bad')"><div class="qicon">😩</div><div class="qlabel">Breakouts and I don't know why</div></div>
+    <div class="quiz-opt" onclick="selectQuizOpt(this,4,'skin_worst')"><div class="qicon">🪞</div><div class="qlabel">I don't really take care of my skin</div></div>
+    <button class="btn btn-primary" id="quiz5Next" onclick="assignCharFromQuiz()" style="opacity:.3;pointer-events:none;">See My Character</button>
+  </div>
+</div>
+
+<!-- S7: CHARACTER ASSIGNMENT -->
 <div class="screen game-bg hidden" id="screenCharAssign">
   <div class="content" style="justify-content:center;align-items:center;text-align:center;">
     <div style="font-size:11px;color:var(--violet);font-weight:600;margin-bottom:12px;letter-spacing:.08em;">YOUR WELLBIT IS...</div>
@@ -496,9 +528,6 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     </div>
     <div onclick="setAllyType('link');goTo(SCR.INVITE_LINK)" style="background:var(--bg-card);border:1.5px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:18px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;">
       <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;">Invite Others</div><div style="font-size:11px;color:var(--text-dim);">Share a link with anyone.</div></div>
-    </div>
-    <div style="text-align:center;margin-top:12px;">
-      <span style="font-size:13px;color:var(--text-dim);cursor:pointer;text-decoration:underline;font-weight:500;" onclick="goTo(SCR.TEAM_READY)">Skip for now</span>
     </div>
     <div style="text-align:center;margin-top:12px;">
       <div class="btn btn-ghost" onclick="goTo(SCR.QUEST_MAP)" style="gap:8px;">🚀 Go Solo — I'll do this myself</div>
@@ -621,18 +650,15 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div class="mh"><h2>Quest Map</h2></div>
     <!-- Freeze card + companion bar -->
     <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:12px;">
-      <div style="background:var(--bg-card);border:1px solid rgba(51,154,240,.2);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--blue);">🧊 <span id="freezeCardCount">0</span> Freeze Cards</div>
-      <div style="background:var(--bg-card);border:1px solid rgba(132,94,247,.2);border-radius:20px;padding:4px 12px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--violet);">🛡️ 1 Ally Shield</div>
+      <div onclick="showFreezeCardMenu()" style="background:var(--bg-card);border:1px solid rgba(51,154,240,.2);border-radius:20px;padding:6px 16px;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);cursor:pointer;transition:all .2s;">🧊 <span id="freezeCardCount">0</span> Freeze Cards</div>
     </div>
-    <!-- Character companion -->
-    <div style="display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:12px;">
-      <div style="width:44px;height:44px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.15),transparent 70%);display:flex;align-items:center;justify-content:center;">
-        <img id="mapCompanionImg" src="Assets/Characters/AURA.png" style="width:36px;height:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));transition:filter .5s;">
+    <!-- Character companion (large) -->
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:16px;padding:16px 0;">
+      <div style="width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.18) 0%,rgba(132,94,247,.05) 50%,transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:8px;">
+        <img id="mapCompanionImg" src="Assets/Characters/AURA.png" style="width:160px;height:auto;filter:drop-shadow(0 8px 24px rgba(132,94,247,.3));transition:filter .5s;animation:float 4s ease-in-out infinite;">
       </div>
-      <div>
-        <div style="font-size:11px;font-weight:700;color:var(--text);" id="mapCompanionName">Aura</div>
-        <div style="font-size:9px;color:var(--violet);font-weight:600;" id="mapCompanionStage">Teen</div>
-      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text);" id="mapCompanionName">Aura</div>
+      <div style="font-size:11px;color:var(--violet);font-weight:700;letter-spacing:.04em;" id="mapCompanionStage">Teen</div>
     </div>
     <div id="questMapNodes"></div>
   </div>
@@ -1300,15 +1326,15 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 // === SCREEN CONSTANTS ===
 const SCR = {
   LANDING: 0, WELCOME: 1,
-  QUIZ1: 2, QUIZ2: 3, QUIZ3: 4, CHAR_ASSIGN: 5,
-  EVOLVE: 6, INVITE: 7, INVITE_LINK: 8,
-  PARENT_VIEW: 9, FRIEND_VIEW: 10, TEAM_READY: 11,
-  QUEST_MAP: 12, DAILY_CHALLENGE: 13, DAY_PREVIEW: 14,
-  CHALLENGE_COMPLETE: 15, PROFILE: 16, LEADERBOARD: 17,
-  BOSS_ENCOUNTER: 18, TRANSITION: 19, PARENT_ALERT: 20,
-  COOP_BATTLE: 21, BOSS_VICTORY: 22, BACKPACK: 23,
-  GACHA_ENTRY: 24, GACHA_REVEAL: 25, GACHA_ACTIVATED: 26,
-  FINAL_REWARD: 27, DAY10_MILESTONE: 28
+  QUIZ1: 2, QUIZ2: 3, QUIZ3: 4, QUIZ4: 5, QUIZ5: 6, CHAR_ASSIGN: 7,
+  EVOLVE: 8, INVITE: 9, INVITE_LINK: 10,
+  PARENT_VIEW: 11, FRIEND_VIEW: 12, TEAM_READY: 13,
+  QUEST_MAP: 14, DAILY_CHALLENGE: 15, DAY_PREVIEW: 16,
+  CHALLENGE_COMPLETE: 17, PROFILE: 18, LEADERBOARD: 19,
+  BOSS_ENCOUNTER: 20, TRANSITION: 21, PARENT_ALERT: 22,
+  COOP_BATTLE: 23, BOSS_VICTORY: 24, BACKPACK: 25,
+  GACHA_ENTRY: 26, GACHA_REVEAL: 27, GACHA_ACTIVATED: 28,
+  FINAL_REWARD: 29, DAY10_MILESTONE: 30
 };
 
 // === CHARACTER + QUEST DATA ===
@@ -1575,7 +1601,7 @@ function buildQuestMap(c){
     const typeColor=isAlly?'#845EF7':'#51CF66';
     const clickable=(d===1)||(d===4)||(d===5&&isBoss)||(d===10&&isBoss);
     // Freeze card indicator
-    const freezeTag=freezeDays.includes(d)?'<span style="font-size:8px;color:var(--blue);font-weight:700;background:rgba(51,154,240,.1);padding:1px 5px;border-radius:4px;margin-left:4px;">\ud83e\uddf3 Freeze</span>':'';
+    const freezeTag=freezeDays.includes(d)?'<span style="font-size:8px;color:var(--blue);font-weight:700;background:rgba(51,154,240,.1);padding:1px 5px;border-radius:4px;margin-left:4px;">+1 Freeze Card</span>':'';
     if(isBoss){
       const bName=day&&day.boss?day.boss:bossNames[d];
       const bossClickable=(d===5)||(d===10);
@@ -2022,31 +2048,49 @@ document.addEventListener('click',function(e){
 });
 
 // === QUIZ SYSTEM ===
-let quizAnswers = [null, null, null];
+let quizAnswers = [null, null, null, null, null];
 
 function selectQuizOpt(el, qIndex, value) {
   el.parentElement.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('sel'));
   el.classList.add('sel');
   quizAnswers[qIndex] = value;
-  const btnIds = ['quiz1Next', 'quiz2Next', 'quiz3Next'];
+  const btnIds = ['quiz1Next', 'quiz2Next', 'quiz3Next', 'quiz4Next', 'quiz5Next'];
   const btn = document.getElementById(btnIds[qIndex]);
   if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
 }
 
 function assignCharFromQuiz() {
   const scores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }; // Aura, Titan, Sage, Spark, Luna
-  // Q1: Sleep
+  // Aura = Sleep+Eat+Skin (Glow Up)
+  // Titan = Move+Eat (Bulk Up)
+  // Sage = Eat+Skin (Clean Slate)
+  // Spark = Move+Mind (Squad Goals)
+  // Luna = Sleep+Mind (Chill Mode)
+
+  // Q1: Sleep → Luna, Aura
   if (quizAnswers[0] === 'sleep_worst') { scores[4] += 3; scores[0] += 2; }
   else if (quizAnswers[0] === 'sleep_bad') { scores[4] += 2; scores[0] += 2; }
-  else if (quizAnswers[0] === 'sleep_ok') { scores[0] += 1; scores[4] += 1; }
-  // Q2: Nutrition
-  if (quizAnswers[1] === 'eat_worst') { scores[2] += 3; scores[0] += 1; }
-  else if (quizAnswers[1] === 'eat_bad') { scores[2] += 2; }
+  else if (quizAnswers[0] === 'sleep_ok') { scores[4] += 1; scores[0] += 1; }
+
+  // Q2: Eat → Sage, Aura, Titan
+  if (quizAnswers[1] === 'eat_worst') { scores[2] += 3; scores[0] += 1; scores[1] += 1; }
+  else if (quizAnswers[1] === 'eat_bad') { scores[2] += 2; scores[1] += 1; }
   else if (quizAnswers[1] === 'eat_ok') { scores[2] += 1; }
-  // Q3: Activity
+
+  // Q3: Move → Titan, Spark
   if (quizAnswers[2] === 'move_worst') { scores[1] += 3; scores[3] += 2; }
   else if (quizAnswers[2] === 'move_bad') { scores[1] += 2; scores[3] += 1; }
   else if (quizAnswers[2] === 'move_ok') { scores[3] += 1; }
+
+  // Q4: Mind → Spark, Luna
+  if (quizAnswers[3] === 'mind_worst') { scores[3] += 3; scores[4] += 2; }
+  else if (quizAnswers[3] === 'mind_bad') { scores[3] += 2; scores[4] += 1; }
+  else if (quizAnswers[3] === 'mind_ok') { scores[4] += 1; }
+
+  // Q5: Skin → Aura, Sage
+  if (quizAnswers[4] === 'skin_worst') { scores[0] += 3; scores[2] += 2; }
+  else if (quizAnswers[4] === 'skin_bad') { scores[0] += 2; scores[2] += 1; }
+  else if (quizAnswers[4] === 'skin_ok') { scores[2] += 1; }
 
   let best = 0, bestScore = -1;
   for (const [idx, score] of Object.entries(scores)) {
@@ -2103,6 +2147,39 @@ function updateFreezeDisplay() {
   if (el) el.textContent = freezeCards;
 }
 
+function showFreezeCardMenu() {
+  if (freezeCards <= 0) return;
+  if (document.getElementById('freezeCardPopup')) return;
+  var isGoingSolo = !allyType; // true if no ally set
+  var popup = document.createElement('div');
+  popup.id = 'freezeCardPopup';
+  popup.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,18,40,.96);border:1px solid rgba(51,154,240,.3);border-radius:16px;padding:24px;z-index:100;width:290px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);';
+  var allyBtn = isGoingSolo ? '' : '<button onclick="useFreezeOnAlly()" style="width:100%;padding:12px;border-radius:8px;border:none;background:var(--violet);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;margin-top:8px;">🛡️ Use on Ally</button>';
+  popup.innerHTML = '<div style="font-size:36px;margin-bottom:8px;">🧊</div>'
+    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#F1F3F5;margin-bottom:6px;">Use Freeze Card</div>'
+    + '<div style="font-size:12px;color:#9CA3AF;line-height:1.5;margin-bottom:16px;">Skip a day without breaking your streak. You have <b style="color:var(--blue);">' + freezeCards + '</b> remaining.</div>'
+    + '<button onclick="useFreezeOnSelf()" style="width:100%;padding:12px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">🧊 Use on Myself</button>'
+    + allyBtn
+    + '<button onclick="document.getElementById(\'freezeCardPopup\').remove()" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:#9CA3AF;font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-top:8px;">Cancel</button>';
+  document.body.appendChild(popup);
+}
+
+function useFreezeOnSelf() {
+  if (freezeCards <= 0) return;
+  freezeCards--;
+  updateFreezeDisplay();
+  var popup = document.getElementById('freezeCardPopup');
+  if (popup) popup.innerHTML = '<div style="padding:20px;text-align:center;"><div style="font-size:36px;margin-bottom:8px;">✨</div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#F1F3F5;margin-bottom:6px;">Day frozen!</div><div style="font-size:12px;color:#9CA3AF;margin-bottom:16px;">Your streak is safe. ' + freezeCards + ' cards remaining.</div><div style="font-size:13px;color:var(--blue);font-weight:700;cursor:pointer;" onclick="document.getElementById(\'freezeCardPopup\').remove()">Done</div></div>';
+}
+
+function useFreezeOnAlly() {
+  if (freezeCards <= 0) return;
+  freezeCards--;
+  updateFreezeDisplay();
+  var popup = document.getElementById('freezeCardPopup');
+  if (popup) popup.innerHTML = '<div style="padding:20px;text-align:center;"><div style="font-size:36px;margin-bottom:8px;">🛡️</div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#F1F3F5;margin-bottom:6px;">Ally shielded!</div><div style="font-size:12px;color:#9CA3AF;margin-bottom:16px;">Your ally\'s day is frozen. ' + freezeCards + ' cards remaining.</div><div style="font-size:13px;color:var(--violet);font-weight:700;cursor:pointer;" onclick="document.getElementById(\'freezeCardPopup\').remove()">Done</div></div>';
+}
+
 // === CHARACTER GLOW-UP ===
 let characterGlowStage = 0;
 function updateCharacterGlow(day) {
@@ -2125,7 +2202,7 @@ function updateCharacterGlow(day) {
 
 // === DAY 10 MILESTONE ===
 function startNewQuest() {
-  quizAnswers = [null, null, null];
+  quizAnswers = [null, null, null, null, null];
   characterGlowStage = 0;
   freezeCards = 0;
   goTo(SCR.QUIZ1);

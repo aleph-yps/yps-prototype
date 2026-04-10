@@ -530,9 +530,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div class="phd" id="land-h">Where is your family right now?</div>
     <div class="psd">Pick your child's stage. We'll show you what other parents in the same place actually tried.</div>
     <div class="tcards">
-      <div class="tc tca" onclick="pickT(1)"><div class="tico" id="tico-1"></div><div class="tc-b"><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">&#8250;</div></div>
-      <div class="tc tcb" onclick="pickT(2)"><div class="tico" id="tico-2"></div><div class="tc-b"><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">&#8250;</div></div>
-      <div class="tc tcc" onclick="pickT(3)"><div class="tico" id="tico-3"></div><div class="tc-b"><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tca" onclick="pickT(1)"><div class="tico">&#127793;</div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#45BE93;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 1</div><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcb" onclick="pickT(2)"><div class="tico">&#128516;</div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#4A90D9;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 2–3</div><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcc" onclick="pickT(3)"><div class="tico">&#127891;</div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#8B5CF6;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">JC / Poly</div><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">&#8250;</div></div>
     </div>
   </div>
 </div>
@@ -1572,10 +1572,7 @@ function initDragScroll(el){
 window.addEventListener('load',()=>{
   initProfile();
   document.getElementById('ob-scene').style.cssText='background:url(Assets/Images/pfp_icon.png) center/cover no-repeat;';document.getElementById('ob-scene').innerHTML='';
-  // Landing stage icons — lucide style
-  document.getElementById('tico-1').innerHTML=lucide('sprout',22,'#C07030');
-  document.getElementById('tico-2').innerHTML=lucide('repeat',22,'#3078C0');
-  document.getElementById('tico-3').innerHTML=lucide('rocket',22,'#2A9070');
+  // Landing stage icons now use emoji directly in HTML
 });
 </script>
 </body>

@@ -409,6 +409,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 .ma-try-btn:active{transform:scale(.96)}
 .ma-try-btn.added{background:var(--brand-lt);color:var(--brand);pointer-events:none}
 @keyframes maCheck{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes kitBounce{0%{transform:scale(1)}25%{transform:scale(1.35)}50%{transform:scale(.9)}75%{transform:scale(1.15)}100%{transform:scale(1)}}
 .ma-check-anim{display:inline-flex;animation:maCheck .4s ease both}
 /* Kit icon styles */
 .kit-icon-wrap{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);border:none;position:relative;flex-shrink:0;transition:background .2s}
@@ -1031,14 +1032,15 @@ function loadPOV(){
   const currentIdx=allQuotes.findIndex(q=>q.quote===p.quote);
   if(currentIdx>0){const cur=allQuotes.splice(currentIdx,1)[0];allQuotes.unshift(cur);}
 
-  // Build youth story cards — vertical stacked cards
-  const youthStoriesHtml=allQuotes.map((q,i)=>`
+  // Build youth story cards — vertical stacked, max 6
+  const quotesToShow=allQuotes.slice(0,6);
+  const youthStoriesHtml=quotesToShow.map((q,i)=>`
     <div style="background:white;border-radius:20px;padding:22px;margin-bottom:12px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)">
       <div style="display:flex;align-items:flex-start;gap:14px">
-        <div style="width:40px;height:40px;border-radius:12px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0">${lucide('quote',18,'var(--brand)')}</div>
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--brand-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0">${lucide('user',18,'var(--brand)')}</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:14px;color:var(--ink);line-height:1.6;font-style:italic;margin-bottom:6px">${q.quote.replace(/^"|"$/g,'')}</div>
-          <div style="font-size:12px;color:var(--ink3);font-weight:600">${q.attr}</div>
+          <div style="font-size:12px;color:var(--ink3);font-weight:600;margin-bottom:6px">${q.attr}</div>
+          <div style="font-size:14px;color:var(--ink);line-height:1.6;font-style:italic">${q.quote.replace(/^"|"$/g,'')}</div>
         </div>
       </div>
     </div>`).join('');
@@ -1249,7 +1251,7 @@ function renderTip(){
         return `<div class="ma-card">
           <div class="ma-card-txt">${a.txt}</div>
           <button class="ma-try-btn${alreadyAdded?' added':''}" id="ma-btn-${tipIdx}-${ai}" onclick="addMicroAction(${tipIdx},${ai},this)">
-            ${alreadyAdded?'<span class="ma-check-anim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Added':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="19" width="16" height="2" rx="1"/></svg> I want to try this'}
+            ${alreadyAdded?'<span class="ma-check-anim">\u2713</span> Added to starter kit':'+ I want to try this'}
           </button>
         </div>`;
       }).join('')}
@@ -1506,9 +1508,14 @@ function addMicroAction(tipI,actionI,btn){
   if(kitItems.includes(a.txt))return;
   kitItems.push(a.txt);
   updateKitBadge();
-  // Brief check animation on button
+  // Button state
   btn.classList.add('added');
-  btn.innerHTML='<span class="ma-check-anim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Added';
+  btn.innerHTML='\u2713 Added to starter kit';
+  // Bounce the starter kit icon
+  document.querySelectorAll('.kit-icon-wrap').forEach(el=>{
+    el.style.animation='kitBounce .5s ease';
+    setTimeout(()=>{el.style.animation='';},600);
+  });
 }
 function updateKitBadge(){
   const count=kitItems.length;

@@ -1008,12 +1008,11 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
     <!-- Post-battle message (hidden initially) -->
     <div id="bossPopupResult" style="display:none;text-align:center;width:100%;margin-top:16px;">
-      <div id="bossResultAlly" style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
-        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--coral);margin-bottom:4px;">Invite an ally for bonus rewards!</div>
-        <div style="font-size:12px;color:var(--text-dim);">You can still fight solo — or bring an ally for extra power.</div>
+      <div style="background:rgba(132,94,247,.08);border:1px solid rgba(132,94,247,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--violet);margin-bottom:4px;">Ready to fight!</div>
+        <div style="font-size:12px;color:var(--text-dim);">Take on this boss and claim your rewards.</div>
       </div>
-      <button class="btn btn-coral" onclick="goTo(SCR.TRANSITION)" style="width:100%;">📩 Send notification to ally</button>
-      <button class="btn btn-primary" onclick="closeBossPopupAndFightSolo()" style="width:100%;margin-top:8px;">⚔️ Fight Solo</button>
+      <button class="btn btn-primary" onclick="closeBossPopupAndFightSolo()" style="width:100%;">⚔️ Fight Boss</button>
     </div>
   </div>
 </div>
@@ -1714,11 +1713,9 @@ function setupBossVictory(){
     b1.style.display='block';
     b2.textContent='Back to quest map';
   } else if(currentBossLevel===10){
-    p.style.display='block'; // Day 10: Blind Box + Holo Card
-    g.style.display='block';
-    b1.style.display='none';
-    b2.style.display='none';
-    b3.style.display='block'; // Show "Quest Complete" button -> Day10 Milestone
+    // Day 10: Skip boss victory screen entirely, go straight to milestone
+    goTo(SCR.DAY10_MILESTONE);
+    return;
   }
 }
 function setBossImage(name){
@@ -1869,7 +1866,7 @@ function startBossFailAnimation(){
     {t:'\u26a1 <b>'+c.name+'</b> attacks!',delay:600,shake:false},
     {t:'\ud83d\udca5 '+curBossName+' takes <b>10 damage!</b>',delay:1200,shake:true},
     {t:'\ud83d\udee1\ufe0f '+curBossName+' blocks! <b>Too strong!</b>',delay:2000,shake:true,color:'var(--coral)'},
-    {t:'💪 <b>You can do this solo — or call an ally for bonus rewards!</b>',delay:2800,shake:false,color:'var(--gold)'},
+    {t:'💪 <b>One more hit should do it!</b>',delay:2800,shake:false,color:'var(--gold)'},
   ];
   lines.forEach(function(l,i){
     var tid=setTimeout(function(){
@@ -1909,7 +1906,7 @@ function skipBossBattle(){
       '\u26a1 <b>'+c.name+'</b> attacks!',
       '\ud83d\udca5 Snack Gremlin takes <b>10 damage!</b>',
       '\ud83d\udee1\ufe0f Snack Gremlin blocks! <b>Too strong!</b>',
-      '💪 <b>You can do this solo — or call an ally for bonus rewards!</b>'
+      '💪 <b>One more hit should do it!</b>'
     ];
     var colors=['#9CA3AF','#9CA3AF','var(--coral)','var(--gold)'];
     texts.forEach(function(t,i){
@@ -2202,10 +2199,38 @@ function updateCharacterGlow(day) {
 
 // === DAY 10 MILESTONE ===
 function startNewQuest() {
-  quizAnswers = [null, null, null, null, null];
   characterGlowStage = 0;
   freezeCards = 0;
-  goTo(SCR.QUIZ1);
+  showCharacterPicker();
+}
+
+function showCharacterPicker() {
+  if (document.getElementById('charPickerPopup')) return;
+  var overlay = document.createElement('div');
+  overlay.id = 'charPickerPopup';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(13,14,26,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;';
+  var h = '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:22px;font-weight:800;color:#F1F3F5;margin-bottom:4px;">Choose your Wellbit</div>';
+  h += '<div style="font-size:12px;color:#9CA3AF;margin-bottom:24px;">Pick a character for your next quest</div>';
+  h += '<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:340px;">';
+  characters.forEach(function(c, i) {
+    h += '<div onclick="pickNewChar(' + i + ')" style="width:150px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor=\'rgba(132,94,247,.4)\';this.style.background=\'rgba(132,94,247,.06)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.08)\';this.style.background=\'rgba(255,255,255,.04)\'">'
+      + '<img src="Assets/Characters/' + c.name.toUpperCase() + '.png" style="width:80px;height:80px;object-fit:contain;margin-bottom:8px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3));">'
+      + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:14px;font-weight:800;color:#F1F3F5;">' + c.name + '</div>'
+      + '<div style="font-size:10px;color:#9CA3AF;">' + c.type + '</div>'
+      + '<div style="font-size:9px;color:#845EF7;font-weight:600;margin-top:4px;">' + c.quest + '</div>'
+      + '</div>';
+  });
+  h += '</div>';
+  overlay.innerHTML = h;
+  document.body.appendChild(overlay);
+}
+
+function pickNewChar(idx) {
+  curChar = idx;
+  updateAllScreens();
+  var popup = document.getElementById('charPickerPopup');
+  if (popup) popup.remove();
+  goTo(SCR.QUEST_MAP);
 }
 
 // Init

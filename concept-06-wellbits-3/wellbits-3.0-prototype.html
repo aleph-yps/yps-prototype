@@ -2398,49 +2398,68 @@ function showCharacterPicker() {
   overlay.id = 'charPickerPopup';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(13,14,26,.98);z-index:200;display:flex;flex-direction:column;overflow:hidden;';
 
-  var h = '<div style="text-align:center;padding:48px 24px 12px;">'
-    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:22px;font-weight:800;color:#F1F3F5;margin-bottom:4px;">Choose your Wellbit</div>'
-    + '<div style="font-size:12px;color:#9CA3AF;">Swipe or tap arrows to browse</div>'
+  var intros = [
+    "\u201CAura cares about looks but doesn\u2019t know where to start \u2014 help this wellbit evolve.\u201D",
+    "\u201CTitan thinks PE and CCA are enough to keep fit \u2014 spoiler: it\u2019s not even half \u2014 help this wellbit evolve.\u201D",
+    "\u201CSage knows it should eat better, but bubble tea and fast food are just too easy \u2014 help this wellbit evolve.\u201D",
+    "\u201CSpark\u2019s tired all the time but doesn\u2019t know why \u2014 help this wellbit evolve.\u201D",
+    "\u201CLuna hasn\u2019t slept before midnight in weeks, and it\u2019s starting to show \u2014 help this wellbit evolve.\u201D"
+  ];
+  var statLabels = ['Rest','Fuel','Power','Heart','Focus'];
+  var statKeys = ['sleep','eat','move','mind','skin'];
+  var statColors = ['var(--blue)','var(--mint)','var(--coral)','var(--gold)','var(--violet)'];
+
+  var h = '<div style="text-align:center;padding:40px 24px 8px;">'
+    + '<div style="font-size:11px;color:var(--violet);font-weight:600;letter-spacing:.08em;">CHOOSE YOUR WELLBIT</div>'
     + '</div>';
 
   // Dots
-  h += '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:16px;" id="pickerDots">';
+  h += '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px;" id="pickerDots">';
   characters.forEach(function(c, i) {
     h += '<div style="width:8px;height:8px;border-radius:50%;background:' + (i === 0 ? 'var(--violet)' : 'rgba(255,255,255,.15)') + ';transition:all .3s;" id="pickerDot' + i + '"></div>';
   });
   h += '</div>';
 
-  // Character card area
-  h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;padding:0 16px;">';
+  // Main area with arrows
+  h += '<div style="flex:1;display:flex;align-items:stretch;position:relative;overflow-y:auto;">';
 
   // Left arrow
-  h += '<div onclick="pickerNav(-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:16px;color:#9CA3AF;">←</div>';
+  h += '<div onclick="pickerNav(-1)" style="position:fixed;left:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:210;font-size:16px;color:#9CA3AF;">←</div>';
+  // Right arrow
+  h += '<div onclick="pickerNav(1)" style="position:fixed;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:210;font-size:16px;color:#9CA3AF;">→</div>';
 
-  // Cards container
-  h += '<div id="pickerCards" style="width:100%;max-width:320px;position:relative;height:100%;">';
+  // Cards
   characters.forEach(function(c, i) {
     var display = i === 0 ? 'flex' : 'none';
-    var packColors = ['var(--violet)', 'var(--blue)', 'var(--mint)', 'var(--coral)', 'var(--violet)'];
-    var wellNames = ['Skin Well', 'Move Well', 'Eat Well', 'Feel Well', 'Sleep Well'];
-    var packNames = ['Glow Up', 'Bulk Up', 'Cut Season', 'Energy Era', 'Recharge'];
-    h += '<div id="pickerCard' + i + '" style="display:' + display + ';flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;width:100%;position:absolute;inset:0;transition:opacity .3s;">'
-      + '<div style="width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">'
-      + '<img src="' + c.baby + '" style="width:190px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">'
+    // Build stats HTML
+    var statsH = '';
+    statKeys.forEach(function(k, si) {
+      var pct = (c.stats[k] / 5) * 100;
+      statsH += '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;">'
+        + '<span style="font-size:10px;color:' + statColors[si] + ';width:44px;font-weight:700;">' + statLabels[si] + '</span>'
+        + '<div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;">'
+        + '<div style="height:100%;border-radius:3px;background:' + statColors[si] + ';width:' + pct + '%;"></div></div>'
+        + '<span style="font-family:Space Grotesk,monospace;font-size:12px;font-weight:700;width:16px;text-align:right;color:' + statColors[si] + ';">' + c.stats[k] + '</span></div>';
+    });
+
+    h += '<div id="pickerCard' + i + '" style="display:' + display + ';flex-direction:column;align-items:center;text-align:center;width:100%;padding:8px 40px 24px;overflow-y:auto;">'
+      // Baby image
+      + '<div style="width:180px;height:180px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(132,94,247,.15),transparent 70%);">'
+      + '<img src="' + c.baby + '" style="width:150px;height:150px;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">'
       + '</div>'
+      // Name + type
       + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:28px;font-weight:800;background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;">' + c.name + '</div>'
-      + '<div style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">' + c.type + '</div>'
-      + '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;">'
-      + '<span style="font-size:10px;color:' + packColors[i] + ';font-weight:700;background:' + packColors[i] + '15;padding:3px 10px;border-radius:10px;">' + wellNames[i] + '</span>'
-      + '<span style="font-size:10px;color:var(--gold);font-weight:700;background:rgba(255,212,59,.1);padding:3px 10px;border-radius:10px;">' + packNames[i] + '</span>'
-      + '</div>'
-      + '<div style="font-size:12px;color:#9CA3AF;line-height:1.5;max-width:260px;margin-bottom:20px;">' + c.questDesc + '</div>'
-      + '<button class="btn btn-primary" onclick="pickNewChar(' + i + ')" style="width:100%;max-width:260px;">Choose ' + c.name + '</button>'
+      + '<div style="font-size:13px;color:var(--text-dim);margin-bottom:4px;">' + c.type + '</div>'
+      // Intro narrative
+      + '<div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-width:280px;margin:0 auto 12px;font-style:italic;">' + intros[i] + '</div>'
+      // Stats
+      + '<div style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:12px 14px 10px;margin-bottom:16px;width:100%;max-width:300px;">' + statsH + '</div>'
+      // Quest description
+      + '<div style="font-size:11px;color:#9CA3AF;line-height:1.5;max-width:260px;margin-bottom:16px;">' + c.questDesc + '</div>'
+      // CTA
+      + '<button class="btn btn-primary" onclick="pickNewChar(' + i + ')" style="width:100%;max-width:280px;">Choose ' + c.name + ' →</button>'
       + '</div>';
   });
-  h += '</div>';
-
-  // Right arrow
-  h += '<div onclick="pickerNav(1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:16px;color:#9CA3AF;">→</div>';
 
   h += '</div>';
   overlay.innerHTML = h;
@@ -2454,7 +2473,6 @@ function pickerNav(dir) {
   var nextCard = document.getElementById('pickerCard' + pickerIdx);
   if (prevCard) prevCard.style.display = 'none';
   if (nextCard) nextCard.style.display = 'flex';
-  // Update dots
   for (var i = 0; i < characters.length; i++) {
     var dot = document.getElementById('pickerDot' + i);
     if (dot) dot.style.background = i === pickerIdx ? 'var(--violet)' : 'rgba(255,255,255,.15)';

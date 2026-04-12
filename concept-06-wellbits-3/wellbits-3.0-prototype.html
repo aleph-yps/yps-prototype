@@ -661,17 +661,17 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:4px;position:relative;overflow:visible;">
         <div id="mapProgressFill" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),var(--blue));width:30%;transition:width .8s ease-out;"></div>
-        <!-- Day 1 marker (Teen) -->
-        <div onclick="updateCharacterGlow(1)" style="position:absolute;top:-6px;left:0;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;" id="evoCircle0">
-          <span style="font-size:7px;">🌱</span>
+        <!-- Day 1 marker (Teen silhouette) -->
+        <div onclick="updateCharacterGlow(1)" style="position:absolute;top:-10px;left:0;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle0">
+          <img id="evoAvatar0" style="width:22px;height:22px;object-fit:contain;filter:brightness(0.4);transition:filter .3s;">
         </div>
-        <!-- Day 5 marker (Evolve 1) -->
-        <div onclick="updateCharacterGlow(5)" style="position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;" id="evoCircle1">
-          <span style="font-size:7px;">✨</span>
+        <!-- Day 5 marker (Evolve 1 silhouette) -->
+        <div onclick="updateCharacterGlow(5)" style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle1">
+          <img id="evoAvatar1" style="width:22px;height:22px;object-fit:contain;filter:brightness(0.4);transition:filter .3s;">
         </div>
-        <!-- Day 10 marker (Evolve 2) -->
-        <div onclick="updateCharacterGlow(10)" style="position:absolute;top:-6px;right:0;transform:translateX(50%);width:20px;height:20px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;" id="evoCircle2">
-          <span style="font-size:7px;">🌟</span>
+        <!-- Day 10 marker (Evolve 2 silhouette) -->
+        <div onclick="updateCharacterGlow(10)" style="position:absolute;top:-10px;right:0;transform:translateX(50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle2">
+          <img id="evoAvatar2" style="width:22px;height:22px;object-fit:contain;filter:brightness(0.4);transition:filter .3s;">
         </div>
       </div>
     </div>
@@ -711,7 +711,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
         <div class="ch-rew-item" style="color:var(--violet);" id="dailyXP">⭐ +10 XP</div>
       </div>
     </div>
-    <button class="btn btn-mint" id="dailyCTA" onclick="goTo(SCR.CHALLENGE_COMPLETE)" style="font-size:16px;">I did it! ✨</button>
+    <button class="btn btn-mint" id="dailyCTA" onclick="advanceDay();goTo(SCR.CHALLENGE_COMPLETE)" style="font-size:16px;">I did it! ✨</button>
   </div>
   <!-- Battle popup overlay -->
   <div id="battlePopup" style="display:none;position:absolute;inset:0;background:rgba(13,14,26,.95);z-index:50;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;backdrop-filter:blur(8px);">
@@ -1477,6 +1477,11 @@ const characters = [
    stats:{sleep:5,eat:1,move:1,mind:3,skin:3}},
 ];
 let curChar = 0;
+let questDay = 3; // Current quest progress day
+function advanceDay() {
+  if (questDay < 10) questDay++;
+  updateAllScreens();
+}
 let curScreen = 0;
 let evolved = false;
 
@@ -1620,7 +1625,7 @@ function buildQuestMap(c){
   const zoneStarts=[1,6];
   const zoneIcons=['\u26f0\ufe0f','\ud83c\udf34'];
   const freezeDays=[3,6,9];
-  const cur=3;
+  const cur=questDay;
   // Update companion
   var compImg=document.getElementById('mapCompanionImg');
   var compName=document.getElementById('mapCompanionName');
@@ -1769,8 +1774,8 @@ function setupBossVictory(){
   }
 }
 function setBossImage(name){
-  const bossImgMap={'Snack Gremlin':'Assets/Monsters/SNACK GREMLIN.png','Captain Couch':'','Greasy Gary':'Assets/Monsters/Greasy Gary .png','Captain Couch':'Assets/Monsters/Captain Couch.png'};
-  const bossEmojiMap={'Snack Gremlin':'👹','Captain Couch':'🦥','Greasy Gary':'🍔','Captain Couch':'🛋'};
+  const bossImgMap={'Snack Gremlin':'Assets/Monsters/SNACK GREMLIN.png','Captain Couch':'Assets/Monsters/Captain Couch.png','Greasy Gary':'Assets/Monsters/Greasy Gary .png'};
+  const bossEmojiMap={'Snack Gremlin':'👹','Captain Couch':'🛋','Greasy Gary':'🍔'};
   const sprite=document.getElementById('bossEncounterSprite');
   if(bossImgMap[name]){
     sprite.innerHTML='<img src="'+bossImgMap[name]+'" style="width:130px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));">';
@@ -2010,8 +2015,8 @@ function startCoopBattle(){
   const monS=document.getElementById('coopMonSprite');
   // Update co-op boss monster image
   if(monS){
-    const bImgCoop={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
-    const bEmojiCoop={'5':'👹','10':'🦥','15':'🍔','20':'🛋'};
+    const bImgCoop={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'Assets/Monsters/Captain Couch.png','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
+    const bEmojiCoop={'5':'👹','10':'🛋','15':'🍔','20':'🛋'};
     const bK=String(currentBossLevel);
     if(bImgCoop[bK]){monS.innerHTML='<img src="'+bImgCoop[bK]+'" style="width:70px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
     else{monS.innerHTML='<div style="font-size:50px;animation:monsterIdle 2.5s ease-in-out infinite;">'+bEmojiCoop[bK]+'</div>';}
@@ -2283,21 +2288,31 @@ function updateCharacterGlow(day) {
   else if (characterGlowStage === 1 && comp && c.stage2) comp.src = c.stage2;
   else if (characterGlowStage === 2 && comp && c.stage3) comp.src = c.stage3;
 
+  // Update avatar silhouettes in progress bar circles
+  var av0 = document.getElementById('evoAvatar0');
+  var av1 = document.getElementById('evoAvatar1');
+  var av2 = document.getElementById('evoAvatar2');
+  if (av0 && c.stage1) av0.src = c.stage1;
+  if (av1 && c.stage2) av1.src = c.stage2;
+  if (av2 && c.stage3) av2.src = c.stage3;
+
   // Highlight active evolution circle
   var circles = [document.getElementById('evoCircle0'), document.getElementById('evoCircle1'), document.getElementById('evoCircle2')];
+  var avatars = [av0, av1, av2];
   var circleBorders = ['rgba(255,255,255,.3)', 'rgba(132,94,247,.4)', 'rgba(255,212,59,.4)'];
-  var circleGlows = ['none', 'none', 'none'];
   var activeGlows = ['0 0 8px rgba(255,255,255,.3)', '0 0 12px rgba(132,94,247,.5)', '0 0 12px rgba(255,212,59,.5)'];
   circles.forEach(function(el, i) {
     if (!el) return;
     if (i === characterGlowStage) {
       el.style.border = '2px solid ' + (i === 0 ? '#fff' : i === 1 ? 'var(--violet)' : 'var(--gold)');
       el.style.boxShadow = activeGlows[i];
-      el.style.transform = i === 0 ? 'translateX(-50%) scale(1.2)' : (i === 2 ? 'translateX(50%) scale(1.2)' : 'translateX(-50%) scale(1.2)');
+      el.style.transform = i === 0 ? 'translateX(-50%) scale(1.15)' : (i === 2 ? 'translateX(50%) scale(1.15)' : 'translateX(-50%) scale(1.15)');
+      if (avatars[i]) avatars[i].style.filter = 'brightness(1)';
     } else {
       el.style.border = '2px solid ' + circleBorders[i];
       el.style.boxShadow = 'none';
       el.style.transform = i === 0 ? 'translateX(-50%)' : (i === 2 ? 'translateX(50%)' : 'translateX(-50%)');
+      if (avatars[i]) avatars[i].style.filter = 'brightness(0.4)';
     }
   });
 
@@ -2410,7 +2425,7 @@ function showCharacterPicker() {
     var packNames = ['Glow Up', 'Bulk Up', 'Cut Season', 'Energy Era', 'Recharge'];
     h += '<div id="pickerCard' + i + '" style="display:' + display + ';flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;width:100%;position:absolute;inset:0;transition:opacity .3s;">'
       + '<div style="width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">'
-      + '<img src="' + (c.stage3 || c.teen) + '" style="width:190px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">'
+      + '<img src="' + c.baby + '" style="width:190px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">'
       + '</div>'
       + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:28px;font-weight:800;background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;">' + c.name + '</div>'
       + '<div style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">' + c.type + '</div>'

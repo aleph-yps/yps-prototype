@@ -467,7 +467,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     </div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;" id="assignedCharName">Aura</div>
     <div style="font-size:13px;color:var(--text-dim);margin-bottom:4px;" id="assignedCharType">The Radiant One</div>
-    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-width:280px;margin:0 auto 12px;font-style:italic;" id="assignedCharIntro">"Aura cares about looks but doesn't know where to start — help this bit evolve."</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-width:280px;margin:0 auto 12px;font-style:italic;" id="assignedCharIntro">"Aura cares about looks but doesn't know where to start — help this wellbit evolve."</div>
     <div style="font-size:11px;color:var(--text-dim);line-height:1.4;max-width:260px;margin:0 auto 16px;" id="assignedCharReason">Based on your answers, Aura's evolution journey matches your goals!</div>
     <div id="assignedStats" style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px 14px 10px;margin-bottom:12px;width:100%;"></div>
     <button class="btn btn-primary" onclick="goTo(SCR.EVOLVE)">Meet your Wellbit →</button>
@@ -2158,11 +2158,11 @@ function assignCharFromQuiz() {
   };
   document.getElementById('assignedCharReason').textContent = reasons[best];
   const intros = {
-    0: "\u201CAura cares about looks but doesn\u2019t know where to start \u2014 help this bit evolve.\u201D",
-    1: "\u201CTitan thinks PE and CCA are enough to keep fit \u2014 spoiler: it\u2019s not even half \u2014 help this bit evolve.\u201D",
-    2: "\u201CSage knows it should eat better, but bubble tea and fast food are just too easy \u2014 help this bit evolve.\u201D",
-    3: "\u201CSpark\u2019s tired all the time but doesn\u2019t know why \u2014 help this bit evolve.\u201D",
-    4: "\u201CLuna hasn\u2019t slept before midnight in weeks, and it\u2019s starting to show \u2014 help this bit evolve.\u201D"
+    0: "\u201CAura cares about looks but doesn\u2019t know where to start \u2014 help this wellbit evolve.\u201D",
+    1: "\u201CTitan thinks PE and CCA are enough to keep fit \u2014 spoiler: it\u2019s not even half \u2014 help this wellbit evolve.\u201D",
+    2: "\u201CSage knows it should eat better, but bubble tea and fast food are just too easy \u2014 help this wellbit evolve.\u201D",
+    3: "\u201CSpark\u2019s tired all the time but doesn\u2019t know why \u2014 help this wellbit evolve.\u201D",
+    4: "\u201CLuna hasn\u2019t slept before midnight in weeks, and it\u2019s starting to show \u2014 help this wellbit evolve.\u201D"
   };
   document.getElementById('assignedCharIntro').textContent = intros[best];
   updateAssignedStats(c);

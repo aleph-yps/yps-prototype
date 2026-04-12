@@ -1629,7 +1629,6 @@ function buildQuestMap(c){
   // Update companion
   var compImg=document.getElementById('mapCompanionImg');
   var compName=document.getElementById('mapCompanionName');
-  if(compImg)compImg.src=(c.stage1||c.teen);
   if(compName)compName.textContent=c.name;
   updateCharacterGlow(cur);
   let h='';
@@ -2423,10 +2422,10 @@ function showCharacterPicker() {
   // Main area with arrows
   h += '<div style="flex:1;display:flex;align-items:stretch;position:relative;overflow-y:auto;">';
 
-  // Left arrow
-  h += '<div onclick="pickerNav(-1)" style="position:fixed;left:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:210;font-size:16px;color:#9CA3AF;">←</div>';
-  // Right arrow
-  h += '<div onclick="pickerNav(1)" style="position:fixed;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:210;font-size:16px;color:#9CA3AF;">→</div>';
+  // Left arrow (inside overlay)
+  h += '<div onclick="pickerNav(-1)" style="position:absolute;left:4px;top:45%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:210;font-size:14px;color:#9CA3AF;">←</div>';
+  // Right arrow (inside overlay)
+  h += '<div onclick="pickerNav(1)" style="position:absolute;right:4px;top:45%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:210;font-size:14px;color:#9CA3AF;">→</div>';
 
   // Cards
   characters.forEach(function(c, i) {

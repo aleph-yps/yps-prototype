@@ -1379,7 +1379,7 @@ const characters = [
     {d:7,t:'No skipping meals today. Cook a balanced plate together.',type:'ally'},
     {d:8,t:'Eat something with protein today for stronger hair.',type:'solo'},
     {d:9,t:'Change or wash your pillowcase tonight.',type:'solo'},
-    {d:10,t:'Cold splash on your face — tightens pores, wakes you up.',type:'boss',boss:'Sleepy Tom',coop:'Both commit to 7+ hours sleep tonight'}
+    {d:10,t:'Cold splash on your face — tightens pores, wakes you up.',type:'boss',boss:'Captain Couch',coop:'Both commit to 7+ hours sleep tonight'}
    ],
    baby:'Assets/Baby_Versions/Baby AURA.png',
    teen:'Assets/Characters/AURA.png',
@@ -1401,7 +1401,7 @@ const characters = [
     {d:7,t:'Swap one meal for something clean — less fried, more grilled.',type:'ally'},
     {d:8,t:'Add 15 minutes of walking to your day.',type:'solo'},
     {d:9,t:'Finish a full 1.5L water bottle today.',type:'solo'},
-    {d:10,t:'Pick your favourite exercise and go again. Extra reps.',type:'boss',boss:'Sleepy Tom',coop:'Exercise together for 15 min'}
+    {d:10,t:'Pick your favourite exercise and go again. Extra reps.',type:'boss',boss:'Captain Couch',coop:'Exercise together for 15 min'}
    ],
    baby:'Assets/Baby_Versions/Baby TITAN.png',
    teen:'Assets/Characters/TITAN.png',
@@ -1423,7 +1423,7 @@ const characters = [
     {d:7,t:'Snack on a vegetable today — cucumber, carrot sticks, edamame.',type:'solo'},
     {d:8,t:'Try sleeping before midnight. Ask your ally to hold you accountable.',type:'ally'},
     {d:9,t:'Count the sugar in your drinks today — check labels.',type:'solo'},
-    {d:10,t:'No eating after 9pm tonight.',type:'boss',boss:'Sleepy Tom',coop:'Both commit to 9pm cutoff'}
+    {d:10,t:'No eating after 9pm tonight.',type:'boss',boss:'Captain Couch',coop:'Both commit to 9pm cutoff'}
    ],
    baby:'Assets/Baby_Versions/Baby SAGE.png',
    teen:'Assets/Characters/SAGE.png',
@@ -1445,7 +1445,7 @@ const characters = [
     {d:7,t:'Compliment someone in your group today. Out loud. Mean it.',type:'solo'},
     {d:8,t:'Cook a meal together. Any meal. 2+ veggies.',type:'ally'},
     {d:9,t:'Eat a proper meal — protein, veg, carbs. Note your energy 30 min after.',type:'solo'},
-    {d:10,t:'15-minute walk with your ally. No music, just talk.',type:'boss',boss:'Sleepy Tom',coop:'Walk together, no phones'}
+    {d:10,t:'15-minute walk with your ally. No music, just talk.',type:'boss',boss:'Captain Couch',coop:'Walk together, no phones'}
    ],
    baby:'Assets/Baby_Versions/Baby SPARK.png',
    teen:'Assets/Characters/SPARK.png',
@@ -1467,7 +1467,7 @@ const characters = [
     {d:7,t:'The last thing before lights out — no phone.',type:'solo'},
     {d:8,t:'One screen-free hour today with your ally.',type:'ally'},
     {d:9,t:'A 15-20 minute power nap boosts alertness. Set a timer.',type:'solo'},
-    {d:10,t:'Step out for 10 minutes. Sunshine, no earphones.',type:'boss',boss:'Sleepy Tom',coop:'Walk together'}
+    {d:10,t:'Step out for 10 minutes. Sunshine, no earphones.',type:'boss',boss:'Captain Couch',coop:'Walk together'}
    ],
    baby:'Assets/Baby_Versions/Baby LUNA.png',
    teen:'Assets/Characters/LUNA.png',
@@ -1614,9 +1614,9 @@ function buildQuestMap(c){
   const el=document.getElementById('questMapNodes');
   if(!el||!c.days||!c.zones)return;
   const bossDays=[5,10];
-  const bossNames={5:'Snack Gremlin',10:'Sleepy Tom'};
-  const bossImgMap={5:'Assets/Monsters/SNACK GREMLIN.png',10:''};
-  const bossEmojiMap={5:'\ud83d\udc79',10:'\ud83e\udda5'};
+  const bossNames={5:'Snack Gremlin',10:'Captain Couch'};
+  const bossImgMap={5:'Assets/Monsters/SNACK GREMLIN.png',10:'Assets/Monsters/Captain Couch.png'};
+  const bossEmojiMap={5:'\ud83d\udc79',10:'\ud83d\udecb'};
   const zoneStarts=[1,6];
   const zoneIcons=['\u26f0\ufe0f','\ud83c\udf34'];
   const freezeDays=[3,6,9];
@@ -1769,8 +1769,8 @@ function setupBossVictory(){
   }
 }
 function setBossImage(name){
-  const bossImgMap={'Snack Gremlin':'Assets/Monsters/SNACK GREMLIN.png','Sleepy Tom':'','Greasy Gary':'Assets/Monsters/Greasy Gary .png','Captain Couch':'Assets/Monsters/Captain Couch.png'};
-  const bossEmojiMap={'Snack Gremlin':'👹','Sleepy Tom':'🦥','Greasy Gary':'🍔','Captain Couch':'🛋'};
+  const bossImgMap={'Snack Gremlin':'Assets/Monsters/SNACK GREMLIN.png','Captain Couch':'','Greasy Gary':'Assets/Monsters/Greasy Gary .png','Captain Couch':'Assets/Monsters/Captain Couch.png'};
+  const bossEmojiMap={'Snack Gremlin':'👹','Captain Couch':'🦥','Greasy Gary':'🍔','Captain Couch':'🛋'};
   const sprite=document.getElementById('bossEncounterSprite');
   if(bossImgMap[name]){
     sprite.innerHTML='<img src="'+bossImgMap[name]+'" style="width:130px;height:auto;animation:monsterIdle 2s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(255,107,107,.4));">';
@@ -1794,7 +1794,7 @@ function showBoss10(){
   currentBossLevel=10;
   const c=characters[curChar];
   if(c.days&&c.days[9]) document.getElementById('bossChallengeText').textContent=c.days[9].t;
-  const bossName=c.days[9]&&c.days[9].boss?c.days[9].boss:'Sleepy Tom';
+  const bossName=c.days[9]&&c.days[9].boss?c.days[9].boss:'Captain Couch';
   document.getElementById('bossBattleName1').textContent=bossName;
   setBossImage(bossName);
   if(c.zones&&c.zones[1]) document.getElementById('bossZoneLabel').textContent=c.zones[1];
@@ -1910,7 +1910,7 @@ function startBossFailAnimation(){
   bossPopupTimers=[];
   var monsterSprite=document.getElementById('bossPopupMonsterSprite');
   var c=characters[curChar];
-  var bossNameMap={5:'Snack Gremlin',10:'Sleepy Tom',15:'Greasy Gary',20:'Captain Couch'};
+  var bossNameMap={5:'Snack Gremlin',10:'Captain Couch',15:'Greasy Gary',20:'Captain Couch'};
   var curBossName=bossNameMap[currentBossLevel]||'Snack Gremlin';
   var lines=[
     {t:'\u26a1 <b>'+c.name+'</b> attacks!',delay:600,shake:false},
@@ -2016,7 +2016,7 @@ function startCoopBattle(){
     if(bImgCoop[bK]){monS.innerHTML='<img src="'+bImgCoop[bK]+'" style="width:70px;height:auto;animation:monsterIdle 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
     else{monS.innerHTML='<div style="font-size:50px;animation:monsterIdle 2.5s ease-in-out infinite;">'+bEmojiCoop[bK]+'</div>';}
   }
-  const bossNM={5:'Snack Gremlin',10:'Sleepy Tom',15:'Greasy Gary',20:'Captain Couch'};
+  const bossNM={5:'Snack Gremlin',10:'Captain Couch',15:'Greasy Gary',20:'Captain Couch'};
   const curBN=bossNM[currentBossLevel]||'Snack Gremlin';
   const lines=[
     {t:'\u26a1 <b>'+c.name+'</b> + \ud83e\udd89 <b>Aegis</b> combine forces!',hp:100,delay:600,a:null},

@@ -531,7 +531,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;">Invite Others</div><div style="font-size:11px;color:var(--text-dim);">Share a link with anyone.</div></div>
     </div>
     <div style="text-align:center;margin-top:12px;">
-      <div class="btn btn-ghost" onclick="goTo(SCR.QUEST_MAP)" style="gap:8px;">🚀 Go Solo — I'll do this myself</div>
+      <div class="btn btn-ghost" onclick="allyType=null;goTo(SCR.QUEST_MAP)" style="gap:8px;">🚀 Go Solo — I'll do this myself</div>
     </div>
   </div>
 </div>
@@ -1620,11 +1620,15 @@ function buildQuestMap(c){
     const isBoss=bossDays.includes(d);
     const done=d<cur,now=d===cur,lock=d>cur;
     const day=c.days[d-1];
-    const desc=day?day.t:'\u2014';
+    const isSolo=!allyType;
+    var desc=day?day.t:'\u2014';
+    if(isSolo&&day&&(day.type==='ally')){
+      desc=desc.replace(/with your ally/gi,'on your own').replace(/your ally/gi,'yourself').replace(/Challenge your ally too\./gi,'Track it yourself.').replace(/Ask your ally to hold you accountable\./gi,'Set a reminder to keep yourself on track.');
+    }
     const short=desc.length>42?desc.substring(0,42)+'...':desc;
-    const isAlly=day&&(day.type==='ally'||day.type==='boss');
-    const typeLabel=isAlly?'With ally':'Solo';
-    const typeColor=isAlly?'#845EF7':'#51CF66';
+    const isAlly=!isSolo&&day&&(day.type==='ally'||day.type==='boss');
+    const typeLabel=isSolo?'Solo':(isAlly?'With ally':'Solo');
+    const typeColor=isSolo?'#51CF66':(isAlly?'#845EF7':'#51CF66');
     const clickable=(d===1)||(d===4)||(d===5&&isBoss)||(d===10&&isBoss);
     // Freeze card indicator
     const freezeTag=freezeDays.includes(d)?'<span style="font-size:8px;color:var(--blue);font-weight:700;background:rgba(51,154,240,.1);padding:1px 5px;border-radius:4px;margin-left:4px;">+1 Freeze Card</span>':'';
@@ -1698,7 +1702,8 @@ function showDayChallenge(day){
   const c=characters[curChar];
   const d=c.days[day-1];
   if(!d)return;
-  const isAlly=d.type==='ally'||d.type==='Peer'||d.type==='Parent';
+  const isSoloMode=!allyType;
+  const isAlly=!isSoloMode&&(d.type==='ally'||d.type==='Peer'||d.type==='Parent');
   // Update chip
   document.getElementById('dailyChip').textContent='Day '+day+' · '+(isAlly?'With ally':'Solo');
   document.getElementById('dailyChip').style.background=isAlly?'rgba(132,94,247,.15)':'rgba(81,207,102,.15)';
@@ -1706,11 +1711,15 @@ function showDayChallenge(day){
   // Update type label
   document.getElementById('dailyTypeLabel').textContent=isAlly?'With ally':'Solo challenge';
   document.getElementById('dailyTypeLabel').style.color=isAlly?'var(--violet)':'var(--mint)';
-  // Update challenge text
-  document.getElementById('dailyChallengeText').textContent=d.t;
+  // Update challenge text — replace ally references in solo mode
+  var challengeText=d.t;
+  if(isSoloMode){
+    challengeText=challengeText.replace(/with your ally/gi,'on your own').replace(/your ally/gi,'yourself').replace(/Challenge your ally too\./gi,'Track it yourself.').replace(/Ask your ally to hold you accountable\./gi,'Set a reminder to keep yourself on track.');
+  }
+  document.getElementById('dailyChallengeText').textContent=challengeText;
   // Update character image
   document.getElementById('dailyCharImg').src=c.teen;
-  // Ally avatar + note
+  // Ally avatar + note — hide in solo mode
   document.getElementById('dailyAllyAvatar').style.display=isAlly?'flex':'none';
   document.getElementById('dailyAllyNote').style.display=isAlly?'block':'none';
   // Coins/XP
@@ -2040,7 +2049,7 @@ function pickAlly(el){
 }
 
 // === ALLY TYPE ===
-let allyType = 'parent';
+let allyType = null;
 function setAllyType(type){
   allyType = type;
   const sub = document.getElementById('inviteLinkSubtitle');

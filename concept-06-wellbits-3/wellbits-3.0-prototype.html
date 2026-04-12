@@ -467,7 +467,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     </div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;" id="assignedCharName">Aura</div>
     <div style="font-size:13px;color:var(--text-dim);margin-bottom:4px;" id="assignedCharType">The Radiant One</div>
-    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-width:280px;margin:0 auto 12px;font-style:italic;" id="assignedCharIntro">"Aura cares about how she looks but doesn't know where to start — help her evolve."</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-width:280px;margin:0 auto 12px;font-style:italic;" id="assignedCharIntro">"Aura cares about looks but doesn't know where to start — help this bit evolve."</div>
     <div style="font-size:11px;color:var(--text-dim);line-height:1.4;max-width:260px;margin:0 auto 16px;" id="assignedCharReason">Based on your answers, Aura's evolution journey matches your goals!</div>
     <div id="assignedStats" style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px 14px 10px;margin-bottom:12px;width:100%;"></div>
     <button class="btn btn-primary" onclick="goTo(SCR.EVOLVE)">Meet your Wellbit →</button>
@@ -1384,6 +1384,9 @@ const characters = [
    ],
    baby:'Assets/Baby_Versions/Baby AURA.png',
    teen:'Assets/Characters/AURA.png',
+   stage1:'Assets/Characters/AURA_stage 1.png',
+   stage2:'Assets/Characters/AURA_stage 2.png',
+   stage3:'Assets/Characters/AURA_stage 3.png',
    stats:{sleep:4,eat:4,move:1,mind:2,skin:2}},
   {name:'Titan',type:'The Strong One',color:'#339AF0',
    quest:'Titan wants to Bulk Up<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Climb the Iron Peaks. Face beasts that test your strength. Forge legendary gear at the summit.',
@@ -1403,6 +1406,9 @@ const characters = [
    ],
    baby:'Assets/Baby_Versions/Baby TITAN.png',
    teen:'Assets/Characters/TITAN.png',
+   stage1:'Assets/Characters/TITAN_stage 1.png',
+   stage2:'Assets/Characters/TITAN_stage 2.png',
+   stage3:'Assets/Characters/TITAN_stage 3.png',
    stats:{sleep:1,eat:3,move:5,mind:2,skin:2}},
   {name:'Sage',type:'The Nourished One',color:'#51CF66',
    quest:'Sage wants a Clean Slate<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Cross the Fresh Fields. Outsmart creatures that feed on bad habits. Reclaim the land.',
@@ -1422,6 +1428,9 @@ const characters = [
    ],
    baby:'Assets/Baby_Versions/Baby SAGE.png',
    teen:'Assets/Characters/SAGE.png',
+   stage1:'Assets/Characters/SAGE_stage 1.png',
+   stage2:'Assets/Characters/SAGE_stage 2.png',
+   stage3:'Assets/Characters/SAGE_stage 3.png',
    stats:{sleep:3,eat:4,move:1,mind:2,skin:3}},
   {name:'Spark',type:'The Energetic One',color:'#FF6B6B',
    quest:'Spark wants an Energy Era<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Explore the Vibe Valley. Recharge your energy through movement, food, sleep, and connection.',
@@ -1441,6 +1450,9 @@ const characters = [
    ],
    baby:'Assets/Baby_Versions/Baby SPARK.png',
    teen:'Assets/Characters/SPARK.png',
+   stage1:'Assets/Characters/SPARK_stage 1.png',
+   stage2:'Assets/Characters/SPARK_stage 2.png',
+   stage3:'Assets/Characters/SPARK_stage 3.png',
    stats:{sleep:2,eat:2,move:4,mind:4,skin:1}},
   {name:'Luna',type:'The Restful One',color:'#845EF7',
    quest:'Luna wants to Chill<span style="color:#FFD43B;text-shadow:0 0 8px rgba(255,212,59,.6),0 0 16px rgba(255,212,59,.3);font-size:110%;animation:glow-pulse 2s ease-in-out infinite;">!</span>',questDesc:'Drift through the Dreamscape. Silence the noise monsters. Restore the night sky.',
@@ -1460,6 +1472,9 @@ const characters = [
    ],
    baby:'Assets/Baby_Versions/Baby LUNA.png',
    teen:'Assets/Characters/LUNA.png',
+   stage1:'Assets/Characters/LUNA_stage 1.png',
+   stage2:'Assets/Characters/LUNA_stage 2.png',
+   stage3:'Assets/Characters/LUNA_stage 3.png',
    stats:{sleep:5,eat:1,move:1,mind:3,skin:3}},
 ];
 let curChar = 0;
@@ -1505,7 +1520,7 @@ function resetEvolve(){
   evolved=false;
   document.getElementById('evolveBaby').src=c.baby;
   document.getElementById('evolveBaby').style.display='block';
-  document.getElementById('evolveTeen').src=c.teen;
+  document.getElementById('evolveTeen').src=(c.stage1||c.teen);
   document.getElementById('evolveTeen').style.display='none';
   document.getElementById('evolveNameLbl').textContent=c.name;
   document.getElementById('evolveTapText').textContent='Tap to evolve';
@@ -1513,7 +1528,7 @@ function resetEvolve(){
   document.getElementById('evolveNextBtn').style.pointerEvents='none';
   // Update goal section (now inline)
   document.getElementById('goalBaby').src=c.baby;
-  document.getElementById('goalTeen').src=c.teen;
+  document.getElementById('goalTeen').src=(c.stage3||c.teen);
   document.getElementById('evoGoalSection').style.display='none';
   // Update all downstream screens
   updateAllScreens();
@@ -1551,48 +1566,48 @@ function updateAllScreens(){
     document.getElementById('dailyChip').textContent='Day 3 · '+c.days[2].type;
   }
   // Invite screen
-  document.getElementById('inviteCharImg').src=c.teen;
+  document.getElementById('inviteCharImg').src=(c.stage1||c.teen);
   // Friend ally screen
-  document.getElementById('friendCharImg').src=c.teen;
+  document.getElementById('friendCharImg').src=(c.stage1||c.teen);
   // Parent screen
-  document.getElementById('parentCharImg').src=c.teen;
+  document.getElementById('parentCharImg').src=(c.stage1||c.teen);
   // Team ready
-  document.getElementById('teamHeroImg').src=c.teen;
+  document.getElementById('teamHeroImg').src=(c.stage1||c.teen);
   document.getElementById('teamHeroName').textContent=c.name;
   // Daily challenge
-  document.getElementById('dailyCharImg').src=c.teen;
+  document.getElementById('dailyCharImg').src=(c.stage1||c.teen);
   // Boss battle names
   document.getElementById('bossBattleName1').textContent=c.name;
   // Co-op
-  document.getElementById('coopHeroImg').src=c.teen;
+  document.getElementById('coopHeroImg').src=(c.stage1||c.teen);
   document.getElementById('coopHeroName').textContent=c.name;
   // These IDs may not exist in all screen configurations — guard against null
   var _el;
   _el=document.getElementById('coopBattleName1'); if(_el) _el.textContent=c.name;
   _el=document.getElementById('coopBattleName2'); if(_el) _el.textContent=c.name;
   // Top nav avatar
-  document.getElementById('topNavAvatar').src=c.teen;
+  document.getElementById('topNavAvatar').src=(c.stage1||c.teen);
   // Battle + Profile
-  document.getElementById('battleHeroImg').src=c.teen;
+  document.getElementById('battleHeroImg').src=(c.stage1||c.teen);
   document.getElementById('battleHeroName').textContent=c.name;
   _el=document.getElementById('animHeroName1'); if(_el) _el.textContent=c.name;
   _el=document.getElementById('animHeroName2'); if(_el) _el.textContent=c.name;
-  document.getElementById('profileCharImg').src=c.teen;
+  document.getElementById('profileCharImg').src=(c.stage1||c.teen);
   document.getElementById('profileCharName').textContent=c.name;
   // Leaderboard
-  document.getElementById('lbMyImg').src=c.teen;
-  try{document.getElementById('lbMyImg2').src=c.teen;}catch(e){}
+  document.getElementById('lbMyImg').src=(c.stage1||c.teen);
+  try{document.getElementById('lbMyImg2').src=(c.stage1||c.teen);}catch(e){}
   // Backpack
-  document.getElementById('bpCharImg').src=c.teen;
+  document.getElementById('bpCharImg').src=(c.stage1||c.teen);
   document.getElementById('bpCharName').textContent=c.name;
   // Gacha
-  document.getElementById('gachaCardImg').src=c.teen;
+  document.getElementById('gachaCardImg').src=(c.stage1||c.teen);
   // Final
-  document.getElementById('finalCardImg').src=c.teen;
+  document.getElementById('finalCardImg').src=(c.stage1||c.teen);
   document.getElementById('finalCardName').textContent=c.name;
   document.getElementById('finalBabyImg').src=c.baby;
-  document.getElementById('finalTeenImg').src=c.teen;
-  document.getElementById('finalChampImg').src=c.teen;
+  document.getElementById('finalTeenImg').src=(c.stage1||c.teen);
+  document.getElementById('finalChampImg').src=(c.stage3||c.teen);
 }
 
 // === BUILD QUEST MAP ===
@@ -1610,7 +1625,7 @@ function buildQuestMap(c){
   // Update companion
   var compImg=document.getElementById('mapCompanionImg');
   var compName=document.getElementById('mapCompanionName');
-  if(compImg)compImg.src=c.teen;
+  if(compImg)compImg.src=(c.stage1||c.teen);
   if(compName)compName.textContent=c.name;
   updateCharacterGlow(cur);
   let h='';
@@ -1682,7 +1697,7 @@ function allyCompletes(){
   document.getElementById('allyWaitingView').style.display='none';
   document.getElementById('bothCompleteView').style.display='block';
   const c=characters[curChar];
-  document.getElementById('bothHeroImg').src=c.teen;
+  document.getElementById('bothHeroImg').src=(c.stage1||c.teen);
 }
 function showRewardsForDay(isAlly){
   document.getElementById('soloCompleteView').style.display=isAlly?'none':'block';
@@ -1690,7 +1705,7 @@ function showRewardsForDay(isAlly){
   document.getElementById('bothCompleteView').style.display='none';
   if(isAlly){
     const c=characters[curChar];
-    document.getElementById('allyCompleteHero').src=c.teen;
+    document.getElementById('allyCompleteHero').src=(c.stage1||c.teen);
   }
   goTo(SCR.CHALLENGE_COMPLETE);
 }
@@ -1718,7 +1733,7 @@ function showDayChallenge(day){
   }
   document.getElementById('dailyChallengeText').textContent=challengeText;
   // Update character image
-  document.getElementById('dailyCharImg').src=c.teen;
+  document.getElementById('dailyCharImg').src=(c.stage1||c.teen);
   // Ally avatar + note — hide in solo mode
   document.getElementById('dailyAllyAvatar').style.display=isAlly?'flex':'none';
   document.getElementById('dailyAllyNote').style.display=isAlly?'block':'none';
@@ -1796,13 +1811,13 @@ function showDayPreview(day){
     previewMode='completed';
     document.getElementById('dayCompletedView').style.display='block';
     document.getElementById('dayAllyView').style.display='none';
-    document.getElementById('previewCharImg').src=c.teen;
+    document.getElementById('previewCharImg').src=(c.stage1||c.teen);
     if(c.days&&c.days[0]) document.getElementById('previewChallengeText').textContent=c.days[0].t;
   } else if(day===4){
     previewMode='ally';
     document.getElementById('dayCompletedView').style.display='none';
     document.getElementById('dayAllyView').style.display='block';
-    document.getElementById('allyPreviewHero').src=c.teen;
+    document.getElementById('allyPreviewHero').src=(c.stage1||c.teen);
     if(c.days&&c.days[3]) document.getElementById('allyPreviewText').textContent=c.days[3].t;
   }
   goTo(SCR.DAY_PREVIEW);
@@ -2143,11 +2158,11 @@ function assignCharFromQuiz() {
   };
   document.getElementById('assignedCharReason').textContent = reasons[best];
   const intros = {
-    0: "\u201CAura cares about how she looks but doesn\u2019t know where to start \u2014 help her evolve.\u201D",
-    1: "\u201CTitan thinks PE and CCA are enough to keep fit \u2014 spoiler: it\u2019s not even half \u2014 help him evolve.\u201D",
-    2: "\u201CSage knows she should eat better, but bubble tea and fast food are just too easy \u2014 help her evolve.\u201D",
-    3: "\u201CSpark\u2019s tired all the time but doesn\u2019t know why \u2014 help them evolve.\u201D",
-    4: "\u201CLuna hasn\u2019t slept before midnight in weeks, and it\u2019s starting to show \u2014 help her evolve.\u201D"
+    0: "\u201CAura cares about looks but doesn\u2019t know where to start \u2014 help this bit evolve.\u201D",
+    1: "\u201CTitan thinks PE and CCA are enough to keep fit \u2014 spoiler: it\u2019s not even half \u2014 help this bit evolve.\u201D",
+    2: "\u201CSage knows it should eat better, but bubble tea and fast food are just too easy \u2014 help this bit evolve.\u201D",
+    3: "\u201CSpark\u2019s tired all the time but doesn\u2019t know why \u2014 help this bit evolve.\u201D",
+    4: "\u201CLuna hasn\u2019t slept before midnight in weeks, and it\u2019s starting to show \u2014 help this bit evolve.\u201D"
   };
   document.getElementById('assignedCharIntro').textContent = intros[best];
   updateAssignedStats(c);
@@ -2262,6 +2277,12 @@ function updateCharacterGlow(day) {
   var pct = Math.min((day / 10) * 100, 100);
   if (progressFill) progressFill.style.width = pct + '%';
   if (dayLabel) dayLabel.textContent = day;
+
+  // Swap character image based on stage
+  var c = characters[curChar];
+  if (characterGlowStage === 0 && comp && c.stage1) comp.src = c.stage1;
+  else if (characterGlowStage === 1 && comp && c.stage2) comp.src = c.stage2;
+  else if (characterGlowStage === 2 && comp && c.stage3) comp.src = c.stage3;
 
   // Stage 0: Teen (starting — muted, no glow)
   if (characterGlowStage === 0) {

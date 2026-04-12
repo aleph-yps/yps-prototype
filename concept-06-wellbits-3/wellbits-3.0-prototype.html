@@ -661,13 +661,17 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:4px;position:relative;overflow:visible;">
         <div id="mapProgressFill" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),var(--blue));width:30%;transition:width .8s ease-out;"></div>
-        <!-- Day 5 marker -->
-        <div style="position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;">
-          <span style="font-size:6px;color:var(--violet);">✨</span>
+        <!-- Day 1 marker (Teen) -->
+        <div onclick="updateCharacterGlow(1)" style="position:absolute;top:-6px;left:0;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;" id="evoCircle0">
+          <span style="font-size:7px;">🌱</span>
         </div>
-        <!-- Day 10 marker -->
-        <div style="position:absolute;top:-3px;right:0;transform:translateX(50%);width:14px;height:14px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;">
-          <span style="font-size:6px;color:var(--gold);">🌟</span>
+        <!-- Day 5 marker (Evolve 1) -->
+        <div onclick="updateCharacterGlow(5)" style="position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;" id="evoCircle1">
+          <span style="font-size:7px;">✨</span>
+        </div>
+        <!-- Day 10 marker (Evolve 2) -->
+        <div onclick="updateCharacterGlow(10)" style="position:absolute;top:-6px;right:0;transform:translateX(50%);width:20px;height:20px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;" id="evoCircle2">
+          <span style="font-size:7px;">🌟</span>
         </div>
       </div>
     </div>
@@ -680,12 +684,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text);" id="mapCompanionName">Aura</div>
       <div id="mapCompanionStage" style="font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 12px;border-radius:12px;transition:all .5s;color:var(--text-dim);background:rgba(255,255,255,.04);">Teen</div>
-      <!-- Evolution demo toggle (for prototype testing) -->
-      <div style="display:flex;gap:6px;margin-top:10px;">
-        <div onclick="updateCharacterGlow(1)" style="padding:4px 10px;border-radius:8px;font-size:9px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text-dim);border:1px solid rgba(255,255,255,.08);">Teen</div>
-        <div onclick="updateCharacterGlow(5)" style="padding:4px 10px;border-radius:8px;font-size:9px;font-weight:700;cursor:pointer;background:rgba(132,94,247,.1);color:var(--violet);border:1px solid rgba(132,94,247,.2);">Evolve 1 ✨</div>
-        <div onclick="updateCharacterGlow(10)" style="padding:4px 10px;border-radius:8px;font-size:9px;font-weight:700;cursor:pointer;background:rgba(255,212,59,.1);color:var(--gold);border:1px solid rgba(255,212,59,.2);">Evolve 2 🌟</div>
-      </div>
+      <!-- Evolution controlled via progress bar circles -->
     </div>
     <div id="questMapNodes"></div>
   </div>
@@ -2283,6 +2282,24 @@ function updateCharacterGlow(day) {
   if (characterGlowStage === 0 && comp && c.stage1) comp.src = c.stage1;
   else if (characterGlowStage === 1 && comp && c.stage2) comp.src = c.stage2;
   else if (characterGlowStage === 2 && comp && c.stage3) comp.src = c.stage3;
+
+  // Highlight active evolution circle
+  var circles = [document.getElementById('evoCircle0'), document.getElementById('evoCircle1'), document.getElementById('evoCircle2')];
+  var circleBorders = ['rgba(255,255,255,.3)', 'rgba(132,94,247,.4)', 'rgba(255,212,59,.4)'];
+  var circleGlows = ['none', 'none', 'none'];
+  var activeGlows = ['0 0 8px rgba(255,255,255,.3)', '0 0 12px rgba(132,94,247,.5)', '0 0 12px rgba(255,212,59,.5)'];
+  circles.forEach(function(el, i) {
+    if (!el) return;
+    if (i === characterGlowStage) {
+      el.style.border = '2px solid ' + (i === 0 ? '#fff' : i === 1 ? 'var(--violet)' : 'var(--gold)');
+      el.style.boxShadow = activeGlows[i];
+      el.style.transform = i === 0 ? 'translateX(-50%) scale(1.2)' : (i === 2 ? 'translateX(50%) scale(1.2)' : 'translateX(-50%) scale(1.2)');
+    } else {
+      el.style.border = '2px solid ' + circleBorders[i];
+      el.style.boxShadow = 'none';
+      el.style.transform = i === 0 ? 'translateX(-50%)' : (i === 2 ? 'translateX(50%)' : 'translateX(-50%)');
+    }
+  });
 
   // Stage 0: Teen (starting — muted, no glow)
   if (characterGlowStage === 0) {

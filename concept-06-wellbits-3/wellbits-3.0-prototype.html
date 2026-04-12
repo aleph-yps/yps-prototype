@@ -2375,25 +2375,75 @@ function startNewQuest() {
   showCharacterPicker();
 }
 
+var pickerIdx = 0;
 function showCharacterPicker() {
   if (document.getElementById('charPickerPopup')) return;
+  pickerIdx = 0;
   var overlay = document.createElement('div');
   overlay.id = 'charPickerPopup';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(13,14,26,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;';
-  var h = '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:22px;font-weight:800;color:#F1F3F5;margin-bottom:4px;">Choose your Wellbit</div>';
-  h += '<div style="font-size:12px;color:#9CA3AF;margin-bottom:24px;">Pick a character for your next quest</div>';
-  h += '<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:340px;">';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(13,14,26,.98);z-index:200;display:flex;flex-direction:column;overflow:hidden;';
+
+  var h = '<div style="text-align:center;padding:48px 24px 12px;">'
+    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:22px;font-weight:800;color:#F1F3F5;margin-bottom:4px;">Choose your Wellbit</div>'
+    + '<div style="font-size:12px;color:#9CA3AF;">Swipe or tap arrows to browse</div>'
+    + '</div>';
+
+  // Dots
+  h += '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:16px;" id="pickerDots">';
   characters.forEach(function(c, i) {
-    h += '<div onclick="pickNewChar(' + i + ')" style="width:150px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor=\'rgba(132,94,247,.4)\';this.style.background=\'rgba(132,94,247,.06)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.08)\';this.style.background=\'rgba(255,255,255,.04)\'">'
-      + '<img src="Assets/Characters/' + c.name.toUpperCase() + '.png" style="width:80px;height:80px;object-fit:contain;margin-bottom:8px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3));">'
-      + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:14px;font-weight:800;color:#F1F3F5;">' + c.name + '</div>'
-      + '<div style="font-size:10px;color:#9CA3AF;">' + c.type + '</div>'
-      + '<div style="font-size:9px;color:#845EF7;font-weight:600;margin-top:4px;">' + c.quest + '</div>'
+    h += '<div style="width:8px;height:8px;border-radius:50%;background:' + (i === 0 ? 'var(--violet)' : 'rgba(255,255,255,.15)') + ';transition:all .3s;" id="pickerDot' + i + '"></div>';
+  });
+  h += '</div>';
+
+  // Character card area
+  h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;padding:0 16px;">';
+
+  // Left arrow
+  h += '<div onclick="pickerNav(-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:16px;color:#9CA3AF;">←</div>';
+
+  // Cards container
+  h += '<div id="pickerCards" style="width:100%;max-width:320px;position:relative;height:100%;">';
+  characters.forEach(function(c, i) {
+    var display = i === 0 ? 'flex' : 'none';
+    var packColors = ['var(--violet)', 'var(--blue)', 'var(--mint)', 'var(--coral)', 'var(--violet)'];
+    var wellNames = ['Skin Well', 'Move Well', 'Eat Well', 'Feel Well', 'Sleep Well'];
+    var packNames = ['Glow Up', 'Bulk Up', 'Cut Season', 'Energy Era', 'Recharge'];
+    h += '<div id="pickerCard' + i + '" style="display:' + display + ';flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;width:100%;position:absolute;inset:0;transition:opacity .3s;">'
+      + '<div style="width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.12),transparent 70%);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">'
+      + '<img src="' + (c.stage3 || c.teen) + '" style="width:190px;height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));animation:float 3s ease-in-out infinite;">'
+      + '</div>'
+      + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:28px;font-weight:800;background:var(--grad-buddy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;">' + c.name + '</div>'
+      + '<div style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">' + c.type + '</div>'
+      + '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;">'
+      + '<span style="font-size:10px;color:' + packColors[i] + ';font-weight:700;background:' + packColors[i] + '15;padding:3px 10px;border-radius:10px;">' + wellNames[i] + '</span>'
+      + '<span style="font-size:10px;color:var(--gold);font-weight:700;background:rgba(255,212,59,.1);padding:3px 10px;border-radius:10px;">' + packNames[i] + '</span>'
+      + '</div>'
+      + '<div style="font-size:12px;color:#9CA3AF;line-height:1.5;max-width:260px;margin-bottom:20px;">' + c.questDesc + '</div>'
+      + '<button class="btn btn-primary" onclick="pickNewChar(' + i + ')" style="width:100%;max-width:260px;">Choose ' + c.name + '</button>'
       + '</div>';
   });
   h += '</div>';
+
+  // Right arrow
+  h += '<div onclick="pickerNav(1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:16px;color:#9CA3AF;">→</div>';
+
+  h += '</div>';
   overlay.innerHTML = h;
   document.body.appendChild(overlay);
+}
+
+function pickerNav(dir) {
+  var prev = pickerIdx;
+  pickerIdx = (pickerIdx + dir + characters.length) % characters.length;
+  var prevCard = document.getElementById('pickerCard' + prev);
+  var nextCard = document.getElementById('pickerCard' + pickerIdx);
+  if (prevCard) prevCard.style.display = 'none';
+  if (nextCard) nextCard.style.display = 'flex';
+  // Update dots
+  for (var i = 0; i < characters.length; i++) {
+    var dot = document.getElementById('pickerDot' + i);
+    if (dot) dot.style.background = i === pickerIdx ? 'var(--violet)' : 'rgba(255,255,255,.15)';
+  }
 }
 
 function pickNewChar(idx) {

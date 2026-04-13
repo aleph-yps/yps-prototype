@@ -1119,8 +1119,8 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div id="coopHpBar" style="height:100%;width:100%;background:var(--coral);border-radius:4px;box-shadow:0 0 8px var(--coral-glow);transition:width .8s ease-out;"></div></div>
     </div>
     <div id="coopBattleLog" style="width:100%;text-align:left;min-height:100px;background:rgba(255,255,255,.02);border-radius:12px;padding:10px;margin-bottom:8px;"></div>
-    <button class="btn btn-ghost" onclick="goTo(SCR.BOSS_VICTORY)" style="width:auto;padding:8px 24px;font-size:12px;" id="coopSkipBtn">Skip</button>
-    <button class="btn btn-primary" onclick="goTo(SCR.BOSS_VICTORY)" id="coopContinueBtn" style="opacity:0;transition:opacity 1s;">Claim Rewards</button>
+    <button class="btn btn-ghost" onclick="handleCoopEnd()" style="width:auto;padding:8px 24px;font-size:12px;" id="coopSkipBtn">Skip</button>
+    <button class="btn btn-primary" onclick="handleCoopEnd()" id="coopContinueBtn" style="opacity:0;transition:opacity 1s;">Claim Rewards</button>
   </div>
 </div>
 
@@ -1587,6 +1587,10 @@ function showEvolvePopup(fromStage, toStage){
 
 function closeEvolvePopup(){
   document.getElementById('evolvePopup').style.display='none';
+  // After boss 10 evolve, go straight to Day 10 milestone (blind box + holographic card)
+  if(currentBossLevel===10 && evolveStage>=3){
+    goTo(SCR.DAY10_MILESTONE);
+  }
 }
 
 function updateAllCharImages(){
@@ -2141,7 +2145,26 @@ function closeBossPopupAndFightSolo(){
   if(popup)popup.style.display='none';
   bossPopupTimers.forEach(function(t){clearTimeout(t);});
   bossPopupTimers=[];
-  // Go directly to boss victory with reduced rewards (solo)
+  // Boss 10: skip victory screen, go straight to evolve → Day10 Milestone
+  if(currentBossLevel===10){
+    if(questDay<=10) questDay=10;
+    if(evolveStage<3) showEvolvePopup(2,3);
+    else goTo(SCR.DAY10_MILESTONE);
+    return;
+  }
+  // Boss 5: normal victory screen flow
+  setupBossVictory();
+  goTo(SCR.BOSS_VICTORY);
+}
+
+// === CO-OP BATTLE END (skip/claim) ===
+function handleCoopEnd(){
+  if(currentBossLevel===10){
+    if(questDay<=10) questDay=10;
+    if(evolveStage<3) showEvolvePopup(2,3);
+    else goTo(SCR.DAY10_MILESTONE);
+    return;
+  }
   setupBossVictory();
   goTo(SCR.BOSS_VICTORY);
 }

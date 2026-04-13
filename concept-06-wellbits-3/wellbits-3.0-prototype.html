@@ -1025,7 +1025,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
         <div id="bossPopupMonsterSprite" style="width:90px;height:90px;border-radius:50%;background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.25);display:flex;align-items:center;justify-content:center;">
           <img src="Assets/Monsters/SNACK GREMLIN.png" style="width:64px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:monsterIdle 2.5s ease-in-out infinite;">
         </div>
-        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-top:6px;">Snack Gremlin</div>
+        <div id="bossPopupMonsterName" style="font-size:11px;font-weight:700;color:var(--coral);margin-top:6px;">Snack Gremlin</div>
       </div>
     </div>
 
@@ -1898,6 +1898,12 @@ function tryFightBoss(){
     var bKey=String(currentBossLevel);
     if(bIM[bKey]){bossPopupMon.innerHTML='<img src="'+bIM[bKey]+'" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
     else{bossPopupMon.innerHTML='<div style="font-size:60px;">'+bEM[bKey]+'</div>';}
+  }
+  // Update boss monster name in popup
+  var bossPopupNameEl=document.getElementById('bossPopupMonsterName');
+  if(bossPopupNameEl){
+    var bNM4={5:'Snack Gremlin',10:'Captain Couch',15:'Greasy Gary',20:'Captain Couch'};
+    bossPopupNameEl.textContent=bNM4[currentBossLevel]||'Snack Gremlin';
   }
   // Reset
   var log=document.getElementById('bossPopupLog');

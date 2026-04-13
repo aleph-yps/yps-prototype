@@ -1042,13 +1042,24 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <!-- Battle log lines -->
     <div id="bossPopupLog" style="width:100%;min-height:100px;text-align:left;padding:0 8px;"></div>
 
-    <!-- Post-battle message (hidden initially) -->
+    <!-- Post-battle message: SOLO (hidden initially) -->
     <div id="bossPopupResult" style="display:none;text-align:center;width:100%;margin-top:16px;">
-      <div style="background:rgba(132,94,247,.08);border:1px solid rgba(132,94,247,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
-        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--violet);margin-bottom:4px;">Ready to fight!</div>
-        <div style="font-size:12px;color:var(--text-dim);">Take on this boss and claim your rewards.</div>
+      <!-- Solo result -->
+      <div id="bossResultSolo" style="display:none;">
+        <div style="background:rgba(132,94,247,.08);border:1px solid rgba(132,94,247,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--violet);margin-bottom:4px;">Ready to fight!</div>
+          <div style="font-size:12px;color:var(--text-dim);">Take on this boss and claim your rewards.</div>
+        </div>
+        <button class="btn btn-primary" onclick="closeBossPopupAndFightSolo()" style="width:100%;">⚔️ Fight Boss</button>
       </div>
-      <button class="btn btn-primary" onclick="closeBossPopupAndFightSolo()" style="width:100%;">⚔️ Fight Boss</button>
+      <!-- Ally result -->
+      <div id="bossResultAlly" style="display:none;">
+        <div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--coral);margin-bottom:4px;">You need your ally!</div>
+          <div style="font-size:12px;color:var(--text-dim);">This boss is too strong alone. Send a notification to your quest ally!</div>
+        </div>
+        <button class="btn btn-primary" onclick="closeBossPopupAndNotifyAlly()" style="width:100%;">📩 Send notification to ally</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2081,6 +2092,15 @@ function showBossPopupResult(){
   var skip=document.getElementById('bossPopupSkip');
   if(skip)skip.style.display='none';
   var result=document.getElementById('bossPopupResult');
+  var soloR=document.getElementById('bossResultSolo');
+  var allyR=document.getElementById('bossResultAlly');
+  if(allyType){
+    soloR.style.display='none';
+    allyR.style.display='block';
+  } else {
+    soloR.style.display='block';
+    allyR.style.display='none';
+  }
   if(result){result.style.display='block';result.style.opacity='0';setTimeout(function(){result.style.transition='opacity .4s';result.style.opacity='1';},50);}
 }
 function skipBossBattle(){
@@ -2119,6 +2139,16 @@ function closeBossPopupAndFightSolo(){
   // Go directly to boss victory with reduced rewards (solo)
   setupBossVictory();
   goTo(SCR.BOSS_VICTORY);
+}
+
+// === ALLY BOSS FIGHT — notify ally then co-op ===
+function closeBossPopupAndNotifyAlly(){
+  var popup=document.getElementById('bossBattlePopup');
+  if(popup)popup.style.display='none';
+  bossPopupTimers.forEach(function(t){clearTimeout(t);});
+  bossPopupTimers=[];
+  // Go to transition screen → parent alert → co-op battle
+  goTo(SCR.TRANSITION);
 }
 
 // === GEM ACTIVATE ===

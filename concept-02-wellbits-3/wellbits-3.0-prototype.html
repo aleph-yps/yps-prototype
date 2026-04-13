@@ -1172,6 +1172,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div class="lb-row" style="opacity:.5;transform:scale(.97);"><div class="lb-rank bronze">3</div><div class="lb-av">🎮</div><div class="lb-info"><div class="lb-name">Priya</div><div class="lb-stat">580 pts</div></div><div class="lb-pts">580</div></div>
     </div>
 
+    <button class="btn btn-primary" id="bossEvolveBtn" onclick="triggerBossEvolve()" style="display:none;width:100%;background:linear-gradient(135deg,var(--violet),var(--blue));box-shadow:0 0 16px rgba(132,94,247,.3);animation:slideUp .5s ease-out 1.6s both;">Next →</button>
     <button class="btn btn-primary" onclick="goTo(SCR.PROFILE)" id="bossVicBtn1" style="width:100%;">Equip gear</button>
     <button class="btn btn-ghost" onclick="goTo(SCR.QUEST_MAP)" id="bossVicBtn2" style="width:100%;margin-top:8px;">Back to quest map</button>
     <button class="btn btn-primary" onclick="goTo(SCR.DAY10_MILESTONE)" id="bossVicBtn3" style="display:none;width:100%;margin-top:8px;">Quest Complete →</button>
@@ -1865,23 +1866,37 @@ function setupBossVictory(){
   const b1=document.getElementById('bossVicBtn1');
   const b2=document.getElementById('bossVicBtn2');
   const b3=document.getElementById('bossVicBtn3');
+  const evolveBtn=document.getElementById('bossEvolveBtn');
   g.style.display='none';p.style.display='none';
   b1.style.display='block';b2.style.display='block';b3.style.display='none';
+  evolveBtn.style.display='none';
   b2.onclick=function(){goTo(SCR.QUEST_MAP);};
   if(currentBossLevel===5){
     g.style.display='block'; // Day 5: Gacha Token reward
-    b1.style.display='block';
     b2.textContent='Back to quest map';
     if(evolveStage<2){
-      setTimeout(function(){showEvolvePopup(1,2);},1800);
+      evolveBtn.style.display='block';
+      b1.style.display='none';
+      b2.style.display='none';
     }
   } else if(currentBossLevel===10){
-    b1.style.display='block';
     b2.textContent='Back to quest map';
     if(evolveStage<3){
-      setTimeout(function(){showEvolvePopup(2,3);},1800);
+      evolveBtn.style.display='block';
+      b1.style.display='none';
+      b2.style.display='none';
     }
   }
+}
+function triggerBossEvolve(){
+  document.getElementById('bossEvolveBtn').style.display='none';
+  if(currentBossLevel===5&&evolveStage<2){
+    showEvolvePopup(1,2);
+  } else if(currentBossLevel===10&&evolveStage<3){
+    showEvolvePopup(2,3);
+  }
+  document.getElementById('bossVicBtn1').style.display='block';
+  document.getElementById('bossVicBtn2').style.display='block';
 }
 function setBossImage(name){
   const bossImgMap={'Snack Gremlin':'Assets/Monsters/SNACK GREMLIN.png','Captain Couch':'Assets/Monsters/Captain Couch.png','Greasy Gary':'Assets/Monsters/Greasy Gary .png'};

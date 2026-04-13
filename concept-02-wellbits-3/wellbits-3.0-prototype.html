@@ -1872,6 +1872,10 @@ function showDayChallenge(day){
 
 let currentBossLevel=5;
 function setupBossVictory(){
+  // Advance questDay past the boss level so quest map updates
+  if(currentBossLevel===5 && questDay<=5) questDay=5;
+  if(currentBossLevel===10 && questDay<=10) questDay=10;
+
   const g=document.getElementById('gachaRewardBox');
   const p=document.getElementById('physicalRewardBox');
   const b1=document.getElementById('bossVicBtn1');

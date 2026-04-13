@@ -869,8 +869,18 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;"><div style="width:71%;height:100%;background:var(--violet);border-radius:4px;box-shadow:0 0 8px var(--violet-glow);transition:width 1.5s ease-out;"></div></div>
     </div>
 
+    <div id="questCompleteLB" style="width:100%;margin-bottom:16px;animation:slideUp .5s ease-out 1.5s both;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--text-dim);">Leaderboard</div>
+        <div id="rankUpBadge" style="font-size:10px;font-weight:700;color:var(--mint);background:rgba(81,207,102,.12);padding:2px 8px;border-radius:10px;display:none;">↑ Rank up!</div>
+      </div>
+      <div class="lb-row" style="opacity:.5;transform:scale(.97);"><div class="lb-rank gold">1</div><div class="lb-av">🏆</div><div class="lb-info"><div class="lb-name">Wei Jie</div><div class="lb-stat">850 pts</div></div><div class="lb-pts">850</div></div>
+      <div class="lb-row me" style="border-color:rgba(81,207,102,.4);box-shadow:0 0 12px rgba(81,207,102,.15);"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbCompleteImg" src="Assets/Characters/AURA.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat" id="lbCompleteStats">Lvl 3 · <span style="color:var(--mint);font-weight:700;">630 pts</span> <span style="color:var(--mint);font-size:9px;">+10</span></div></div><div class="lb-pts" style="color:var(--mint);">630</div></div>
+      <div class="lb-row" style="opacity:.5;transform:scale(.97);"><div class="lb-rank bronze">3</div><div class="lb-av">🎮</div><div class="lb-info"><div class="lb-name">Priya</div><div class="lb-stat">580 pts</div></div><div class="lb-pts">580</div></div>
+    </div>
+
     <button class="btn btn-primary" onclick="goTo(SCR.PROFILE)">Equip Now</button>
-    <button class="btn btn-ghost" onclick="goTo(SCR.LEADERBOARD)" style="margin-top:8px;">View Leaderboard</button>
+    <button class="btn btn-ghost" onclick="goTo(SCR.LEADERBOARD)" style="margin-top:8px;">View Full Leaderboard</button>
   </div>
 </div>
 
@@ -1152,6 +1162,16 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
       </div>
     </div>
 
+    <div id="bossCompleteLB" style="width:100%;margin-bottom:16px;animation:slideUp .5s ease-out 1.4s both;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--text-dim);">Leaderboard</div>
+        <div id="bossRankUpBadge" style="font-size:10px;font-weight:700;color:var(--mint);background:rgba(81,207,102,.12);padding:2px 8px;border-radius:10px;">↑ +50 pts!</div>
+      </div>
+      <div class="lb-row" style="opacity:.5;transform:scale(.97);"><div class="lb-rank gold">1</div><div class="lb-av">🏆</div><div class="lb-info"><div class="lb-name">Wei Jie</div><div class="lb-stat">850 pts</div></div><div class="lb-pts">850</div></div>
+      <div class="lb-row me" style="border-color:rgba(81,207,102,.4);box-shadow:0 0 12px rgba(81,207,102,.15);"><div class="lb-rank silver">2</div><div class="lb-av"><img id="lbBossImg" src="Assets/Characters/AURA.png" style="width:24px;height:24px;object-fit:contain;"></div><div class="lb-info"><div class="lb-name">Ethan <span style="font-size:9px;color:var(--violet);">You</span></div><div class="lb-stat">Lvl 3 · <span style="color:var(--mint);font-weight:700;">670 pts</span> <span style="color:var(--mint);font-size:9px;">+50</span></div></div><div class="lb-pts" style="color:var(--mint);">670</div></div>
+      <div class="lb-row" style="opacity:.5;transform:scale(.97);"><div class="lb-rank bronze">3</div><div class="lb-av">🎮</div><div class="lb-info"><div class="lb-name">Priya</div><div class="lb-stat">580 pts</div></div><div class="lb-pts">580</div></div>
+    </div>
+
     <button class="btn btn-primary" onclick="goTo(SCR.PROFILE)" id="bossVicBtn1" style="width:100%;">Equip gear</button>
     <button class="btn btn-ghost" onclick="goTo(SCR.QUEST_MAP)" id="bossVicBtn2" style="width:100%;margin-top:8px;">Back to quest map</button>
     <button class="btn btn-primary" onclick="goTo(SCR.DAY10_MILESTONE)" id="bossVicBtn3" style="display:none;width:100%;margin-top:8px;">Quest Complete →</button>
@@ -1343,6 +1363,33 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   </div>
 </div>
 
+<div id="evolvePopup" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.9);z-index:100;flex-direction:column;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(12px);">
+  <div style="font-size:48px;margin-bottom:8px;" id="evolvePopupEmoji">✨</div>
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;background:var(--grad-celebration);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;" id="evolvePopupTitle">Character Evolved!</div>
+  <div style="font-size:12px;color:var(--text-dim);margin-bottom:20px;" id="evolvePopupSub">Your character has grown stronger!</div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+    <div style="text-align:center;opacity:.5;">
+      <div style="width:80px;height:80px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="evolveFromImg" src="" style="width:60px;height:auto;"></div>
+      <div style="font-size:8px;color:var(--text-muted);" id="evolveFromLabel">Stage 1</div>
+    </div>
+    <div style="font-size:20px;color:var(--gold);animation:glow-pulse 1.5s ease-in-out infinite;">→</div>
+    <div style="text-align:center;">
+      <div style="width:100px;height:100px;border-radius:50%;background:rgba(132,94,247,.12);border:2px solid var(--violet);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;box-shadow:0 0 20px rgba(132,94,247,.3);"><img id="evolveToImg" src="" style="width:76px;height:auto;filter:drop-shadow(0 4px 12px rgba(132,94,247,.4));"></div>
+      <div style="font-size:8px;color:var(--violet);font-weight:700;" id="evolveToLabel">Stage 2</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:20px;" id="evolveStageDots">
+    <div style="width:8px;height:8px;border-radius:50%;background:var(--mint);" id="eDot0"></div>
+    <div style="width:20px;height:2px;background:rgba(255,255,255,.15);"></div>
+    <div style="width:8px;height:8px;border-radius:50%;" id="eDot1"></div>
+    <div style="width:20px;height:2px;background:rgba(255,255,255,.15);"></div>
+    <div style="width:8px;height:8px;border-radius:50%;" id="eDot2"></div>
+    <div style="width:20px;height:2px;background:rgba(255,255,255,.15);"></div>
+    <div style="width:8px;height:8px;border-radius:50%;" id="eDot3"></div>
+  </div>
+  <button class="btn btn-primary" onclick="closeEvolvePopup()" style="width:80%;">Continue</button>
+</div>
+
 </div><!-- screen-wrap -->
 </div><!-- phone-frame -->
 </div><!-- phone-container -->
@@ -1484,6 +1531,59 @@ function advanceDay() {
 }
 let curScreen = 0;
 let evolved = false;
+let evolveStage = 1; // 1=teen (after onboarding evolve), 2=stage2 (after boss 5), 3=stage3 (after boss 10)
+
+function getCurrentCharImg(){
+  const c=characters[curChar];
+  if(evolveStage>=3) return c.stage3||c.teen;
+  if(evolveStage===2) return c.stage2||c.teen;
+  return c.stage1||c.teen;
+}
+
+function showEvolvePopup(fromStage, toStage){
+  const c=characters[curChar];
+  var fromImg, toImg, fromLabel, toLabel, title, sub;
+  if(toStage===2){
+    fromImg=c.stage1||c.teen;
+    toImg=c.stage2||c.teen;
+    fromLabel='Teen';
+    toLabel='Stage 2';
+    title=c.name+' evolved!';
+    sub='Defeating the boss unlocked a new form!';
+  } else if(toStage===3){
+    fromImg=c.stage2||c.teen;
+    toImg=c.stage3||c.teen;
+    fromLabel='Stage 2';
+    toLabel='Stage 3';
+    title=c.name+' evolved again!';
+    sub=c.name+' has reached their final form!';
+  }
+  document.getElementById('evolveFromImg').src=fromImg;
+  document.getElementById('evolveToImg').src=toImg;
+  document.getElementById('evolveFromLabel').textContent=fromLabel;
+  document.getElementById('evolveToLabel').textContent=toLabel;
+  document.getElementById('evolvePopupTitle').textContent=title;
+  document.getElementById('evolvePopupSub').textContent=sub;
+  var dotColors=['var(--mint)','var(--mint)','rgba(255,255,255,.15)','rgba(255,255,255,.15)'];
+  if(toStage>=2) dotColors[2]='var(--violet)';
+  if(toStage>=3) dotColors[3]='var(--gold)';
+  for(var i=0;i<4;i++){document.getElementById('eDot'+i).style.background=dotColors[i];}
+  document.getElementById('evolvePopup').style.display='flex';
+  evolveStage=toStage;
+  updateAllCharImages();
+}
+
+function closeEvolvePopup(){
+  document.getElementById('evolvePopup').style.display='none';
+}
+
+function updateAllCharImages(){
+  var img=getCurrentCharImg();
+  var ids=['dailyCharImg','coopHeroImg','topNavAvatar','battleHeroImg','profileCharImg','lbMyImg','lbCompleteImg','lbBossImg','bpCharImg','gachaCardImg','inviteCharImg','friendCharImg','parentCharImg','teamHeroImg','previewCharImg','allyPreviewHero'];
+  ids.forEach(function(id){try{document.getElementById(id).src=img;}catch(e){}});
+  try{document.getElementById('lbMyImg2').src=img;}catch(e){}
+  try{document.getElementById('lbBossImg').src=img;}catch(e){}
+}
 
 // === NAVIGATION ===
 function goTo(n){
@@ -1522,6 +1622,7 @@ function prevChar(){}
 function resetEvolve(){
   const c=characters[curChar];
   evolved=false;
+  evolveStage=0;
   document.getElementById('evolveBaby').src=c.baby;
   document.getElementById('evolveBaby').style.display='block';
   document.getElementById('evolveTeen').src=(c.stage1||c.teen);
@@ -1540,6 +1641,7 @@ function resetEvolve(){
 function evolveChar(){
   if(evolved)return;
   evolved=true;
+  evolveStage=1;
   const flash=document.getElementById('evolveFlash');
   flash.style.animation='evolveFlash .8s ease-out';
   setTimeout(()=>{
@@ -1569,45 +1671,49 @@ function updateAllScreens(){
     document.getElementById('dailyTypeLabel').textContent=typeMap[c.days[2].type]||'Solo challenge';
     document.getElementById('dailyChip').textContent='Day 3 · '+c.days[2].type;
   }
+  var charImg=getCurrentCharImg();
   // Invite screen
-  document.getElementById('inviteCharImg').src=(c.stage1||c.teen);
+  document.getElementById('inviteCharImg').src=charImg;
   // Friend ally screen
-  document.getElementById('friendCharImg').src=(c.stage1||c.teen);
+  document.getElementById('friendCharImg').src=charImg;
   // Parent screen
-  document.getElementById('parentCharImg').src=(c.stage1||c.teen);
+  document.getElementById('parentCharImg').src=charImg;
   // Team ready
-  document.getElementById('teamHeroImg').src=(c.stage1||c.teen);
+  document.getElementById('teamHeroImg').src=charImg;
   document.getElementById('teamHeroName').textContent=c.name;
   // Daily challenge
-  document.getElementById('dailyCharImg').src=(c.stage1||c.teen);
+  document.getElementById('dailyCharImg').src=charImg;
   // Boss battle names
   document.getElementById('bossBattleName1').textContent=c.name;
   // Co-op
-  document.getElementById('coopHeroImg').src=(c.stage1||c.teen);
+  document.getElementById('coopHeroImg').src=charImg;
   document.getElementById('coopHeroName').textContent=c.name;
   // These IDs may not exist in all screen configurations — guard against null
   var _el;
   _el=document.getElementById('coopBattleName1'); if(_el) _el.textContent=c.name;
   _el=document.getElementById('coopBattleName2'); if(_el) _el.textContent=c.name;
   // Top nav avatar
-  document.getElementById('topNavAvatar').src=(c.stage1||c.teen);
+  document.getElementById('topNavAvatar').src=charImg;
   // Battle + Profile
-  document.getElementById('battleHeroImg').src=(c.stage1||c.teen);
+  document.getElementById('battleHeroImg').src=charImg;
   document.getElementById('battleHeroName').textContent=c.name;
   _el=document.getElementById('animHeroName1'); if(_el) _el.textContent=c.name;
   _el=document.getElementById('animHeroName2'); if(_el) _el.textContent=c.name;
-  document.getElementById('profileCharImg').src=(c.stage1||c.teen);
+  document.getElementById('profileCharImg').src=charImg;
   document.getElementById('profileCharName').textContent=c.name;
   // Leaderboard
-  document.getElementById('lbMyImg').src=(c.stage1||c.teen);
-  try{document.getElementById('lbMyImg2').src=(c.stage1||c.teen);}catch(e){}
+  document.getElementById('lbMyImg').src=charImg;
+  try{document.getElementById('lbMyImg2').src=charImg;}catch(e){}
+  // Leaderboard (inline)
+  try{document.getElementById('lbCompleteImg').src=charImg;}catch(e){}
+  try{document.getElementById('lbBossImg').src=charImg;}catch(e){}
   // Backpack
-  document.getElementById('bpCharImg').src=(c.stage1||c.teen);
+  document.getElementById('bpCharImg').src=charImg;
   document.getElementById('bpCharName').textContent=c.name;
   // Gacha
-  document.getElementById('gachaCardImg').src=(c.stage1||c.teen);
+  document.getElementById('gachaCardImg').src=charImg;
   // Final
-  document.getElementById('finalCardImg').src=(c.stage1||c.teen);
+  document.getElementById('finalCardImg').src=(c.stage3||c.teen);
   document.getElementById('finalCardName').textContent=c.name;
   document.getElementById('finalBabyImg').src=c.baby;
   document.getElementById('finalTeenImg').src=(c.stage1||c.teen);
@@ -1700,7 +1806,7 @@ function allyCompletes(){
   document.getElementById('allyWaitingView').style.display='none';
   document.getElementById('bothCompleteView').style.display='block';
   const c=characters[curChar];
-  document.getElementById('bothHeroImg').src=(c.stage1||c.teen);
+  document.getElementById('bothHeroImg').src=getCurrentCharImg();
 }
 function showRewardsForDay(isAlly){
   document.getElementById('soloCompleteView').style.display=isAlly?'none':'block';
@@ -1708,7 +1814,7 @@ function showRewardsForDay(isAlly){
   document.getElementById('bothCompleteView').style.display='none';
   if(isAlly){
     const c=characters[curChar];
-    document.getElementById('allyCompleteHero').src=(c.stage1||c.teen);
+    document.getElementById('allyCompleteHero').src=getCurrentCharImg();
   }
   goTo(SCR.CHALLENGE_COMPLETE);
 }
@@ -1736,7 +1842,7 @@ function showDayChallenge(day){
   }
   document.getElementById('dailyChallengeText').textContent=challengeText;
   // Update character image
-  document.getElementById('dailyCharImg').src=(c.stage1||c.teen);
+  document.getElementById('dailyCharImg').src=getCurrentCharImg();
   // Ally avatar + note — hide in solo mode
   document.getElementById('dailyAllyAvatar').style.display=isAlly?'flex':'none';
   document.getElementById('dailyAllyNote').style.display=isAlly?'block':'none';
@@ -1766,10 +1872,15 @@ function setupBossVictory(){
     g.style.display='block'; // Day 5: Gacha Token reward
     b1.style.display='block';
     b2.textContent='Back to quest map';
+    if(evolveStage<2){
+      setTimeout(function(){showEvolvePopup(1,2);},1800);
+    }
   } else if(currentBossLevel===10){
-    // Day 10: Skip boss victory screen entirely, go straight to milestone
-    goTo(SCR.DAY10_MILESTONE);
-    return;
+    b1.style.display='block';
+    b2.textContent='Back to quest map';
+    if(evolveStage<3){
+      setTimeout(function(){showEvolvePopup(2,3);},1800);
+    }
   }
 }
 function setBossImage(name){
@@ -1815,13 +1926,13 @@ function showDayPreview(day){
     previewMode='completed';
     document.getElementById('dayCompletedView').style.display='block';
     document.getElementById('dayAllyView').style.display='none';
-    document.getElementById('previewCharImg').src=(c.stage1||c.teen);
+    document.getElementById('previewCharImg').src=getCurrentCharImg();
     if(c.days&&c.days[0]) document.getElementById('previewChallengeText').textContent=c.days[0].t;
   } else if(day===4){
     previewMode='ally';
     document.getElementById('dayCompletedView').style.display='none';
     document.getElementById('dayAllyView').style.display='block';
-    document.getElementById('allyPreviewHero').src=(c.stage1||c.teen);
+    document.getElementById('allyPreviewHero').src=getCurrentCharImg();
     if(c.days&&c.days[3]) document.getElementById('allyPreviewText').textContent=c.days[3].t;
   }
   goTo(SCR.DAY_PREVIEW);

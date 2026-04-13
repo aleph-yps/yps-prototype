@@ -79,6 +79,10 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 @keyframes attackShake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-4px)}20%,40%,60%,80%{transform:translateX(4px)}}
 @keyframes fadeInLine{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
 @keyframes evolveFlash{0%{opacity:0;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(1.5)}}
+@keyframes evolveFadeOut{0%{opacity:.5;transform:scale(1)}100%{opacity:0;transform:scale(.6)}}
+@keyframes evolveGlowBurst{0%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1.8)}100%{opacity:0;transform:scale(2.5)}}
+@keyframes evolveScaleIn{0%{opacity:0;transform:scale(0)}60%{opacity:1;transform:scale(1.15)}80%{transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
+@keyframes evolveRingExpand{0%{opacity:.8;transform:scale(.5);border-width:4px}100%{opacity:0;transform:scale(2.2);border-width:0}}
 @keyframes barFill{from{width:0}to{width:var(--fill)}}
 
 /* === S0: LANDING === */
@@ -649,6 +653,11 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 
   <div class="content" style="padding:92px 16px 24px;">
     <div class="mh"><h2>Quest Map</h2></div>
+    <!-- Wellbit goal -->
+    <div id="questGoalBar" style="text-align:center;margin-bottom:8px;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;line-height:1.3;" id="questGoalTitle">Aura wants to Glow Up!</div>
+      <div style="font-size:10px;color:var(--text-dim);line-height:1.4;max-width:280px;margin:4px auto 0;" id="questGoalDesc">Journey through the Crystal Caverns. Battle monsters that drain your glow.</div>
+    </div>
     <!-- Freeze card + companion bar -->
     <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:12px;">
       <div onclick="showFreezeCardMenu()" style="background:var(--bg-card);border:1px solid rgba(51,154,240,.2);border-radius:20px;padding:6px 16px;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);cursor:pointer;transition:all .2s;">🧊 <span id="freezeCardCount">0</span> Freeze Cards</div>
@@ -1375,19 +1384,46 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   </div>
 </div>
 
+<!-- GACHA TOKEN REWARD POPUP -->
+<div id="gachaTokenPopup" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.92);z-index:99;flex-direction:column;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(14px);">
+  <div style="animation:slideUp .6s ease-out;text-align:center;width:100%;">
+    <div style="width:100px;height:100px;border-radius:50%;margin:0 auto 16px;background:radial-gradient(circle,rgba(132,94,247,.25),rgba(132,94,247,.05));border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(132,94,247,.25),0 0 80px rgba(132,94,247,.1);animation:glow-pulse 2s ease-in-out infinite;">
+      <span style="font-size:52px;">🎰</span>
+    </div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad-celebration);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;">Gacha Token Earned!</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:20px;line-height:1.6;">You defeated the boss and earned a <b style="color:var(--violet);">Gacha Token</b>!</div>
+    <div style="background:linear-gradient(135deg,rgba(132,94,247,.1),rgba(51,154,240,.06));border:1.5px solid rgba(132,94,247,.25);border-radius:16px;padding:16px;width:100%;margin-bottom:12px;text-align:left;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--violet);margin-bottom:8px;">🎁 How to redeem</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.7;">
+        This is a <b style="color:var(--text);">physical reward</b> — not instant.<br><br>
+        Go to your <b style="color:var(--violet);">Profile → Rewards</b> to find your unique gacha code. Show it at any <b style="color:var(--text);">HPB partner location</b> to collect your gacha capsule!
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px 14px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:20px;">🏪</span>
+      <div style="font-size:10px;color:var(--text-muted);line-height:1.5;text-align:left;">Available at participating HPB outlets, community centres & partner gyms</div>
+    </div>
+    <button class="btn btn-primary" onclick="closeGachaTokenPopup()" style="width:100%;">Understood 👍</button>
+  </div>
+</div>
+
 <div id="evolvePopup" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.9);z-index:100;flex-direction:column;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(12px);">
   <div style="font-size:48px;margin-bottom:8px;" id="evolvePopupEmoji">✨</div>
   <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;background:var(--grad-celebration);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;" id="evolvePopupTitle">Character Evolved!</div>
   <div style="font-size:12px;color:var(--text-dim);margin-bottom:20px;" id="evolvePopupSub">Your character has grown stronger!</div>
-  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-    <div style="text-align:center;opacity:.5;">
-      <div style="width:80px;height:80px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;"><img id="evolveFromImg" src="" style="width:60px;height:auto;"></div>
-      <div style="font-size:8px;color:var(--text-muted);" id="evolveFromLabel">Stage 1</div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;position:relative;">
+    <div style="text-align:center;" id="evolveFromWrap">
+      <div style="width:80px;height:80px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;animation:evolveFadeOut 1.2s ease-in forwards .3s;"><img id="evolveFromImg" src="" style="width:60px;height:auto;"></div>
+      <div style="font-size:8px;color:var(--text-muted);animation:evolveFadeOut 1.2s ease-in forwards .3s;" id="evolveFromLabel">Stage 1</div>
     </div>
-    <div style="font-size:20px;color:var(--gold);animation:glow-pulse 1.5s ease-in-out infinite;">→</div>
-    <div style="text-align:center;">
-      <div style="width:100px;height:100px;border-radius:50%;background:rgba(132,94,247,.12);border:2px solid var(--violet);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;box-shadow:0 0 20px rgba(132,94,247,.3);"><img id="evolveToImg" src="" style="width:76px;height:auto;filter:drop-shadow(0 4px 12px rgba(132,94,247,.4));"></div>
-      <div style="font-size:8px;color:var(--violet);font-weight:700;" id="evolveToLabel">Stage 2</div>
+    <div style="font-size:20px;color:var(--gold);opacity:0;animation:evolveScaleIn .5s ease-out forwards .8s;">→</div>
+    <div style="text-align:center;position:relative;" id="evolveToWrap">
+      <!-- Glow burst behind new character -->
+      <div id="evolveGlowBurst" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.6),rgba(255,212,59,.3),transparent);opacity:0;animation:evolveGlowBurst 1s ease-out forwards 1.2s;pointer-events:none;z-index:0;"></div>
+      <!-- Expanding ring -->
+      <div id="evolveRing" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;border:4px solid rgba(132,94,247,.5);opacity:0;animation:evolveRingExpand 1s ease-out forwards 1.3s;pointer-events:none;z-index:0;"></div>
+      <div style="width:100px;height:100px;border-radius:50%;background:rgba(132,94,247,.12);border:2px solid var(--violet);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;box-shadow:0 0 20px rgba(132,94,247,.3);position:relative;z-index:1;opacity:0;animation:evolveScaleIn .8s cubic-bezier(.34,1.56,.64,1) forwards 1.2s;"><img id="evolveToImg" src="" style="width:76px;height:auto;filter:drop-shadow(0 4px 12px rgba(132,94,247,.4));"></div>
+      <div style="font-size:8px;color:var(--violet);font-weight:700;opacity:0;animation:evolveScaleIn .5s ease-out forwards 1.8s;" id="evolveToLabel">Stage 2</div>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:6px;margin-bottom:20px;" id="evolveStageDots">
@@ -1399,7 +1435,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="width:20px;height:2px;background:rgba(255,255,255,.15);"></div>
     <div style="width:8px;height:8px;border-radius:50%;" id="eDot3"></div>
   </div>
-  <button class="btn btn-primary" onclick="closeEvolvePopup()" style="width:80%;">Continue</button>
+  <button class="btn btn-primary" onclick="closeEvolvePopup()" style="width:80%;opacity:0;animation:evolveScaleIn .5s ease-out forwards 2.2s;" id="evolveContinueBtn">Continue</button>
 </div>
 
 </div><!-- screen-wrap -->
@@ -1587,9 +1623,29 @@ function showEvolvePopup(fromStage, toStage){
 
 function closeEvolvePopup(){
   document.getElementById('evolvePopup').style.display='none';
-  // After boss 10 evolve, go straight to Day 10 milestone (blind box + holographic card)
+  // After boss 10 evolve → Day 10 milestone (blind box + holographic card)
   if(currentBossLevel===10 && evolveStage>=3){
     goTo(SCR.DAY10_MILESTONE);
+    return;
+  }
+  // After boss 5 evolve → quest map
+  if(currentBossLevel===5 && evolveStage>=2){
+    goTo(SCR.QUEST_MAP);
+    return;
+  }
+}
+
+function showGachaTokenPopup(){
+  document.getElementById('gachaTokenPopup').style.display='flex';
+}
+
+function closeGachaTokenPopup(){
+  document.getElementById('gachaTokenPopup').style.display='none';
+  // After gacha popup → show evolve (stage 1→2) if not yet evolved
+  if(currentBossLevel===5 && evolveStage<2){
+    showEvolvePopup(1,2);
+  } else {
+    goTo(SCR.QUEST_MAP);
   }
 }
 
@@ -1748,6 +1804,11 @@ function buildQuestMap(c){
   const zoneIcons=['\u26f0\ufe0f','\ud83c\udf34'];
   const freezeDays=[3,6,9];
   const cur=questDay;
+  // Update quest goal
+  var goalTitle=document.getElementById('questGoalTitle');
+  var goalDesc=document.getElementById('questGoalDesc');
+  if(goalTitle && c.quest) goalTitle.innerHTML=c.quest;
+  if(goalDesc && c.questDesc) goalDesc.textContent=c.questDesc;
   // Update companion
   var compImg=document.getElementById('mapCompanionImg');
   var compName=document.getElementById('mapCompanionName');
@@ -2152,7 +2213,12 @@ function closeBossPopupAndFightSolo(){
     else goTo(SCR.DAY10_MILESTONE);
     return;
   }
-  // Boss 5: normal victory screen flow
+  // Boss 5: Gacha Token popup → Evolve → Quest map
+  if(currentBossLevel===5){
+    if(questDay<=5) questDay=5;
+    showGachaTokenPopup();
+    return;
+  }
   setupBossVictory();
   goTo(SCR.BOSS_VICTORY);
 }
@@ -2163,6 +2229,11 @@ function handleCoopEnd(){
     if(questDay<=10) questDay=10;
     if(evolveStage<3) showEvolvePopup(2,3);
     else goTo(SCR.DAY10_MILESTONE);
+    return;
+  }
+  if(currentBossLevel===5){
+    if(questDay<=5) questDay=5;
+    showGachaTokenPopup();
     return;
   }
   setupBossVictory();

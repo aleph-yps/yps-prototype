@@ -76,12 +76,6 @@
     box-shadow: 0 12px 40px rgba(0,0,0,0.12);
   }
 
-  .card-img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-  }
-
   .card-body {
     padding: 28px;
   }
@@ -98,18 +92,13 @@
   }
 
   .card:nth-child(1) .card-label {
-    background: #EBF5FF;
-    color: #2B7DE9;
+    background: #E6F7EE;
+    color: #2A8A6A;
   }
 
   .card:nth-child(2) .card-label {
-    background: #FFEEEE;
-    color: #E05252;
-  }
-
-  .card:nth-child(3) .card-label {
-    background: #F0EBFF;
-    color: #845EF7;
+    background: linear-gradient(135deg, #F0EBFF, #E8E0FF);
+    color: #6C3CE9;
   }
 
   .card-body h2 {
@@ -135,45 +124,8 @@
     transition: gap 0.2s ease;
   }
 
-  .card:nth-child(1) .card-cta { color: #2B7DE9; }
-  .card:nth-child(2) .card-cta { color: #E05252; }
-  .card:nth-child(3) .card-cta { color: #845EF7; }
-
-  /* Concept 3 image area - dark RPG purple */
-  .card-img-c3 {
-    width: 100%;
-    height: 280px;
-    background: linear-gradient(135deg, #0B0C1A 0%, #1A1B35 50%, #845EF7 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-img-c3::before {
-    content: '';
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(132,94,247,0.3) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .card-img-c3 .quest-icon {
-    position: relative;
-    z-index: 1;
-  }
-
-  .card-img-c3 .quest-icon img {
-    width: 180px;
-    height: auto;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(132,94,247,0.4);
-  }
+  .card:nth-child(1) .card-cta { color: #2A8A6A; }
+  .card:nth-child(2) .card-cta { color: #6C3CE9; }
 
   .card:hover .card-cta { gap: 10px; }
 
@@ -185,11 +137,9 @@
 
   .card:hover .card-cta svg { transform: translateX(2px); }
 
-  /* Concept 1 image area - dark blue gradient */
-  .card-img-c1 {
+  .card-img-area {
     width: 100%;
     height: 280px;
-    background: linear-gradient(135deg, #0f1b2d 0%, #1a3a5c 50%, #2B7DE9 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -197,76 +147,7 @@
     overflow: hidden;
   }
 
-  .card-img-c1::before {
-    content: '';
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(43,125,233,0.3) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .card-img-c1 .phone-mockup {
-    width: 120px;
-    height: 220px;
-    background: #111;
-    border-radius: 20px;
-    border: 3px solid #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .card-img-c1 .phone-mockup::before {
-    content: '';
-    width: 40px;
-    height: 5px;
-    background: #333;
-    border-radius: 3px;
-    position: absolute;
-    top: 10px;
-  }
-
-  .card-img-c1 .phone-screen {
-    width: 90%;
-    height: 80%;
-    border-radius: 12px;
-    background: linear-gradient(180deg, #1a3a5c, #0f1b2d);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px;
-  }
-
-  .card-img-c1 .phone-screen .bar {
-    width: 70%;
-    height: 4px;
-    background: rgba(43,125,233,0.5);
-    border-radius: 2px;
-  }
-
-  .card-img-c1 .phone-screen .bar:nth-child(2) { width: 50%; }
-
-  /* Concept 2 image area - warm red */
-  .card-img-c2 {
-    width: 100%;
-    height: 280px;
-    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #f5a623 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-img-c2::before {
+  .card-img-area::before {
     content: '';
     position: absolute;
     width: 250px;
@@ -278,105 +159,17 @@
     transform: translate(-50%, -50%);
   }
 
-  .card-img-c2 .box-icon {
+  .card-img-area .quest-icon {
     position: relative;
     z-index: 1;
   }
 
-  .card-img-c2 .box-icon .box-base {
-    width: 120px;
-    height: 80px;
-    background: white;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  }
-
-  .card-img-c2 .box-icon .box-lid {
-    width: 130px;
-    height: 20px;
-    background: #E05252;
-    border-radius: 6px 6px 0 0;
-    margin: 0 auto -4px;
-    transform: translateX(-5px) rotate(-3deg);
-    transform-origin: bottom left;
-  }
-
-  .card-img-c2 .box-icon .card-stack {
-    display: flex;
-    gap: 4px;
-    position: absolute;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .card-img-c2 .box-icon .mini-card {
-    width: 28px;
-    height: 38px;
-    border-radius: 4px;
-  }
-
-  .card-img-c2 .box-icon .mini-card:nth-child(1) {
-    background: linear-gradient(180deg, #f5a623, #4CAF50);
-  }
-
-  .card-img-c2 .box-icon .mini-card:nth-child(2) {
-    background: linear-gradient(180deg, #9b59b6, #2B7DE9);
-  }
-
-  .card-img-c4 {
-    width: 100%;
-    height: 280px;
-    background: linear-gradient(135deg, #0B0C1A 0%, #1a1040 50%, #6C3CE9 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-img-c4::before {
-    content: '';
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(108,60,233,0.4) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .card-img-c4 .quest-icon img {
+  .card-img-area .quest-icon img {
     width: 180px;
     height: auto;
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(108,60,233,0.4);
-    position: relative;
-    z-index: 1;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
   }
-
-  .card:nth-child(4) .card-label {
-    background: linear-gradient(135deg, #F0EBFF, #E8E0FF);
-    color: #6C3CE9;
-  }
-
-  .card:nth-child(4) .card-cta { color: #6C3CE9; }
-
-  .card:nth-child(5) .card-label {
-    background: #E6F7EE;
-    color: #2A8A6A;
-  }
-
-  .card:nth-child(5) .card-cta { color: #2A8A6A; }
-
-  .card:nth-child(6) .card-label {
-    background: linear-gradient(135deg, #F0EBFF, #E8E0FF);
-    color: #6C3CE9;
-  }
-
-  .card:nth-child(6) .card-cta { color: #6C3CE9; }
 
   @media (max-width: 900px) {
     .cards { flex-wrap: wrap; }
@@ -399,96 +192,15 @@
 
 <div class="cards">
 
-  <!-- Concept 1: Digital Challenge -->
-  <a class="card" href="concept-01-digital-challenge/Main Flow-digital-challenge.html">
-    <div class="card-img-c1">
-      <div class="phone-mockup">
-        <div class="phone-screen">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
+  <!-- Concept 1: Parent for Parent -->
+  <a class="card" href="concept-01-parent-for-parent/index.html">
+    <div class="card-img-area" style="background:linear-gradient(135deg,#2A8A6A,#45BE93)">
+      <div class="quest-icon">
+        <img src="concept-01-parent-for-parent/Assets/Images/pfp_icon.png" alt="Parent for Parent">
       </div>
     </div>
     <div class="card-body">
       <div class="card-label">Concept 1</div>
-      <h2>Digital Challenge</h2>
-      <p>A mobile-first wellness challenge experience. Complete daily tasks, earn streaks, and level up your wellbeing.</p>
-      <div class="card-cta">
-        Explore prototype
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </div>
-  </a>
-
-  <!-- Concept 2: Level Up Series -->
-  <a class="card" href="concept-02-level-up-series/level-up-prototype.html">
-    <div class="card-img-c2">
-      <div class="box-icon">
-        <div class="box-lid"></div>
-        <div class="box-base">
-          <div class="card-stack">
-            <div class="mini-card"></div>
-            <div class="mini-card"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-label">Concept 2</div>
-      <h2>Level Up Series</h2>
-      <p>A physical toolkit for families. Conversation cards, weekly challenges, and a magnetic scoreboard — all in one box.</p>
-      <div class="card-cta">
-        Explore prototype
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </div>
-  </a>
-
-  <!-- Concept 3: Quest Mode (Wellbits) -->
-  <a class="card" href="concept-03-quest-mode/quest-mode-prototype.html">
-    <div class="card-img-c3">
-      <div class="quest-icon">
-        <img src="concept-03-quest-mode/Icon/Icon.png" alt="Wellbits Characters">
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-label">Concept 3</div>
-      <h2>Wellbits — Quest Mode</h2>
-      <p>An RPG-style wellness adventure. Choose a character, fight unhealthy monsters, and invite your parent as a quest ally.</p>
-      <div class="card-cta">
-        Explore prototype
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </div>
-  </a>
-
-  <!-- Concept 4: Wellbits 2.0 -->
-  <a class="card" href="concept-04-wellbits-2/wellbits-2.0-prototype.html">
-    <div class="card-img-c4">
-      <div class="quest-icon">
-        <img src="concept-04-wellbits-2/Icon.png" alt="Wellbits 2.0">
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-label">Concept 4</div>
-      <h2>Wellbits 2.0</h2>
-      <p>The definitive merge. Pick your quest, choose your character, fight bosses with your ally, collect holographic cards and figurines.</p>
-      <div class="card-cta">
-        Explore prototype
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </div>
-  </a>
-
-  <a class="card" href="concept-05-parent-for-parent/index.html">
-    <div class="card-img-c4" style="background:linear-gradient(135deg,#2A8A6A,#45BE93)">
-      <div class="quest-icon">
-        <img src="concept-05-parent-for-parent/Assets/Images/pfp_icon.png" alt="Parent for Parent">
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-label">Concept 5</div>
       <h2>Parent for Parent</h2>
       <p>A mobile web experience for parents. Real stories, honest tips, and small shifts — matched to where you and your child actually are.</p>
       <div class="card-cta">
@@ -498,15 +210,15 @@
     </div>
   </a>
 
-  <!-- Concept 6: Wellbits 3.0 -->
-  <a class="card" href="concept-06-wellbits-3/wellbits-3.0-prototype.html">
-    <div class="card-img-c4">
+  <!-- Concept 2: Wellbits 3.0 -->
+  <a class="card" href="concept-02-wellbits-3/wellbits-3.0-prototype.html">
+    <div class="card-img-area" style="background:linear-gradient(135deg, #0B0C1A 0%, #1a1040 50%, #6C3CE9 100%)">
       <div class="quest-icon">
-        <img src="concept-06-wellbits-3/Icon.png" alt="Wellbits 3.0">
+        <img src="concept-02-wellbits-3/Icon.png" alt="Wellbits 3.0">
       </div>
     </div>
     <div class="card-body">
-      <div class="card-label">Concept 6</div>
+      <div class="card-label">Concept 2</div>
       <h2>Wellbits 3.0</h2>
       <p>The next evolution. Building on the Wellbits universe with refined gameplay, deeper quests, and an enhanced experience.</p>
       <div class="card-cta">

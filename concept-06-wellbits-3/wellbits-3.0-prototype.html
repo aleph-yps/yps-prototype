@@ -1787,8 +1787,9 @@ function showBossPreview(){
   currentBossLevel=5;
   const c=characters[curChar];
   if(c.days&&c.days[4]) document.getElementById('bossChallengeText').textContent=c.days[4].t;
-  document.getElementById('bossBattleName1').textContent='Snack Gremlin';
-  setBossImage('Snack Gremlin');
+  const bossName5=c.days[4]&&c.days[4].boss?c.days[4].boss:'Snack Gremlin';
+  document.getElementById('bossBattleName1').textContent=bossName5;
+  setBossImage(bossName5);
   if(c.zones) document.getElementById('bossZoneLabel').textContent=c.zones[0];
   document.getElementById('screenBossEncounter').style.background='linear-gradient(180deg,#2a0a0a 0%,#1a0505 50%,#0D0E1A 100%)';
   goTo(SCR.BOSS_ENCOUNTER);
@@ -1840,10 +1841,12 @@ function showBattlePopup(){
   const c=characters[curChar];
   const heroSprite=document.getElementById('battleHeroSprite');
   const monSprite=document.getElementById('battleMonSprite');
+  var bossNM2={5:'Snack Gremlin',10:'Captain Couch',15:'Greasy Gary',20:'Captain Couch'};
+  var curBN2=bossNM2[currentBossLevel]||'Snack Gremlin';
   const lines=[
     {t:'⚡ <b>'+c.name+'</b> uses <b>Healthy Choice!</b>',hp:75,delay:800,attack:'hero'},
-    {t:'💥 Snack Gremlin takes <b>25 damage!</b>',hp:75,delay:1600,attack:null},
-    {t:'🦠 Snack Gremlin tries to tempt you...',hp:75,delay:2800,attack:'monster'},
+    {t:'💥 '+curBN2+' takes <b>25 damage!</b>',hp:75,delay:1600,attack:null},
+    {t:'🦠 '+curBN2+' tries to tempt you...',hp:75,delay:2800,attack:'monster'},
     {t:'🛡️ <b>'+c.name+'</b> resists! <b>Counter attack!</b>',hp:40,delay:4000,attack:'hero'},
     {t:'💥 <b style="color:var(--gold);">Critical hit! -35 damage!</b>',hp:40,delay:5000,attack:null},
     {t:'⭐ <b style="color:var(--gold);">Monster weakened!</b>',hp:10,delay:6200,attack:null},
@@ -1890,8 +1893,8 @@ function tryFightBoss(){
   // Update boss monster image in popup
   var bossPopupMon=document.getElementById('bossPopupMonsterSprite');
   if(bossPopupMon){
-    var bIM={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
-    var bEM={'5':'👹','10':'🦥','15':'🍔','20':'🛋'};
+    var bIM={'5':'Assets/Monsters/SNACK GREMLIN.png','10':'Assets/Monsters/Captain Couch.png','15':'Assets/Monsters/Greasy Gary .png','20':'Assets/Monsters/Captain Couch.png'};
+    var bEM={'5':'👹','10':'🛋','15':'🍔','20':'🛋'};
     var bKey=String(currentBossLevel);
     if(bIM[bKey]){bossPopupMon.innerHTML='<img src="'+bIM[bKey]+'" style="width:80px;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">';}
     else{bossPopupMon.innerHTML='<div style="font-size:60px;">'+bEM[bKey]+'</div>';}
@@ -1956,10 +1959,12 @@ function skipBossBattle(){
   if(log){
     log.innerHTML='';
     var c=characters[curChar];
+    var bNM3={5:'Snack Gremlin',10:'Captain Couch',15:'Greasy Gary',20:'Captain Couch'};
+    var cBN3=bNM3[currentBossLevel]||'Snack Gremlin';
     var texts=[
       '\u26a1 <b>'+c.name+'</b> attacks!',
-      '\ud83d\udca5 Snack Gremlin takes <b>10 damage!</b>',
-      '\ud83d\udee1\ufe0f Snack Gremlin blocks! <b>Too strong!</b>',
+      '\ud83d\udca5 '+cBN3+' takes <b>10 damage!</b>',
+      '\ud83d\udee1\ufe0f '+cBN3+' blocks! <b>Too strong!</b>',
       '💪 <b>One more hit should do it!</b>'
     ];
     var colors=['#9CA3AF','#9CA3AF','var(--coral)','var(--gold)'];
@@ -2395,7 +2400,7 @@ function showCharacterPicker() {
   pickerIdx = 0;
   var overlay = document.createElement('div');
   overlay.id = 'charPickerPopup';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(13,14,26,.98);z-index:200;display:flex;flex-direction:column;overflow:hidden;';
+  overlay.style.cssText = 'position:absolute;inset:0;background:rgba(13,14,26,.98);z-index:200;display:flex;flex-direction:column;overflow:hidden;';
 
   var intros = [
     "\u201CAura cares about looks but doesn\u2019t know where to start \u2014 help this wellbit evolve.\u201D",
@@ -2462,7 +2467,7 @@ function showCharacterPicker() {
 
   h += '</div>';
   overlay.innerHTML = h;
-  document.body.appendChild(overlay);
+  document.querySelector('.phone-frame').appendChild(overlay);
 }
 
 function pickerNav(dir) {

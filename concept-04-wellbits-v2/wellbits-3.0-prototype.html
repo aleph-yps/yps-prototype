@@ -1894,13 +1894,13 @@ function buildQuestMap(c){
   // V2: Update map name header (single zone for current 10-day map)
   var mapNameEl=document.getElementById('mapName');
   if(mapNameEl && c.zones && c.zones[0]) mapNameEl.textContent=c.zones[0];
-  // V2: Quest goal combines character quest name (title) + 30-day framing (subtitle)
+  // V2: Quest goal combines character quest name (title) + intuitive "outcome by fixing area" (subtitle)
   const questGoals30 = {
-    'Aura':'Help this Wellbit get its glow back in 30 days',
-    'Titan':'Help this Wellbit build real strength in 30 days',
-    'Sage':'Help this Wellbit level up its nutrition in 30 days',
-    'Spark':'Help this Wellbit get its energy back in 30 days',
-    'Luna':'Help this Wellbit fix its sleep in 30 days'
+    'Aura':'Help this Wellbit get its glow by fixing its skincare in 30 days',
+    'Titan':'Help this Wellbit get strong by fixing its fitness in 30 days',
+    'Sage':'Help this Wellbit eat smart by fixing its diet in 30 days',
+    'Spark':'Help this Wellbit get its energy back by fixing its habits in 30 days',
+    'Luna':'Help this Wellbit sleep better by fixing its bedtime in 30 days'
   };
   var goalTitle=document.getElementById('questGoalTitle');
   var goalDesc=document.getElementById('questGoalDesc');
@@ -2560,16 +2560,16 @@ function assignCharFromQuiz() {
     4: "\u201CLuna hasn\u2019t slept before midnight in weeks, and it\u2019s starting to show \u2014 help this wellbit evolve.\u201D"
   };
   document.getElementById('assignedCharIntro').textContent = intros[best];
-  // V2: Populate quest goal with youth-relatable 30-day framing
+  // V2: Populate quest goal with intuitive "outcome by fixing area" framing
   const questGoals = {
-    0:'Help this Wellbit get its glow back in 30 days!',
-    1:'Help this Wellbit build real strength in 30 days!',
-    2:'Help this Wellbit level up its nutrition in 30 days!',
-    3:'Help this Wellbit get its energy back in 30 days!',
-    4:'Help this Wellbit fix its sleep in 30 days!'
+    0:'Help this Wellbit get its glow by fixing its skincare in 30 days',
+    1:'Help this Wellbit get strong by fixing its fitness in 30 days',
+    2:'Help this Wellbit eat smart by fixing its diet in 30 days',
+    3:'Help this Wellbit get its energy back by fixing its habits in 30 days',
+    4:'Help this Wellbit sleep better by fixing its bedtime in 30 days'
   };
   const questGoalEl = document.getElementById('assignedQuestGoal');
-  if(questGoalEl) questGoalEl.textContent = questGoals[best] || 'Help this Wellbit evolve in 30 days!';
+  if(questGoalEl) questGoalEl.textContent = questGoals[best] || 'Help this Wellbit evolve in 30 days';
   updateAssignedStats(c);
   updateAllScreens();
   goTo(SCR.CHAR_ASSIGN);

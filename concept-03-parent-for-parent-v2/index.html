@@ -145,6 +145,19 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 .finput{width:100%;padding:13px 15px;border:2px solid var(--line);border-radius:14px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;background:white;margin-bottom:16px;transition:border-color .15s}
 .finput:focus{border-color:var(--brand);background:white}
 .srow{display:flex;flex-direction:column;gap:8px}
+/* v2: Bottom nav */
+.bnav{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 6px 22px;z-index:100}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;color:var(--ink3);transition:color .15s;background:transparent;border:none;font-family:inherit}
+.bnav-item.active{color:var(--brand)}
+.bnav-lbl{font-size:10px;font-weight:700;line-height:1;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.with-bnav{padding-bottom:78px !important}
+/* v2: Pin button on challenges */
+.pin-btn{background:transparent;border:none;padding:6px;cursor:pointer;color:var(--ink3);display:flex;align-items:center;justify-content:center;border-radius:8px;transition:all .15s;flex-shrink:0}
+.pin-btn:active{transform:scale(.9)}
+.pin-btn.on{color:var(--brand);background:var(--brand-lt)}
+/* v2: Quick tip pill */
+.quick-tip-pill{display:inline-flex;align-items:center;gap:6px;background:var(--brand);color:white;border:none;border-radius:22px;padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 12px rgba(69,190,147,.35);transition:transform .12s}
+.quick-tip-pill:active{transform:scale(.97)}
 .snap-chip{padding:9px 14px;border:1.5px solid var(--line);border-radius:20px;background:white;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink2);transition:all .12s}
 .snap-chip.sel{border-color:var(--brand);background:var(--brand-lt);color:var(--brand)}
 .snap-chip:active{transform:scale(.96)}
@@ -540,26 +553,35 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <div class="screen" id="slanding" style="background:var(--bg)">
   <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div id="ct-land" class="ct-land" style="position:relative;top:auto;left:auto;right:auto"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-land"></div></div></div>
-  <div style="flex:1;overflow-y:auto;padding:20px 22px 40px">
-    <div class="phd" id="land-h">Where is your family right now?</div>
+  <div class="with-bnav" style="flex:1;overflow-y:auto;padding:20px 22px 40px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:6px">
+      <div style="flex:1;min-width:0">
+        <div class="phd" id="land-h" style="margin-bottom:5px">Where is your family right now?</div>
+      </div>
+      <button class="quick-tip-pill" onclick="quickTip()" title="I just want a tip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Just a tip</button>
+    </div>
     <div class="psd">Pick your child's stage. We'll show you what other parents in the same place actually tried.</div>
+    <div id="land-pinned"></div>
     <div class="tcards">
       <div class="tc tca" onclick="pickT(1)"><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#45BE93;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 1</div><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">&#8250;</div></div>
       <div class="tc tcb" onclick="pickT(2)"><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#4A90D9;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 2–3</div><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">&#8250;</div></div>
       <div class="tc tcc" onclick="pickT(3)"><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#8B5CF6;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">JC / Poly</div><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">&#8250;</div></div>
     </div>
   </div>
+  <div id="slanding-bnav"></div>
 </div>
 
 <!-- CHALLENGES (schall) -->
 <div class="screen" id="schall" style="background:var(--bg)">
   <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('s-selfcheck')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div id="ct-ch" style="display:none"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-ch"></div></div></div>
-  <div class="chw">
-    <div class="f-h" style="margin-bottom:16px;font-size:24px;text-align:left;font-weight:700">What's on your mind?</div>
+  <div class="chw with-bnav">
+    <div class="f-h" style="margin-bottom:6px;font-size:24px;text-align:left;font-weight:700">What's on your mind?</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:4px">Tap <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 1px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> to pin a topic for later</div>
     <div class="chlist" id="chlist"></div>
     <div class="proof-bar" style="justify-content:center;margin-top:16px;padding:0"><span id="proof-txt"></span></div>
   </div>
+  <div id="schall-bnav"></div>
 </div>
 
 <!-- SELF-CHECK: Context Cards (spov) -->
@@ -607,7 +629,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <!-- STARTER KIT -->
 <div class="screen flat" id="s-shifts">
   <div class="app-bar"><button class="app-back" onclick="go('svideo')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
-  <div class="flat-scroll">
+  <div class="flat-scroll with-bnav">
     <div class="f-pill"><div class="f-pill-dot"></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg> Starter Kit</div>
     <div class="f-h">Things you want to try</div>
     <div class="f-sub" style="margin-bottom:16px">Tick what feels doable. One is enough to start.</div>
@@ -618,6 +640,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
       <a style="font-size:13px;color:var(--brand);font-weight:700;text-decoration:none;cursor:pointer">See related HPB resources &#8594;</a>
     </div>
   </div>
+  <div id="s-shifts-bnav"></div>
 </div>
 
 <!-- GROUNDING PLAYER -->
@@ -649,11 +672,17 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
   <div class="linner">
     <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">&#9650;&#9650; WiFi <svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><rect x="1" y="1" width="18" height="12" rx="2"/><line x1="23" y1="5" x2="23" y2="9"/><rect x="3" y="3" width="6" height="8" rx="1" fill="currentColor"/></svg></span></div>
     <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Sunday, 30 March</div><div><span class="lbadge">One week on</span></div></div>
-    <div class="lnotif" onclick="go('swaci')">
-      <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
-      <div class="nb"><div class="nr"><span class="na">Parent for Parent</span><span class="nw">now</span></div><div class="nt">Just checking in</div><div class="nm">No pressure to reply. Tap if you want to — or swipe to skip this week.</div></div>
+    <div class="lnotif" style="flex-direction:column;align-items:stretch;padding:0;overflow:hidden;cursor:default">
+      <div onclick="go('swaci')" style="display:flex;gap:11px;align-items:flex-start;padding:12px 14px;cursor:pointer">
+        <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
+        <div class="nb"><div class="nr"><span class="na">Parent for Parent</span><span class="nw">now</span></div><div class="nt">Just checking in</div><div class="nm">No pressure to reply.</div></div>
+      </div>
+      <div style="display:flex;border-top:1px solid rgba(0,0,0,.08)">
+        <button onclick="go('swaci')" style="flex:1;padding:12px;background:transparent;border:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer">Open</button>
+        <div style="width:1px;background:rgba(0,0,0,.08)"></div>
+        <button onclick="skipThisWeek(event)" style="flex:1;padding:12px;background:transparent;border:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer">Skip this week</button>
+      </div>
     </div>
-    <div class="breakopt"><p class="breaktxt">Life got busy? <span class="breaklink" onclick="showBreak()">Pause for a month — no pressure.</span></p></div>
   </div>
 </div>
 
@@ -853,6 +882,88 @@ const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my 
   empathy:'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.',
   tips:[{g:'g-coral',icon:'lightbulb',tonight:true,h:'Try one thing you haven\'t tried before.',b:'Put your own phone down first. Ask one question and stop there. Small shifts change the tone.',why:'Willingness to try something different is the beginning of the change.'},{g:'g-forest',icon:'eye',tonight:false,h:'Name what you see, not what you want changed.',b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open.'},{g:'g-violet',icon:'calendar',tonight:false,h:'Once a week is enough to start.',b:'One good moment a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust.'}]};
 
+// ═══ v2: Pinned topics + Bottom Nav ═══
+let pinnedTopics=[];
+try{const _pt=localStorage.getItem('pfp-pinned');if(_pt)pinnedTopics=JSON.parse(_pt);}catch(e){}
+function savePinned(){try{localStorage.setItem('pfp-pinned',JSON.stringify(pinnedTopics));}catch(e){}}
+function isPinned(t,wellId){return pinnedTopics.some(p=>p.t===t&&p.well===wellId);}
+function togglePin(t,wellId,desc,icon,color,ev){
+  if(ev){ev.stopPropagation();}
+  const idx=pinnedTopics.findIndex(p=>p.t===t&&p.well===wellId);
+  if(idx>=0){pinnedTopics.splice(idx,1);}
+  else{if(pinnedTopics.length>=2){pinnedTopics.shift();}pinnedTopics.push({t,well:wellId,desc,icon,color});}
+  savePinned();
+  if(document.getElementById('chlist'))loadChallenges(T);
+  if(document.getElementById('land-pinned'))renderLandingPinned();
+  return false;
+}
+function openPinned(p){
+  T=p.t;
+  const ci=CHALLENGES[p.t]?.findIndex(c=>c.well===p.well);
+  I=ci>=0?ci:0;TITLE=p.desc;
+  loadChallenges(p.t);setSelfCheck(p.t);loadPOV();
+}
+function bnav(active){
+  const name=children[activeChild]?.name||'family';
+  const shortName=name.length>9?name.substring(0,8)+'\u2026':name;
+  return `<div class="bnav">
+    <button class="bnav-item ${active==='home'?'active':''}" onclick="go('slanding')">${lucide('home',18,'currentColor')}<div class="bnav-lbl">Home</div></button>
+    <button class="bnav-item ${active==='child'?'active':''}" onclick="bnavChild()">${lucide('users',18,'currentColor')}<div class="bnav-lbl">For ${shortName}</div></button>
+    <button class="bnav-item ${active==='saved'?'active':''}" onclick="bnavSaved()">${lucide('bookmark',18,'currentColor')}<div class="bnav-lbl">Saved</div></button>
+    <button class="bnav-item ${active==='checkin'?'active':''}" onclick="go('slater')">${lucide('message-circle',18,'currentColor')}<div class="bnav-lbl">Check-in</div></button>
+  </div>`;
+}
+function bnavChild(){
+  if(children[activeChild]?.stage){T=children[activeChild].stage;loadChallenges(T);go('schall');}
+  else go('slanding');
+}
+function bnavSaved(){if(kitItems.length>0||true)go('s-shifts');}
+function renderLandingPinned(){
+  const wrap=document.getElementById('land-pinned');
+  if(!wrap)return;
+  if(pinnedTopics.length===0){wrap.innerHTML='';return;}
+  wrap.innerHTML=`
+    <div style="background:linear-gradient(165deg,#FFF8F0,#FDF0E0);border:1px solid #F0D8BC;border-radius:18px;padding:16px 18px;margin:14px 0 20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        ${lucide('bookmark',14,'#A8553A')}
+        <div style="font-size:11px;font-weight:800;color:#A8553A;text-transform:uppercase;letter-spacing:.5px">Pinned for later</div>
+      </div>
+      ${pinnedTopics.map(p=>`
+        <div onclick="openPinned(${JSON.stringify(p).replace(/"/g,'&quot;')})" style="background:white;border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.04)">
+          <div style="width:32px;height:32px;border-radius:10px;background:${p.color}12;display:flex;align-items:center;justify-content:center;color:${p.color};flex-shrink:0">${lucide(p.icon||'bookmark',16,p.color)}</div>
+          <div style="flex:1;font-size:13px;font-weight:700;color:var(--ink);line-height:1.35">${p.desc}</div>
+          <div style="color:var(--ink3);font-size:18px">\u203A</div>
+        </div>`).join('')}
+    </div>`;
+}
+function skipThisWeek(ev){
+  if(ev){ev.stopPropagation();}
+  // Dismiss the notification with a confirmation toast
+  const notif=document.querySelector('#slater .lnotif');
+  if(notif){
+    notif.innerHTML=`<div style="padding:22px 18px;text-align:center;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--brand-lt);color:var(--brand);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">${lucide('check',20,'var(--brand)')}</div>
+      <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:4px">Skipped for this week</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.5">We'll check back next week. No catch-up needed.</div>
+    </div>`;
+    notif.style.cursor='default';
+  }
+  return false;
+}
+function quickTip(){
+  // "I just want a tip" — skip to a random topic's first tip
+  const stage=children[activeChild]?.stage||T||1;
+  T=stage;
+  const list=CHALLENGES[stage]||CHALLENGES[1];
+  I=Math.floor(Math.random()*list.length);
+  TITLE=list[I].t;
+  loadChallenges(T);
+  buildVideoScreen();
+  tipData=(CONTENT[`${T}-${I}`]||DEFAULT).tips;
+  tipIdx=0;renderTip();
+  go('s-tips');
+}
+
 // ═══ v2: Child Snapshot + Tip Variants + Go Deeper ═══
 // Snapshot is set during intake (Phase 3). Default "mixed" until then.
 let childSnapshot={temperament:'mixed',pressure:null,conflict:null,tried:[]};
@@ -1038,6 +1149,13 @@ function go(id){
   document.getElementById(id).classList.add('active');
   if(id==='swaci')loadCheckin();
   if(id==='s-shifts')renderStarterKit();
+  // v2: inject bottom nav on home-level screens
+  const bnavMap={slanding:'home',schall:'child','s-shifts':'saved'};
+  if(id in bnavMap){
+    const slot=document.getElementById(`${id}-bnav`);
+    if(slot)slot.innerHTML=bnav(bnavMap[id]);
+  }
+  if(id==='slanding')renderLandingPinned();
 }
 function spovBack(){
   go('slanding');
@@ -1096,30 +1214,37 @@ const SNAP_Q=[
   ]}
 ];
 let snapDraft={};
+let snapStep=0;
 function buildSnapshot(){
   snapDraft={temperament:childSnapshot.temperament==='mixed'?null:childSnapshot.temperament,
              pressure:childSnapshot.pressure,conflict:childSnapshot.conflict,
              tried:Array.isArray(childSnapshot.tried)?[...childSnapshot.tried]:[]};
+  snapStep=0;
+  renderSnapStep();
+}
+function renderSnapStep(){
   const name=children[activeChild]?.name||'your child';
-  const qHtml=SNAP_Q.map((q,qi)=>{
-    const chips=q.opts.map(o=>{
-      const sel=q.multi?snapDraft[q.key]?.includes(o.v):snapDraft[q.key]===o.v;
-      return `<button class="snap-chip${sel?' sel':''}" data-k="${q.key}" data-v="${o.v}" data-m="${q.multi?1:0}" onclick="pickSnap(this)">${o.l}</button>`;
-    }).join('');
-    return `<div class="ccard" style="padding:20px">
-      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Question ${qi+1}${q.multi?'':''}</div>
-      <div style="font-size:15px;font-weight:800;color:var(--ink);line-height:1.4;margin-bottom:14px">${q.label.replace('{name}',name)}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px">${chips}</div>
-    </div>`;
+  const q=SNAP_Q[snapStep];
+  const total=SNAP_Q.length;
+  const chips=q.opts.map(o=>{
+    const sel=q.multi?snapDraft[q.key]?.includes(o.v):snapDraft[q.key]===o.v;
+    return `<button class="snap-chip${sel?' sel':''}" data-k="${q.key}" data-v="${o.v}" data-m="${q.multi?1:0}" onclick="pickSnap(this)">${o.l}</button>`;
   }).join('');
+  const dots=SNAP_Q.map((_,i)=>`<div style="width:${i===snapStep?'22px':'7px'};height:7px;border-radius:4px;background:${i<=snapStep?'var(--brand)':'var(--line)'};transition:all .25s"></div>`).join('');
   document.getElementById('snap-scroll').innerHTML=`
-    <div style="font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Step 2 of 2 \u00b7 About ${name}</div>
-    <div class="phd">Tell us a bit more</div>
-    <div class="psd">We'll use this to match what you see \u2014 not to profile you. All skippable.</div>
-    ${qHtml}
-    <div style="margin-top:18px">
-      <button class="btn-p" onclick="saveSnapshot()">Save and continue</button>
-      <button class="skip-btn" onclick="skipSnapshot()">Skip for now</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px">Step 2 of 2 \u00b7 ${snapStep+1} of ${total}</div>
+      <div style="display:flex;gap:4px;align-items:center">${dots}</div>
+    </div>
+    <div class="ccard" style="padding:24px 22px;min-height:320px;display:flex;flex-direction:column;animation:scFade .22s ease both" id="snap-card">
+      <div class="phd" style="font-size:22px;line-height:1.3;margin-bottom:10px">${q.label.replace('{name}',name)}</div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:20px">${q.multi?'Select any that apply. Tap Continue when done.':'Tap one to continue.'}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:auto">${chips}</div>
+      <div style="display:flex;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)">
+        <button onclick="snapPrev()" style="flex:0 0 auto;padding:12px 18px;background:white;border:1px solid var(--line);border-radius:14px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink2);cursor:${snapStep===0?'default':'pointer'};opacity:${snapStep===0?'.4':'1'}" ${snapStep===0?'disabled':''}>\u2039 Back</button>
+        <button onclick="snapSkipQ()" style="flex:1;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:14px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink3);cursor:pointer">Skip</button>
+        ${q.multi?`<button onclick="snapNext()" style="flex:1;padding:12px;background:var(--brand);color:white;border:none;border-radius:14px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer">Continue \u203A</button>`:''}
+      </div>
     </div>
     <div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:14px;line-height:1.5">Stored on this device only. Nothing shared.</div>`;
 }
@@ -1134,8 +1259,16 @@ function pickSnap(btn){
     snapDraft[k]=v;
     document.querySelectorAll(`.snap-chip[data-k="${k}"]`).forEach(b=>b.classList.remove('sel'));
     btn.classList.add('sel');
+    // Auto-advance after a brief pause so user sees the selection
+    setTimeout(()=>snapNext(),280);
   }
 }
+function snapNext(){
+  if(snapStep<SNAP_Q.length-1){snapStep++;renderSnapStep();}
+  else saveSnapshot();
+}
+function snapPrev(){if(snapStep>0){snapStep--;renderSnapStep();}}
+function snapSkipQ(){snapNext();}
 function saveSnapshot(){
   setChildSnapshot({
     temperament:snapDraft.temperament||'mixed',
@@ -1199,7 +1332,11 @@ function loadChallenges(t){
       T=t;I=ci>=0?ci:0;TITLE=desc;
       loadPOV();
     };
-    d.innerHTML=`<div style="width:44px;height:44px;border-radius:12px;background:${w.color}12;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${w.color}">${lucide(w.icon,20,w.color)}</div><div class="chb"><div class="cht" style="font-weight:700">${desc}</div></div><div class="chev">\u203A</div>`;
+    const pinned=isPinned(t,w.id);
+    const pinSvg=pinned
+      ?`<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`
+      :`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+    d.innerHTML=`<div style="width:44px;height:44px;border-radius:12px;background:${w.color}12;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${w.color}">${lucide(w.icon,20,w.color)}</div><div class="chb"><div class="cht" style="font-weight:700">${desc}</div></div><button class="pin-btn${pinned?' on':''}" onclick="togglePin(${t},'${w.id}','${desc.replace(/'/g,'\\\'')}','${w.icon}','${w.color}',event)" aria-label="Pin for later">${pinSvg}</button><div class="chev">\u203A</div>`;
     list.appendChild(d);
   });
 }

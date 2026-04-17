@@ -702,11 +702,11 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
           <img id="evoAvatar2" style="width:22px;height:22px;object-fit:contain;filter:brightness(0.4);transition:filter .3s;">
         </div>
         <!-- Day 30 marker (Fully evolved - locked silhouette) - right edge -->
-        <div onclick="showDay30Preview()" style="position:absolute;top:-10px;right:0;transform:translateX(50%);width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,rgba(255,212,59,.15),rgba(255,107,107,.1));border:2px solid rgba(255,107,107,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;box-shadow:0 0 12px rgba(255,107,107,.25);" id="evoCircle3">
-          <span style="font-size:14px;opacity:.8;">🔒</span>
+        <div onclick="showDay30Preview()" style="position:absolute;top:-14px;right:0;transform:translateX(50%);width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(255,212,59,.25),rgba(240,101,149,.15));border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:3;overflow:hidden;box-shadow:0 0 16px rgba(255,212,59,.45),0 0 32px rgba(255,212,59,.2);animation:glow-pulse 2s ease-in-out infinite;" id="evoCircle3">
+          <span style="font-size:18px;line-height:1;">🎁</span>
         </div>
-        <!-- Day 30 label below the locked circle -->
-        <div onclick="showDay30Preview()" style="position:absolute;top:26px;right:-20px;font-size:8px;font-weight:700;color:var(--coral);letter-spacing:.04em;white-space:nowrap;cursor:pointer;text-align:right;">DAY 30<br><span style="font-size:8px;font-weight:600;color:var(--text-dim);">Main Boss</span></div>
+        <!-- Day 30 label below the locked circle — call-out for tappability -->
+        <div onclick="showDay30Preview()" style="position:absolute;top:30px;right:-28px;font-size:9px;font-weight:800;color:var(--gold);letter-spacing:.05em;white-space:nowrap;cursor:pointer;text-align:right;background:rgba(255,212,59,.08);padding:3px 8px;border-radius:10px;border:1px solid rgba(255,212,59,.25);">DAY 30 · Tap 👆<br><span style="font-size:8px;font-weight:700;color:var(--text-dim);letter-spacing:0;">Final rewards</span></div>
       </div>
     </div>
     <!-- Character companion (large) with glow ring -->
@@ -1426,9 +1426,9 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad-celebration);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;line-height:1.2;">Congratulations on finishing Map 1!</div>
     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:16px;">You are ranked <span style="font-family:'Space Grotesk',monospace;">#247</span> now!</div>
     <div style="background:linear-gradient(135deg,rgba(255,212,59,.08),rgba(255,168,0,.04));border:1.5px solid rgba(255,212,59,.3);border-radius:var(--r-lg);padding:14px;width:100%;margin-bottom:12px;">
-      <div style="margin-bottom:6px;"><img src="Assets/Items/Blind Box.png" style="width:70px;height:auto;filter:drop-shadow(0 4px 16px rgba(255,212,59,.4));"></div>
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--gold);margin-bottom:4px;">Rewards Unlocked!</div>
-      <div style="font-size:10px;color:var(--text-dim);line-height:1.4;">Blind box figurine + <b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;">Master Holographic Card</b> at HPB partner locations.<br><span style="color:var(--gold);">Gear can now be equipped on your character ⚔️</span></div>
+      <div style="font-size:36px;margin-bottom:4px;">⚔️</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--gold);margin-bottom:4px;">Gear Unlocked!</div>
+      <div style="font-size:10px;color:var(--text-dim);line-height:1.5;">You can now equip gear on your character. Keep going — your <b style="color:var(--gold);">Blind Box + Master Holographic Card</b> unlock at <b style="color:var(--text);">Day 30</b>.</div>
     </div>
     <button class="btn btn-primary" onclick="goTo(SCR.CHARACTER_CHECKIN)" style="width:100%;">🗺️ Choose Next Map</button>
     <div style="font-size:10px;color:var(--text-muted);margin-top:10px;line-height:1.4;">Character switching unlocks after 30 days.<br>Continue evolving with <span id="milestoneCharName" style="color:var(--violet);font-weight:700;">Aura</span> on your next map.</div>
@@ -3197,24 +3197,42 @@ function acceptBonus(){
   }
 }
 
-// V2: Day 30 locked preview — teaser popup
+// V2: Day 30 — demo the full final-reward reveal + forced character switch
 function showDay30Preview(){
   if(document.getElementById('day30PreviewPopup')) return;
   const c=characters[curChar];
   var popup=document.createElement('div');
   popup.id='day30PreviewPopup';
-  popup.style.cssText='position:absolute;inset:0;background:rgba(13,14,26,.96);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;backdrop-filter:blur(12px);';
+  popup.style.cssText='position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(30,15,60,.96),rgba(0,0,0,.98));z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 22px;text-align:center;backdrop-filter:blur(14px);overflow-y:auto;';
   popup.innerHTML =
-    '<div style="font-family:Space Grotesk,monospace;font-size:10px;color:var(--coral);letter-spacing:.1em;margin-bottom:8px;">🔒 DAY 30: MAIN BOSS</div>'
-    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:18px;font-weight:800;color:var(--coral);margin-bottom:14px;">Captain Couch</div>'
-    + '<div style="width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,59,.15),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative;">'
-      + '<img src="'+(c.stage3||c.teen)+'" style="width:150px;height:auto;filter:brightness(0) opacity(0.35);animation:float 4s ease-in-out infinite;">'
-      + '<div style="position:absolute;font-size:48px;color:var(--gold);">🔒</div>'
-    + '</div>'
-    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:var(--gold);margin-bottom:8px;">Final Form</div>'
-    + '<div style="font-size:13px;color:var(--text-dim);line-height:1.6;max-width:280px;margin:0 auto 20px;">Defeat <b style="color:var(--coral);">Captain Couch</b> at Day 30 to unlock '+c.name+'\u2019s fully evolved form. Keep showing up.</div>'
-    + '<button onclick="document.getElementById(\'day30PreviewPopup\').remove()" class="btn btn-primary" style="width:100%;max-width:240px;">Got it</button>';
+    // Shimmer particles
+    '<div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 30% 20%,rgba(255,212,59,.18),transparent 45%),radial-gradient(circle at 70% 70%,rgba(240,101,149,.15),transparent 45%);animation:glow-pulse 3s ease-in-out infinite;"></div>'
+    + '<div style="position:relative;z-index:1;width:100%;animation:slideUp .5s ease-out;">'
+      // Banner
+      + '<div style="font-family:Space Grotesk,monospace;font-size:10px;color:var(--gold);letter-spacing:.15em;margin-bottom:4px;">✨ 30-DAY JOURNEY COMPLETE ✨</div>'
+      + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:22px;font-weight:800;background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;margin-bottom:12px;">You did it!</div>'
+      // Fully evolved character
+      + '<div style="width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,59,.25),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;position:relative;">'
+        + '<div style="position:absolute;inset:-14px;border-radius:50%;background:conic-gradient(from 0deg,transparent,rgba(255,212,59,.3),transparent,rgba(240,101,149,.3),transparent);animation:spin 5s linear infinite;"></div>'
+        + '<img src="'+(c.stage3||c.teen)+'" style="width:140px;height:auto;filter:drop-shadow(0 0 30px rgba(255,212,59,.5));animation:float 3s ease-in-out infinite;position:relative;z-index:1;">'
+      + '</div>'
+      + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px;">'+c.name+' — Final Form ✨</div>'
+      // Rewards card
+      + '<div style="background:linear-gradient(135deg,rgba(255,212,59,.12),rgba(240,101,149,.06));border:1.5px solid rgba(255,212,59,.3);border-radius:16px;padding:14px;text-align:left;margin-bottom:16px;">'
+        + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:13px;font-weight:800;color:var(--gold);margin-bottom:10px;text-align:center;">🏆 Final Rewards Unlocked</div>'
+        + '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;"><div style="width:44px;height:44px;border-radius:10px;background:rgba(132,94,247,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><img src="Assets/Items/Blind Box Figurines.png" style="width:40px;height:auto;object-fit:contain;border-radius:8px;"></div><div style="flex:1;"><div style="font-size:12px;font-weight:800;color:var(--text);">Blind Box Figurine</div><div style="font-size:10px;color:var(--text-dim);line-height:1.4;">Collect at any HPB partner location</div></div></div>'
+        + '<div style="display:flex;gap:10px;align-items:center;"><div style="width:44px;height:44px;border-radius:10px;background:rgba(255,212,59,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;">🎴</div><div style="flex:1;"><div style="font-size:12px;font-weight:800;background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;">Master Holographic Card</div><div style="font-size:10px;color:var(--text-dim);line-height:1.4;">Your character\u2019s champion form</div></div></div>'
+      + '</div>'
+      + '<button onclick="closeDay30AndPickNext()" class="btn btn-primary" style="width:100%;">Pick your next Wellbit →</button>'
+    + '</div>';
   document.querySelector('.phone-frame').appendChild(popup);
+}
+
+function closeDay30AndPickNext(){
+  var popup=document.getElementById('day30PreviewPopup');
+  if(popup) popup.remove();
+  // Forced character switch after 30 days
+  startNewQuest();
 }
 
 // === DAY 10 MILESTONE ===

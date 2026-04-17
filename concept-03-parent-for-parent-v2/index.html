@@ -150,6 +150,13 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;color:var(--ink3);transition:color .15s;background:transparent;border:none;font-family:inherit}
 .bnav-item.active{color:var(--brand)}
 .bnav-lbl{font-size:10px;font-weight:700;line-height:1;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bnav-icon-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.bnav-badge{position:absolute;top:-5px;right:-8px;min-width:16px;height:16px;background:#FF5722;color:white;font-size:9px;font-weight:800;border-radius:50%;padding:0 4px;display:flex;align-items:center;justify-content:center;line-height:1}
+.bnav-kit-pop{animation:kitBounce .5s ease-out}
+.tip-preview-card:hover{border-color:var(--brand);box-shadow:0 4px 18px rgba(69,190,147,.15)}
+.notif-opt{padding:7px 12px;border:1.5px solid var(--line);border-radius:18px;background:white;font-family:inherit;font-size:12px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .12s}
+.notif-opt.sel{background:var(--brand-lt);border-color:var(--brand);color:var(--brand)}
+.notif-opt:active{transform:scale(.96)}
 .with-bnav{padding-bottom:78px !important}
 /* v2: Pin button on challenges */
 .pin-btn{background:transparent;border:none;padding:6px;cursor:pointer;color:var(--ink3);display:flex;align-items:center;justify-content:center;border-radius:8px;transition:all .15s;flex-shrink:0}
@@ -460,7 +467,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <div class="phone"><div class="notch"></div>
 
 <!-- LOCK SCREEN — Wellbits Invite -->
-<div class="screen active" id="sh">
+<div class="screen" id="sh">
   <div class="dim"></div>
   <div class="linner">
     <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">&#9650;&#9650; WiFi <svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><rect x="1" y="1" width="18" height="12" rx="2"/><line x1="23" y1="5" x2="23" y2="9"/><rect x="3" y="3" width="6" height="8" rx="1" fill="currentColor"/></svg></span></div>
@@ -510,10 +517,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 </div>
 
 <!-- ONBOARDING -->
-<div class="screen" id="s-onboard">
+<div class="screen active" id="s-onboard">
   <div class="ls-wrap">
     <div class="ls-scene g-teal" id="ob-scene"></div>
-    <div class="ls-top"><button class="ls-back" onclick="go('s-ally')">&#8249;</button></div>
+    <!-- Onboarding is the first screen (no back) -->
+    <div class="ls-top" style="display:none"></div>
     <div class="ls-panel" style="height:58%">
       <div class="ob-logo"><div class="ob-logo-ico" style="padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div><div class="ob-logo-txt">Parent for Parent</div><div class="ob-logo-sub">From one parent to another</div></div></div>
       <div class="p-h">Your child is changing.<br>So is your role.</div>
@@ -538,9 +546,31 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div class="psd">Optional — skip any time.</div>
     <div id="children-list"></div>
     <button class="add-ch" id="add-ch-btn" onclick="addChild()"><span style="font-size:18px">&#65291;</span> Add another child</button>
+    <div style="background:white;border-radius:16px;padding:14px 16px;margin:14px 0 10px;border:1px solid var(--line)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="width:32px;height:32px;border-radius:10px;background:var(--brand-lt);color:var(--brand);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div style="flex:1">
+          <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:2px">Weekly check-in time</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.4">We'll send one soft reminder a week. No pressure.</div>
+        </div>
+      </div>
+      <div id="notif-time-row" style="display:flex;flex-wrap:wrap;gap:6px">
+        <button class="notif-opt sel" data-t="tue-2030" onclick="pickNotifTime(this)">Tue 8:30pm</button>
+        <button class="notif-opt" data-t="wed-2030" onclick="pickNotifTime(this)">Wed 8:30pm</button>
+        <button class="notif-opt" data-t="fri-2100" onclick="pickNotifTime(this)">Fri 9pm</button>
+        <button class="notif-opt" data-t="sun-2000" onclick="pickNotifTime(this)">Sun 8pm</button>
+      </div>
+    </div>
     <button class="btn-p" id="save-btn" onclick="saveProfile()" disabled style="opacity:.4;cursor:not-allowed">Save and continue</button>
     <button class="skip-btn" onclick="go('slanding')">Skip for now</button>
   </div>
+</div>
+
+<!-- BOOKMARKS (v2) -->
+<div class="screen" id="s-bookmarks" style="background:var(--bg)">
+  <div class="app-bar"><button class="app-back" onclick="smartBack('slanding')">&#8249;</button><div class="app-title">Bookmarks</div></div>
+  <div class="pscroll with-bnav" id="bookmarks-scroll"></div>
+  <div id="s-bookmarks-bnav"></div>
 </div>
 
 <!-- CHILD SNAPSHOT (v2) -->
@@ -577,7 +607,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
   <div id="ct-ch" style="display:none"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-ch"></div></div></div>
   <div class="chw with-bnav">
     <div class="f-h" style="margin-bottom:6px;font-size:24px;text-align:left;font-weight:700">What's on your mind?</div>
-    <div style="font-size:12px;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:4px">Tap <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 1px"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg> to pin a topic for later</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:4px">Tap <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 1px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> to bookmark for later</div>
     <div class="chlist" id="chlist"></div>
     <div class="proof-bar" style="justify-content:center;margin-top:16px;padding:0"><span id="proof-txt"></span></div>
   </div>
@@ -587,17 +617,18 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <!-- SELF-CHECK: Context Cards (spov) -->
 <div class="screen flat" id="spov">
   <div class="app-bar"><button class="app-back" onclick="go('slanding')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
-  <div class="flat-scroll" style="padding:22px;overflow-y:auto">
+  <div class="flat-scroll with-bnav" style="padding:22px;overflow-y:auto">
     <!-- Dynamic context cards container (1-3 cards) -->
     <div id="sc-cards"></div>
     <button class="f-btn" id="sc-continue" style="margin-top:24px;width:100%" onclick="go('s-selfcheck')">Continue</button>
   </div>
+  <div id="spov-bnav"></div>
 </div>
 
 <!-- SELF-CHECK: Dedicated screen (s-selfcheck) -->
 <div class="screen flat" id="s-selfcheck" style="background:#F5F0EB">
   <div class="app-bar" style="background:#F5F0EB"><button class="app-back" onclick="go('spov')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
-  <div class="flat-scroll" style="padding:22px">
+  <div class="flat-scroll with-bnav" style="padding:22px">
     <div style="background:white;border-radius:20px;padding:28px 24px;box-shadow:0 2px 16px rgba(0,0,0,.06);border:1px solid var(--line);margin-top:24px">
       <div class="f-eyebrow" style="margin-bottom:16px">Before you go in</div>
       <div class="f-h" style="text-align:left;margin-bottom:10px">How are you doing right now?</div>
@@ -608,22 +639,26 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     </div>
     <div style="font-size:12px;color:var(--ink3);margin-top:16px;line-height:1.5;text-align:center">No judgement. Both paths lead to the same place.</div>
   </div>
+  <div id="s-selfcheck-bnav"></div>
 </div>
 
 <!-- YOUTH POV -->
 <div class="screen flat" id="s-pov" style="background:white">
   <div class="app-bar" style="background:white"><button class="app-back" onclick="go('schall')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
-  <div class="flat-scroll" id="pov-scroll" style="padding:20px 22px 44px;background:white"></div>
+  <div class="flat-scroll with-bnav" id="pov-scroll" style="padding:20px 22px 44px;background:white"></div>
+  <div id="s-pov-bnav"></div>
 </div>
 
 <!-- VIDEO REELS -->
 <div class="screen flat" id="svideo">
   <div id="reel-container" style="flex:1;position:relative;overflow:hidden"></div>
+  <div id="svideo-bnav"></div>
 </div>
 
 <!-- TIP PLAYER -->
 <div class="screen flat" id="s-tips">
   <div id="tp-container" style="flex:1;position:relative;overflow:hidden"></div>
+  <div id="s-tips-bnav"></div>
 </div>
 
 <!-- STARTER KIT -->
@@ -650,6 +685,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- WEEK TRANSITION -->
 <div class="screen" id="s-weekmsg" style="background:#F5F0EB">
+  <div class="app-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:10"><button class="app-back" onclick="smartBack('slanding')">&#8249;</button></div>
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:60px 32px;text-align:center">
     <div style="margin-bottom:24px;color:var(--brand)"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
     <div style="font-size:24px;font-weight:800;color:var(--ink);margin-bottom:12px;line-height:1.3">You're doing something<br>most parents don't.</div>
@@ -688,8 +724,8 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- CHECK-IN -->
 <div class="screen flat" id="swaci" style="background:var(--bg)">
-  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
-  <div class="flat-scroll" id="ci-scroll" style="display:flex;flex-direction:column;gap:8px">
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="smartBack('slanding')">&#8249;</button><div class="app-title">Check-in</div></div>
+  <div class="flat-scroll with-bnav" id="ci-scroll" style="display:flex;flex-direction:column;gap:8px">
     <div style="text-align:center;margin-bottom:12px">
       <div style="font-size:11px;color:var(--ink3);font-weight:600">Sunday, 30 March</div>
     </div>
@@ -719,6 +755,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     </div>
     <div id="ci-response"></div>
   </div>
+  <div id="swaci-bnav"></div>
 </div>
 
 </div><!-- /phone -->
@@ -884,8 +921,7 @@ const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my 
 
 // ═══ v2: Pinned topics + Bottom Nav ═══
 let pinnedTopics=[];
-try{const _pt=localStorage.getItem('pfp-pinned');if(_pt)pinnedTopics=JSON.parse(_pt);}catch(e){}
-function savePinned(){try{localStorage.setItem('pfp-pinned',JSON.stringify(pinnedTopics));}catch(e){}}
+function savePinned(){/* session-only, not persisted across refresh */}
 function isPinned(t,wellId){return pinnedTopics.some(p=>p.t===t&&p.well===wellId);}
 function togglePin(t,wellId,desc,icon,color,ev){
   if(ev){ev.stopPropagation();}
@@ -904,20 +940,38 @@ function openPinned(p){
   loadChallenges(p.t);setSelfCheck(p.t);loadPOV();
 }
 function bnav(active){
-  const name=children[activeChild]?.name||'family';
-  const shortName=name.length>9?name.substring(0,8)+'\u2026':name;
+  const kitCount=kitItems.length;
+  const bmCount=pinnedTopics.length;
+  const kitBadge=kitCount>0?`<span class="bnav-badge">${kitCount}</span>`:'';
+  const bmBadge=bmCount>0?`<span class="bnav-badge">${bmCount}</span>`:'';
   return `<div class="bnav">
     <button class="bnav-item ${active==='home'?'active':''}" onclick="go('slanding')">${lucide('home',18,'currentColor')}<div class="bnav-lbl">Home</div></button>
-    <button class="bnav-item ${active==='child'?'active':''}" onclick="bnavChild()">${lucide('users',18,'currentColor')}<div class="bnav-lbl">For ${shortName}</div></button>
-    <button class="bnav-item ${active==='saved'?'active':''}" onclick="bnavSaved()">${lucide('bookmark',18,'currentColor')}<div class="bnav-lbl">Saved</div></button>
-    <button class="bnav-item ${active==='checkin'?'active':''}" onclick="go('slater')">${lucide('message-circle',18,'currentColor')}<div class="bnav-lbl">Check-in</div></button>
+    <button class="bnav-item ${active==='kit'?'active':''}" onclick="go('s-shifts')" id="bnav-kit-btn"><div class="bnav-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>${kitBadge}</div><div class="bnav-lbl">Starter Kit</div></button>
+    <button class="bnav-item ${active==='bookmarks'?'active':''}" onclick="go('s-bookmarks')"><div class="bnav-icon-wrap">${lucide('bookmark',18,'currentColor')}${bmBadge}</div><div class="bnav-lbl">Bookmarks</div></button>
+    <button class="bnav-item ${active==='checkin'?'active':''}" onclick="go('swaci')">${lucide('message-circle',18,'currentColor')}<div class="bnav-lbl">Check-in</div></button>
   </div>`;
 }
-function bnavChild(){
-  if(children[activeChild]?.stage){T=children[activeChild].stage;loadChallenges(T);go('schall');}
-  else go('slanding');
+function renderBookmarks(){
+  const wrap=document.getElementById('bookmarks-scroll');
+  if(!wrap)return;
+  if(pinnedTopics.length===0){
+    wrap.innerHTML=`<div style="padding:60px 24px;text-align:center">
+      <div style="margin-bottom:16px;color:var(--ink3)"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+      <div style="font-size:17px;font-weight:800;color:var(--ink);margin-bottom:6px">No bookmarks yet</div>
+      <div style="font-size:13px;color:var(--ink3);line-height:1.6">On the challenges screen, tap the bookmark icon next to any topic to save it here.</div>
+    </div>`;
+    return;
+  }
+  wrap.innerHTML=`
+    <div class="phd">Your bookmarks</div>
+    <div class="psd">Topics you saved to come back to.</div>
+    <div>${pinnedTopics.map(p=>`
+      <div onclick="openPinned(${JSON.stringify(p).replace(/"/g,'&quot;')})" style="background:white;border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid var(--line);transition:all .12s" onmousedown="this.style.transform='scale(.99)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
+        <div style="width:44px;height:44px;border-radius:12px;background:${p.color}12;display:flex;align-items:center;justify-content:center;color:${p.color};flex-shrink:0">${lucide(p.icon||'bookmark',20,p.color)}</div>
+        <div style="flex:1;font-size:14px;font-weight:700;color:var(--ink);line-height:1.4">${p.desc}</div>
+        <div style="color:var(--ink3);font-size:20px">\u203A</div>
+      </div>`).join('')}</div>`;
 }
-function bnavSaved(){if(kitItems.length>0||true)go('s-shifts');}
 function renderLandingPinned(){
   const wrap=document.getElementById('land-pinned');
   if(!wrap)return;
@@ -925,8 +979,8 @@ function renderLandingPinned(){
   wrap.innerHTML=`
     <div style="background:linear-gradient(165deg,#FFF8F0,#FDF0E0);border:1px solid #F0D8BC;border-radius:18px;padding:16px 18px;margin:14px 0 20px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#A8553A" stroke="#A8553A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg>
-        <div style="font-size:11px;font-weight:800;color:#A8553A;text-transform:uppercase;letter-spacing:.5px">Pinned for later</div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#A8553A" stroke="#A8553A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <div style="font-size:11px;font-weight:800;color:#A8553A;text-transform:uppercase;letter-spacing:.5px">Bookmarked for later</div>
       </div>
       ${pinnedTopics.map(p=>`
         <div onclick="openPinned(${JSON.stringify(p).replace(/"/g,'&quot;')})" style="background:white;border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.04)">
@@ -935,6 +989,12 @@ function renderLandingPinned(){
           <div style="color:var(--ink3);font-size:18px">\u203A</div>
         </div>`).join('')}
     </div>`;
+}
+let notifTime='tue-2030';
+function pickNotifTime(btn){
+  document.querySelectorAll('#notif-time-row .notif-opt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  notifTime=btn.dataset.t;
 }
 function skipThisWeek(ev){
   if(ev){ev.stopPropagation();}
@@ -967,8 +1027,7 @@ function quickTip(){
 // ═══ v2: Child Snapshot + Tip Variants + Go Deeper ═══
 // Snapshot is set during intake (Phase 3). Default "mixed" until then.
 let childSnapshot={temperament:'mixed',pressure:null,conflict:null,tried:[]};
-try{const _sn=localStorage.getItem('pfp-snapshot');if(_sn)childSnapshot={...childSnapshot,...JSON.parse(_sn)};}catch(e){}
-function setChildSnapshot(patch){childSnapshot={...childSnapshot,...patch};try{localStorage.setItem('pfp-snapshot',JSON.stringify(childSnapshot));}catch(e){}}
+function setChildSnapshot(patch){childSnapshot={...childSnapshot,...patch};/* session-only */}
 
 // Parent video -> temperament tag for snapshot-matched ordering
 const PARENT_TEMP={
@@ -1153,8 +1212,9 @@ function go(id){
   document.getElementById(id).classList.add('active');
   if(id==='swaci')loadCheckin();
   if(id==='s-shifts')renderStarterKit();
+  if(id==='s-bookmarks')renderBookmarks();
   // v2: inject bottom nav on home-level screens
-  const bnavMap={slanding:'home',schall:'child','s-shifts':'saved'};
+  const bnavMap={slanding:'home',schall:'home','s-shifts':'kit','s-bookmarks':'bookmarks',swaci:'checkin','s-selfcheck':'home','spov':'home','s-pov':'home',svideo:'home','s-tips':'home'};
   if(id in bnavMap){
     const slot=document.getElementById(`${id}-bnav`);
     if(slot)slot.innerHTML=bnav(bnavMap[id]);
@@ -1347,8 +1407,8 @@ function loadChallenges(t){
     };
     const pinned=isPinned(t,w.id);
     const pinSvg=pinned
-      ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg>`
-      :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg>`;
+      ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`
+      :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
     d.innerHTML=`<div style="width:44px;height:44px;border-radius:12px;background:${w.color}12;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${w.color}">${lucide(w.icon,20,w.color)}</div><div class="chb"><div class="cht" style="font-weight:700">${desc}</div></div><button class="pin-btn${pinned?' on':''}" onclick="togglePin(${t},'${w.id}','${desc.replace(/'/g,'\\\'')}','${w.icon}','${w.color}',event)" aria-label="Pin for later">${pinSvg}</button><div class="chev">\u203A</div>`;
     list.appendChild(d);
   });
@@ -1516,14 +1576,15 @@ function renderReel(){
   const tipsCardsHtml=c.tips.map((tip,ti)=>{
     const actions=MICRO_ACTIONS[tip.h]||[];
     const hasActions=actions.length>0;
-    return `<div onclick="openTipDetail(${ti})" style="background:white;border-radius:20px;padding:22px;margin-bottom:12px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06);cursor:pointer;transition:all .12s" onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
+    return `<div onclick="openTipDetail(${ti})" class="tip-preview-card" style="background:white;border-radius:20px;padding:22px;margin-bottom:12px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06);cursor:pointer;transition:all .18s;position:relative" onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
       <div style="display:flex;align-items:flex-start;gap:14px">
         <div style="width:40px;height:40px;border-radius:12px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0">${lucide(tip.icon||'lightbulb',18,'var(--brand)')}</div>
-        <div style="flex:1;min-width:0">
+        <div style="flex:1;min-width:0;padding-right:22px">
           <div style="font-size:15px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:4px">${tip.h}</div>
           <div style="font-size:13px;color:var(--ink3);line-height:1.45">${tip.b.length>90?tip.b.substring(0,90)+'\u2026':tip.b}</div>
           ${hasActions?`<div style="margin-top:10px;display:inline-flex;align-items:center;gap:5px;background:var(--brand-lt);color:var(--brand);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px">${actions.length} micro action${actions.length>1?'s':''} \u203A</div>`:''}
         </div>
+        <div style="position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--ink3);display:flex;align-items:center">\u203A</div>
       </div>
     </div>`;
   }).join('');
@@ -1732,8 +1793,7 @@ function timerDone(){
 }
 
 function save3Things(){
-  const vals=[0,1,2].map(i=>(document.getElementById('g3t-'+i)?.value||''));
-  localStorage.setItem('pfp-3things',JSON.stringify(vals));
+  // session-only, not persisted across refresh
   const el=document.getElementById('g3t-saved');if(el){el.style.opacity='1';clearTimeout(window._g3tTO);window._g3tTO=setTimeout(()=>{el.style.opacity='0';},1500);}
 }
 
@@ -1815,7 +1875,7 @@ function renderGround(){
     timerSec=g.timer*60;timerMax=g.timer*60;
   } else if(g.icon==='pen-line'){
     // Write down 3 things — with persistent input
-    const saved=JSON.parse(localStorage.getItem('pfp-3things')||'["","",""]');
+    const saved=["","",""];
     html+=`<div class="ground-card">
     <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
     <div class="f-h" style="margin-bottom:6px">${g.h}</div>
@@ -1932,11 +1992,22 @@ function addMicroAction(tipI,actionI,btn){
   // Button state
   btn.classList.add('added');
   btn.innerHTML='\u2713 Added to starter kit';
-  // Bounce the starter kit icon
+  // Bounce the starter kit icon (top-right if present, and bnav icon)
   document.querySelectorAll('.kit-icon-wrap').forEach(el=>{
     el.style.animation='kitBounce .5s ease';
     setTimeout(()=>{el.style.animation='';},600);
   });
+  // Re-render bnav on all active screens so the count badge updates + bounce
+  const activeScreen=document.querySelector('.screen.active');
+  if(activeScreen){
+    const slot=document.getElementById(`${activeScreen.id}-bnav`);
+    if(slot){
+      const bnavMap={slanding:'home',schall:'home','s-shifts':'kit','s-bookmarks':'bookmarks',swaci:'checkin','s-selfcheck':'home',spov:'home','s-pov':'home',svideo:'home','s-tips':'home'};
+      slot.innerHTML=bnav(bnavMap[activeScreen.id]||'home');
+      const kitBtn=document.getElementById('bnav-kit-btn');
+      if(kitBtn){kitBtn.classList.add('bnav-kit-pop');setTimeout(()=>kitBtn.classList.remove('bnav-kit-pop'),600);}
+    }
+  }
 }
 function updateKitBadge(){
   const count=kitItems.length;

@@ -534,9 +534,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div class="phd" id="land-h">Where is your family right now?</div>
     <div class="psd">Pick your child's stage. We'll show you what other parents in the same place actually tried.</div>
     <div class="tcards">
-      <div class="tc tca" onclick="pickT(1)"><div class="tico" id="tico-1"></div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#45BE93;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 1</div><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">&#8250;</div></div>
-      <div class="tc tcb" onclick="pickT(2)"><div class="tico" id="tico-2"></div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#4A90D9;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 2–3</div><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">&#8250;</div></div>
-      <div class="tc tcc" onclick="pickT(3)"><div class="tico" id="tico-3"></div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#8B5CF6;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">JC / Poly</div><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tca" onclick="pickT(1)"><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#45BE93;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 1</div><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcb" onclick="pickT(2)"><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#4A90D9;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 2–3</div><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcc" onclick="pickT(3)"><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#8B5CF6;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">JC / Poly</div><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">&#8250;</div></div>
     </div>
   </div>
 </div>
@@ -842,6 +842,66 @@ const CONTENT={
 const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my limit too. This is what helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{n:'Calvin',r:'Dad of 14yo',c:'"One small thing changed the whole tone at home."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Bhavani',r:'Mum of 13yo',c:'"I stopped trying to fix it. That\'s when things shifted."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{n:'Ryan',r:'Dad of 14yo',c:'"I learned to read the room before I opened my mouth."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
   empathy:'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.',
   tips:[{g:'g-coral',icon:'lightbulb',tonight:true,h:'Try one thing you haven\'t tried before.',b:'Put your own phone down first. Ask one question and stop there. Small shifts change the tone.',why:'Willingness to try something different is the beginning of the change.'},{g:'g-forest',icon:'eye',tonight:false,h:'Name what you see, not what you want changed.',b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open.'},{g:'g-violet',icon:'calendar',tonight:false,h:'Once a week is enough to start.',b:'One good moment a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust.'}]};
+
+// ═══ v2: Child Snapshot + Tip Variants + Go Deeper ═══
+// Snapshot is set during intake (Phase 3). Default "mixed" until then.
+let childSnapshot={temperament:'mixed',pressure:null,conflict:null};
+function setChildSnapshot(patch){childSnapshot={...childSnapshot,...patch};}
+
+// Tip variants keyed by headline — snapshot picks variant.
+// Format: {quiet:{h,why}, pushback:{h,why}, mixed:{h,why}}
+const TIP_VARIANTS={
+  'Ask one question. Then stop.':{
+    quiet:{h:'Ask one question. Then sit with the silence.',why:'Quiet children fill silence when they\u2019re ready. Rushing to fix it tells them you can\u2019t hold the quiet either.'},
+    pushback:{h:'Ask one question. Then let the pushback pass.',why:'Pushback isn\u2019t rejection \u2014 it\u2019s what comes before they can answer honestly. Staying calm through it is the answer.'},
+    mixed:{h:'Ask one question. Then stop.',why:'One question creates space. Stopping signals you trust whatever they say next.'}
+  },
+  'Be in the room without needing anything.':{
+    quiet:{h:'Be in the room. Don\u2019t fill the quiet.',why:'For a quiet child, silence isn\u2019t rejection \u2014 it\u2019s the only place they can think. Sharing it builds trust.'},
+    pushback:{h:'Be in the room. Don\u2019t react to the mood.',why:'A child who pushes back is testing whether you\u2019ll stay. Staying calmly present is the answer they\u2019re looking for.'},
+    mixed:{h:'Be in the room without needing anything.',why:'Present without needing a response signals "I\u2019m here when you\u2019re ready."'}
+  },
+  'Name what you see, not what you want changed.':{
+    quiet:{h:'Name what you see. Then wait.',why:'Naming opens a door. Waiting tells them they don\u2019t have to walk through it today.'},
+    pushback:{h:'Name what you see, without a fix attached.',why:'Observation without a solution removes the argument they\u2019re braced for.'},
+    mixed:{h:'Name what you see, not what you want changed.',why:'Observation without judgment is what keeps the door open at this stage.'}
+  }
+};
+
+// "Go deeper" layer — dialogue/scenario for tips that have one.
+const TIP_DEEPER={
+  'Ask one question. Then stop.':{
+    label:'What Sureena tried',
+    body:'"I asked \u2018what\u2019s been on your mind?\u2019 and then I actually stopped. It was awkward for about 40 seconds. Then she said something I didn\u2019t expect. I almost filled the silence three times."<br><br>\u2014 Sureena, Mum of 15yo'
+  },
+  'Be in the room without needing anything.':{
+    label:'A scenario',
+    body:'Your teen is on their phone on the couch. Instead of asking if they\u2019ve done their homework, sit on the other end with a book. No comments. No check-ins. Stay 15 minutes. That\u2019s the whole thing.<br><br>After a few days of this, something will usually open up \u2014 from them, not from you.'
+  },
+  'Give a heads-up, not a command.':{
+    label:'What it sounds like',
+    body:'Not: "Phones off, now."<br>Instead: "30 more minutes, then phones charge in the kitchen."<br><br>The heads-up lets them finish what they\u2019re doing. It removes the part where they feel interrupted \u2014 which is the part that usually starts the fight.'
+  },
+  'Name what you see, not what you want changed.':{
+    label:'What Ryan tried',
+    body:'"Instead of \u2018you need to sleep earlier,\u2019 I said \u2018you seem really tired lately.\u2019 Same observation, completely different conversation. He told me about a project I didn\u2019t even know existed."<br><br>\u2014 Ryan, Dad of 15yo'
+  },
+  'Once a week is enough.':{
+    label:'What this looks like',
+    body:'Pick one moment a week where you\u2019re both free \u2014 Sunday breakfast, the drive back from tuition, whatever. Don\u2019t schedule it as "a talk." Just be consistent about being there, phone down, with no agenda.<br><br>The regularity does the work. Not the conversation.'
+  },
+  'Stop solving. Start witnessing.':{
+    label:'What to say',
+    body:'When they tell you something hard, the reflex is to fix it. Try instead: "That sounds really hard."<br><br>That\u2019s a complete response. You don\u2019t need to add anything. Sitting with them without fixing is the part most parents underestimate.'
+  }
+};
+
+function getTipContent(tip){
+  const v=TIP_VARIANTS[tip.h];
+  if(v&&v[childSnapshot.temperament])return{h:v[childSnapshot.temperament].h||tip.h,why:v[childSnapshot.temperament].why||tip.why};
+  return{h:tip.h,why:tip.why};
+}
+function getTipDeeper(tip){return TIP_DEEPER[tip.h]||null;}
 
 const PARENT_IMG={
   'Norita':'Assets/Images/Videos screenshot/malay_parent_1.png',
@@ -1341,11 +1401,27 @@ function renderTip(){
       }).join('')}
     </div>`:'';
 
+  // v2: snapshot-driven tip variant + Go Deeper layer
+  const tipV=getTipContent(tip);
+  const deeper=getTipDeeper(tip);
+  const deeperHtml=deeper?`
+    <div style="margin-top:14px;margin-bottom:14px">
+      <button id="gd-btn-${tipIdx}" onclick="toggleGoDeeper(${tipIdx})" style="width:100%;padding:12px 16px;background:white;border:1px dashed var(--brand);border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;color:var(--brand);cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+        <span style="display:flex;align-items:center;gap:8px">${lucide('book-open',14,'var(--brand)')} Go deeper</span>
+        <span id="gd-icon-${tipIdx}" style="display:flex;align-items:center">${lucide('chevron-down',14,'var(--brand)')}</span>
+      </button>
+      <div id="gd-body-${tipIdx}" style="display:none;background:#F0F8F4;border:1px solid #D4E8DC;border-radius:12px;padding:16px 18px;margin-top:8px">
+        <div style="font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">${deeper.label}</div>
+        <div style="font-size:14px;color:var(--ink2);line-height:1.6">${deeper.body}</div>
+      </div>
+    </div>`:'';
+
   scroll.innerHTML=`
     ${tip.tonight?'<div class="f-tonight">'+lucide('moon',14,'#B8860B')+' Try tonight</div>':''}
-    <div class="f-h">${tip.h}</div>
+    <div class="f-h">${tipV.h}</div>
     <div class="f-sub">${tip.b}</div>
-    ${tip.why?`<div class="f-why"><div class="f-why-l">Why this matters</div><div class="f-why-t">${tip.why}</div></div>`:''}
+    ${tipV.why?`<div class="f-why"><div class="f-why-l">Why this matters</div><div class="f-why-t">${tipV.why}</div></div>`:''}
+    ${deeperHtml}
     ${maHtml}
     <div class="f-dots">${tipData.map((_,j)=>`<div class="fdot${j===tipIdx?' on':''}"></div>`).join('')}</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding-top:10px">
@@ -1356,6 +1432,14 @@ function renderTip(){
   wrap.appendChild(scroll);
   container.appendChild(wrap);
   initTipTouch(container);
+}
+function toggleGoDeeper(idx){
+  const body=document.getElementById('gd-body-'+idx);
+  const icon=document.getElementById('gd-icon-'+idx);
+  if(!body)return;
+  const isOpen=body.style.display!=='none';
+  body.style.display=isOpen?'none':'block';
+  icon.innerHTML=isOpen?lucide('chevron-down',14,'var(--brand)'):lucide('chevron-up',14,'var(--brand)');
 }
 function tipNext(){if(tipIdx<tipData.length-1){tipIdx++;renderTip();}}
 function tipPrev(){if(tipIdx>0){tipIdx--;renderTip();}else go('svideo');}
@@ -1560,7 +1644,7 @@ function checkin(type){
   document.getElementById('ciopts').innerHTML='';
   // Show selected answer as outgoing bubble (right-aligned)
   const sel=document.createElement('div');sel.style.cssText='display:flex;justify-content:flex-end;margin-bottom:8px;animation:slideUp .3s ease both';
-  sel.innerHTML=`<div style="background:var(--brand);color:white;border-radius:18px 18px 4px 18px;padding:14px 16px;font-size:14px;font-weight:700;max-width:85%">${r.sent}</div>`;
+  sel.innerHTML=`<div style="background:var(--ink);color:white;border-radius:18px 18px 4px 18px;padding:14px 16px;font-size:14px;font-weight:700;max-width:85%">${r.sent}</div>`;
   document.getElementById('ciopts').appendChild(sel);
   // Show response as incoming bubble after delay
   setTimeout(()=>{
@@ -1638,10 +1722,6 @@ function initDragScroll(el){
 window.addEventListener('load',()=>{
   initProfile();
   document.getElementById('ob-scene').style.cssText='background:url(Assets/Images/pfp_icon.png) center/cover no-repeat;';document.getElementById('ob-scene').innerHTML='';
-  // Landing stage icons — lucide
-  document.getElementById('tico-1').innerHTML=lucide('sprout',22,'#C07030');
-  document.getElementById('tico-2').innerHTML=lucide('repeat',22,'#3078C0');
-  document.getElementById('tico-3').innerHTML=lucide('rocket',22,'#6B40C0');
 });
 </script>
 </body>

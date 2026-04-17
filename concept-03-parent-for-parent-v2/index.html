@@ -577,7 +577,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
   <div id="ct-ch" style="display:none"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-ch"></div></div></div>
   <div class="chw with-bnav">
     <div class="f-h" style="margin-bottom:6px;font-size:24px;text-align:left;font-weight:700">What's on your mind?</div>
-    <div style="font-size:12px;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:4px">Tap <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 1px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> to pin a topic for later</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:4px">Tap <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 1px"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg> to pin a topic for later</div>
     <div class="chlist" id="chlist"></div>
     <div class="proof-bar" style="justify-content:center;margin-top:16px;padding:0"><span id="proof-txt"></span></div>
   </div>
@@ -628,7 +628,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 
 <!-- STARTER KIT -->
 <div class="screen flat" id="s-shifts">
-  <div class="app-bar"><button class="app-back" onclick="go('svideo')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="app-bar"><button class="app-back" onclick="smartBack('slanding')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div class="flat-scroll with-bnav">
     <div class="f-pill"><div class="f-pill-dot"></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg> Starter Kit</div>
     <div class="f-h">Things you want to try</div>
@@ -925,7 +925,7 @@ function renderLandingPinned(){
   wrap.innerHTML=`
     <div style="background:linear-gradient(165deg,#FFF8F0,#FDF0E0);border:1px solid #F0D8BC;border-radius:18px;padding:16px 18px;margin:14px 0 20px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        ${lucide('bookmark',14,'#A8553A')}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#A8553A" stroke="#A8553A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg>
         <div style="font-size:11px;font-weight:800;color:#A8553A;text-transform:uppercase;letter-spacing:.5px">Pinned for later</div>
       </div>
       ${pinnedTopics.map(p=>`
@@ -1144,7 +1144,11 @@ function buildReelScene(el,bgGrad,faceEmoji){
 }
 
 // ════ NAV ════
+let lastScreen='s-onboard';
 function go(id){
+  // Track previous screen for smart back navigation
+  const currentActive=document.querySelector('.screen.active');
+  if(currentActive&&currentActive.id!==id)lastScreen=currentActive.id;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if(id==='swaci')loadCheckin();
@@ -1156,6 +1160,15 @@ function go(id){
     if(slot)slot.innerHTML=bnav(bnavMap[id]);
   }
   if(id==='slanding')renderLandingPinned();
+}
+// Smart back: if previous screen has meaningful content, go there; else fallback
+function smartBack(fallback){
+  const safeScreens=['slanding','schall','spov','s-pov','s-tips','svideo','s-shifts','swaci','slater','s-selfcheck','s-weekmsg'];
+  // If last was a content screen but content is gone (e.g. svideo w/ no video), skip it
+  if(lastScreen==='svideo'&&(!videoData||videoData.length===0))return go(fallback||'slanding');
+  if(lastScreen==='s-tips'&&(!tipData||tipData.length===0))return go(fallback||'slanding');
+  if(safeScreens.includes(lastScreen))go(lastScreen);
+  else go(fallback||'slanding');
 }
 function spovBack(){
   go('slanding');
@@ -1334,8 +1347,8 @@ function loadChallenges(t){
     };
     const pinned=isPinned(t,w.id);
     const pinSvg=pinned
-      ?`<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`
-      :`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+      ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg>`
+      :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1 1-1.73V5h4v4.03a2 2 0 0 1 1 1.73V14H9v-3.24z"/><path d="M7 14h10"/></svg>`;
     d.innerHTML=`<div style="width:44px;height:44px;border-radius:12px;background:${w.color}12;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${w.color}">${lucide(w.icon,20,w.color)}</div><div class="chb"><div class="cht" style="font-weight:700">${desc}</div></div><button class="pin-btn${pinned?' on':''}" onclick="togglePin(${t},'${w.id}','${desc.replace(/'/g,'\\\'')}','${w.icon}','${w.color}',event)" aria-label="Pin for later">${pinSvg}</button><div class="chev">\u203A</div>`;
     list.appendChild(d);
   });
@@ -1610,7 +1623,8 @@ function renderTip(){
   const bar=document.createElement('div');bar.className='app-bar sticky-nav';
   bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative';
   const kitHasItems=kitItems.length>0;
-  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">\u2039</button><div class="app-title">Parent for Parent</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
+  const tipBack=(videoData&&videoData.length>0)?"go('svideo')":"go('slanding')";
+  bar.innerHTML=`<button class="app-back" onclick="${tipBack}">\u2039</button><div class="app-title">Parent for Parent</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
   wrap.appendChild(bar);
 
   const scroll=document.createElement('div');scroll.className='flat-scroll';

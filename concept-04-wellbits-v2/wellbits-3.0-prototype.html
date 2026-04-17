@@ -322,11 +322,12 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="notif-panel" id="notifPanel" style="z-index:25;">
   <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px;">Notifications</div>
   <!-- V2: Midpoint check-in notification (tap to open full check-in) -->
-  <div class="notif-item" onclick="goTo(SCR.CHARACTER_CHECKIN);document.getElementById('notifPanel').classList.remove('show');" style="cursor:pointer;background:rgba(132,94,247,.06);border-radius:8px;padding:10px 8px;margin-bottom:4px;">
-    <div class="ni-icon" style="background:rgba(132,94,247,.15);">💬</div>
-    <div>
-      <div class="ni-text"><b id="midpointNotifName">Aura</b> has a message for you...</div>
-      <div class="ni-time">Just now · Tap to reply</div>
+  <div class="notif-item" onclick="goTo(SCR.CHARACTER_CHECKIN);document.getElementById('notifPanel').classList.remove('show');" style="cursor:pointer;background:linear-gradient(135deg,rgba(132,94,247,.12),rgba(51,154,240,.06));border:1px solid rgba(132,94,247,.2);border-radius:10px;padding:10px;margin-bottom:6px;">
+    <div class="ni-icon" style="background:rgba(132,94,247,.2);border:1px solid rgba(132,94,247,.3);">💬</div>
+    <div style="flex:1;min-width:0;">
+      <div class="ni-text" style="color:var(--text);font-weight:700;"><b id="midpointNotifName" style="color:var(--violet);">Aura</b> has a message for you</div>
+      <div style="font-size:10px;color:var(--text-dim);line-height:1.4;margin-top:2px;font-style:italic;" id="midpointNotifPrompt">"Still drinking water, or back to the old ways?"</div>
+      <div class="ni-time" style="color:var(--violet);font-weight:700;margin-top:3px;">Tap to reply →</div>
     </div>
   </div>
   <div class="notif-item"><div class="ni-icon" style="background:rgba(81,207,102,.15);">✅</div><div><div class="ni-text"><b>Sarah</b> joined as your ally! Aegis is ready.</div><div class="ni-time">2 min ago</div></div></div>
@@ -484,8 +485,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="font-size:13px;color:var(--text-dim);margin-bottom:4px;" id="assignedCharType">The Radiant One</div>
     <div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-width:280px;margin:0 auto 12px;font-style:italic;" id="assignedCharIntro">"Aura cares about looks but doesn't know where to start — help this wellbit evolve."</div>
     <div id="assignedCharReason" style="display:none;"></div>
-    <div id="assignedStats" style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px 14px 10px;margin-bottom:12px;width:100%;"></div>
-    <!-- V2: Quest goal displayed prominently (replaces generic reason text) -->
+    <!-- V2: Quest goal displayed prominently — BEFORE stats -->
     <div style="background:linear-gradient(135deg,rgba(255,212,59,.08),rgba(132,94,247,.05));border:1.5px solid rgba(255,212,59,.25);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:12px;width:100%;text-align:left;display:flex;align-items:flex-start;gap:10px;">
       <div style="font-size:22px;flex-shrink:0;">🎯</div>
       <div style="flex:1;">
@@ -493,6 +493,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
         <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--text);line-height:1.4;" id="assignedQuestGoal">Help this Wellbit get its glow back in 30 days!</div>
       </div>
     </div>
+    <div id="assignedStats" style="background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:12px 14px 10px;margin-bottom:12px;width:100%;"></div>
     <button class="btn btn-primary" onclick="goTo(SCR.EVOLVE)">Meet your Wellbit →</button>
   </div>
 </div>
@@ -671,10 +672,6 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   <div class="back-btn" onclick="goTo(SCR.TEAM_READY)">←</div>
 
   <div class="content" style="padding:92px 16px 24px;">
-    <div class="mh" style="text-align:center;">
-      <div style="font-family:'Space Grotesk',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:.08em;margin-bottom:2px;" id="mapLabel">MAP 1 OF 3</div>
-      <h2 id="mapName" style="margin:0;">The Garden Gate</h2>
-    </div>
     <!-- Wellbit goal -->
     <div id="questGoalBar" style="text-align:center;margin-bottom:8px;">
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;line-height:1.3;" id="questGoalTitle">Aura wants to Glow Up!</div>
@@ -696,18 +693,20 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
         <div onclick="updateCharacterGlow(1)" style="position:absolute;top:-10px;left:0;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle0">
           <img id="evoAvatar0" style="width:22px;height:22px;object-fit:contain;filter:brightness(0.4);transition:filter .3s;">
         </div>
-        <!-- Day 5 marker (Evolve 1 silhouette) - ~16% position -->
-        <div onclick="updateCharacterGlow(5)" style="position:absolute;top:-10px;left:16%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle1">
+        <!-- Day 5 marker (Evolve 1 silhouette) - ~18% position -->
+        <div onclick="updateCharacterGlow(5)" style="position:absolute;top:-10px;left:18%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(132,94,247,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle1">
           <img id="evoAvatar1" style="width:22px;height:22px;object-fit:contain;filter:brightness(0.4);transition:filter .3s;">
         </div>
-        <!-- Day 10 marker (Evolve 2 silhouette) - ~33% position (middle of 30-day journey) -->
-        <div onclick="updateCharacterGlow(10)" style="position:absolute;top:-10px;left:33%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle2">
+        <!-- Day 10 marker (Evolve 2 silhouette) - ~28% position (closer to Day 5) -->
+        <div onclick="updateCharacterGlow(10)" style="position:absolute;top:-10px;left:28%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--bg-deep);border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;" id="evoCircle2">
           <img id="evoAvatar2" style="width:22px;height:22px;object-fit:contain;filter:brightness(0.4);transition:filter .3s;">
         </div>
         <!-- Day 30 marker (Fully evolved - locked silhouette) - right edge -->
-        <div onclick="showDay30Preview()" style="position:absolute;top:-10px;right:0;transform:translateX(50%);width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,rgba(255,212,59,.15),rgba(132,94,247,.1));border:2px solid rgba(255,212,59,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;box-shadow:0 0 12px rgba(255,212,59,.25);" id="evoCircle3">
-          <span style="font-size:14px;filter:grayscale(1);opacity:.7;">🔒</span>
+        <div onclick="showDay30Preview()" style="position:absolute;top:-10px;right:0;transform:translateX(50%);width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,rgba(255,212,59,.15),rgba(255,107,107,.1));border:2px solid rgba(255,107,107,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;z-index:2;overflow:hidden;box-shadow:0 0 12px rgba(255,107,107,.25);" id="evoCircle3">
+          <span style="font-size:14px;opacity:.8;">🔒</span>
         </div>
+        <!-- Day 30 label below the locked circle -->
+        <div onclick="showDay30Preview()" style="position:absolute;top:26px;right:-20px;font-size:8px;font-weight:700;color:var(--coral);letter-spacing:.04em;white-space:nowrap;cursor:pointer;text-align:right;">DAY 30<br><span style="font-size:8px;font-weight:600;color:var(--text-dim);">Main Boss</span></div>
       </div>
     </div>
     <!-- Character companion (large) with glow ring -->
@@ -725,6 +724,11 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;padding:0 12px;flex-wrap:wrap;">
       <div onclick="showBonusChallenge()" style="background:linear-gradient(135deg,rgba(255,212,59,.12),rgba(255,168,0,.08));border:1px solid rgba(255,212,59,.3);border-radius:20px;padding:7px 14px;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;transition:all .2s;box-shadow:0 0 12px rgba(255,212,59,.1);">⭐ Bonus Challenge</div>
       <div onclick="simulateMissedDay()" style="background:rgba(255,107,107,.08);border:1px dashed rgba(255,107,107,.25);border-radius:20px;padding:7px 14px;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--coral);cursor:pointer;transition:all .2s;opacity:.7;">⏩ Demo: Miss a day</div>
+    </div>
+    <!-- V2: Map header — small, just above day nodes -->
+    <div style="text-align:center;margin:4px 0 8px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="font-family:'Space Grotesk',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:.08em;" id="mapLabel">MAP 1 OF 3</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:var(--text);margin-top:2px;" id="mapName">The Garden Gate</div>
     </div>
     <div id="questMapNodes"></div>
   </div>
@@ -2013,11 +2017,12 @@ function showDayChallenge(day){
   var coinIcon='<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 4px rgba(255,212,59,.4);font-size:8px;color:#8B6914;font-weight:bold;vertical-align:middle;">W</span>';
   document.getElementById('dailyCoins').innerHTML=isAlly?coinIcon+' +20 coins':coinIcon+' +15 coins';
   document.getElementById('dailyXP').textContent=isAlly?'⭐ +15 XP':'⭐ +10 XP';
-  // CTA - route to correct reward view
+  // CTA - V2: route through verification → facts → rewards
   lastChallengeDay=day;
+  pendingIsAlly=isAlly;
   const cta=document.getElementById('dailyCTA');
   cta.textContent='I did it! ✨';
-  cta.onclick=function(){showRewardsForDay(isAlly);};
+  cta.onclick=function(){startVerification();};
   goTo(SCR.DAILY_CHALLENGE);
 }
 
@@ -2439,14 +2444,26 @@ function goToAllyView(){
 }
 
 // === NOTIFICATIONS ===
+const midpointPrompts = {
+  'Aura': '"Quick check — still drinking water, or back to the old ways?"',
+  'Titan': '"Did you move today? Even a walk counts. Titan\u2019s watching 👊"',
+  'Sage': '"What did you eat for lunch? No judgement. Sage just wants to know 🥗"',
+  'Spark': '"How\u2019s the energy today — charged or crashing? ⚡"',
+  'Luna': '"What time did you sleep last night? Luna remembers 🌙"'
+};
 function toggleNotif(){
   const p=document.getElementById('notifPanel');
   p.classList.toggle('show');
   const dot=document.getElementById('topNotifDot');
   if(dot)dot.style.display='none';
-  // V2: Update midpoint notif with current character name
+  // V2: Update midpoint notif with current character
   var midName=document.getElementById('midpointNotifName');
-  if(midName&&characters[curChar])midName.textContent=characters[curChar].name;
+  var midPrompt=document.getElementById('midpointNotifPrompt');
+  if(characters[curChar]){
+    const n=characters[curChar].name;
+    if(midName)midName.textContent=n;
+    if(midPrompt)midPrompt.textContent=midpointPrompts[n]||midpointPrompts['Aura'];
+  }
 }
 // Close notif when clicking outside
 document.addEventListener('click',function(e){
@@ -2667,10 +2684,17 @@ function showFactsOverlay(){
 function dismissFacts(){
   const overlay=document.getElementById('factsOverlay');
   if(overlay) overlay.style.display='none';
-  // Now advance and go to rewards
+  // V2: Route through the proper reward flow (ally vs solo)
   advanceDay();
-  goTo(SCR.CHALLENGE_COMPLETE);
+  if(typeof showRewardsForDay === 'function'){
+    showRewardsForDay(pendingIsAlly);
+  } else {
+    goTo(SCR.CHALLENGE_COMPLETE);
+  }
 }
+
+// V2: Track whether current challenge is an ally one (for routing after facts)
+var pendingIsAlly = false;
 
 function getEducationFact(charName, day){
   // Lightweight fact library mapped by character + day cluster
@@ -2768,8 +2792,8 @@ function showFreezeCardMenu() {
     + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:18px;font-weight:800;color:#F1F3F5;margin-bottom:8px;">Freeze Cards</div>'
     + '<div style="font-size:12px;color:#9CA3AF;line-height:1.6;margin-bottom:12px;text-align:left;">'
     + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">❄️</span><span><b style="color:#F1F3F5;">Skip a day</b> without breaking your streak. Life happens — freeze cards keep you on track.</span></div>'
-    + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">⚔️</span><span><b style="color:#F1F3F5;">Earn a day by defeating bosses</b> — 1 day from the Day 5 mini boss, 1 day from the Day 10 main boss.</span></div>'
-    + (isGoingSolo ? '' : '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">🛡️</span><span><b style="color:#F1F3F5;">Shield your ally</b> — use a card on your ally to freeze their day too.</span></div>')
+    + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">⚔️</span><span><b style="color:#F1F3F5;">Earn a day by defeating bosses</b> — 1 day at every boss stage.</span></div>'
+    + (isGoingSolo ? '' : '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">🛡️</span><span><b style="color:#F1F3F5;">Use on your ally too</b> — if your parent or friend is too busy that day, gift them a freeze so their streak stays safe.</span></div>')
     + '</div>';
 
   // Card count
@@ -3040,13 +3064,14 @@ function showDay30Preview(){
   popup.id='day30PreviewPopup';
   popup.style.cssText='position:absolute;inset:0;background:rgba(13,14,26,.96);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;backdrop-filter:blur(12px);';
   popup.innerHTML =
-    '<div style="font-family:Space Grotesk,monospace;font-size:10px;color:var(--gold);letter-spacing:.1em;margin-bottom:8px;">🔒 LOCKED UNTIL DAY 30</div>'
+    '<div style="font-family:Space Grotesk,monospace;font-size:10px;color:var(--coral);letter-spacing:.1em;margin-bottom:8px;">🔒 DAY 30: MAIN BOSS</div>'
+    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:18px;font-weight:800;color:var(--coral);margin-bottom:14px;">Captain Couch</div>'
     + '<div style="width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,59,.15),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative;">'
       + '<img src="'+(c.stage3||c.teen)+'" style="width:150px;height:auto;filter:brightness(0) opacity(0.35);animation:float 4s ease-in-out infinite;">'
       + '<div style="position:absolute;font-size:48px;color:var(--gold);">🔒</div>'
     + '</div>'
-    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:18px;font-weight:800;color:var(--gold);margin-bottom:8px;">Final Form</div>'
-    + '<div style="font-size:13px;color:var(--text-dim);line-height:1.6;max-width:280px;margin:0 auto 20px;">The fully evolved form unlocks after completing <b style="color:var(--text);">all 30 days</b>. Keep showing up — '+c.name+' is counting on you.</div>'
+    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:var(--gold);margin-bottom:8px;">Final Form</div>'
+    + '<div style="font-size:13px;color:var(--text-dim);line-height:1.6;max-width:280px;margin:0 auto 20px;">Defeat <b style="color:var(--coral);">Captain Couch</b> at Day 30 to unlock '+c.name+'\u2019s fully evolved form. Keep showing up.</div>'
     + '<button onclick="document.getElementById(\'day30PreviewPopup\').remove()" class="btn btn-primary" style="width:100%;max-width:240px;">Got it</button>';
   document.querySelector('.phone-frame').appendChild(popup);
 }

@@ -501,10 +501,14 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div class="ls-panel" style="height:58%">
       <div class="ob-logo"><div class="ob-logo-ico" style="padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div><div class="ob-logo-txt">Parent for Parent</div><div class="ob-logo-sub">From one parent to another</div></div></div>
       <div class="p-h">Your child is changing.<br>So is your role.</div>
-      <div class="p-sub">Real stories, honest tips, and small shifts — matched to where you and your child actually are.</div>
+      <div class="p-sub">The parent-side toolkit for the secondary school years. Real stories, honest tips, and small shifts — matched to where you and your child actually are.</div>
       <button class="p-btn" onclick="go('s-profile')">Set up my profile</button>
       <button class="p-btn-ghost" onclick="children=[];activeChild=0;buildToggles();go('slanding')">Just browse for now</button>
       <div class="p-note">Nothing you enter is shared. A profile just helps us match content to your stage.</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 1 5 2"/></svg>
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.5px">Curated by HPB</div>
+      </div>
     </div>
   </div>
 </div>
@@ -637,7 +641,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Sunday, 30 March</div><div><span class="lbadge">One week on</span></div></div>
     <div class="lnotif" onclick="go('swaci')">
       <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
-      <div class="nb"><div class="nr"><span class="na">Parent for Parent</span><span class="nw">now</span></div><div class="nt">Let's check in</div><div class="nm">How did last week go? Even if nothing changed, that's worth knowing.</div></div>
+      <div class="nb"><div class="nr"><span class="na">Parent for Parent</span><span class="nw">now</span></div><div class="nt">Just checking in</div><div class="nm">No pressure to reply. Tap if you want to — or swipe to skip this week.</div></div>
     </div>
     <div class="breakopt"><p class="breaktxt">Life got busy? <span class="breaklink" onclick="showBreak()">Pause for a month — no pressure.</span></p></div>
   </div>
@@ -650,11 +654,17 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
     <div style="text-align:center;margin-bottom:12px">
       <div style="font-size:11px;color:var(--ink3);font-weight:600">Sunday, 30 March</div>
     </div>
+    <div style="display:flex;justify-content:center;margin-bottom:12px">
+      <div style="background:rgba(69,190,147,.08);border:1px solid rgba(69,190,147,.2);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;max-width:90%">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div style="font-size:11.5px;color:var(--ink2);line-height:1.4;font-weight:600">This is just between you and this page. Nothing shared. Nothing tracked against you.</div>
+      </div>
+    </div>
     <div style="display:flex;gap:10px;align-items:flex-end;max-width:85%">
       <div style="width:32px;height:32px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div>
       <div id="ci-q" style="background:white;border-radius:18px 18px 18px 4px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--line)">
         <div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div>
-        <div style="font-size:15px;color:var(--ink);line-height:1.55">Hey — how did the week go? Even if nothing shifted, that's fine to say.</div>
+        <div style="font-size:15px;color:var(--ink);line-height:1.55">Hey — how's the week sitting with you? Even "nothing" is fine to say.</div>
       </div>
     </div>
     <div style="height:8px"></div>
@@ -663,8 +673,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
         <button class="ciopt" onclick="checkin('w')" style="max-width:85%;text-align:right">Something actually shifted</button>
         <button class="ciopt" onclick="checkin('t')" style="max-width:85%;text-align:right">Still figuring it out</button>
         <button class="ciopt" onclick="checkin('r')" style="max-width:85%;text-align:right">Honestly it was a rough week</button>
-        <button class="ciopt" onclick="checkin('role')" style="max-width:85%;text-align:right">I feel like how I show up needs to change</button>
+        <button class="ciopt" onclick="checkin('role')" style="max-width:85%;text-align:right">How I show up needs to change</button>
         <button class="ciopt" onclick="checkin('m')" style="max-width:85%;text-align:right">I need something different</button>
+        <button class="ciopt" onclick="checkin('skip')" style="max-width:85%;text-align:right">Didn't try it yet — life happened</button>
       </div>
     </div>
     <div id="ci-response"></div>
@@ -1050,8 +1061,8 @@ function loadPOV(){
   const currentIdx=allQuotes.findIndex(q=>q.quote===p.quote);
   if(currentIdx>0){const cur=allQuotes.splice(currentIdx,1)[0];allQuotes.unshift(cur);}
 
-  // Build youth story cards — vertical stacked, max 6
-  const quotesToShow=allQuotes.slice(0,6);
+  // Build youth story cards — vertical stacked, max 3 (v2: shortened)
+  const quotesToShow=allQuotes.slice(0,3);
   const youthStoriesHtml=quotesToShow.map((q,i)=>`
     <div style="background:white;border-radius:20px;padding:22px;margin-bottom:12px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)">
       <div style="display:flex;align-items:flex-start;gap:14px">
@@ -1079,29 +1090,73 @@ function loadPOV(){
       </div>
     </div>`).join('');
 
+  // Hero video (first youth video) + extras
+  const heroVideo=yVideos[0];
+  const extraVideos=yVideos.slice(1);
+  const extraVideosHtml=extraVideos.map((v,i)=>`
+    <div style="flex-shrink:0;width:220px;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);background:white">
+      <div style="height:140px;position:relative;overflow:hidden">
+        <img src="${v.img}" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.55)">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.25)"><div style="width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent var(--ink);margin-left:2px"></div></div>
+        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',10,'white')} 1:${String(20+(i+1)*15).padStart(2,'0')}</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px">${v.n}</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${v.age}yo</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.5;font-style:italic">${v.c}</div>
+      </div>
+    </div>`).join('');
+
   scroll.innerHTML=`
     <!-- Hero insight section — distinct background -->
     <div style="background:linear-gradient(165deg,#E0F0F0,#D0E8E8);margin:-20px -22px 0;padding:28px 22px 28px;border-radius:0 0 28px 28px">
       <div class="f-eyebrow" style="color:var(--ink3);text-align:left">From the youth side</div>
       <div class="f-h" style="margin-bottom:16px;color:var(--ink);text-align:left">Their world right now</div>
-      <div style="background:white;border-radius:20px;padding:24px 22px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+      <div style="background:white;border-radius:20px;padding:24px 22px;box-shadow:0 4px 24px rgba(0,0,0,.08);margin-bottom:18px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
           <div style="width:32px;height:32px;border-radius:10px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center">${lucide('eye',16,'var(--brand)')}</div>
           <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">What\u2019s actually going on</div>
         </div>
         <div style="font-size:15px;color:var(--ink);line-height:1.7">${p.insight}</div>
       </div>
+      <!-- Skip-ahead pill (v2: above the fold) -->
+      <button onclick="buildVideoScreen();go('svideo')" style="width:100%;padding:14px;background:var(--brand);color:white;border:none;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(69,190,147,.25)">
+        Show me the tips
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
     </div>
 
-    <!-- Youth video stories carousel -->
-    <div style="margin-top:28px;margin-bottom:28px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">Stories from our youth</div><div style="font-size:12px;font-weight:600;color:var(--brand);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
-      <div id="pov-videos-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${youthVideoHtml}</div>
+    <!-- Hero youth video (v2: single featured) -->
+    <div style="margin-top:24px;margin-bottom:20px">
+      <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">A youth story</div>
+      <div style="border-radius:22px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid var(--line);background:white">
+        <div style="height:220px;position:relative;overflow:hidden">
+          <img src="${heroVideo.img}" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6)">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.3)"><div style="width:0;height:0;border-style:solid;border-width:10px 0 10px 17px;border-color:transparent transparent transparent var(--ink);margin-left:3px"></div></div>
+          <div style="position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',11,'white')} 1:20</div>
+        </div>
+        <div style="padding:16px 20px">
+          <div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:2px">${heroVideo.n}</div>
+          <div style="font-size:12px;color:var(--ink3);margin-bottom:10px">${heroVideo.age}yo</div>
+          <div style="font-size:14px;color:var(--ink2);line-height:1.55;font-style:italic">${heroVideo.c}</div>
+        </div>
+      </div>
     </div>
 
-    <!-- Youth quotes — vertical stacked -->
+    <!-- See more stories (collapsed by default, expand to see carousel) -->
+    <div style="margin-bottom:24px">
+      <button id="pov-see-more-btn" onclick="togglePOVStories()" style="width:100%;padding:12px 16px;background:white;border:1px solid var(--line);border-radius:14px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+        <span>See more youth stories</span>
+        <span id="pov-see-more-icon" style="display:flex;align-items:center">${lucide('chevron-down',16,'var(--ink3)')}</span>
+      </button>
+      <div id="pov-more-stories" style="display:none;margin-top:14px">
+        <div id="pov-videos-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${extraVideosHtml}</div>
+      </div>
+    </div>
+
+    <!-- Youth quotes — vertical stacked, 3 max (v2) -->
     <div style="margin-bottom:28px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">In their own words</div><div style="font-size:12px;font-weight:600;color:var(--brand);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">In their own words</div></div>
       ${youthStoriesHtml}
     </div>
 
@@ -1119,6 +1174,17 @@ function loadPOV(){
   },50);
 
   go('s-pov');
+}
+function togglePOVStories(){
+  const box=document.getElementById('pov-more-stories');
+  const icon=document.getElementById('pov-see-more-icon');
+  const btn=document.getElementById('pov-see-more-btn');
+  if(!box)return;
+  const isOpen=box.style.display!=='none';
+  box.style.display=isOpen?'none':'block';
+  icon.innerHTML=isOpen?lucide('chevron-down',16,'var(--ink3)'):lucide('chevron-up',16,'var(--ink3)');
+  btn.querySelector('span').textContent=isOpen?'See more youth stories':'Hide extra stories';
+  if(!isOpen){setTimeout(()=>initDragScroll(document.getElementById('pov-videos-scroll')),50);}
 }
 
 // ════ VIDEO REELS ════
@@ -1484,13 +1550,13 @@ async function loadCheckin(){
   let saved=null;try{const r=await window.storage.get('saved-tip');if(r)saved=JSON.parse(r.value);}catch(e){saved=window._savedTip||null;}
   const who=children[activeChild]?.name||'there';
   const q=document.getElementById('ci-q');
-  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'\u2026':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 you saved a tip last week: <em>"${sh}"</em><br><br>Did anything shift? Even something small counts.</div>`;}
-  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 how did the week go? Even if nothing shifted, that's fine to say.</div>`;
+  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'\u2026':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 you saved <em>"${sh}"</em> last week.<br><br>How's that sitting with you?</div>`;}
+  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 how's the week sitting with you? Even "nothing" is fine to say.</div>`;
 }
 function checkin(type){
   let lbl=null;try{lbl=window._savedTip?.label;}catch(e){}
   const ref=lbl?`trying "${lbl.length>45?lbl.substring(0,42)+'\u2026':lbl}"`:'trying something new';
-  const r={w:{sent:'Something actually shifted',resp:`That's real. Even one small shift from ${ref} is worth building on. We'll send something new next week.`},t:{sent:'Still figuring it out',resp:`Completely fine. These things rarely click in one week. We'll try a different angle.`},r:{sent:'Honestly it was a rough week',resp:`Rough weeks happen. You're still here, which matters more. We'll come back lighter next week.`},role:{sent:'I feel like how I show up needs to change',resp:`That feeling is the work. Noticing it is the first step. We'll send something next week that speaks to exactly that.`},m:{sent:'I need something different',resp:`Noted. We'll match you with something else next week.`}}[type];
+  const r={w:{sent:'Something actually shifted',resp:`That's real. Even one small shift is worth building on. We'll send something new next week.`},t:{sent:'Still figuring it out',resp:`Completely fine. These things rarely click in one week. We'll try a different angle.`},r:{sent:'Honestly it was a rough week',resp:`Rough weeks happen. You're still here, which matters more. We'll come back lighter next week.`},role:{sent:'How I show up needs to change',resp:`That feeling is the work. Noticing it is the first step. We'll send something next week that speaks to exactly that.`},m:{sent:'I need something different',resp:`Noted. We'll match you with something else next week.`},skip:{sent:'Didn\u2019t try it yet \u2014 life happened',resp:`Fair. Weeks go like that. The tip will still be there when you're ready. No pressure.`}}[type];
   document.getElementById('ciopts').innerHTML='';
   // Show selected answer as outgoing bubble (right-aligned)
   const sel=document.createElement('div');sel.style.cssText='display:flex;justify-content:flex-end;margin-bottom:8px;animation:slideUp .3s ease both';

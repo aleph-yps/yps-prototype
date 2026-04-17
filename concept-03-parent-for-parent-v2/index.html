@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Parent for Parent</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#18181B;--ink2:#52525B;--ink3:#A1A1AA;
+  --line:#E4E4E7;--bg:#F5F0EB;--white:#FFF;
+  --brand:#45BE93;--brand-lt:#CEEFE4;
+  --wa-green:#25D366;--wa-hdr:#075E54;--wa-bg:#ECE5DD;--wa-in:#DCF8C6;
+  --panel:rgba(8,6,18,.72);
+}
+body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px 60px}
+
+/* NOTIFICATION */
+#notif{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:340px;background:rgba(255,255,255,.97);border-radius:20px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start;z-index:99999;cursor:pointer;box-shadow:0 8px 40px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .5s}
+.ni{width:38px;height:38px;border-radius:10px;background:var(--wa-green);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.nb{flex:1}.nr{display:flex;justify-content:space-between;margin-bottom:2px}
+.na{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px}
+.nw{font-size:11px;color:var(--ink3)}.nt{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.nm{font-size:12px;color:var(--ink2);line-height:1.4}
+
+/* PHONE */
+.phone{width:375px;height:812px;border-radius:52px;position:relative;overflow:hidden;box-shadow:0 0 0 10px #1C1C1E,0 0 0 11px rgba(255,255,255,.1),0 48px 96px rgba(0,0,0,.35);flex-shrink:0;background:#0d0b18}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#1C1C1E;border-radius:20px;z-index:999}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden}
+.screen.active{display:flex;animation:scFade .22s ease both}
+@keyframes scFade{from{opacity:0}to{opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(255,255,255,.3))}50%{filter:drop-shadow(0 0 22px rgba(255,255,255,.7))}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ringPulse{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes timerComplete{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes confettiPop{0%{transform:scale(0) rotate(0);opacity:1}100%{transform:scale(1.5) rotate(180deg);opacity:0}}
+@keyframes progressBar{0%{width:0}100%{width:100%}}
+@keyframes spinEmoji{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}15%{transform:rotate(-12deg)}30%{transform:rotate(10deg)}45%{transform:rotate(-8deg)}60%{transform:rotate(5deg)}75%{transform:rotate(-3deg)}}
+.sb{display:flex;justify-content:space-between;padding:16px 22px 0;flex-shrink:0}
+.sbt{font-size:15px;font-weight:700}.sbr{font-size:12px;opacity:.7}
+
+/* HOME */
+#sh{background:linear-gradient(165deg,#1b2838 0%,#2d4059 35%,#7b6b8a 65%,#d4a59a 85%,#f0e0d8 100%)}
+.htime{font-size:76px;font-weight:200;color:rgba(20,10,0,.78);letter-spacing:-4px;line-height:1}
+.hdate{font-size:15px;color:rgba(20,10,0,.52);font-weight:600;margin-top:4px}
+.hclock{text-align:center;margin:16px 0 4px;flex-shrink:0}
+.apps{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:20px 8px;padding:20px 14px 0;align-content:start}
+.app{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.aico{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 2px 10px rgba(0,0,0,.2);flex-shrink:0}
+.albl{font-size:10px;color:rgba(20,10,0,.65);font-weight:600;text-align:center}
+.dock{background:rgba(255,255,255,.3);backdrop-filter:blur(24px);margin:8px 14px 28px;border-radius:26px;padding:12px 20px;display:flex;justify-content:space-around;flex-shrink:0}
+
+/* WA */
+.wah{background:var(--wa-hdr);padding:36px 14px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wabk{color:white;font-size:28px;cursor:pointer;line-height:1}
+.waav{width:40px;height:40px;border-radius:50%;background:var(--wa-green);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.wamt{flex:1}.watl{font-size:15px;font-weight:700;color:white}.wasl{font-size:12px;color:rgba(255,255,255,.65)}
+.waac{display:flex;gap:18px;color:white;font-size:18px}
+.wachat{flex:1;overflow-y:auto;padding:10px 12px 16px;display:flex;flex-direction:column;gap:4px;background:var(--wa-bg)}
+.wachat::-webkit-scrollbar{width:0}
+.wday{text-align:center;margin:8px 0}.wdp{background:rgba(255,255,255,.72);color:var(--ink3);font-size:11px;font-weight:600;padding:3px 12px;border-radius:8px;display:inline-block}
+.bb{max-width:83%;padding:9px 12px 5px;border-radius:12px;font-size:13.5px;line-height:1.55;color:var(--ink);font-family:inherit}
+.bb.i{background:white;align-self:flex-start;border-bottom-left-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.bb.o{background:var(--wa-in);align-self:flex-end;border-bottom-right-radius:3px}
+.bbf{font-size:12px;font-weight:700;color:#128C7E;margin-bottom:3px}
+.bbm{text-align:right;font-size:10px;color:var(--ink3);margin-top:4px}
+.walink{background:white;border-radius:14px;overflow:hidden;margin-top:8px;cursor:pointer;border:1px solid #E0E0E0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.walink:active{opacity:.8}
+.walth{height:70px;background:linear-gradient(135deg,#45BE93,#2D8A6A);display:flex;align-items:center;justify-content:center;font-size:30px}
+.walb{padding:11px 13px}.walbt{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}.walbu{font-size:11px;color:var(--brand)}
+
+/* ═══════════════════════════════════
+   LUMI SCENE SYSTEM
+   Structure: scene (top 42%) + panel (bottom 58%)
+   ═══════════════════════════════════ */
+.ls-wrap{position:absolute;inset:0}
+/* Scene — gradient background + blobs + hero */
+.ls-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.scene-blob{position:absolute;border-radius:50%;pointer-events:none}
+.scene-hero{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:88px;line-height:1;animation:floatY 4s ease-in-out infinite;filter:drop-shadow(0 6px 24px rgba(0,0,0,.35));z-index:5}
+/* Dark glass panel */
+.ls-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:20px 22px 32px;overflow-y:auto;z-index:10}
+.ls-panel::-webkit-scrollbar{width:0}
+/* Floating top controls */
+.ls-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.ls-top>*{pointer-events:auto}
+.ls-back{width:40px;height:40px;background:rgba(0,0,0,.35);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;color:white;font-family:inherit}
+.ls-back:active{background:rgba(0,0,0,.55)}
+.ls-pill{background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:6px 16px;color:rgba(255,255,255,.9);font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.ls-pill-dot{width:6px;height:6px;border-radius:50%;background:#FFD700;flex-shrink:0}
+.ls-count{background:rgba(0,0,0,.35);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:5px 12px;color:rgba(255,255,255,.8);font-size:12px;font-weight:800}
+/* Panel text styles */
+.p-eyebrow{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.p-h{font-size:24px;font-weight:900;color:white;line-height:1.2;margin-bottom:10px;letter-spacing:-.3px}
+.p-sub{font-size:15px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:18px}
+.p-note{font-size:12px;color:rgba(255,255,255,.4);text-align:center;margin-top:14px;line-height:1.5}
+/* Buttons inside panel */
+.p-btn{width:100%;padding:17px;background:white;color:#18181B;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px}
+.p-btn:active{transform:scale(.975);background:#F0F0F0}
+.p-btn-ghost{width:100%;padding:15px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.2);border-radius:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px;backdrop-filter:blur(8px)}
+.p-btn-ghost:active{background:rgba(255,255,255,.2)}
+/* Context box */
+.p-ctx{background:rgba(255,255,255,.08);border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid rgba(255,255,255,.1)}
+.p-ctx-lbl{font-size:10px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.p-ctx-txt{font-size:14px;color:rgba(255,255,255,.82);line-height:1.6}
+/* Dots */
+.p-dots{display:flex;justify-content:center;gap:7px;margin-top:10px;padding-top:6px}
+.pdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s;flex-shrink:0}
+.pdot.on{background:white;width:22px;border-radius:4px}
+
+/* Gradient scene backgrounds */
+.g-coral{background:linear-gradient(165deg,#C41818 0%,#E83030 40%,#FF6868 75%,#FFB0B0 100%)}
+.g-night{background:linear-gradient(165deg,#08051E 0%,#180E50 40%,#2E1A88 75%,#4A30A8 100%)}
+.g-forest{background:linear-gradient(165deg,#082A14 0%,#1A5E30 40%,#2E9050 75%,#50C878 100%)}
+.g-amber{background:linear-gradient(165deg,#7A2E00 0%,#B84800 40%,#E86800 75%,#FFA840 100%)}
+.g-ocean{background:linear-gradient(165deg,#032050 0%,#0850A0 40%,#1080D8 75%,#38B0FF 100%)}
+.g-violet{background:linear-gradient(165deg,#2A0A5E 0%,#4A1898 40%,#6A30CC 75%,#9A68FF 100%)}
+.g-teal{background:linear-gradient(165deg,#042828 0%,#0A5858 40%,#1090A0 75%,#30C8CC 100%)}
+.g-rose{background:linear-gradient(165deg,#5E0828 0%,#9A1048 40%,#CC2868 75%,#FF70A8 100%)}
+.g-sky{background:linear-gradient(165deg,#083858 0%,#1068A8 40%,#28A0E8 75%,#70D0FF 100%)}
+
+/* ═══ ONBOARDING ═══ */
+#s-onboard .ls-panel{height:58%;padding-top:22px}
+.ob-logo{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.ob-logo-ico{width:38px;height:38px;background:var(--brand);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ob-logo-txt{font-size:15px;font-weight:800;color:white}
+.ob-logo-sub{font-size:11px;color:rgba(255,255,255,.5)}
+
+/* ═══ PROFILE ═══ */
+#s-profile{background:var(--bg)}
+.app-bar{padding:46px 22px 14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--bg);position:relative}
+.app-back{position:absolute;left:22px;width:44px;height:44px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);flex-shrink:0;border:none;font-family:inherit;color:var(--ink)}
+.app-title{font-size:16px;font-weight:700;color:var(--ink);text-align:center}
+.app-right{position:absolute!important;right:22px}
+.pscroll{flex:1;overflow-y:auto;padding:20px 22px 44px}
+.pscroll::-webkit-scrollbar{width:0}
+.phd{font-size:24px;font-weight:900;color:var(--ink);margin-bottom:5px;letter-spacing:-.4px;text-align:left}
+.psd{font-size:14px;color:var(--ink3);margin-bottom:22px;text-align:left}
+.ccard{background:white;border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 3px 16px rgba(0,0,0,.07)}
+.ccard-h{font-size:12px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;text-align:center}
+.flbl{font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.finput{width:100%;padding:13px 15px;border:2px solid var(--line);border-radius:14px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;background:white;margin-bottom:16px;transition:border-color .15s}
+.finput:focus{border-color:var(--brand);background:white}
+.srow{display:flex;flex-direction:column;gap:8px}
+.spill{padding:12px 15px;border:2px solid var(--line);border-radius:13px;background:white;cursor:pointer;font-family:inherit;text-align:left;transition:all .12s}
+.spill.sel{border-color:var(--brand);background:var(--brand-lt)}
+.spill-t{font-size:14px;font-weight:700;color:var(--ink)}
+.spill.sel .spill-t{color:var(--brand)}
+.add-ch{display:flex;align-items:center;gap:8px;width:100%;padding:15px;background:transparent;border:2px dashed var(--line);border-radius:16px;font-size:14px;font-weight:700;color:var(--ink3);cursor:pointer;font-family:inherit;margin-bottom:22px}
+.add-ch:active{border-color:var(--brand);color:var(--brand)}
+.btn-p{width:100%;padding:17px;background:var(--brand);color:white;border:none;border-radius:18px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:12px;box-shadow:0 6px 20px rgba(42,107,90,.3);transition:all .15s}
+.btn-p:active{transform:scale(.975);box-shadow:none}
+.skip-btn{width:100%;padding:12px;background:transparent;color:var(--ink3);border:none;font-size:13px;cursor:pointer;font-family:inherit}
+
+/* ═══ CHILD TOGGLE ═══ */
+.ctw{padding:8px 22px 4px;flex-shrink:0}
+.ctr{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.ctr::-webkit-scrollbar{display:none}
+.ctp{flex-shrink:0;padding:7px 16px;border-radius:20px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);font-size:13px;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .12s;backdrop-filter:blur(8px)}
+.ctp.on{background:rgba(255,255,255,.92);border-color:white;color:var(--ink)}
+/* landing variant */
+.ctp-light{border-color:var(--line);background:white;color:var(--ink2)}
+.ctp-light.on{background:var(--brand);border-color:var(--brand);color:white}
+
+/* ═══ LANDING ═══ */
+#slanding{background:var(--bg)}
+.land-scene{position:absolute;top:0;left:0;right:0;height:200px;overflow:hidden}
+.land-card{position:absolute;bottom:0;left:0;right:0;background:white;border-radius:28px 28px 0 0;padding:22px 22px 36px;box-shadow:0 -4px 32px rgba(0,0,0,.1)}
+.land-ey{font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;text-align:center}
+.land-h{font-size:26px;font-weight:700;color:var(--ink);line-height:1.18;margin-bottom:6px;letter-spacing:-.4px}
+.land-sub{font-size:14px;color:var(--ink3);margin-bottom:20px;line-height:1.5}
+.tcards{display:flex;flex-direction:column;gap:10px}
+.tc{border-radius:18px;padding:16px;display:flex;gap:14px;align-items:center;cursor:pointer;background:white;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06);transition:all .12s}
+.tc:active{border-color:var(--brand);transform:scale(.977)}
+.tico{width:48px;height:48px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.tca .tico{background:linear-gradient(135deg,#FFE4CC,#FFD0A8)}
+.tcb .tico{background:linear-gradient(135deg,#CCE8FF,#B8D8FF)}
+.tcc .tico{background:linear-gradient(135deg,#D0FFEE,#A8F0D8)}
+.tc-b{flex:1}.ttl{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:2px}
+.tsub{font-size:12px;color:var(--ink3)}
+.tarrw{font-size:20px;color:#CCC}
+.ct-land{position:absolute;top:54px;left:0;right:0;z-index:20;display:none}
+
+/* ═══ CHALLENGES ═══ */
+#schall{background:var(--bg)}
+.chw{flex:1;overflow-y:auto;padding:20px 22px 40px}
+.chw::-webkit-scrollbar{width:0}
+.proof-bar{background:transparent;border-radius:0;padding:0 0 8px;margin-bottom:8px;font-size:12px;color:var(--ink3);font-weight:600;display:flex;align-items:center;gap:6px}
+.chlist{display:flex;flex-direction:column;gap:10px}
+.chi{background:white;border-radius:20px;padding:20px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:all .12s;border:1px solid var(--line)}
+.chi:active{border-color:var(--brand);transform:scale(.977)}
+.che{font-size:26px;width:38px;text-align:center;flex-shrink:0}
+.chb{flex:1}.cht{font-size:15px;font-weight:700;color:var(--ink);line-height:1.4}.chs{font-size:13px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.chev{font-size:20px;color:#CCC}
+/* Well tag pill */
+.well-tag{display:inline-block;font-size:10px;font-weight:800;color:white;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+
+/* ═══ VIDEO REELS ═══ */
+#svideo{position:absolute;inset:0}
+.reel-slide{position:absolute;inset:0;display:flex;flex-direction:column}
+.reel-scene{position:absolute;top:0;left:0;right:0;height:55%;overflow:hidden}
+.reel-face{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:96px;line-height:1;animation:floatY 4s ease-in-out infinite;filter:drop-shadow(0 6px 24px rgba(0,0,0,.4));z-index:5}
+.reel-panel{position:absolute;bottom:0;left:0;right:0;height:50%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:22px 22px 28px;z-index:10}
+.reel-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between}
+.reel-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(0,0,0,.35);color:rgba(255,255,255,.8);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;backdrop-filter:blur(8px);margin-bottom:10px}
+.reel-name{font-size:20px;font-weight:900;color:white;margin-bottom:2px;letter-spacing:-.2px}
+.reel-role{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:12px;font-weight:600}
+.reel-quote{font-size:16px;color:rgba(255,255,255,.9);line-height:1.6;font-style:italic;margin-bottom:16px}
+.reel-bar{height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.reel-prog{height:100%;background:rgba(255,255,255,.8);border-radius:2px;width:0;transition:width .5s}
+.reel-hint{font-size:12px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:4px}
+.reel-next-btn{width:100%;padding:14px;background:white;color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+.reel-dots{display:flex;gap:5px;margin-bottom:10px}
+.rdot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .25s}
+.rdot.on{background:white;width:16px;border-radius:3px}
+/* swipe hints */
+.reel-sh{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);color:white;font-size:11px;font-weight:800;padding:5px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .1s;z-index:20;text-transform:uppercase;letter-spacing:.4px}
+.reel-sh-n{right:14px}
+.reel-sh-b{left:14px}
+
+/* ═══ TIP PLAYER ═══ */
+#s-tips{position:absolute;inset:0}
+.tp-slide{position:absolute;inset:0;display:flex;flex-direction:column}
+.tp-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.tp-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:18px 22px 28px;overflow-y:auto;z-index:10}
+.tp-panel::-webkit-scrollbar{width:0}
+.tp-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between}
+.tp-tonight{display:inline-flex;align-items:center;gap:5px;background:rgba(255,200,0,.25);color:rgba(255,230,100,.95);font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.3px;border:1px solid rgba(255,200,0,.3);width:fit-content}
+.tp-h{font-size:21px;font-weight:900;color:white;line-height:1.22;margin-bottom:10px;letter-spacing:-.2px}
+.tp-b{font-size:14px;color:rgba(255,255,255,.78);line-height:1.65;margin-bottom:12px}
+.tp-why{background:rgba(255,255,255,.07);border-radius:12px;padding:11px 13px;margin-bottom:14px;border:1px solid rgba(255,255,255,.1)}
+.tp-why-l{font-size:10px;font-weight:800;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.tp-why-t{font-size:13px;color:rgba(255,255,255,.78);line-height:1.5}
+.tp-try{width:100%;padding:15px;background:white;color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px}
+.tp-try:active{transform:scale(.975)}
+.tp-saved-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 28px 40px;z-index:25;animation:slideUp .4s ease both}
+.tp-saved-ico{font-size:64px;margin-bottom:16px;animation:pulseGlow 2s ease-in-out infinite}
+.tp-saved-h{font-size:22px;font-weight:900;color:white;margin-bottom:8px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.tp-saved-s{font-size:14px;color:rgba(255,255,255,.75);line-height:1.55;margin-bottom:6px}
+.tp-saved-sub{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:24px}
+.tp-saved-next{width:100%;padding:14px;background:rgba(255,255,255,.9);color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+
+/* ═══ PREMIUM TIMER ═══ */
+.timer-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0 4px}
+.timer-rings{position:relative;width:190px;height:190px;margin-bottom:22px}
+.timer-svg{width:190px;height:190px}
+.tr-outer{fill:none;stroke:rgba(255,255,255,.05);stroke-width:2}
+.tr-track{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.tr-prog{fill:none;stroke:white;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.tr-prog.running{animation:ringPulse 1.5s ease-in-out infinite}
+.timer-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.t-time{font-size:40px;font-weight:900;color:white;letter-spacing:-2px;line-height:1;text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.t-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.6px}
+.timer-controls{display:flex;gap:10px;align-items:center}
+.timer-start{height:52px;padding:0 32px;background:white;color:var(--ink);border:none;border-radius:26px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.timer-start:active{transform:scale(.96)}
+.timer-rst{width:44px;height:44px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:white;border:none;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);font-family:inherit;transition:all .15s}
+.timer-rst:active{background:rgba(255,255,255,.25)}
+.timer-done{display:flex;flex-direction:column;align-items:center;text-align:center;animation:timerComplete .6s ease}
+.td-ico{font-size:60px;margin-bottom:14px}
+.td-h{font-size:22px;font-weight:900;color:white;margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.td-s{font-size:14px;color:rgba(255,255,255,.7);line-height:1.55;margin-bottom:22px}
+
+/* ═══ GROUNDING ═══ */
+#s-grounding{position:absolute;inset:0}
+.gp-slide{position:absolute;inset:0;display:flex;flex-direction:column}
+.gp-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.gp-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:18px 22px 28px;overflow-y:auto;z-index:10}
+.gp-panel::-webkit-scrollbar{width:0}
+.gp-top{position:absolute;top:44px;left:16px;right:16px;z-index:30;display:flex;align-items:center;justify-content:space-between}
+.gp-for-you{font-size:11px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.gp-h{font-size:22px;font-weight:900;color:white;line-height:1.22;margin-bottom:8px;letter-spacing:-.2px}
+.gp-b{font-size:14px;color:rgba(255,255,255,.75);line-height:1.65;margin-bottom:16px}
+
+/* ═══ THREE SHIFTS ═══ */
+#s-shifts{position:absolute;inset:0}
+.sh-slide{position:absolute;inset:0}
+.sh-scene{position:absolute;top:0;left:0;right:0;height:42%;overflow:hidden}
+.sh-panel{position:absolute;bottom:0;left:0;right:0;height:62%;background:var(--panel);backdrop-filter:blur(28px);border-radius:28px 28px 0 0;padding:18px 22px 32px;overflow-y:auto;z-index:10}
+.sh-panel::-webkit-scrollbar{width:0}
+.sk-item{display:flex;align-items:flex-start;gap:13px;padding:14px;background:rgba(255,255,255,.08);border-radius:16px;margin-bottom:10px;cursor:pointer;transition:all .14s;border:1.5px solid rgba(255,255,255,.1)}
+.sk-item.chk{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3)}
+.sk-chk{width:26px;height:26px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;color:white}
+.sk-item.chk .sk-chk{background:white;border-color:white;color:var(--brand)}
+.sk-txt{font-size:14px;color:rgba(255,255,255,.85);line-height:1.5;font-weight:600}
+.sk-item.chk .sk-txt{color:rgba(255,255,255,.55)}
+
+/* ═══ WELLBITS ALLY INVITE ═══ */
+#s-ally{background:#FFFFFF;overflow:hidden}
+.ally-topbar{padding:48px 0 8px;text-align:center;font-size:11px;color:#6B7280;font-weight:700;letter-spacing:.4px;flex-shrink:0}
+.ally-scroll{flex:1;overflow-y:auto;padding:0 24px 60px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ally-scroll::-webkit-scrollbar{width:0}
+.ally-avatar{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(132,94,247,.1),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 0 8px}
+.ally-avatar img{width:64px;height:auto;filter:drop-shadow(0 8px 20px rgba(132,94,247,.2))}
+.ally-h{font-size:22px;font-weight:800;color:#1A1B2E;line-height:1.2;margin-bottom:4px;font-family:'Plus Jakarta Sans',sans-serif}
+.ally-h span{color:#845EF7}
+.ally-sub{font-size:12px;color:#6B7280;margin-bottom:16px}
+.ally-input{width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:14px;font-size:14px;font-family:inherit;color:#1A1B2E;background:white;outline:none;margin-bottom:12px;text-align:center;transition:border .2s}
+.ally-input:focus{border-color:#845EF7}
+.ally-chars{display:flex;gap:8px;width:100%;margin-bottom:16px}
+.ally-char{flex:1;background:#fff;border:2px solid #E5E7EB;border-radius:16px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.ally-char.sel{border-color:#845EF7;background:#F2EEFF;box-shadow:0 0 16px rgba(132,94,247,.25)}
+.ally-char-ico{margin-bottom:4px}
+.ally-char-ico img{width:36px;height:auto}
+.ally-char-name{font-size:11px;font-weight:800;color:#1A1B2E}
+.ally-char-desc{font-size:9px;color:#6B7280;margin-top:2px;line-height:1.3}
+.ally-section{width:100%;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px 16px;margin-bottom:16px;text-align:left}
+.ally-section-h{font-size:12px;font-weight:700;color:#1A1B2E;margin-bottom:6px}
+.ally-section-p{font-size:11px;color:#6B7280;line-height:1.5}
+.ally-section-p b{color:#845EF7}
+.ally-btn-primary{width:100%;padding:16px;background:#51CF66;color:white;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:default;font-family:inherit;margin-bottom:10px;box-shadow:0 4px 0 #3BA556,0 0 16px rgba(81,207,102,.25)}
+.ally-bridge{width:100%;background:#F0FAF5;border:2px solid var(--brand);border-radius:14px;padding:14px 16px;cursor:pointer;font-family:inherit;transition:all .12s;text-align:left}
+.ally-bridge:active{background:#DCFCE7;transform:scale(.977)}
+.ally-bridge-q{font-size:13px;color:var(--ink2);margin-bottom:4px;line-height:1.4}
+.ally-bridge-cta{font-size:14px;font-weight:800;color:var(--brand)}
+
+/* ═══ WEEK LATER ═══ */
+#slater{background:linear-gradient(165deg,#1b2838 0%,#2d4059 35%,#7b6b8a 65%,#d4a59a 85%,#f0e0d8 100%)}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.28)}
+.linner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%}
+.lclock{text-align:center;margin:44px 0 18px}
+.ltime{font-size:72px;font-weight:200;color:white;letter-spacing:-2px;line-height:1}
+.ldate{font-size:15px;color:rgba(255,255,255,.85);font-weight:600;margin-top:4px}
+.lbadge{background:rgba(255,255,255,.22);color:white;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;display:inline-block;margin-top:10px}
+.lnotif{background:rgba(255,255,255,.97);border-radius:20px;padding:15px 16px;display:flex;gap:12px;align-items:flex-start;margin:18px 16px 0;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.2);animation:slideUp .4s .2s ease both}
+.breakopt{text-align:center;margin-top:16px;padding:0 24px}
+.breaktxt{font-size:13px;color:rgba(255,255,255,.55);line-height:1.5}
+.breaklink{color:rgba(255,255,255,.85);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.ciopts-w{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.ciopt{background:white;border:2px solid var(--line);border-radius:14px;padding:13px 16px;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;transition:all .12s;font-family:inherit;width:100%;text-align:left}
+.ciopt:active{background:var(--brand-lt);border-color:var(--brand)}
+
+/* ═══ FLAT SCREEN SYSTEM ═══ */
+.screen.flat{background:var(--bg);position:absolute;inset:0;flex-direction:column}
+.screen.flat.active{display:flex}
+.flat .app-bar{background:var(--bg)}
+.flat-scroll{flex:1;overflow-y:auto;padding:20px 22px 44px}
+.flat-scroll::-webkit-scrollbar{width:0}
+/* Flat text */
+.f-pill{display:inline-flex;align-items:center;gap:6px;background:var(--brand-lt);color:var(--brand);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.3px}
+.f-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);flex-shrink:0}
+.f-h{font-size:24px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:10px;letter-spacing:-.3px;text-align:left}
+.f-sub{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:18px;text-align:left}
+.f-note{font-size:12px;color:var(--ink3);text-align:center;margin-top:14px;line-height:1.5}
+.f-eyebrow{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;text-align:center}
+/* Flat cards */
+.f-card{background:white;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line)}
+.f-card-lbl{font-size:10px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.f-card-txt{font-size:14px;color:var(--ink2);line-height:1.6}
+/* Flat buttons */
+.f-btn{width:100%;padding:17px;background:var(--brand);color:white;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px;box-shadow:0 4px 16px rgba(69,190,147,.25)}
+.f-btn:active{transform:scale(.975);box-shadow:none}
+.f-btn-ghost{width:100%;padding:15px;background:white;color:var(--ink2);border:2px solid var(--line);border-radius:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px}
+.f-btn-ghost:active{background:var(--brand-lt);border-color:var(--brand)}
+.f-btn-white{width:100%;padding:15px;background:white;color:var(--ink);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.f-btn-white:active{transform:scale(.975)}
+/* Flat dots */
+.f-dots{display:flex;justify-content:center;gap:7px;margin-top:10px;padding-top:6px}
+.fdot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:all .25s;flex-shrink:0}
+.fdot.on{background:var(--brand);width:22px;border-radius:4px}
+/* Flat counter */
+.f-count{background:white;border:1px solid var(--line);border-radius:12px;padding:5px 12px;color:var(--ink3);font-size:12px;font-weight:800}
+/* Flat quote */
+.f-quote{background:white;border-radius:14px;padding:14px;margin-bottom:16px;border-left:4px solid var(--brand);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.f-quote-txt{font-size:14px;color:var(--ink);line-height:1.65;font-style:italic;margin-bottom:6px}
+.f-quote-attr{font-size:11px;color:var(--ink3)}
+/* Flat tip styles */
+.f-tonight{display:inline-flex;align-items:center;gap:5px;background:#FFF7E6;color:#B8860B;font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.3px;border:1px solid #FFE4A0;width:fit-content}
+.f-why{background:white;border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1px solid var(--line)}
+.f-why-l{font-size:10px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.f-why-t{font-size:13px;color:var(--ink2);line-height:1.5}
+/* Flat reel */
+.f-reel-tag{display:inline-flex;align-items:center;gap:5px;background:var(--brand-lt);color:var(--brand);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.f-reel-name{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:2px;letter-spacing:-.2px}
+.f-reel-role{font-size:13px;color:var(--ink3);margin-bottom:12px;font-weight:600}
+.f-reel-quote{font-size:16px;color:var(--ink2);line-height:1.6;font-style:italic;margin-bottom:16px}
+.f-reel-bar{height:3px;background:var(--line);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.f-reel-prog{height:100%;background:var(--brand);border-radius:2px;width:0;transition:width .5s}
+/* Flat timer */
+.f-timer .tr-track{stroke:var(--line)}
+.f-timer .tr-prog{stroke:var(--brand)}
+.f-timer .tr-prog.running{animation:ringPulse 1.5s ease-in-out infinite}
+.f-timer .t-time{color:var(--ink);text-shadow:none}
+.f-timer .t-lbl{color:var(--ink3)}
+.f-timer .timer-start{background:var(--brand);color:white;box-shadow:0 4px 16px rgba(69,190,147,.3)}
+.f-timer .timer-rst{background:white;color:var(--ink2);border:1.5px solid var(--line);backdrop-filter:none}
+/* Flat saved overlay */
+.f-saved{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 28px 40px;z-index:25;animation:slideUp .4s ease both;background:var(--bg)}
+.f-saved-ico{font-size:64px;margin-bottom:16px}
+.f-saved-h{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:8px}
+.f-saved-s{font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:6px}
+.f-saved-sub{font-size:12px;color:var(--ink3);margin-bottom:24px}
+/* Flat starter kit items */
+.f-sk-item{display:flex;align-items:flex-start;gap:13px;padding:14px;background:white;border-radius:16px;margin-bottom:10px;cursor:pointer;transition:all .14s;border:2px solid var(--line)}
+.f-sk-item.chk{background:var(--brand-lt);border-color:var(--brand)}
+.f-sk-chk{width:26px;height:26px;border-radius:50%;border:2.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;color:var(--brand)}
+.f-sk-item.chk .f-sk-chk{background:var(--brand);border-color:var(--brand);color:white}
+.f-sk-txt{font-size:14px;color:var(--ink);line-height:1.5;font-weight:600}
+.f-sk-item.chk .f-sk-txt{color:var(--brand)}
+/* ═══ MICRO ACTIONS ═══ */
+.ma-section{margin-top:16px;margin-bottom:14px}
+.ma-label{font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;text-align:center}
+.ma-card{background:#F0F8F4;border-radius:14px;padding:14px 16px;margin-bottom:10px;border:1px solid #D4E8DC}
+.ma-card-txt{font-size:14px;color:var(--ink);line-height:1.55;margin-bottom:10px}
+.ma-try-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:14px 18px;background:var(--brand);color:white;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.ma-try-btn:active{transform:scale(.96)}
+.ma-try-btn.added{background:var(--brand-lt);color:var(--brand);pointer-events:none}
+@keyframes maCheck{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes kitBounce{0%{transform:scale(1)}25%{transform:scale(1.35)}50%{transform:scale(.9)}75%{transform:scale(1.15)}100%{transform:scale(1)}}
+.ma-check-anim{display:inline-flex;animation:maCheck .4s ease both}
+/* Kit icon styles */
+.kit-icon-wrap{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);border:none;position:relative;flex-shrink:0;transition:background .2s}
+.kit-icon-wrap.neutral{background:var(--brand-lt)}
+.kit-icon-wrap.active{background:var(--brand)}
+.kit-icon-wrap.neutral svg{stroke:var(--brand)}
+.kit-icon-wrap.active svg{stroke:white}
+/* Sticky nav for parent stories */
+.sticky-nav{position:sticky;top:0;z-index:50;background:white}
+/* Empty kit state */
+.kit-empty{text-align:center;padding:40px 20px;color:var(--ink3)}
+.kit-empty-ico{font-size:48px;margin-bottom:16px;opacity:.4}
+.kit-empty-h{font-size:16px;font-weight:700;color:var(--ink2);margin-bottom:8px}
+.kit-empty-sub{font-size:14px;line-height:1.55}
+/* Swipe hints flat */
+.f-sh{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.06);color:var(--ink2);font-size:11px;font-weight:800;padding:5px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .1s;z-index:20;text-transform:uppercase;letter-spacing:.4px}
+.f-sh-n{right:14px}.f-sh-b{left:14px}
+/* Flat grounding timer done */
+.f-td-ico{font-size:60px;margin-bottom:14px}
+.f-td-h{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:8px}
+.f-td-s{font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:22px}
+/* Grounding card backgrounds */
+.ground-card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);height:520px;display:flex;flex-direction:column;overflow-y:auto}
+.ground-card-cream{background:#FFF8F0;border:1px solid #F0E4D4}
+.ground-card-sage{background:#F0F8F4;border:1px solid #D4E8DC}
+.ground-card-lavender{background:#F4F0FA;border:1px solid #DCD4F0}
+</style>
+</head>
+<body>
+
+
+<div class="phone"><div class="notch"></div>
+
+<!-- LOCK SCREEN — Wellbits Invite -->
+<div class="screen active" id="sh">
+  <div class="dim"></div>
+  <div class="linner">
+    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">&#9650;&#9650; WiFi <svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><rect x="1" y="1" width="18" height="12" rx="2"/><line x1="23" y1="5" x2="23" y2="9"/><rect x="3" y="3" width="6" height="8" rx="1" fill="currentColor"/></svg></span></div>
+    <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Monday, 23 March</div></div>
+    <div class="lnotif" onclick="go('s-ally')" style="animation:slideUp .4s 2.5s ease both">
+      <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Icon/Icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
+      <div class="nb"><div class="nr"><span class="na">Wellbits</span><span class="nw">now</span></div><div class="nt">Ethan invited you to join!</div><div class="nm">Your child wants you as their Quest Ally. Tap to join.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ALLY INVITE -->
+<div class="screen" id="s-ally">
+  <div class="ally-topbar"><button class="app-back" onclick="go('sh')" style="position:absolute;left:18px;top:46px">&#8249;</button></div>
+  <div class="ally-scroll">
+    <div class="ally-avatar"><img src="Assets/Characters/AURA.png"></div>
+    <div class="ally-h"><span>Ethan</span> wants you<br>on their quest!</div>
+    <div class="ally-sub">Choose your Ally character</div>
+    <input class="ally-input" type="text" placeholder="Enter your name" value="Sarah" readonly>
+    <div class="ally-chars">
+      <div class="ally-char sel" onclick="pickChar(this)">
+        <div class="ally-char-ico"><img src="Assets/Parent_Allies/Aegis.png"></div>
+        <div class="ally-char-name">Aegis</div>
+        <div class="ally-char-desc">Blocks 1 boss attack</div>
+      </div>
+      <div class="ally-char" onclick="pickChar(this)">
+        <div class="ally-char-ico"><img src="Assets/Parent_Allies/Oracle.png"></div>
+        <div class="ally-char-name">Oracle</div>
+        <div class="ally-char-desc">Reveals boss weakness</div>
+      </div>
+      <div class="ally-char" onclick="pickChar(this)">
+        <div class="ally-char-ico"><img src="Assets/Parent_Allies/Valor.png"></div>
+        <div class="ally-char-name">Valor</div>
+        <div class="ally-char-desc">+50% boss damage</div>
+      </div>
+    </div>
+    <div class="ally-section">
+      <div class="ally-section-h">What you'll do</div>
+      <div class="ally-section-p">Complete simple co-op challenges with <b>Ethan</b> — like cooking together or going for a walk. Takes 10–15 mins. No app needed — everything runs in your browser.</div>
+    </div>
+    <button class="ally-btn-primary">Join as Quest Ally</button>
+    <button class="ally-bridge" onclick="go('s-onboard')">
+      <div class="ally-bridge-q">Want to stay connected as they grow?</div>
+      <div class="ally-bridge-cta">Tips from parents like you</div>
+    </button>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="screen" id="s-onboard">
+  <div class="ls-wrap">
+    <div class="ls-scene g-teal" id="ob-scene"></div>
+    <div class="ls-top"><button class="ls-back" onclick="go('s-ally')">&#8249;</button></div>
+    <div class="ls-panel" style="height:58%">
+      <div class="ob-logo"><div class="ob-logo-ico" style="padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div><div class="ob-logo-txt">Parent for Parent</div><div class="ob-logo-sub">From one parent to another</div></div></div>
+      <div class="p-h">Your child is changing.<br>So is your role.</div>
+      <div class="p-sub">Real stories, honest tips, and small shifts — matched to where you and your child actually are.</div>
+      <button class="p-btn" onclick="go('s-profile')">Set up my profile</button>
+      <button class="p-btn-ghost" onclick="children=[];activeChild=0;buildToggles();go('slanding')">Just browse for now</button>
+      <div class="p-note">Nothing you enter is shared. A profile just helps us match content to your stage.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="s-profile">
+  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="pscroll">
+    <div class="phd">Tell us about your youth</div>
+    <div class="psd">Optional — skip any time.</div>
+    <div id="children-list"></div>
+    <button class="add-ch" id="add-ch-btn" onclick="addChild()"><span style="font-size:18px">&#65291;</span> Add another child</button>
+    <button class="btn-p" id="save-btn" onclick="saveProfile()" disabled style="opacity:.4;cursor:not-allowed">Save and continue</button>
+    <button class="skip-btn" onclick="go('slanding')">Skip this</button>
+  </div>
+</div>
+
+<!-- LANDING -->
+<div class="screen" id="slanding" style="background:var(--bg)">
+  <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div id="ct-land" class="ct-land" style="position:relative;top:auto;left:auto;right:auto"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-land"></div></div></div>
+  <div style="flex:1;overflow-y:auto;padding:20px 22px 40px">
+    <div class="phd" id="land-h">Where is your family right now?</div>
+    <div class="psd">Pick your child's stage. We'll show you what other parents in the same place actually tried.</div>
+    <div class="tcards">
+      <div class="tc tca" onclick="pickT(1)"><div class="tico" id="tico-1"></div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#45BE93;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 1</div><div class="ttl">Just started Sec 1</div><div class="tsub">New school, new schedule — figuring it out together</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcb" onclick="pickT(2)"><div class="tico" id="tico-2"></div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#4A90D9;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">Sec 2–3</div><div class="ttl">Sec 2 or Sec 3</div><div class="tsub">Pulling away a bit — but still needs you</div></div><div class="tarrw">&#8250;</div></div>
+      <div class="tc tcc" onclick="pickT(3)"><div class="tico" id="tico-3"></div><div class="tc-b"><div style="display:inline-block;font-size:10px;font-weight:800;color:white;background:#8B5CF6;padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">JC / Poly</div><div class="ttl">Heading to JC or Poly</div><div class="tsub">Almost independent — how to stay close</div></div><div class="tarrw">&#8250;</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHALLENGES (schall) -->
+<div class="screen" id="schall" style="background:var(--bg)">
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('s-selfcheck')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div id="ct-ch" style="display:none"><div class="ctw" style="background:var(--bg)"><div class="ctr" id="ctr-ch"></div></div></div>
+  <div class="chw">
+    <div class="f-h" style="margin-bottom:16px;font-size:24px;text-align:left;font-weight:700">What's on your mind?</div>
+    <div class="chlist" id="chlist"></div>
+    <div class="proof-bar" style="justify-content:center;margin-top:16px;padding:0"><span id="proof-txt"></span></div>
+  </div>
+</div>
+
+<!-- SELF-CHECK: Context Cards (spov) -->
+<div class="screen flat" id="spov">
+  <div class="app-bar"><button class="app-back" onclick="go('slanding')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="flat-scroll" style="padding:22px;overflow-y:auto">
+    <!-- Dynamic context cards container (1-3 cards) -->
+    <div id="sc-cards"></div>
+    <button class="f-btn" id="sc-continue" style="margin-top:24px;width:100%" onclick="go('s-selfcheck')">Continue</button>
+  </div>
+</div>
+
+<!-- SELF-CHECK: Dedicated screen (s-selfcheck) -->
+<div class="screen flat" id="s-selfcheck" style="background:#F5F0EB">
+  <div class="app-bar" style="background:#F5F0EB"><button class="app-back" onclick="go('spov')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="flat-scroll" style="padding:22px">
+    <div style="background:white;border-radius:20px;padding:28px 24px;box-shadow:0 2px 16px rgba(0,0,0,.06);border:1px solid var(--line);margin-top:24px">
+      <div class="f-eyebrow" style="margin-bottom:16px">Before you go in</div>
+      <div class="f-h" style="text-align:left;margin-bottom:10px">How are you doing right now?</div>
+      <div class="f-sub" style="text-align:left;margin-bottom:24px">What you bring to the conversation matters as much as what you say.</div>
+      <div style="height:1px;background:var(--line);margin-bottom:24px"></div>
+      <button class="f-btn" style="width:100%" onclick="go('schall')">I'm good</button>
+      <button class="f-btn-ghost" style="width:100%" onclick="go('s-grounding');buildGrounding()">Honestly I'm running low</button>
+    </div>
+    <div style="font-size:12px;color:var(--ink3);margin-top:16px;line-height:1.5;text-align:center">No judgement. Both paths lead to the same place.</div>
+  </div>
+</div>
+
+<!-- YOUTH POV -->
+<div class="screen flat" id="s-pov" style="background:white">
+  <div class="app-bar" style="background:white"><button class="app-back" onclick="go('schall')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="flat-scroll" id="pov-scroll" style="padding:20px 22px 44px;background:white"></div>
+</div>
+
+<!-- VIDEO REELS -->
+<div class="screen flat" id="svideo">
+  <div id="reel-container" style="flex:1;position:relative;overflow:hidden"></div>
+</div>
+
+<!-- TIP PLAYER -->
+<div class="screen flat" id="s-tips">
+  <div id="tp-container" style="flex:1;position:relative;overflow:hidden"></div>
+</div>
+
+<!-- STARTER KIT -->
+<div class="screen flat" id="s-shifts">
+  <div class="app-bar"><button class="app-back" onclick="go('svideo')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="flat-scroll">
+    <div class="f-pill"><div class="f-pill-dot"></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg> Starter Kit</div>
+    <div class="f-h">Things you want to try</div>
+    <div class="f-sub" style="margin-bottom:16px">Tick what feels doable. One is enough to start.</div>
+    <div id="sk-items"></div>
+    <button class="f-btn" style="margin-top:6px" onclick="go('s-weekmsg')">Done</button>
+    <div class="f-note" style="margin-top:14px">We'll check in next week</div>
+    <div style="text-align:center;margin-top:8px">
+      <a style="font-size:13px;color:var(--brand);font-weight:700;text-decoration:none;cursor:pointer">See related HPB resources &#8594;</a>
+    </div>
+  </div>
+</div>
+
+<!-- GROUNDING PLAYER -->
+<div class="screen flat" id="s-grounding">
+  <div id="gp-container" style="flex:1;position:relative;overflow:hidden"></div>
+</div>
+
+<!-- WEEK TRANSITION -->
+<div class="screen" id="s-weekmsg" style="background:#F5F0EB">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:60px 32px;text-align:center">
+    <div style="margin-bottom:24px;color:var(--brand)"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+    <div style="font-size:24px;font-weight:800;color:var(--ink);margin-bottom:12px;line-height:1.3">You're doing something<br>most parents don't.</div>
+    <div style="font-size:15px;color:var(--ink2);line-height:1.65;margin-bottom:8px;max-width:280px">We'll check in with you in one week. Just a short message from Parent for Parent — no pressure, no catch-up.</div>
+    <div style="font-size:13px;color:var(--ink3);line-height:1.5;margin-bottom:32px;max-width:260px">If life gets busy, you can always pause. We'll be here when you're ready.</div>
+    <div style="display:flex;align-items:center;gap:10px;background:white;border-radius:16px;padding:16px 20px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:32px;max-width:300px;width:100%">
+      <div style="width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div>
+      <div style="flex:1;text-align:left">
+        <div style="font-size:12px;font-weight:700;color:var(--ink)">Parent for Parent</div>
+        <div style="font-size:11px;color:var(--ink3)">Will message you in 7 days</div>
+      </div>
+    </div>
+    <button class="f-btn" style="max-width:300px" onclick="go('slater')">See what happens next</button>
+  </div>
+</div>
+
+<!-- WEEK LATER -->
+<div class="screen" id="slater">
+  <div class="dim"></div>
+  <div class="linner">
+    <div class="sb" style="padding-top:14px"><span class="sbt" style="color:white">9:41</span><span class="sbr" style="color:rgba(255,255,255,.8)">&#9650;&#9650; WiFi <svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><rect x="1" y="1" width="18" height="12" rx="2"/><line x1="23" y1="5" x2="23" y2="9"/><rect x="3" y="3" width="6" height="8" rx="1" fill="currentColor"/></svg></span></div>
+    <div class="lclock"><div class="ltime">9:41</div><div class="ldate">Sunday, 30 March</div><div><span class="lbadge">One week on</span></div></div>
+    <div class="lnotif" onclick="go('swaci')">
+      <div class="ni" style="background:none;padding:0;overflow:hidden"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
+      <div class="nb"><div class="nr"><span class="na">Parent for Parent</span><span class="nw">now</span></div><div class="nt">Let's check in</div><div class="nm">How did last week go? Even if nothing changed, that's worth knowing.</div></div>
+    </div>
+    <div class="breakopt"><p class="breaktxt">Life got busy? <span class="breaklink" onclick="showBreak()">Pause for a month — no pressure.</span></p></div>
+  </div>
+</div>
+
+<!-- CHECK-IN -->
+<div class="screen flat" id="swaci" style="background:var(--bg)">
+  <div class="app-bar" style="background:var(--bg)"><button class="app-back" onclick="go('slater')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="flat-scroll" id="ci-scroll" style="display:flex;flex-direction:column;gap:8px">
+    <div style="text-align:center;margin-bottom:12px">
+      <div style="font-size:11px;color:var(--ink3);font-weight:600">Sunday, 30 March</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:flex-end;max-width:85%">
+      <div style="width:32px;height:32px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div>
+      <div id="ci-q" style="background:white;border-radius:18px 18px 18px 4px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--line)">
+        <div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div>
+        <div style="font-size:15px;color:var(--ink);line-height:1.55">Hey — how did the week go? Even if nothing shifted, that's fine to say.</div>
+      </div>
+    </div>
+    <div style="height:8px"></div>
+    <div id="ciopts">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <button class="ciopt" onclick="checkin('w')" style="max-width:85%;text-align:right">Something actually shifted</button>
+        <button class="ciopt" onclick="checkin('t')" style="max-width:85%;text-align:right">Still figuring it out</button>
+        <button class="ciopt" onclick="checkin('r')" style="max-width:85%;text-align:right">Honestly it was a rough week</button>
+        <button class="ciopt" onclick="checkin('role')" style="max-width:85%;text-align:right">I feel like how I show up needs to change</button>
+        <button class="ciopt" onclick="checkin('m')" style="max-width:85%;text-align:right">I need something different</button>
+      </div>
+    </div>
+    <div id="ci-response"></div>
+  </div>
+</div>
+
+</div><!-- /phone -->
+<script>
+// ════ LUCIDE SVG ICONS ════
+function lucide(name, size=20, color='currentColor') {
+  const icons = {
+    moon: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+    smartphone: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`,
+    'message-circle': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+    heart: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+    utensils: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`,
+    flame: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+    'eye-off': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>`,
+    'battery-low': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/><line x1="6" y1="11" x2="6" y2="13"/></svg>`,
+    clock: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    'volume-x': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`,
+    seedling: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 7 2 7 2s0 5 5 10"/><path d="M12 12c0-5 5-10 5-10s0 5-5 10"/></svg>`,
+    rocket: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>`,
+    'refresh-cw': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>`,
+    users: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    'phone-off': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"/><line x1="23" y1="1" x2="1" y2="23"/></svg>`,
+    send: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`,
+    droplet: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
+    'pen-line': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+    trees: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10v.2A3 3 0 0 1 8.9 16v0H5v0h0a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0z"/><path d="M7 16v6"/><path d="M13 19v3"/><path d="M15.7 14a4 4 0 0 0 .3-1.5V12a4 4 0 0 0-8 0v.5c0 .5.1 1 .3 1.5"/><path d="M13 12v7"/></svg>`,
+    speech: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+    video: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+    ruler: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>`,
+    'help-circle': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+    eye: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+    calendar: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    home: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    search: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+    'hand-helping': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14"/><path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="M2 13h6"/><path d="M2 17h6"/></svg>`,
+    sparkles: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>`,
+    'bar-chart': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>`,
+    sofa: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/></svg>`,
+    'door-open': `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/></svg>`,
+    handshake: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>`,
+    users2: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><path d="M22 19a6 6 0 0 0-6-6"/><circle cx="16" cy="5" r="2.5"/></svg>`,
+    lightbulb: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>`,
+  };
+  return icons[name] || '';
+}
+
+// ════ DATA ════
+const PROOF={1:'Over 400 parents of Sec 1 kids found something useful here this week',2:'Over 300 parents of Sec 2\u20133 kids found something here this week',3:'Over 250 parents of JC/Poly-bound kids found something useful here'};
+const STAGE_TITLE={
+  1:'The rules that worked before don\'t land anymore.',
+  2:'You\'re talking more, but connecting less.',
+  3:'They\'re handling everything \u2014 except themselves.'
+};
+const STAGE_SUB={1:'Sec 1',2:'Sec 2\u20133',3:'JC / Poly'};
+const TAG_COLORS={1:'#45BE93',2:'#4A90D9',3:'#8B5CF6'};
+const STAGE_CTX={
+  1:'They come home and go straight to their room. The phone is always in their hand. Bedtime has shifted by an hour and counting. They eat less at dinner, snack more alone. You\'re not sure if they\'ve made real friends yet \u2014 and they won\'t tell you. You feel a mix of pride and quiet panic: they\'re growing up, but you can\'t see where they\'re going. Most parents at this stage feel like they\'re losing grip on routines that used to just work.',
+  2:'Every suggestion becomes a negotiation. They trust their friends\' opinions over yours. Sleep is inconsistent \u2014 up past midnight, hard to wake. They\'re moody in ways that feel personal but probably aren\'t. You\'ve noticed they eat differently \u2014 skipping meals or eating alone. Physical activity has dropped off. The hardest part: you can see they\'re struggling, but they won\'t let you in. Most parents at this stage feel shut out \u2014 and wonder if pushing harder or pulling back is the right call.',
+  3:'Academically they\'re managing. Socially they seem fine. But at home you see the cracks: sleep is broken, stress is constant, meals are skipped or rushed. They say "I\'m fine" but the energy is flat. They don\'t ask for help \u2014 not because they don\'t need it, but because they think they shouldn\'t. You want to stay relevant without adding to their pressure. Most parents at this stage are figuring out how to matter to someone who\'s learning to not need you.'
+};
+const WELLS=[
+  {id:'sleep',name:'Sleeping Well',color:'#6366F1',icon:'moon',
+    desc:{1:'Bedtime has shifted by an hour and counting.',2:'They\'re up past midnight and hard to wake.',3:'Sleep is broken — studying past 2am, crashing on weekends.'}},
+  {id:'screen',name:'Balanced Screen Use',color:'#F59E0B',icon:'smartphone',
+    desc:{1:'The phone is always there — before school, at dinner, past midnight.',2:'The phone is always there — before school, at dinner, past midnight.',3:'Screen time is the one thing they won\'t negotiate on.'}},
+  {id:'relationship',name:'Relationship with Parents',color:'#EC4899',icon:'message-circle',
+    desc:{1:'They\'ve gone quiet. Short answers. Closed door.',2:'Every conversation turns into a lecture — or a fight.',3:'They don\'t ask for help. Not because they don\'t need it.'}},
+  {id:'exercise',name:'Exercise Well',color:'#10B981',icon:'heart',
+    desc:{1:'CCA just started but free time is shrinking.',2:'They used to be active. CCA ended or tuition took over.',3:'Physical activity has disappeared. Too busy, too tired.'}},
+  {id:'eating',name:'Eating Well',color:'#F97316',icon:'utensils',
+    desc:{1:'They eat less at dinner, snack more alone.',2:'Meals are skipped when they\'re busy or stressed.',3:'Meals are skipped or rushed. Eating is reactive, not planned.'}}
+];
+const CHALLENGES={1:[
+  {well:'screen',e:'smartphone',t:'The phone never goes down',s:'Before school, after school, at dinner. Always there.'},
+  {well:'sleep',e:'moon',t:'Bedtime keeps getting later',s:'10pm became 11, then midnight. Not sure how.'},
+  {well:'relationship',e:'volume-x',t:'They\'ve gone quiet on me',s:'Short answers. Closed door. Hard to reach.'},
+  {well:'screen',e:'clock',t:'After school is a black hole',s:'Student care ended. Those hours are unaccounted for.'}
+],2:[
+  {well:'relationship',e:'flame',t:'Every conversation becomes a fight',s:'You say one thing. They react to something else entirely.'},
+  {well:'screen',e:'smartphone',t:'Screen time has gone out of control',s:'Phone during dinner, homework, past midnight.'},
+  {well:'relationship',e:'eye-off',t:'I feel like I\'m always the bad guy',s:'Every limit I set causes a fight.'},
+  {well:'sleep',e:'battery-low',t:'They\'re exhausted but won\'t sleep',s:'Up past midnight, hard to wake in the morning.'}
+],3:[
+  {well:'relationship',e:'help-circle',t:'I want to help but don\'t know how',s:'Anything I say lands wrong or gets brushed off.'},
+  {well:'relationship',e:'eye-off',t:'They say they\'re fine \u2014 but they\'re not',s:'You can see it. They won\'t let you in.'},
+  {well:'sleep',e:'moon',t:'Sleep has completely broken down',s:'Studying past 2am, crashing on weekends.'},
+  {well:'relationship',e:'ruler',t:'They push back on everything',s:'Every suggestion becomes a negotiation.'}
+]};
+const POV={
+  // ── T1: Sec 1 ──
+  '1-0':{insight:'After a full day of new school and new pressures, the phone is the one thing that feels familiar and fully theirs. It\'s how they decompress.',quote:'"I know it\'s a bad habit. But if I can\'t sleep I just get fed up and use my phone. I feel like it makes me tired eventually."',attr:'Youth, 13yo, M'},
+  '1-1':{insight:'Sleep shifts in Sec 1 because the body clock is changing and the phone keeps them stimulated past the point of tiredness.',quote:'"I set my alarm for 6 but I only fell asleep at 1. I was just watching videos and couldn\'t stop."',attr:'Youth, 14yo, M'},
+  '1-2':{insight:'Coming home and going quiet is often the first moment of the day they\'ve had to just be, without being watched or evaluated.',quote:'"Every time my mom talks to me it\'s \u201Cdid you eat\u201D, \u201Cgo sleep\u201D, \u201Cstop your phone.\u201D I just tune it out now."',attr:'Youth, 14yo, F'},
+  '1-3':{insight:'CCA just started, the schedule is packed, and free time has shrunk. Exercise feels like another obligation, not a release.',quote:'"After school I have CCA, then tuition, then homework. By the time I\'m done it\'s 10pm. I just want to lie down."',attr:'Youth, 13yo, M'},
+  '1-4':{insight:'Eating patterns shift in Sec 1 because mealtimes no longer line up with their new routine. Canteen food replaces home meals. Snacking fills gaps.',quote:'"I don\'t eat dinner sometimes because I already ate cup noodles before tuition. My mum gets upset but I\'m just not hungry."',attr:'Youth, 13yo, F'},
+  '1-5':{insight:'The transition to secondary school means new faces, new social rules, and a fear of not fitting in that most parents never hear about.',quote:'"In primary school I had the same friends for six years. Now I don\'t know anyone. I just sit with whoever\'s there."',attr:'Youth, 13yo, M'},
+  '1-6':{insight:'Screen time at this age isn\'t just entertainment \u2014 it\'s their social lifeline. Group chats, reels, and games are how they stay connected after school.',quote:'"If I don\'t reply the group chat fast enough, I\'m out of the loop the next day. It\'s not just scrolling."',attr:'Youth, 13yo, F'},
+  // ── T2: Sec 2\u20133 ──
+  '2-0':{insight:'When conversations always end in a fight, youth learn to skip the conversation. They\'re not dismissing you \u2014 they\'re anticipating the script.',quote:'"I trust my friends\' opinions more. They understand what I\'m going through. My parents\u2026 they just don\'t get it."',attr:'Youth, 15yo, M'},
+  '2-1':{insight:'By Sec 2, screen time is deeply woven into identity. Their feed, their games, their chats \u2014 it\'s where they feel most themselves.',quote:'"My parents say I\'m addicted to my phone. But when I talk to them it\'s always about marks or behaviour. At least my phone doesn\'t judge me."',attr:'Youth, 14yo, F'},
+  '2-2':{insight:'By Sec 2, friends understand the same pressures and speak the same language. This isn\'t rejection \u2014 it\'s development.',quote:'"We go to the library to \u2018study\u2019 but honestly half the time everyone is on their phone. It\'s just being together."',attr:'Youth, 15yo, M'},
+  '2-3':{insight:'Sleep becomes a casualty of stress. The pressure to perform means late nights feel productive even when they\'re not.',quote:'"I know I should sleep earlier but if I don\'t finish my work I\'ll get scolded. So I just stay up."',attr:'Youth, 15yo, F'},
+  '2-4':{insight:'Physical activity drops off because it competes with tuition, homework, and the need to just do nothing for a while.',quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',attr:'Youth, 15yo, F'},
+  '2-5':{insight:'Meals become transactional \u2014 eaten fast, eaten alone, or skipped entirely. It\'s not rebellion; it\'s just how the schedule works out.',quote:'"I eat lunch at 2pm after extra lessons, then I\'m not hungry at dinner. My dad thinks I\'m being difficult."',attr:'Youth, 14yo, M'},
+  '2-6':{insight:'At this stage, they want to be seen as capable. Asking for help feels like going backwards.',quote:'"I don\'t tell my parents when I\'m stressed because then they worry and it makes things worse."',attr:'Youth, 15yo, F'},
+  // ── T3: JC/Poly ──
+  '3-0':{insight:'Youth at this stage are holding more than they show. Academic pressure, anxiety, worry about the future \u2014 most of it invisible to parents.',quote:'"Sec 3 was the worst year. Homework, tuition, CCA, then study for streaming. There\'s no time for anything else."',attr:'Youth, 16yo, M'},
+  '3-1':{insight:'They don\'t come to you because they think they shouldn\'t need to. Independence feels like a requirement, not a choice.',quote:'"I don\'t ask my parents for advice anymore. They\'ll just say \u2018study harder\u2019 or \u2018don\'t stress.\u2019 That doesn\'t help."',attr:'Youth, 17yo, M'},
+  '3-2':{insight:'Sleep is the first thing sacrificed and the last thing prioritised. They know it matters but can\'t see how to fix it within the constraints they have.',quote:'"I sleep at 3am most nights. I know it\'s bad. But between mugging and assignments, when am I supposed to sleep?"',attr:'Youth, 16yo, F'},
+  '3-3':{insight:'At JC/Poly level, the phone is the one thing they control completely. Taking it away isn\'t an option \u2014 they need a reason to put it down themselves.',quote:'"I know I\'m on my phone too much. But everything is there \u2014 notes, group projects, friends. You can\'t just take it away."',attr:'Youth, 17yo, F'},
+  '3-4':{insight:'Exercise has disappeared entirely. It\'s not that they don\'t want to \u2014 it\'s that everything else feels more urgent.',quote:'"I keep telling myself I\'ll start running again after exams. But there\'s always another exam."',attr:'Youth, 17yo, M'},
+  '3-5':{insight:'Eating at this stage is purely reactive. Whatever is fast, whatever is close. Nutrition isn\'t even on the radar.',quote:'"I eat prata at 11pm because that\'s when I take a break from studying. I know it\'s not healthy but I\'m just hungry."',attr:'Youth, 16yo, F'}
+};
+const POV_DEFAULT={insight:'Whatever behaviour you\'re seeing, there\'s usually something underneath it. What looks like defiance is often exhaustion.',quote:'"I used to swim three times a week. Then tuition started. Then exams. Now I don\'t do anything."',attr:'Youth, 15yo, F'};
+
+const YOUTH_IMG={
+  '13-14':'Assets/Images/Videos%20screenshot/Youth/youth_13_14.png',
+  '15-16':'Assets/Images/Videos%20screenshot/Youth/youth_15_16.png',
+  '17-18':'Assets/Images/Videos%20screenshot/Youth/youth_17_18.png',
+  'sibling':'Assets/Images/Videos%20screenshot/Youth/youth_sibling.png'
+};
+const YOUTH_VIDEOS={
+  1:[
+    {n:'Nurul',age:'13',c:'"I just want them to stop asking the same questions every day."',img:YOUTH_IMG['13-14']},
+    {n:'Wei Jie',age:'14',c:'"They think I\'m being rude. I\'m just really tired."',img:YOUTH_IMG['sibling']},
+    {n:'Priya',age:'13',c:'"I wish they knew how different Sec 1 is from primary school."',img:YOUTH_IMG['15-16']},
+    {n:'Aiden',age:'14',c:'"I don\'t tell them things because they overreact."',img:YOUTH_IMG['17-18']}
+  ],
+  2:[
+    {n:'Siti',age:'15',c:'"They only talk to me when they want something to change."',img:YOUTH_IMG['15-16']},
+    {n:'Ethan',age:'14',c:'"I trust my friends more. They actually listen."',img:YOUTH_IMG['13-14']},
+    {n:'Jun Kai',age:'15',c:'"I\'m not trying to be difficult. I\'m just stressed."',img:YOUTH_IMG['sibling']},
+    {n:'Aisyah',age:'15',c:'"Every conversation ends the same way. So I stopped starting them."',img:YOUTH_IMG['17-18']}
+  ],
+  3:[
+    {n:'Arjun',age:'17',c:'"I don\'t ask for help because they\'ll just say study harder."',img:YOUTH_IMG['17-18']},
+    {n:'Mei Xin',age:'16',c:'"I sleep at 3am most nights. There\'s no other way."',img:YOUTH_IMG['15-16']},
+    {n:'Ryan',age:'17',c:'"I wish they\'d just sit with me without fixing anything."',img:YOUTH_IMG['13-14']},
+    {n:'Chloe',age:'16',c:'"They think I\'m fine because I don\'t cry. I\'m not fine."',img:YOUTH_IMG['sibling']}
+  ]
+};
+
+const CONTENT={
+  '1-0':{e:'#C84020',videos:[{n:'Norita',r:'Mum of 13yo',c:'"One small thing changed bedtime without a single argument."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{n:'Ryan',r:'Dad of 14yo',c:'"I stopped making it a rule. I made it a routine instead."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Kartika',r:'Mum of 13yo',c:'"The wind-down took two weeks. Then it just happened."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{n:'Augustine',r:'Dad of 14yo',c:'"A 30-min heads-up instead of a command. That was it."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    empathy:'The phone fills a gap. After a full day of new school and new pressures, it\'s the one thing that feels familiar and fully theirs.',
+    tips:[{g:'g-coral',icon:'moon',tonight:true,h:'Give a heads-up, not a command.',b:'Tonight: "30 more minutes, then phones to charge." Not a rule \u2014 just a heads-up. Removes most of the friction.',why:'Moving from command to heads-up is the first step from rule-setter to guide.'},{g:'g-forest',icon:'sparkles',tonight:false,h:'A physical cue works better than a rule.',b:'Something beside the bed \u2014 a book, skincare, anything \u2014 signals wind-down without needing a conversation.',why:'When structure lives in the environment, it stops being about your relationship.'},{g:'g-violet',icon:'bar-chart',tonight:false,h:'Let the data do the talking.',b:'Track sleep together for a week. When they own the reason, they own the habit.',why:'When they own it, you\'ve made the handover. That\'s the goal.'}]},
+  '1-2':{e:'#205880',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I stopped asking how school was. That actually helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{n:'Calvin',r:'Dad of 13yo',c:'"Being in the same room, not talking, rebuilt things slowly."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Bhavani',r:'Mum of 13yo',c:'"I changed one thing. The rest followed on its own."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{n:'Ryan',r:'Dad of 14yo',c:'"I learned to read the room before I opened my mouth."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    empathy:'Coming home and going quiet isn\'t shutting you out. It\'s often the first moment of the day they\'ve had to just be.',
+    tips:[{g:'g-amber',icon:'sofa',tonight:true,h:'Be in the room without needing anything.',b:'No questions. No phone checks. Just physical presence. That\'s the loudest signal you can send to a closed-door kid.',why:'Present without needing a response signals "I\'m here when you\'re ready."'},{g:'g-sky',icon:'speech',tonight:false,h:'Ask about one small thing, not about them.',b:'"Did you watch anything lately?" opens space. "How was school?" puts them on the spot.',why:'Curiosity instead of check-in changes what kind of parent you are in the room.'},{g:'g-forest',icon:'seedling',tonight:false,h:'Small routines beat big conversations.',b:'One show together, a snack at the same time every day. Consistent small moments rebuild connection.',why:'Connection at this age happens sideways, not face-to-face.'}]},
+  '2-0':{e:'#802020',videos:[{n:'Han Tien',r:'Mum of 15yo',c:'"I stopped arguing. I started asking. Took a month to feel normal."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'},{n:'Kartika',r:'Mum of 14yo',c:'"I gave up being right. That\'s what kept us connected."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{n:'Ryan',r:'Dad of 15yo',c:'"Months of silence at dinner. This is what changed it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Calvin',r:'Dad of 14yo',c:'"I used to come in with a point. Now I come in with a question."',bg:'linear-gradient(165deg,#203888,#3060C8,#6098F8)'}],
+    empathy:'What keeps the cycle going is coming in with a point to make. A genuine question changes the dynamic more than any rule.',
+    tips:[{g:'g-coral',icon:'eye',tonight:true,h:'Ask one question. Then stop.',b:'Ask \u2014 then let the silence sit. They\'ll fill it. But only if you don\'t.',why:'Sitting with silence is the hardest part of becoming a guide instead of an enforcer.'},{g:'g-violet',icon:'eye',tonight:false,h:'Name what you see, not what you want changed.',b:'"I noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open at this stage.'},{g:'g-forest',icon:'calendar',tonight:false,h:'Once a week is enough.',b:'One genuinely good conversation a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust. They notice.'}]},
+  '2-2':{e:'#605008',videos:[{n:'Sureena',r:'Mum of 14yo',c:'"One question unlocked our conversations. I still use it."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{n:'Calvin',r:'Dad of 15yo',c:'"I stopped being the last to know things."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Bhavani',r:'Mum of 14yo',c:'"I made home somewhere she wanted to bring her friends."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{n:'Ryan',r:'Dad of 14yo',c:'"What I stopped doing helped more than what I started."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+    empathy:'When friends become everything, the way you matter has shifted. Stay curious, not involved. There\'s a real difference.',
+    tips:[{g:'g-rose',icon:'users2',tonight:true,h:'Ask about their friends, not them.',b:'"How\'s Jamie doing?" lands differently. They reveal more through other people.',why:'Interest in their world without managing it keeps you in the picture.'},{g:'g-amber',icon:'home',tonight:false,h:'Make home somewhere friends are welcome.',b:'When home is where nobody gets a lecture, it stays in the picture.',why:'Being in the background of their social life is the right position right now.'},{g:'g-ocean',icon:'search',tonight:false,h:'Small signals over formal conversations.',b:'A comment about something they mentioned last week. Small attention tells them the relationship is safe.',why:'Consistency in small things tells them they can come to you when it matters.'}]},
+  '3-0':{e:'#204050',videos:[{n:'Norita',r:'Mum of 17yo',c:'"I just stayed available. That was enough."',bg:'linear-gradient(165deg,#8A5020,#C07840,#F0A870)'},{n:'David',r:'Dad of 16yo',c:'"I made it clear the door was open. That was it."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Sureena',r:'Mum of 17yo',c:'"He didn\'t come to me until I stopped pushing. Then he came."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{n:'Han Tien',r:'Mum of 16yo',c:'"I became someone she chose to talk to."',bg:'linear-gradient(165deg,#1A6A4A,#2A9A70,#50D0A0)'}],
+    empathy:'Most youth at this stage are holding more than they show. Being available without pushing is the skill that keeps the door open.',
+    tips:[{g:'g-forest',icon:'door-open',tonight:true,h:'Say it plainly: "I\'m here if you want to."',b:'Sounds like giving up. It isn\'t. It\'s the clearest signal the relationship is safe.',why:'You\'re becoming someone they choose. That\'s the full version of the change.'},{g:'g-ocean',icon:'handshake',tonight:false,h:'Stop solving. Start witnessing.',b:'"That sounds really hard" is a complete response. Sitting with them without fixing is what most parents underestimate.',why:'When you stop fixing, they stop withholding. That\'s the trade at this stage.'},{g:'g-night',icon:'smartphone',tonight:false,h:'Make contact without a reason.',b:'A voice note, a meme, lunch with no agenda. Low-stakes contact keeps the channel warm.',why:'This is how you stay close without adding to their pressure.'}]}
+};
+const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my limit too. This is what helped."',bg:'linear-gradient(165deg,#8A4820,#C07040,#F0A060)'},{n:'Calvin',r:'Dad of 14yo',c:'"One small thing changed the whole tone at home."',bg:'linear-gradient(165deg,#204888,#3870C8,#70A8F8)'},{n:'Bhavani',r:'Mum of 13yo',c:'"I stopped trying to fix it. That\'s when things shifted."',bg:'linear-gradient(165deg,#6820A0,#9840D8,#C880FF)'},{n:'Ryan',r:'Dad of 14yo',c:'"I learned to read the room before I opened my mouth."',bg:'linear-gradient(165deg,#087050,#10A880,#30D8B0)'}],
+  empathy:'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.',
+  tips:[{g:'g-coral',icon:'lightbulb',tonight:true,h:'Try one thing you haven\'t tried before.',b:'Put your own phone down first. Ask one question and stop there. Small shifts change the tone.',why:'Willingness to try something different is the beginning of the change.'},{g:'g-forest',icon:'eye',tonight:false,h:'Name what you see, not what you want changed.',b:'"I\'ve noticed you seem tired lately" opens a door. "You need to sleep earlier" closes it.',why:'Observation without judgment is what keeps the door open.'},{g:'g-violet',icon:'calendar',tonight:false,h:'Once a week is enough to start.',b:'One good moment a week does more than seven tense daily check-ins.',why:'Quality over frequency signals trust.'}]};
+
+const PARENT_IMG={
+  'Norita':'Assets/Images/Videos screenshot/malay_parent_1.png',
+  'Kartika':'Assets/Images/Videos screenshot/Parent/indian_parent_2.png',
+  'Sureena':'Assets/Images/Videos screenshot/Parent/Sureena.png',
+  'Han Tien':'Assets/Images/Videos screenshot/singapore_parent_female_tshirt.png',
+  'Bhavani':'Assets/Images/Videos screenshot/Parent/Bhavani.png',
+  'Ryan':'Assets/Images/Videos screenshot/Parent/Ryan.png',
+  'Calvin':'Assets/Images/Videos screenshot/Parent/Calvin.png',
+  'Augustine':'Assets/Images/Videos screenshot/Parent/Calvin.png',
+  'David':'Assets/Images/Videos screenshot/Parent/Ryan.png'
+};
+const STARTER_KIT=[{txt:'One thing I\'m letting them decide for themselves this week.'},{txt:'One conversation I\'m having as a question, not a comment.'},{txt:'One moment I\'m showing up without needing anything back.'}];
+const MICRO_ACTIONS = {
+  'Give a heads-up, not a command.': [
+    {txt: 'Tonight at dinner, say "30 more minutes" instead of "Put the phone down now."', short: '30-min heads-up instead of command'},
+    {txt: 'Before bed, say "Phones charge in the kitchen tonight" \u2014 as a routine, not a rule.', short: 'Phones charge in the kitchen'}
+  ],
+  'A physical cue works better than a rule.': [
+    {txt: 'Put a book or magazine on their bedside table tonight. Don\'t say anything about it.', short: 'Book on bedside table'},
+  ],
+  'Let the data do the talking.': [
+    {txt: 'Ask "Want to check your screen time together this weekend?" \u2014 no judgment, just curiosity.', short: 'Check screen time together'}
+  ],
+  'Be in the room without needing anything.': [
+    {txt: 'Sit in the living room while they\'re there. No questions. Just be present for 15 minutes.', short: '15 min quiet presence'},
+    {txt: 'Do your own thing nearby \u2014 read, fold laundry. Let them see you\'re just there.', short: 'Do your own thing nearby'}
+  ],
+  'Ask about one small thing, not about them.': [
+    {txt: 'Tonight ask "Watched anything good lately?" instead of "How was school?"', short: 'Ask about shows, not school'},
+  ],
+  'Small routines beat big conversations.': [
+    {txt: 'Pick one 10-minute thing to do at the same time every day this week \u2014 a snack, a show, a walk.', short: 'One 10-min daily ritual'}
+  ],
+  'Ask one question. Then stop.': [
+    {txt: 'At dinner, ask one question. When they answer, count to 5 silently. Don\'t follow up.', short: 'One question, then silence'},
+    {txt: 'Next time they share something, say "Tell me more" instead of giving advice.', short: '"Tell me more" instead of advice'}
+  ],
+  'Name what you see, not what you want changed.': [
+    {txt: 'Replace "You should..." with "I noticed..." once today.', short: '"I noticed..." instead of "You should..."'},
+    {txt: 'Text them one thing you noticed they did well. No "but" attached.', short: 'Text one positive thing'}
+  ],
+  'Once a week is enough.': [
+    {txt: 'Pick one evening this week. That\'s your conversation night. Let the other 6 be easy.', short: 'One conversation night this week'}
+  ],
+  'Ask about their friends, not them.': [
+    {txt: 'Tonight ask "How\'s [friend name] doing?" and just listen to what comes out.', short: 'Ask about a friend by name'},
+  ],
+  'Make home somewhere friends are welcome.': [
+    {txt: 'Next time they mention a friend, say "They should come over sometime." Mean it.', short: 'Invite a friend over'}
+  ],
+  'Small signals over formal conversations.': [
+    {txt: 'Mention something they told you last week. Just casually. Show you were listening.', short: 'Reference something from last week'},
+  ],
+  'Say it plainly: "I\'m here if you want to."': [
+    {txt: 'Say "I\'m around if you want to talk. No pressure." Once. Then drop it.', short: '"I\'m around" \u2014 then drop it'},
+  ],
+  'Stop solving. Start witnessing.': [
+    {txt: 'When they complain about something, say "That sounds really hard" and nothing else.', short: '"That sounds hard" \u2014 full stop'},
+    {txt: 'Be in the same room while they stress. No advice. Just presence.', short: 'Present without solving'}
+  ],
+  'Make contact without a reason.': [
+    {txt: 'Send them a meme or a voice note. No question attached. Just "saw this, thought of you."', short: 'Send a meme, no strings'},
+  ],
+  'Try one thing you haven\'t tried before.': [
+    {txt: 'Put your own phone down first tonight. See what happens.', short: 'Put your phone down first'},
+    {txt: 'Ask one question and stop there. Don\'t follow up.', short: 'One question, then stop'}
+  ],
+  'Once a week is enough to start.': [
+    {txt: 'Pick one evening this week. That\'s your conversation night. Let the other 6 be easy.', short: 'One conversation night this week'}
+  ]
+};
+const GROUNDING=[
+  {g:'g-night',icon:'phone-off',h:'Put your phone down for 10 minutes.',b:'Your nervous system needs a break. Ten minutes. That\'s all.',timer:10},
+  {g:'g-amber',icon:'send',h:'Text one friend \u2014 not about your child.',b:'A meme, a voice note, a "how are you?". You\'ve been pouring out without anyone asking about you.',timer:0},
+  {g:'g-teal',icon:'droplet',h:'Get a glass of water. Sit somewhere different.',b:'Not at your desk. Your body carries stress even when your mind thinks it\'s coping.',timer:0},
+  {g:'g-forest',icon:'pen-line',h:'Write down three things that went okay today.',b:'Not great things. Just okay things. Shifts focus from what\'s failing to what\'s holding.',timer:0},
+  {g:'g-sky',icon:'trees',h:'Step outside for 3 minutes. No phone.',b:'Cold air or sunlight interrupts the stress loop. Three minutes is enough.',timer:3},
+  {g:'g-rose',icon:'wind',h:'Breathe with me.',b:'4 seconds in. 7 seconds hold. 8 seconds out. Three rounds is all it takes.',timer:0,breathe:true}
+];
+const GROUND_CARD_CLASSES=['ground-card-cream','ground-card-sage','ground-card-lavender','ground-card-cream','ground-card-sage','ground-card-lavender'];
+const ENCOUR=[{h:'You\'ve got this.',s:'One small step is still a step.'},{h:'You\'re doing more than you think.',s:'Most parents never look this hard for a better way.'},{h:'Good luck.',s:'Even if it\'s messy the first time, you showing up is what matters.'},{h:'Here\'s to a better evening.',s:'Small shifts start exactly like this.'},{h:'One week.',s:'Give it a few days. You might surprise yourself.'}];
+
+// ════ STATE ════
+let T=1,I=0,TITLE='',children=[],activeChild=0,childCount=0;
+let tipIdx=0,tipData=[];let kitItems=[];let videoIdx=0,videoData=[];let groundIdx=0;
+let timerSec=0,timerMax=0,timerInt=null,timerRunning=false;
+const CIRC=2*Math.PI*82; // r=82 → ≈515.2
+
+// ════ SCENE BUILDER ════
+function buildScene(el,gradClass,heroIcon){
+  el.className='ls-scene '+gradClass;
+  el.innerHTML='';
+  // Soft glow blobs
+  const blobs=[{t:-50,r:-40,s:180},{t:30,l:-50,s:130},{b:-30,r:10,s:110}];
+  blobs.forEach(b=>{
+    const d=document.createElement('div');d.className='scene-blob';
+    d.style.cssText=`width:${b.s}px;height:${b.s}px;background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 70%);filter:blur(30px);pointer-events:none;${b.t!==undefined?'top:'+b.t+'px;':''}${b.b!==undefined?'bottom:'+b.b+'px;':''}${b.l!==undefined?'left:'+b.l+'px;':''}${b.r!==undefined?'right:'+b.r+'px;':''}`;
+    el.appendChild(d);
+  });
+  if(heroIcon){
+    const h=document.createElement('div');h.className='scene-hero';h.innerHTML=heroIcon;
+    el.appendChild(h);
+  }
+}
+function buildReelScene(el,bgGrad,faceEmoji){
+  el.className='reel-scene';el.style.background=bgGrad;el.innerHTML='';
+  const blobs=[{t:-30,r:-20,s:150},{t:20,l:-30,s:100}];
+  blobs.forEach(b=>{const d=document.createElement('div');d.style.cssText=`position:absolute;width:${b.s}px;height:${b.s}px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%);filter:blur(25px);pointer-events:none;${b.t!==undefined?'top:'+b.t+'px;':''}${b.l!==undefined?'left:'+b.l+'px;':''}${b.r!==undefined?'right:'+b.r+'px;':''}`;el.appendChild(d);});
+  const face=document.createElement('div');face.className='reel-face';face.textContent=faceEmoji;el.appendChild(face);
+}
+
+// ════ NAV ════
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='swaci')loadCheckin();
+  if(id==='s-shifts')renderStarterKit();
+}
+function spovBack(){
+  go('slanding');
+}
+function tapNotif(){const n=document.getElementById('notif');n.style.opacity='0';n.style.pointerEvents='none';setTimeout(()=>go('s-ally'),300);}
+function pickChar(el){document.querySelectorAll('.ally-char').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+
+// ════ PROFILE ════
+function initProfile(){document.getElementById('children-list').innerHTML='';childCount=0;addChild();}
+function addChild(){
+  if(childCount>=3)return;
+  const idx=childCount++;
+  const list=document.getElementById('children-list');
+  const c=document.createElement('div');c.className='ccard';
+  c.innerHTML=`<div class="ccard-h">Child ${idx+1}</div><div class="flbl">Name (optional)</div><input class="finput" id="cn${idx}" placeholder="e.g. Aiden" autocomplete="off"><div class="flbl">Stage</div><div class="srow" id="sr${idx}"><button class="spill" data-t="1" onclick="selStage(${idx},1,this)"><div class="spill-t">Just started Sec 1</div></button><button class="spill" data-t="2" onclick="selStage(${idx},2,this)"><div class="spill-t">Sec 2 or Sec 3</div></button><button class="spill" data-t="3" onclick="selStage(${idx},3,this)"><div class="spill-t">JC or Poly</div></button></div>`;
+  list.appendChild(c);
+  document.getElementById(`cn${idx}`).addEventListener('input',checkProfileValid);
+  if(childCount>=3)document.getElementById('add-ch-btn').style.display='none';
+}
+function selStage(ci,t,btn){document.querySelectorAll(`#sr${ci} .spill`).forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');if(!children[ci])children[ci]={name:'',stage:0};children[ci].stage=t;checkProfileValid();}
+function checkProfileValid(){
+  let valid=false;
+  for(let i=0;i<childCount;i++){const n=document.getElementById(`cn${i}`)?.value.trim();const s=document.querySelector(`#sr${i} .spill.sel`);if(n||s)valid=true;}
+  const btn=document.getElementById('save-btn');if(btn){btn.disabled=!valid;btn.style.opacity=valid?'1':'.4';btn.style.cursor=valid?'pointer':'not-allowed';}
+}
+function saveProfile(){
+  children=[];
+  for(let i=0;i<childCount;i++){const n=document.getElementById(`cn${i}`)?.value.trim()||'';const s=parseInt(document.querySelector(`#sr${i} .spill.sel`)?.dataset.t||0);if(n||s)children.push({name:n||`Child ${i+1}`,stage:s});}
+  buildToggles();
+  if(children.length>0&&children[0].stage){T=children[activeChild].stage||1;loadChallenges(T);setSelfCheck(T);go('spov');}else go('slanding');
+}
+function buildToggles(){
+  const show=children.length>=2;
+  document.getElementById('ct-land').style.display=show?'block':'none';
+  document.getElementById('ct-ch').style.display=show?'block':'none';
+  ['ctr-land','ctr-ch'].forEach(rid=>{
+    const row=document.getElementById(rid);if(!row)return;row.innerHTML='';
+    children.forEach((c,i)=>{const p=document.createElement('button');p.className='ctp ctp-light'+(i===activeChild?' on':'');const sl={1:'Sec 1',2:'Sec 2\u20133',3:'JC/Poly'}[c.stage]||'';p.textContent=c.name+(sl?' \u00B7 '+sl:'');p.onclick=()=>switchChild(i);row.appendChild(p);});
+  });
+}
+function switchChild(i){activeChild=i;T=children[i].stage||1;buildToggles();loadChallenges(T);}
+
+// ════ CHALLENGES ════
+function pickT(t){T=t;loadChallenges(t);setSelfCheck(t);go('spov');}
+function setSelfCheck(t){
+  const container=document.getElementById('sc-cards');
+  container.innerHTML='';
+  // Section title — centered, outside cards
+  const heading=document.createElement('div');
+  heading.id='sc-heading';
+  heading.style.cssText='font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;text-align:center;margin-bottom:16px;transition:all .5s ease';
+  heading.textContent='What most parents notice at this stage';
+  container.appendChild(heading);
+  // Build cards: if children exist, one per child; else single card for selected stage
+  const cards=children.length>0?children.map(c=>({stage:c.stage,name:c.name})):[{stage:t,name:null}];
+  cards.forEach((c,i)=>{
+    const s=c.stage||1;
+    const tag=STAGE_SUB[s]||'Sec 1';
+    const tagColor=TAG_COLORS[s]||'#45BE93';
+    const title=STAGE_TITLE[s]||STAGE_TITLE[1];
+    const ctx=STAGE_CTX[s]||STAGE_CTX[1];
+    const card=document.createElement('div');
+    card.className='sc-card-item';
+    card.style.cssText='background:white;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%;transition:all .5s cubic-bezier(.22,1,.36,1);'+(i>0?'margin-top:12px;':'');
+    card.innerHTML=`<div style="margin-bottom:12px">
+      <div style="font-size:10px;font-weight:800;color:white;background:${tagColor};padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;display:inline-block">${tag}</div>
+    </div>
+    <div class="sc-card-title" style="font-size:20px;font-weight:900;color:var(--ink);line-height:1.3;margin-bottom:12px;letter-spacing:-.2px;transition:all .5s ease;overflow:hidden">${title}</div>
+    <div class="sc-card-txt" style="font-size:15px;color:var(--ink2);line-height:1.65;transition:all .5s ease;overflow:hidden;max-height:400px">${ctx}</div>`;
+    container.appendChild(card);
+  });
+}
+function loadChallenges(t){
+  document.getElementById('proof-txt').textContent=PROOF[t];
+  const list=document.getElementById('chlist');list.innerHTML='';
+  WELLS.forEach(w=>{
+    const desc=w.desc[t]||w.desc[1];
+    const d=document.createElement('div');d.className='chi';
+    // Click goes straight to youth POV — pick first challenge for this well
+    d.onclick=()=>{
+      const ci=CHALLENGES[t].findIndex(c=>c.well===w.id);
+      T=t;I=ci>=0?ci:0;TITLE=desc;
+      loadPOV();
+    };
+    d.innerHTML=`<div style="width:44px;height:44px;border-radius:12px;background:${w.color}12;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${w.color}">${lucide(w.icon,20,w.color)}</div><div class="chb"><div class="cht" style="font-weight:700">${desc}</div></div><div class="chev">\u203A</div>`;
+    list.appendChild(d);
+  });
+}
+function loadPOV(){
+  const key=`${T}-${I}`;const p=POV[key]||POV_DEFAULT;
+  const c=CONTENT[key]||DEFAULT;
+  const scroll=document.getElementById('pov-scroll');
+
+  // Build quote carousel from all POV entries for this transition stage
+  const allQuotes=[];
+  Object.keys(POV).forEach(k=>{if(k.startsWith(T+'-')){allQuotes.push(POV[k]);}});
+  if(allQuotes.length===0)allQuotes.push(p);
+  // Ensure current POV is first
+  const currentIdx=allQuotes.findIndex(q=>q.quote===p.quote);
+  if(currentIdx>0){const cur=allQuotes.splice(currentIdx,1)[0];allQuotes.unshift(cur);}
+
+  // Build youth story cards — vertical stacked, max 6
+  const quotesToShow=allQuotes.slice(0,6);
+  const youthStoriesHtml=quotesToShow.map((q,i)=>`
+    <div style="background:white;border-radius:20px;padding:22px;margin-bottom:12px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--brand-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0">${lucide('user',18,'var(--brand)')}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;color:var(--ink3);font-weight:600;margin-bottom:6px">${q.attr}</div>
+          <div style="font-size:14px;color:var(--ink);line-height:1.6;font-style:italic">${q.quote.replace(/^"|"$/g,'')}</div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Build youth video cards
+  const yVideos=YOUTH_VIDEOS[T]||YOUTH_VIDEOS[1];
+  const youthVideoHtml=yVideos.map((v,i)=>`
+    <div style="flex-shrink:0;width:220px;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);background:white">
+      <div style="height:140px;position:relative;overflow:hidden">
+        <img src="${v.img}" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.55)">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.25)"><div style="width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent var(--ink);margin-left:2px"></div></div>
+        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',10,'white')} 1:${String(20+i*15).padStart(2,'0')}</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px">${v.n}</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${v.age}yo</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.5;font-style:italic">${v.c}</div>
+      </div>
+    </div>`).join('');
+
+  scroll.innerHTML=`
+    <!-- Hero insight section — distinct background -->
+    <div style="background:linear-gradient(165deg,#E0F0F0,#D0E8E8);margin:-20px -22px 0;padding:28px 22px 28px;border-radius:0 0 28px 28px">
+      <div class="f-eyebrow" style="color:var(--ink3);text-align:left">From the youth side</div>
+      <div class="f-h" style="margin-bottom:16px;color:var(--ink);text-align:left">Their world right now</div>
+      <div style="background:white;border-radius:20px;padding:24px 22px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center">${lucide('eye',16,'var(--brand)')}</div>
+          <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">What\u2019s actually going on</div>
+        </div>
+        <div style="font-size:15px;color:var(--ink);line-height:1.7">${p.insight}</div>
+      </div>
+    </div>
+
+    <!-- Youth video stories carousel -->
+    <div style="margin-top:28px;margin-bottom:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">Stories from our youth</div><div style="font-size:12px;font-weight:600;color:var(--brand);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
+      <div id="pov-videos-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${youthVideoHtml}</div>
+    </div>
+
+    <!-- Youth quotes — vertical stacked -->
+    <div style="margin-bottom:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">In their own words</div><div style="font-size:12px;font-weight:600;color:var(--brand);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
+      ${youthStoriesHtml}
+    </div>
+
+    <button class="f-btn" onclick="buildVideoScreen();go('svideo')">See tips from other parents</button>
+  `;
+
+  // Hide scrollbars
+  const styleEl=document.createElement('style');
+  styleEl.textContent='#pov-quotes-scroll::-webkit-scrollbar{display:none}#pov-videos-scroll::-webkit-scrollbar{display:none}';
+  scroll.appendChild(styleEl);
+  // Enable drag-to-scroll on carousels
+  setTimeout(()=>{
+    initDragScroll(document.getElementById('pov-videos-scroll'));
+    initDragScroll(document.getElementById('pov-quotes-scroll'));
+  },50);
+
+  go('s-pov');
+}
+
+// ════ VIDEO REELS ════
+function buildVideoScreen(){
+  const key=`${T}-${I}`;videoData=(CONTENT[key]||DEFAULT).videos;videoIdx=0;renderReel();
+}
+function renderReel(){
+  const container=document.getElementById('reel-container');container.innerHTML='';
+  const v=videoData[videoIdx];
+  const imgSrc=PARENT_IMG[v.n]||'Assets/Images/Videos screenshot/ig_video_parent_1.png';
+  const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
+
+  // Top bar — sticky white background
+  const bar=document.createElement('div');bar.className='app-bar sticky-nav';
+  bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative';
+  const kitHasItems=kitItems.length>0;
+  bar.innerHTML=`<button class="app-back" onclick="go('s-pov')">\u2039</button><div class="app-title">Parent for Parent</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
+  wrap.appendChild(bar);
+
+  const scroll=document.createElement('div');scroll.className='flat-scroll';scroll.style.cssText='padding:20px 22px 44px;background:white';
+  const key=`${T}-${I}`;const c=CONTENT[key]||DEFAULT;
+
+  // Build tips cards
+  const tipsCardsHtml=c.tips.map((tip,ti)=>{
+    const actions=MICRO_ACTIONS[tip.h]||[];
+    const hasActions=actions.length>0;
+    return `<div onclick="openTipDetail(${ti})" style="background:white;border-radius:20px;padding:22px;margin-bottom:12px;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06);cursor:pointer;transition:all .12s" onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="width:40px;height:40px;border-radius:12px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0">${lucide(tip.icon||'lightbulb',18,'var(--brand)')}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:4px">${tip.h}</div>
+          <div style="font-size:13px;color:var(--ink3);line-height:1.45">${tip.b.length>90?tip.b.substring(0,90)+'\u2026':tip.b}</div>
+          ${hasActions?`<div style="margin-top:10px;display:inline-flex;align-items:center;gap:5px;background:var(--brand-lt);color:var(--brand);font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px">${actions.length} micro action${actions.length>1?'s':''} \u203A</div>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Build parent video carousel cards — consistent with youth screen
+  const parentCardsHtml=videoData.map((vid,i)=>{
+    const img=PARENT_IMG[vid.n]||'Assets/Images/Videos screenshot/ig_video_parent_1.png';
+    return `<div style="flex-shrink:0;width:220px;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);background:white">
+      <div style="height:140px;position:relative;overflow:hidden">
+        <img src="${img}" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.55)">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.25)"><div style="width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent var(--ink);margin-left:2px"></div></div>
+        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',10,'white')} 1:${String(2+i*18).padStart(2,'0')}</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px">${vid.n}</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${vid.r}</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.5;font-style:italic">${vid.c}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Empathy line
+  const empathyLine=c.empathy||'Most of what families go through in secondary school is genuinely hard. The fact that you\'re here means you\'re already looking for something different.';
+
+  scroll.innerHTML=`
+    <!-- Hero section — edge-to-edge gradient matching youth screen -->
+    <div style="background:linear-gradient(165deg,#EDF5F0,#DCE8E0);margin:-20px -22px 0;padding:28px 22px 28px;border-radius:0 0 28px 28px">
+      <div class="f-eyebrow" style="color:var(--ink3);text-align:left">Tips from other parents</div>
+      <div class="f-h" style="margin-bottom:16px;color:var(--ink);text-align:left">What other parents tried</div>
+      <div style="background:white;border-radius:20px;padding:24px 22px;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--brand-lt);display:flex;align-items:center;justify-content:center">${lucide('heart',16,'var(--brand)')}</div>
+          <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">You\'re not alone in this</div>
+        </div>
+        <div style="font-size:15px;color:var(--ink);line-height:1.7">${empathyLine}</div>
+      </div>
+    </div>
+
+    <!-- Parent video stories carousel -->
+    <div style="margin-top:28px;margin-bottom:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">Stories from our parents</div><div style="font-size:12px;font-weight:600;color:var(--brand);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
+      <div id="parent-videos-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${parentCardsHtml}</div>
+    </div>
+
+    <!-- What they tried — tip cards -->
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">What they tried</div><div style="font-size:12px;font-weight:600;color:var(--brand);text-decoration:underline;text-underline-offset:3px;cursor:pointer">See more</div></div>
+      ${tipsCardsHtml}
+    </div>
+
+    <button class="f-btn" style="margin-top:8px" onclick="go('s-shifts')">See your starter kit</button>`;
+  wrap.appendChild(scroll);
+
+  // Hide scrollbar + drag scroll
+  const style=document.createElement('style');style.textContent='#parent-videos-scroll::-webkit-scrollbar{display:none}';wrap.appendChild(style);
+  setTimeout(()=>initDragScroll(document.getElementById('parent-videos-scroll')),50);
+
+  container.appendChild(wrap);
+}
+function reelNext(){if(videoIdx<videoData.length-1){videoIdx++;renderReel();}}
+function reelPrev(){if(videoIdx>0){videoIdx--;renderReel();}}
+function initReelTouch(el){
+  let sx=0,dx=0,dr=false;
+  function s(x){dr=true;sx=x;dx=0;}
+  function m(x){if(!dr)return;dx=x-sx;const hn=document.getElementById('rsh-n'),hb=document.getElementById('rsh-b');const p=Math.min(1,Math.abs(dx)/70);if(hn)hn.style.opacity=dx<-20?p:0;if(hb)hb.style.opacity=dx>20?p:0;}
+  function e(){if(!dr)return;dr=false;const hn=document.getElementById('rsh-n'),hb=document.getElementById('rsh-b');if(hn)hn.style.opacity=0;if(hb)hb.style.opacity=0;if(dx<-80)reelNext();else if(dx>80)reelPrev();dx=0;}
+  el.addEventListener('mousedown',ev=>{if(!ev.target.closest('button'))s(ev.clientX);});
+  document.addEventListener('mousemove',ev=>{if(dr)m(ev.clientX);});
+  document.addEventListener('mouseup',e);
+  el.addEventListener('touchstart',ev=>{if(!ev.target.closest('button'))s(ev.touches[0].clientX);},{passive:true});
+  document.addEventListener('touchmove',ev=>{if(dr){m(ev.touches[0].clientX);ev.preventDefault();}},{passive:false});
+  document.addEventListener('touchend',e);
+}
+
+// ════ TIP PLAYER ════
+function buildTips(){
+  const key=`${T}-${I}`;tipData=(CONTENT[key]||DEFAULT).tips;tipIdx=0;renderTip();
+}
+function renderStarterKit(){
+  const sk=document.getElementById('sk-items');sk.innerHTML='';
+  if(kitItems.length===0){
+    sk.innerHTML=`<div class="kit-empty"><div class="kit-empty-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div><div class="kit-empty-h">No micro actions saved yet</div><div class="kit-empty-sub">Go back and explore some tips. Tap "I want to try this" on any micro action to add it here.</div></div>`;
+    return;
+  }
+  kitItems.forEach((txt,i)=>{
+    const d=document.createElement('div');d.className='f-sk-item';
+    d.onclick=function(){this.classList.toggle('chk');this.querySelector('.f-sk-chk').textContent=this.classList.contains('chk')?'\u2713':'';};
+    d.innerHTML=`<div class="f-sk-chk"></div><div class="f-sk-txt">${txt}</div>`;
+    sk.appendChild(d);
+  });
+}
+function renderTip(){
+  const container=document.getElementById('tp-container');container.innerHTML='';
+  const tip=tipData[tipIdx];
+  const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg)';
+
+  const bar=document.createElement('div');bar.className='app-bar sticky-nav';
+  bar.style.cssText='background:white;padding:46px 22px 14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative';
+  const kitHasItems=kitItems.length>0;
+  bar.innerHTML=`<button class="app-back" onclick="go('svideo')">\u2039</button><div class="app-title">Parent for Parent</div><div onclick="go('s-shifts')" class="app-right kit-icon-wrap ${kitHasItems?'active':'neutral'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${kitHasItems?'white':'var(--brand)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg><span id="sk-badge-tip" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#FF5722;color:white;font-size:10px;font-weight:800;border-radius:50%;align-items:center;justify-content:center;display:${kitHasItems?'flex':'none'}">${kitItems.length}</span></div>`;
+  wrap.appendChild(bar);
+
+  const scroll=document.createElement('div');scroll.className='flat-scroll';
+  const isLast=tipIdx===tipData.length-1;
+  const isFirst=tipIdx===0;
+
+  // Build micro actions HTML for this tip
+  const actions=MICRO_ACTIONS[tip.h]||[];
+  const maHtml=actions.length>0?`
+    <div class="ma-section">
+      <div class="ma-label">Micro actions</div>
+      ${actions.map((a,ai)=>{
+        const alreadyAdded=kitItems.includes(a.txt);
+        return `<div class="ma-card">
+          <div class="ma-card-txt">${a.txt}</div>
+          <button class="ma-try-btn${alreadyAdded?' added':''}" id="ma-btn-${tipIdx}-${ai}" onclick="addMicroAction(${tipIdx},${ai},this)">
+            ${alreadyAdded?'<span class="ma-check-anim">\u2713</span> Added to starter kit':'+ I want to try this'}
+          </button>
+        </div>`;
+      }).join('')}
+    </div>`:'';
+
+  scroll.innerHTML=`
+    ${tip.tonight?'<div class="f-tonight">'+lucide('moon',14,'#B8860B')+' Try tonight</div>':''}
+    <div class="f-h">${tip.h}</div>
+    <div class="f-sub">${tip.b}</div>
+    ${tip.why?`<div class="f-why"><div class="f-why-l">Why this matters</div><div class="f-why-t">${tip.why}</div></div>`:''}
+    ${maHtml}
+    <div class="f-dots">${tipData.map((_,j)=>`<div class="fdot${j===tipIdx?' on':''}"></div>`).join('')}</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding-top:10px">
+      <button onclick="tipPrev()" style="width:40px;height:40px;background:${isFirst?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${isFirst?'default':'pointer'};font-family:inherit;color:${isFirst?'var(--ink3)':'var(--ink)'};opacity:${isFirst?'.4':'1'}">\u2039</button>
+      <div style="font-size:13px;color:var(--ink3);font-weight:600">${tipIdx+1} of ${tipData.length}</div>
+      <button onclick="tipNext()" style="width:40px;height:40px;background:${isLast?'var(--bg)':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${isLast?'default':'pointer'};font-family:inherit;color:${isLast?'var(--ink3)':'var(--ink)'};opacity:${isLast?'.4':'1'}">\u203A</button>
+    </div>`;
+  wrap.appendChild(scroll);
+  container.appendChild(wrap);
+  initTipTouch(container);
+}
+function tipNext(){if(tipIdx<tipData.length-1){tipIdx++;renderTip();}}
+function tipPrev(){if(tipIdx>0){tipIdx--;renderTip();}else go('svideo');}
+function saveTip(label){
+  try{window.storage.set('saved-tip',JSON.stringify({label,savedAt:Date.now()}));}catch(e){window._savedTip={label,savedAt:Date.now()};}
+}
+function initTipTouch(el){
+  let sx=0,dx=0,dr=false;
+  function s(x){dr=true;sx=x;dx=0;}
+  function m(x){if(!dr)return;dx=x-sx;const p=Math.min(1,Math.abs(dx)/70);const hn=document.getElementById('tsh-n'),hb=document.getElementById('tsh-b');if(hn)hn.style.opacity=dx<-20?p:0;if(hb)hb.style.opacity=dx>20?p:0;}
+  function e(){if(!dr)return;dr=false;const hn=document.getElementById('tsh-n'),hb=document.getElementById('tsh-b');if(hn)hn.style.opacity=0;if(hb)hb.style.opacity=0;if(dx<-80)tipNext();else if(dx>80)tipPrev();dx=0;}
+  el.addEventListener('mousedown',ev=>{if(!ev.target.closest('button'))s(ev.clientX);});
+  document.addEventListener('mousemove',ev=>{if(dr)m(ev.clientX);});
+  document.addEventListener('mouseup',e);
+  el.addEventListener('touchstart',ev=>{if(!ev.target.closest('button'))s(ev.touches[0].clientX);},{passive:true});
+  document.addEventListener('touchmove',ev=>{if(dr){m(ev.touches[0].clientX);ev.preventDefault();}},{passive:false});
+  document.addEventListener('touchend',e);
+}
+
+// ════ TIMER ════
+function updateTimerDisplay(){
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  const el=document.getElementById('t-time');if(el)el.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  const ring=document.getElementById('t-ring');
+  if(ring){const offset=CIRC*(1-timerSec/timerMax);ring.style.strokeDashoffset=Math.max(0,offset);}
+}
+function toggleTimer(){
+  if(timerRunning){clearInterval(timerInt);timerRunning=false;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>\u25B6</span><span>Resume</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.remove('running');}
+  else{timerRunning=true;const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>\u23F8</span><span>Pause</span>';const ring=document.getElementById('t-ring');if(ring)ring.classList.add('running');
+    timerInt=setInterval(()=>{timerSec--;updateTimerDisplay();if(timerSec<=0){clearInterval(timerInt);timerRunning=false;timerDone();}},1000);}
+}
+function resetTimer(){clearInterval(timerInt);timerRunning=false;timerSec=timerMax;updateTimerDisplay();const btn=document.getElementById('t-btn');if(btn)btn.innerHTML='<span>\u25B6</span><span>Start</span>';const ring=document.getElementById('t-ring');if(ring){ring.classList.remove('running');ring.style.strokeDashoffset='0';}}
+function timerDone(){
+  const wrap=document.getElementById('timer-main');if(!wrap)return;
+  const mins=Math.round(timerMax/60);
+  wrap.innerHTML=`<div class="timer-done" style="text-align:center"><div class="f-td-ico" style="color:var(--brand)">${lucide('sparkles',60,'var(--brand)')}</div><div class="f-td-h">${mins} minute${mins===1?'':'s'}. Done.</div><div class="f-td-s">That was just for you. How do you feel?</div><button class="f-btn" onclick="go('schall')">Ready \u2014 show me what's on your mind</button></div>`;
+}
+
+function save3Things(){
+  const vals=[0,1,2].map(i=>(document.getElementById('g3t-'+i)?.value||''));
+  localStorage.setItem('pfp-3things',JSON.stringify(vals));
+  const el=document.getElementById('g3t-saved');if(el){el.style.opacity='1';clearTimeout(window._g3tTO);window._g3tTO=setTimeout(()=>{el.style.opacity='0';},1500);}
+}
+
+let breatheInt=null,breatheRound=0;
+function startBreathe(){
+  const btn=document.getElementById('breathe-btn');if(btn)btn.style.display='none';
+  breatheRound=0;breatheCycle();
+}
+function breatheCycle(){
+  if(breatheRound>=3){breatheDone();return;}
+  const circle=document.getElementById('breathe-circle');
+  const label=document.getElementById('breathe-label');
+  const roundEl=document.getElementById('breathe-round');
+  if(!circle||!label)return;
+  // Inhale 4s
+  label.textContent='Breathe in';
+  circle.style.transition='all 4s ease-in-out';
+  circle.style.transform='scale(1.35)';
+  circle.style.background='rgba(69,190,147,.2)';
+  circle.style.borderColor='var(--brand)';
+  let count=4;label.textContent='Breathe in \u2014 '+count;
+  const inhaleInt=setInterval(()=>{count--;if(count>0)label.textContent='Breathe in \u2014 '+count;else{clearInterval(inhaleInt);holdPhase();}},1000);
+  function holdPhase(){
+    label.textContent='Hold';
+    circle.style.transition='none';
+    let hc=7;label.textContent='Hold \u2014 '+hc;
+    const holdInt=setInterval(()=>{hc--;if(hc>0)label.textContent='Hold \u2014 '+hc;else{clearInterval(holdInt);exhalePhase();}},1000);
+  }
+  function exhalePhase(){
+    label.textContent='Breathe out';
+    circle.style.transition='all 8s ease-in-out';
+    circle.style.transform='scale(1)';
+    circle.style.background='var(--brand-lt)';
+    let ec=8;label.textContent='Breathe out \u2014 '+ec;
+    const exInt=setInterval(()=>{ec--;if(ec>0)label.textContent='Breathe out \u2014 '+ec;else{clearInterval(exInt);breatheRound++;if(roundEl)roundEl.textContent='Round '+(breatheRound)+' of 3';setTimeout(breatheCycle,500);}},1000);
+  }
+}
+function breatheDone(){
+  const main=document.getElementById('breathe-main');if(!main)return;
+  main.innerHTML=`<div style="text-align:center;padding:16px 0"><div style="font-size:48px;margin-bottom:12px;color:var(--brand)">${lucide('sparkles',48,'var(--brand)')}</div><div style="font-size:20px;font-weight:900;color:var(--ink);margin-bottom:6px">Three rounds. Done.</div><div style="font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:18px">Your body is a little calmer now. That's enough.</div><button class="f-btn" onclick="go('schall')">I'm ready</button></div>`;
+}
+
+// ════ GROUNDING ════
+function buildGrounding(){groundIdx=0;renderGround();}
+function renderGround(){
+  const container=document.getElementById('gp-container');container.innerHTML='';
+  const g=GROUNDING[groundIdx];
+  const wrap=document.createElement('div');wrap.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;background:#F5F0EB';
+
+  const bar=document.createElement('div');bar.className='app-bar';bar.style.background='#F5F0EB';
+  bar.innerHTML=`<button class="app-back" onclick="${groundIdx===0?"go('s-selfcheck')":"groundPrev()"}">\u2039</button><div class="app-title">Parent for Parent</div>`;
+  wrap.appendChild(bar);
+
+  const scroll=document.createElement('div');scroll.className='flat-scroll f-timer';scroll.style.background='#F5F0EB';
+  let html=`<div class="f-eyebrow">Take a moment</div>`;
+
+  if(g.timer>0){
+    html+=`<div class="ground-card">
+    <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
+    <div id="timer-main">
+      <div class="timer-wrap" style="padding:8px 0 4px">
+        <div class="timer-rings">
+          <svg class="timer-svg" viewBox="0 0 200 200">
+            <circle class="tr-outer" cx="100" cy="100" r="94" style="stroke:var(--line)"/>
+            <circle class="tr-track" cx="100" cy="100" r="82"/>
+            <circle class="tr-prog" id="t-ring" cx="100" cy="100" r="82" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+          </svg>
+          <div class="timer-face"><div class="t-time" id="t-time">${g.timer}:00</div><div class="t-lbl">minutes</div></div>
+        </div>
+        <div class="timer-controls">
+          <button class="timer-start" id="t-btn" onclick="toggleTimer()"><span>\u25B6</span><span>Start</span></button>
+          <button class="timer-rst" onclick="resetTimer()">\u21BA</button>
+        </div>
+      </div>
+    </div>
+    </div>`;
+    timerSec=g.timer*60;timerMax=g.timer*60;
+  } else if(g.icon==='pen-line'){
+    // Write down 3 things — with persistent input
+    const saved=JSON.parse(localStorage.getItem('pfp-3things')||'["","",""]');
+    html+=`<div class="ground-card">
+    <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><input id="g3t-0" class="finput" style="margin-bottom:0;flex:1" placeholder="Something small that went okay..." value="${saved[0].replace(/"/g,'&quot;')}" oninput="save3Things()"></div>
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><input id="g3t-1" class="finput" style="margin-bottom:0;flex:1" placeholder="A moment that wasn\\'t bad..." value="${saved[1].replace(/"/g,'&quot;')}" oninput="save3Things()"></div>
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><input id="g3t-2" class="finput" style="margin-bottom:0;flex:1" placeholder="Anything you\\'re grateful for..." value="${saved[2].replace(/"/g,'&quot;')}" oninput="save3Things()"></div>
+    </div>
+    <div id="g3t-saved" style="text-align:center;font-size:12px;color:var(--brand);font-weight:700;margin-top:12px;opacity:0;transition:opacity .3s">Saved \u2713</div>
+    </div>`;
+  } else if(g.breathe){
+    // Breathing exercise — 4-7-8
+    html+=`<div class="ground-card">
+    <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
+    <div id="breathe-main">
+      <div style="display:flex;flex-direction:column;align-items:center;padding:8px 0">
+        <div style="width:190px;height:190px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <div id="breathe-circle" style="width:140px;height:140px;border-radius:50%;background:var(--brand-lt);border:3px solid var(--brand);display:flex;align-items:center;justify-content:center;transition:all 4s ease-in-out">
+            <div id="breathe-label" style="font-size:16px;font-weight:800;color:var(--brand);text-align:center">Ready</div>
+          </div>
+        </div>
+        <div id="breathe-round" style="font-size:12px;color:var(--ink3);font-weight:700;margin-top:14px">3 rounds</div>
+        <button id="breathe-btn" onclick="startBreathe()" style="margin-top:14px;padding:14px 40px;background:var(--brand);color:white;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(69,190,147,.3)">Start</button>
+      </div>
+    </div>
+    </div>`;
+  } else {
+    // Standard non-timer card — with illustration area for visual height parity
+    html+=`<div class="ground-card">
+    <div style="margin-bottom:8px;color:var(--brand)">${lucide(g.icon,28,'var(--brand)')}</div>
+    <div class="f-h" style="margin-bottom:6px">${g.h}</div>
+    <div class="f-sub" style="margin-bottom:16px">${g.b}</div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;opacity:.15;font-size:80px;line-height:1">${g.icon==='send'?'\uD83D\uDCAC':g.icon==='droplet'?'\uD83D\uDCA7':'\u2728'}</div>
+    </div>`;
+  }
+
+  html+=`<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px">
+      <button onclick="groundPrev()" style="min-width:44px;min-height:44px;width:44px;height:44px;background:${groundIdx===0?'#F5F0EB':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${groundIdx===0?'default':'pointer'};font-family:inherit;color:${groundIdx===0?'var(--ink3)':'var(--ink)'};opacity:${groundIdx===0?'.4':'1'}">\u2039</button>
+      <div class="f-dots" style="margin:0">${GROUNDING.map((_,j)=>`<div class="fdot${j===groundIdx?' on':''}"></div>`).join('')}</div>
+      <button onclick="groundNext()" style="min-width:44px;min-height:44px;width:44px;height:44px;background:${groundIdx===GROUNDING.length-1?'#F5F0EB':'white'};border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:${groundIdx===GROUNDING.length-1?'default':'pointer'};font-family:inherit;color:${groundIdx===GROUNDING.length-1?'var(--ink3)':'var(--ink)'};opacity:${groundIdx===GROUNDING.length-1?'.4':'1'}">\u203A</button>
+    </div>`;
+
+  html+=`<button class="f-btn" style="margin-top:8px" onclick="go('schall')">I'm ready</button>`;
+  scroll.innerHTML=html;
+  wrap.appendChild(scroll);
+  container.appendChild(wrap);
+  initGTouch(container);
+}
+function groundNext(){if(groundIdx<GROUNDING.length-1){groundIdx++;renderGround();}else{groundIdx=0;renderGround();}}
+function groundPrev(){if(groundIdx>0){groundIdx--;renderGround();}else go('s-selfcheck');}
+function initGTouch(el){
+  let sx=0,dx=0,dr=false;
+  function s(x){dr=true;sx=x;dx=0;}
+  function m(x){if(!dr)return;dx=x-sx;}
+  function e(){if(!dr)return;dr=false;if(dx<-80)groundNext();else if(dx>80)groundPrev();dx=0;}
+  el.addEventListener('mousedown',ev=>{if(!ev.target.closest('button'))s(ev.clientX);});
+  document.addEventListener('mousemove',ev=>{if(dr)m(ev.clientX);});
+  document.addEventListener('mouseup',e);
+  el.addEventListener('touchstart',ev=>{if(!ev.target.closest('button'))s(ev.touches[0].clientX);},{passive:true});
+  document.addEventListener('touchmove',ev=>{if(dr)m(ev.touches[0].clientX);},{passive:false});
+  document.addEventListener('touchend',e);
+}
+
+// ════ CHECK-IN ════
+async function loadCheckin(){
+  let saved=null;try{const r=await window.storage.get('saved-tip');if(r)saved=JSON.parse(r.value);}catch(e){saved=window._savedTip||null;}
+  const who=children[activeChild]?.name||'there';
+  const q=document.getElementById('ci-q');
+  if(saved?.label){const sh=saved.label.length>55?saved.label.substring(0,52)+'\u2026':saved.label;q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 you saved a tip last week: <em>"${sh}"</em><br><br>Did anything shift? Even something small counts.</div>`;}
+  else q.innerHTML=`<div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center">Parent for Parent</div><div style="font-size:16px;color:var(--ink);line-height:1.55">Hey ${who} \u2014 how did the week go? Even if nothing shifted, that's fine to say.</div>`;
+}
+function checkin(type){
+  let lbl=null;try{lbl=window._savedTip?.label;}catch(e){}
+  const ref=lbl?`trying "${lbl.length>45?lbl.substring(0,42)+'\u2026':lbl}"`:'trying something new';
+  const r={w:{sent:'Something actually shifted',resp:`That's real. Even one small shift from ${ref} is worth building on. We'll send something new next week.`},t:{sent:'Still figuring it out',resp:`Completely fine. These things rarely click in one week. We'll try a different angle.`},r:{sent:'Honestly it was a rough week',resp:`Rough weeks happen. You're still here, which matters more. We'll come back lighter next week.`},role:{sent:'I feel like how I show up needs to change',resp:`That feeling is the work. Noticing it is the first step. We'll send something next week that speaks to exactly that.`},m:{sent:'I need something different',resp:`Noted. We'll match you with something else next week.`}}[type];
+  document.getElementById('ciopts').innerHTML='';
+  // Show selected answer as outgoing bubble (right-aligned)
+  const sel=document.createElement('div');sel.style.cssText='display:flex;justify-content:flex-end;margin-bottom:8px;animation:slideUp .3s ease both';
+  sel.innerHTML=`<div style="background:var(--brand);color:white;border-radius:18px 18px 4px 18px;padding:14px 16px;font-size:14px;font-weight:700;max-width:85%">${r.sent}</div>`;
+  document.getElementById('ciopts').appendChild(sel);
+  // Show response as incoming bubble after delay
+  setTimeout(()=>{
+    const resp=document.createElement('div');resp.style.cssText='display:flex;gap:10px;align-items:flex-end;max-width:85%;animation:slideUp .3s ease both';
+    resp.innerHTML=`<div style="width:32px;height:32px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="Assets/Images/pfp_icon.png" style="width:100%;height:100%;object-fit:cover"></div><div style="background:white;border-radius:18px 18px 18px 4px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid var(--line)"><div style="font-size:11px;font-weight:800;color:var(--brand);margin-bottom:6px">Parent for Parent</div><div style="font-size:15px;color:var(--ink);line-height:1.6">${r.resp}</div></div>`;
+    document.getElementById('ci-response').appendChild(resp);
+    // Add "back to context" button after response — routes to spov for new cycle
+    setTimeout(()=>{
+      const divider=document.createElement('div');divider.style.cssText='width:100%;height:1px;background:var(--line);margin:24px 0 16px';
+      document.getElementById('ci-response').appendChild(divider);
+      const cta=document.createElement('div');cta.style.cssText='text-align:center;padding:8px 0;animation:slideUp .3s ease both';
+      cta.innerHTML=`<button class="f-btn" style="width:100%;max-width:280px;margin:0 auto" onclick="setSelfCheck(T);go('spov')">Browse Parent for Parent</button><div style="font-size:12px;color:var(--ink3);margin-top:10px">We'll be here when you need us.</div>`;
+      document.getElementById('ci-response').appendChild(cta);
+      document.getElementById('ci-scroll').scrollTop=document.getElementById('ci-scroll').scrollHeight;
+    },600);
+    document.getElementById('ci-scroll').scrollTop=document.getElementById('ci-scroll').scrollHeight;
+  },800);
+}
+function addToKit(text){
+  if(kitItems.includes(text))return;
+  kitItems.push(text);
+  updateKitBadge();
+}
+function addMicroAction(tipI,actionI,btn){
+  const tip=tipData[tipI];
+  const actions=MICRO_ACTIONS[tip.h]||[];
+  if(!actions[actionI])return;
+  const a=actions[actionI];
+  if(kitItems.includes(a.txt))return;
+  kitItems.push(a.txt);
+  updateKitBadge();
+  // Button state
+  btn.classList.add('added');
+  btn.innerHTML='\u2713 Added to starter kit';
+  // Bounce the starter kit icon
+  document.querySelectorAll('.kit-icon-wrap').forEach(el=>{
+    el.style.animation='kitBounce .5s ease';
+    setTimeout(()=>{el.style.animation='';},600);
+  });
+}
+function updateKitBadge(){
+  const count=kitItems.length;
+  // Update all badge instances
+  ['sk-badge','sk-badge-tip'].forEach(id=>{
+    const badge=document.getElementById(id);
+    if(badge){badge.style.display=count>0?'flex':'none';badge.textContent=count;}
+  });
+  // Update icon wrap state
+  document.querySelectorAll('.kit-icon-wrap').forEach(el=>{
+    if(count>0){el.classList.remove('neutral');el.classList.add('active');el.querySelector('svg').setAttribute('stroke','white');}
+    else{el.classList.remove('active');el.classList.add('neutral');el.querySelector('svg').setAttribute('stroke','var(--brand)');}
+  });
+}
+function openTipDetail(ti){
+  const key=`${T}-${I}`;tipData=(CONTENT[key]||DEFAULT).tips;tipIdx=ti;renderTip();go('s-tips');
+}
+function scrollCarousel(dir){
+  const el=document.getElementById('tips-carousel-scroll');
+  if(el)el.scrollBy({left:dir*220,behavior:'smooth'});
+}
+function showBreak(){alert('Taking a break is completely fine.\n\nWe\'ll check back in a month. No guilt, no catching up required.');}
+
+// ════ DRAG SCROLL ════
+function initDragScroll(el){
+  if(!el)return;
+  let isDown=false,startX,scrollLeft;
+  el.style.cursor='grab';
+  el.addEventListener('mousedown',e=>{if(e.target.closest('button,a,input'))return;isDown=true;el.style.cursor='grabbing';startX=e.pageX-el.offsetLeft;scrollLeft=el.scrollLeft;});
+  el.addEventListener('mouseleave',()=>{isDown=false;el.style.cursor='grab';});
+  el.addEventListener('mouseup',()=>{isDown=false;el.style.cursor='grab';});
+  el.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-el.offsetLeft;el.scrollLeft=scrollLeft-(x-startX);});
+}
+
+// ════ INIT ════
+window.addEventListener('load',()=>{
+  initProfile();
+  document.getElementById('ob-scene').style.cssText='background:url(Assets/Images/pfp_icon.png) center/cover no-repeat;';document.getElementById('ob-scene').innerHTML='';
+  // Landing stage icons — lucide
+  document.getElementById('tico-1').innerHTML=lucide('sprout',22,'#C07030');
+  document.getElementById('tico-2').innerHTML=lucide('repeat',22,'#3078C0');
+  document.getElementById('tico-3').innerHTML=lucide('rocket',22,'#6B40C0');
+});
+</script>
+</body>
+</html>

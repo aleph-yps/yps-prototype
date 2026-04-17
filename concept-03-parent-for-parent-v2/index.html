@@ -145,6 +145,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 .finput{width:100%;padding:13px 15px;border:2px solid var(--line);border-radius:14px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;background:white;margin-bottom:16px;transition:border-color .15s}
 .finput:focus{border-color:var(--brand);background:white}
 .srow{display:flex;flex-direction:column;gap:8px}
+.snap-chip{padding:9px 14px;border:1.5px solid var(--line);border-radius:20px;background:white;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink2);transition:all .12s}
+.snap-chip.sel{border-color:var(--brand);background:var(--brand-lt);color:var(--brand)}
+.snap-chip:active{transform:scale(.96)}
 .spill{padding:12px 15px;border:2px solid var(--line);border-radius:13px;background:white;cursor:pointer;font-family:inherit;text-align:left;transition:all .12s}
 .spill.sel{border-color:var(--brand);background:var(--brand-lt)}
 .spill-t{font-size:14px;font-weight:700;color:var(--ink)}
@@ -517,13 +520,20 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#FFFFFF
 <div class="screen" id="s-profile">
   <div class="app-bar"><button class="app-back" onclick="go('s-onboard')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
   <div class="pscroll">
+    <div style="font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Step 1 of 2 \u00b7 The basics</div>
     <div class="phd">Tell us about your youth</div>
     <div class="psd">Optional — skip any time.</div>
     <div id="children-list"></div>
     <button class="add-ch" id="add-ch-btn" onclick="addChild()"><span style="font-size:18px">&#65291;</span> Add another child</button>
     <button class="btn-p" id="save-btn" onclick="saveProfile()" disabled style="opacity:.4;cursor:not-allowed">Save and continue</button>
-    <button class="skip-btn" onclick="go('slanding')">Skip this</button>
+    <button class="skip-btn" onclick="go('slanding')">Skip for now</button>
   </div>
+</div>
+
+<!-- CHILD SNAPSHOT (v2) -->
+<div class="screen" id="s-snapshot" style="background:var(--bg)">
+  <div class="app-bar"><button class="app-back" onclick="go('s-profile')">&#8249;</button><div class="app-title">Parent for Parent</div></div>
+  <div class="pscroll" id="snap-scroll"></div>
 </div>
 
 <!-- LANDING -->
@@ -845,8 +855,16 @@ const DEFAULT={e:'#383050',videos:[{n:'Sureena',r:'Mum of 13yo',c:'"I was at my 
 
 // ═══ v2: Child Snapshot + Tip Variants + Go Deeper ═══
 // Snapshot is set during intake (Phase 3). Default "mixed" until then.
-let childSnapshot={temperament:'mixed',pressure:null,conflict:null};
-function setChildSnapshot(patch){childSnapshot={...childSnapshot,...patch};}
+let childSnapshot={temperament:'mixed',pressure:null,conflict:null,tried:[]};
+try{const _sn=localStorage.getItem('pfp-snapshot');if(_sn)childSnapshot={...childSnapshot,...JSON.parse(_sn)};}catch(e){}
+function setChildSnapshot(patch){childSnapshot={...childSnapshot,...patch};try{localStorage.setItem('pfp-snapshot',JSON.stringify(childSnapshot));}catch(e){}}
+
+// Parent video -> temperament tag for snapshot-matched ordering
+const PARENT_TEMP={
+  'Sureena':'quiet','Norita':'quiet','David':'quiet',
+  'Han Tien':'pushback','Kartika':'pushback','Bhavani':'pushback',
+  'Calvin':'mixed','Ryan':'mixed'
+};
 
 // Tip variants keyed by headline — snapshot picks variant.
 // Format: {quiet:{h,why}, pushback:{h,why}, mixed:{h,why}}
@@ -1049,8 +1067,85 @@ function saveProfile(){
   children=[];
   for(let i=0;i<childCount;i++){const n=document.getElementById(`cn${i}`)?.value.trim()||'';const s=parseInt(document.querySelector(`#sr${i} .spill.sel`)?.dataset.t||0);if(n||s)children.push({name:n||`Child ${i+1}`,stage:s});}
   buildToggles();
-  if(children.length>0&&children[0].stage){T=children[activeChild].stage||1;loadChallenges(T);setSelfCheck(T);go('spov');}else go('slanding');
+  // v2: after basics, go to Child Snapshot (step 2)
+  if(children.length>0&&children[0].stage){T=children[activeChild].stage||1;loadChallenges(T);setSelfCheck(T);buildSnapshot();go('s-snapshot');}else go('slanding');
 }
+
+// ═══ v2: Child Snapshot intake ═══
+const SNAP_Q=[
+  {key:'temperament',label:`When things get tough, {name} mostly\u2026`,opts:[
+    {v:'quiet',l:'Goes quiet'},{v:'pushback',l:'Pushes back hard'},
+    {v:'negotiator',l:'Tries to negotiate'},{v:'masker',l:'Masks it — seems fine'},
+    {v:'mixed',l:'Varies day to day'}
+  ]},
+  {key:'pressure',label:'The thing weighing on them most right now\u2026',opts:[
+    {v:'exams',l:'Exams'},{v:'friends',l:'Friends'},{v:'screens',l:'Screens'},
+    {v:'cca',l:'CCA'},{v:'body',l:'Body & self-image'},{v:'sleep',l:'Sleep'},
+    {v:'unsure',l:'Not sure'}
+  ]},
+  {key:'conflict',label:'When we disagree\u2026',opts:[
+    {v:'raised',l:'Raised voices'},{v:'shutdown',l:'Shutdown'},
+    {v:'oneword',l:'One-word replies'},{v:'walkaway',l:'We both walk away'},
+    {v:'talk',l:'We eventually talk'}
+  ]},
+  {key:'tried',multi:true,label:`What you've already tried (select any)`,opts:[
+    {v:'phonerules',l:'Phone rules'},{v:'tuition',l:'Tuition'},
+    {v:'therapy',l:'Therapy'},{v:'meals',l:'Family meals'},
+    {v:'space',l:'Giving space'},{v:'sitdown',l:'Sitting them down'},
+    {v:'nothing',l:'Nothing yet'}
+  ]}
+];
+let snapDraft={};
+function buildSnapshot(){
+  snapDraft={temperament:childSnapshot.temperament==='mixed'?null:childSnapshot.temperament,
+             pressure:childSnapshot.pressure,conflict:childSnapshot.conflict,
+             tried:Array.isArray(childSnapshot.tried)?[...childSnapshot.tried]:[]};
+  const name=children[activeChild]?.name||'your child';
+  const qHtml=SNAP_Q.map((q,qi)=>{
+    const chips=q.opts.map(o=>{
+      const sel=q.multi?snapDraft[q.key]?.includes(o.v):snapDraft[q.key]===o.v;
+      return `<button class="snap-chip${sel?' sel':''}" data-k="${q.key}" data-v="${o.v}" data-m="${q.multi?1:0}" onclick="pickSnap(this)">${o.l}</button>`;
+    }).join('');
+    return `<div class="ccard" style="padding:20px">
+      <div style="font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Question ${qi+1}${q.multi?'':''}</div>
+      <div style="font-size:15px;font-weight:800;color:var(--ink);line-height:1.4;margin-bottom:14px">${q.label.replace('{name}',name)}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">${chips}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('snap-scroll').innerHTML=`
+    <div style="font-size:10px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Step 2 of 2 \u00b7 About ${name}</div>
+    <div class="phd">Tell us a bit more</div>
+    <div class="psd">We'll use this to match what you see \u2014 not to profile you. All skippable.</div>
+    ${qHtml}
+    <div style="margin-top:18px">
+      <button class="btn-p" onclick="saveSnapshot()">Save and continue</button>
+      <button class="skip-btn" onclick="skipSnapshot()">Skip for now</button>
+    </div>
+    <div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:14px;line-height:1.5">Stored on this device only. Nothing shared.</div>`;
+}
+function pickSnap(btn){
+  const k=btn.dataset.k,v=btn.dataset.v,multi=btn.dataset.m==='1';
+  if(multi){
+    snapDraft[k]=snapDraft[k]||[];
+    const i=snapDraft[k].indexOf(v);
+    if(i>=0){snapDraft[k].splice(i,1);btn.classList.remove('sel');}
+    else{snapDraft[k].push(v);btn.classList.add('sel');}
+  } else {
+    snapDraft[k]=v;
+    document.querySelectorAll(`.snap-chip[data-k="${k}"]`).forEach(b=>b.classList.remove('sel'));
+    btn.classList.add('sel');
+  }
+}
+function saveSnapshot(){
+  setChildSnapshot({
+    temperament:snapDraft.temperament||'mixed',
+    pressure:snapDraft.pressure||null,
+    conflict:snapDraft.conflict||null,
+    tried:snapDraft.tried||[]
+  });
+  go('spov');
+}
+function skipSnapshot(){go('spov');}
 function buildToggles(){
   const show=children.length>=2;
   document.getElementById('ct-land').style.display=show?'block':'none';
@@ -1238,7 +1333,18 @@ function closeSeeAllOverlay(){const ov=document.getElementById('see-all-overlay'
 
 // ════ VIDEO REELS ════
 function buildVideoScreen(){
-  const key=`${T}-${I}`;videoData=(CONTENT[key]||DEFAULT).videos;videoIdx=0;renderReel();
+  const key=`${T}-${I}`;
+  videoData=[...((CONTENT[key]||DEFAULT).videos||[])];
+  // v2: Snapshot-matched ordering — parent with matching temperament shown first
+  const temp=childSnapshot.temperament;
+  if(temp&&temp!=='mixed'){
+    videoData.sort((a,b)=>{
+      const ma=(PARENT_TEMP[a.n]===temp)?0:1;
+      const mb=(PARENT_TEMP[b.n]===temp)?0:1;
+      return ma-mb;
+    });
+  }
+  videoIdx=0;renderReel();
 }
 function renderReel(){
   const container=document.getElementById('reel-container');container.innerHTML='';

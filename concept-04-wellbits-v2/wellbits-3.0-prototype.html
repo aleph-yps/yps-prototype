@@ -755,16 +755,11 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
         <div class="ch-rew-item" style="color:var(--violet);" id="dailyXP">⭐ +10 XP</div>
       </div>
     </div>
-    <button class="btn btn-mint" id="dailyCTA" onclick="startVerification()" style="font-size:16px;">I did it! ✨</button>
+    <!-- V2: Verification widget (timer for movement, text input for food, trust for others) -->
+    <div id="verifyWidget" style="width:100%;margin-top:12px;"></div>
+    <button class="btn btn-mint" id="dailyCTA" onclick="onDidItClick()" style="font-size:16px;">I did it! ✨</button>
   </div>
-  <!-- V2: Verification overlay (sensor/AI mock) -->
-  <div id="verifyOverlay" style="display:none;position:absolute;inset:0;background:rgba(13,14,26,.97);z-index:80;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;backdrop-filter:blur(12px);">
-    <div id="verifyIcon" style="font-size:64px;margin-bottom:16px;animation:glow-pulse 1.2s ease-in-out infinite;">📱</div>
-    <div id="verifyTitle" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px;">Verifying with sensors...</div>
-    <div id="verifyMessage" style="font-size:12px;color:var(--text-dim);max-width:260px;line-height:1.5;">Checking your phone's movement data. Just a sec.</div>
-    <div id="verifySpinner" style="margin-top:20px;width:24px;height:24px;border:3px solid rgba(132,94,247,.2);border-top-color:var(--violet);border-radius:50%;animation:spin .8s linear infinite;"></div>
-  </div>
-  <!-- V2: Education Facts overlay (appears after verification) -->
+  <!-- V2: Education Facts overlay (appears after I did it) -->
   <div id="factsOverlay" style="display:none;position:absolute;inset:0;background:rgba(13,14,26,.97);z-index:80;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;backdrop-filter:blur(12px);">
     <div style="font-size:48px;margin-bottom:8px;">💡</div>
     <div style="font-family:'Space Grotesk',monospace;font-size:10px;color:var(--violet);letter-spacing:.08em;margin-bottom:12px;">DID YOU KNOW?</div>
@@ -2029,13 +2024,170 @@ function showDayChallenge(day){
   var coinIcon='<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#F59F00);box-shadow:0 0 4px rgba(255,212,59,.4);font-size:8px;color:#8B6914;font-weight:bold;vertical-align:middle;">W</span>';
   document.getElementById('dailyCoins').innerHTML=isAlly?coinIcon+' +20 coins':coinIcon+' +15 coins';
   document.getElementById('dailyXP').textContent=isAlly?'⭐ +15 XP':'⭐ +10 XP';
-  // CTA - V2: route through verification → facts → rewards
+  // CTA - V2: verification widget appears above button; click goes straight to facts → rewards
   lastChallengeDay=day;
   pendingIsAlly=isAlly;
   const cta=document.getElementById('dailyCTA');
   cta.textContent='I did it! ✨';
-  cta.onclick=function(){startVerification();};
+  cta.onclick=function(){onDidItClick();};
+  // V2: Render type-specific verification widget
+  renderVerifyWidget(d ? d.t : '', day);
   goTo(SCR.DAILY_CHALLENGE);
+}
+
+// V2: Determine challenge type from text
+function detectChallengeType(txt){
+  if(!txt) return 'trust';
+  var t=txt.toLowerCase();
+  if(/push[- ]?up|plank|walk|step|stair|run|jog|jump|stretch|exercise|move|minute|min\b|30[- ]second|sec\b/.test(t)) return 'movement';
+  if(/drink|water|eat|meal|food|snack|veg|vegetable|protein|fruit|breakfast|lunch|dinner|swap|skip[- ]the[- ]fried|junk|sugary/.test(t)) return 'food';
+  if(/sleep|phone|screen|bed|midnight|hour\b/.test(t)) return 'time';
+  return 'trust';
+}
+
+// V2: Render verification widget based on challenge type
+function renderVerifyWidget(challengeText, day){
+  var widget=document.getElementById('verifyWidget');
+  if(!widget)return;
+  var type=detectChallengeType(challengeText);
+  verifyPassed=(type==='trust' || type==='time'); // trust-based types don't need pre-verification
+  updateDidItButton();
+  if(type==='movement'){
+    widget.innerHTML=renderTimerWidget(challengeText);
+  } else if(type==='food'){
+    widget.innerHTML=renderFoodInputWidget(challengeText);
+  } else {
+    widget.innerHTML=''; // trust-based: no widget, I did it is enabled
+  }
+}
+
+function renderTimerWidget(txt){
+  // Extract a timer duration from the text (30-second → 30s, 15 minutes → 900s, default 60s)
+  var seconds=60;
+  var match=txt.match(/(\d+)[- ]?second/i);
+  if(match) seconds=parseInt(match[1]);
+  else {
+    var minMatch=txt.match(/(\d+)[- ]?min(ute)?/i);
+    if(minMatch) seconds=parseInt(minMatch[1])*60;
+  }
+  // Cap demo timer at 60s for prototype — user clicks to fast-forward
+  var demoSeconds=Math.min(seconds,60);
+  currentTimerDuration=demoSeconds;
+  return '<div style="background:linear-gradient(135deg,rgba(51,154,240,.08),rgba(132,94,247,.04));border:1.5px solid rgba(51,154,240,.2);border-radius:12px;padding:14px;text-align:center;">'
+    + '<div style="font-family:Space Grotesk,monospace;font-size:9px;color:var(--blue);font-weight:700;letter-spacing:.1em;margin-bottom:6px;">⏱️ START TIMER TO VERIFY</div>'
+    + '<div id="timerDisplay" style="font-family:Space Grotesk,monospace;font-size:32px;font-weight:800;color:var(--text);margin-bottom:6px;">' + formatTimer(demoSeconds) + '</div>'
+    + '<button id="timerBtn" onclick="handleTimerClick()" style="width:100%;padding:10px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">▶ Start</button>'
+    + '</div>';
+}
+
+function renderFoodInputWidget(txt){
+  // Pick a verification question based on keywords
+  var q='What did you have?';
+  var t=txt.toLowerCase();
+  if(/veg|vegetable/.test(t)) q='What veg did you add?';
+  else if(/protein/.test(t)) q='What protein did you have?';
+  else if(/fruit/.test(t)) q='What fruit did you pick?';
+  else if(/breakfast/.test(t)) q='What did you have for breakfast?';
+  else if(/lunch/.test(t)) q='What did you eat for lunch?';
+  else if(/water|drink/.test(t)) q='What did you drink?';
+  else if(/snack/.test(t)) q='What healthy snack did you pick?';
+  else if(/fried|grilled|steamed/.test(t)) q='What did you swap to instead?';
+  else if(/meal|balanced/.test(t)) q='What did you eat?';
+  else if(/junk|sugary|swap|skip/.test(t)) q='What did you swap to instead?';
+  return '<div style="background:linear-gradient(135deg,rgba(81,207,102,.08),rgba(51,154,240,.04));border:1.5px solid rgba(81,207,102,.2);border-radius:12px;padding:14px;text-align:left;">'
+    + '<div style="font-family:Space Grotesk,monospace;font-size:9px;color:var(--mint);font-weight:700;letter-spacing:.1em;margin-bottom:6px;">📝 QUICK VERIFICATION</div>'
+    + '<div style="font-family:Plus Jakarta Sans,sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;">' + q + '</div>'
+    + '<input type="text" id="foodInput" oninput="handleFoodInput()" placeholder="Type your answer..." style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:var(--text);font-size:13px;font-family:DM Sans,sans-serif;outline:none;">'
+    + '</div>';
+}
+
+function formatTimer(s){
+  var m=Math.floor(s/60), r=s%60;
+  return m+':'+(r<10?'0':'')+r;
+}
+
+let verifyPassed=false;
+let currentTimerDuration=60;
+let timerInterval=null;
+let timerRemaining=0;
+
+function handleTimerClick(){
+  var btn=document.getElementById('timerBtn');
+  var disp=document.getElementById('timerDisplay');
+  if(!btn||!disp)return;
+  if(btn.textContent.indexOf('Start')>=0){
+    timerRemaining=currentTimerDuration;
+    btn.textContent='⏸ Pause';
+    btn.style.background='rgba(255,255,255,.08)';
+    btn.style.color='var(--text-dim)';
+    timerInterval=setInterval(function(){
+      timerRemaining--;
+      disp.textContent=formatTimer(timerRemaining);
+      if(timerRemaining<=0){
+        clearInterval(timerInterval);
+        timerInterval=null;
+        disp.textContent='✓ Done!';
+        disp.style.color='var(--mint)';
+        btn.textContent='✓ Verified';
+        btn.style.background='var(--mint)';
+        btn.style.color='#fff';
+        btn.disabled=true;
+        verifyPassed=true;
+        updateDidItButton();
+      }
+    },1000);
+  } else if(btn.textContent.indexOf('Pause')>=0){
+    clearInterval(timerInterval);
+    timerInterval=null;
+    btn.textContent='▶ Resume';
+  } else if(btn.textContent.indexOf('Resume')>=0){
+    btn.textContent='⏸ Pause';
+    timerInterval=setInterval(function(){
+      timerRemaining--;
+      disp.textContent=formatTimer(timerRemaining);
+      if(timerRemaining<=0){
+        clearInterval(timerInterval);
+        timerInterval=null;
+        disp.textContent='✓ Done!';
+        disp.style.color='var(--mint)';
+        btn.textContent='✓ Verified';
+        btn.style.background='var(--mint)';
+        btn.style.color='#fff';
+        btn.disabled=true;
+        verifyPassed=true;
+        updateDidItButton();
+      }
+    },1000);
+  }
+}
+
+function handleFoodInput(){
+  var el=document.getElementById('foodInput');
+  if(!el)return;
+  verifyPassed=(el.value.trim().length>=2);
+  updateDidItButton();
+}
+
+function updateDidItButton(){
+  var cta=document.getElementById('dailyCTA');
+  if(!cta)return;
+  if(verifyPassed){
+    cta.style.opacity='1';
+    cta.style.pointerEvents='auto';
+    cta.disabled=false;
+  } else {
+    cta.style.opacity='.4';
+    cta.style.pointerEvents='none';
+    cta.disabled=true;
+  }
+}
+
+// V2: "I did it" button click - goes straight to facts → rewards
+function onDidItClick(){
+  if(!verifyPassed) return;
+  // Clean up timer
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  showFactsOverlay();
 }
 
 let currentBossLevel=5;
@@ -2660,44 +2812,7 @@ function closeCheckin(){
   goTo(SCR.QUEST_MAP);
 }
 
-// === V2: VERIFICATION + FACTS FLOW ===
-// After "I did it!" → Verification (2s) → Facts → Rewards
-function startVerification(){
-  const c=characters[curChar];
-  const day=lastChallengeDay;
-  const dayData=c.days[day-1];
-  // Determine verification type based on challenge content
-  var vType='generic';
-  var txt=(dayData&&dayData.t)?dayData.t.toLowerCase():'';
-  if(/walk|step|exercise|push|move|plank|stair|run|jog/.test(txt)) vType='movement';
-  else if(/drink|water|eat|meal|food|snack|veg|protein/.test(txt)) vType='food';
-  else if(/sleep|phone|screen|bed/.test(txt)) vType='time';
-  // Show verification overlay
-  const overlay=document.getElementById('verifyOverlay');
-  const icon=document.getElementById('verifyIcon');
-  const title=document.getElementById('verifyTitle');
-  const msg=document.getElementById('verifyMessage');
-  const spinner=document.getElementById('verifySpinner');
-  if(!overlay)return;
-  if(vType==='movement'){icon.textContent='🏃';title.textContent='Checking movement...';msg.textContent='Reading step count + motion sensor data on your phone.';}
-  else if(vType==='food'){icon.textContent='📸';title.textContent='Analyzing your photo...';msg.textContent='On-device AI is checking your meal. Nothing uploaded.';}
-  else if(vType==='time'){icon.textContent='⏰';title.textContent='Logging time...';msg.textContent='Your phone usage pattern is being checked.';}
-  else{icon.textContent='📱';title.textContent='Verifying...';msg.textContent='Checking your activity on your phone.';}
-  if(spinner)spinner.style.display='block';
-  overlay.style.display='flex';
-  // After 1.8s → show verified ✓ briefly, then facts
-  setTimeout(function(){
-    icon.textContent='✅';
-    title.textContent='Verified!';
-    msg.textContent='Nice work. Keep going.';
-    if(spinner)spinner.style.display='none';
-    setTimeout(function(){
-      overlay.style.display='none';
-      showFactsOverlay();
-    },900);
-  },1800);
-}
-
+// === V2: FACTS FLOW (verification now happens BEFORE "I did it" via widget) ===
 function showFactsOverlay(){
   const c=characters[curChar];
   const day=lastChallengeDay;

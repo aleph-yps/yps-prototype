@@ -1894,18 +1894,21 @@ function buildQuestMap(c){
   // V2: Update map name header (single zone for current 10-day map)
   var mapNameEl=document.getElementById('mapName');
   if(mapNameEl && c.zones && c.zones[0]) mapNameEl.textContent=c.zones[0];
-  // V2: Quest goal now reflects the 30-day goal from the 'Your Wellbit is' screen
+  // V2: Quest goal combines character quest name (title) + 30-day framing (subtitle)
   const questGoals30 = {
-    'Aura':'Help this Wellbit get its glow back in 30 days!',
-    'Titan':'Help this Wellbit build real strength in 30 days!',
-    'Sage':'Help this Wellbit level up its nutrition in 30 days!',
-    'Spark':'Help this Wellbit get its energy back in 30 days!',
-    'Luna':'Help this Wellbit fix its sleep in 30 days!'
+    'Aura':'Help this Wellbit get its glow back in 30 days',
+    'Titan':'Help this Wellbit build real strength in 30 days',
+    'Sage':'Help this Wellbit level up its nutrition in 30 days',
+    'Spark':'Help this Wellbit get its energy back in 30 days',
+    'Luna':'Help this Wellbit fix its sleep in 30 days'
   };
   var goalTitle=document.getElementById('questGoalTitle');
   var goalDesc=document.getElementById('questGoalDesc');
-  if(goalTitle) goalTitle.textContent = questGoals30[c.name] || 'Help this Wellbit evolve in 30 days!';
-  if(goalDesc) goalDesc.style.display='none';
+  if(goalTitle && c.quest) goalTitle.innerHTML=c.quest;
+  if(goalDesc){
+    goalDesc.style.display='block';
+    goalDesc.textContent = questGoals30[c.name] || 'Help this Wellbit evolve in 30 days';
+  }
   // Update companion
   var compImg=document.getElementById('mapCompanionImg');
   var compName=document.getElementById('mapCompanionName');

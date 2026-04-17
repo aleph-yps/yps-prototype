@@ -1134,38 +1134,9 @@ function loadPOV(){
       </div>
     </div>`).join('');
 
-  // Build youth video cards
+  // Hero video (first youth video) + full list used by "See all" overlay
   const yVideos=YOUTH_VIDEOS[T]||YOUTH_VIDEOS[1];
-  const youthVideoHtml=yVideos.map((v,i)=>`
-    <div style="flex-shrink:0;width:220px;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);background:white">
-      <div style="height:140px;position:relative;overflow:hidden">
-        <img src="${v.img}" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.55)">
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.25)"><div style="width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent var(--ink);margin-left:2px"></div></div>
-        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',10,'white')} 1:${String(20+i*15).padStart(2,'0')}</div>
-      </div>
-      <div style="padding:14px 16px">
-        <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px">${v.n}</div>
-        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${v.age}yo</div>
-        <div style="font-size:13px;color:var(--ink2);line-height:1.5;font-style:italic">${v.c}</div>
-      </div>
-    </div>`).join('');
-
-  // Hero video (first youth video) + extras
   const heroVideo=yVideos[0];
-  const extraVideos=yVideos.slice(1);
-  const extraVideosHtml=extraVideos.map((v,i)=>`
-    <div style="flex-shrink:0;width:220px;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);background:white">
-      <div style="height:140px;position:relative;overflow:hidden">
-        <img src="${v.img}" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.55)">
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.25)"><div style="width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent var(--ink);margin-left:2px"></div></div>
-        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">${lucide('play',10,'white')} 1:${String(20+(i+1)*15).padStart(2,'0')}</div>
-      </div>
-      <div style="padding:14px 16px">
-        <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px">${v.n}</div>
-        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${v.age}yo</div>
-        <div style="font-size:13px;color:var(--ink2);line-height:1.5;font-style:italic">${v.c}</div>
-      </div>
-    </div>`).join('');
 
   scroll.innerHTML=`
     <!-- Hero insight section — distinct background -->
@@ -1186,9 +1157,12 @@ function loadPOV(){
       </button>
     </div>
 
-    <!-- Hero youth video (v2: single featured) -->
+    <!-- Hero youth video (v2: single featured) with See all link -->
     <div style="margin-top:24px;margin-bottom:20px">
-      <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">A youth story</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">Stories from our youth</div>
+        <div onclick="openAllYouthStories()" style="font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;display:flex;align-items:center;gap:2px">See all (${yVideos.length})<span style="margin-top:1px">\u203A</span></div>
+      </div>
       <div style="border-radius:22px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid var(--line);background:white">
         <div style="height:220px;position:relative;overflow:hidden">
           <img src="${heroVideo.img}" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6)">
@@ -1203,53 +1177,64 @@ function loadPOV(){
       </div>
     </div>
 
-    <!-- See more stories — preview peek (v2) -->
-    <div style="margin-bottom:24px">
-      <div id="pov-see-more-btn" onclick="togglePOVStories()" style="background:white;border:1px solid var(--line);border-radius:16px;padding:14px 16px 12px;cursor:pointer;transition:all .15s">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-          <div style="font-size:13px;font-weight:800;color:var(--ink)">More stories <span style="color:var(--ink3);font-weight:700">(${extraVideos.length})</span></div>
-          <span id="pov-see-more-icon" style="display:flex;align-items:center;transition:transform .25s">${lucide('chevron-down',16,'var(--ink3)')}</span>
-        </div>
-        <div style="height:1px;background:var(--line);margin-bottom:10px"></div>
-        <div style="display:flex;gap:8px;align-items:center">
-          ${extraVideos.map(v=>`<div style="position:relative;width:44px;height:44px;border-radius:10px;overflow:hidden;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.08)"><img src="${v.img}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.85)"><div style="position:absolute;inset:0;background:rgba(0,0,0,.15)"></div></div><div style="font-size:12px;color:var(--ink2);font-weight:600;min-width:0">${v.n}<span style="color:var(--ink3);font-weight:500"> · ${v.age}yo</span></div>`).join('<div style="width:1px;height:20px;background:var(--line);flex-shrink:0;margin:0 4px"></div>')}
-        </div>
-      </div>
-      <div id="pov-more-stories" style="display:none;margin-top:14px">
-        <div id="pov-videos-scroll" style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:0 22px 4px">${extraVideosHtml}</div>
-      </div>
-    </div>
-
     <!-- Youth quotes — vertical stacked, 3 max (v2) -->
     <div style="margin-bottom:28px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">In their own words</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px">In their own words</div>
+        ${allQuotes.length>3?`<div onclick="openAllYouthQuotes()" style="font-size:12px;font-weight:700;color:var(--brand);cursor:pointer;display:flex;align-items:center;gap:2px">See all (${allQuotes.length})<span style="margin-top:1px">\u203A</span></div>`:''}
+      </div>
       ${youthStoriesHtml}
     </div>
 
     <button class="f-btn" onclick="buildVideoScreen();go('svideo')">See tips from other parents</button>
   `;
 
-  // Hide scrollbars
-  const styleEl=document.createElement('style');
-  styleEl.textContent='#pov-quotes-scroll::-webkit-scrollbar{display:none}#pov-videos-scroll::-webkit-scrollbar{display:none}';
-  scroll.appendChild(styleEl);
-  // Enable drag-to-scroll on carousels
-  setTimeout(()=>{
-    initDragScroll(document.getElementById('pov-videos-scroll'));
-    initDragScroll(document.getElementById('pov-quotes-scroll'));
-  },50);
-
   go('s-pov');
 }
-function togglePOVStories(){
-  const box=document.getElementById('pov-more-stories');
-  const icon=document.getElementById('pov-see-more-icon');
-  if(!box)return;
-  const isOpen=box.style.display!=='none';
-  box.style.display=isOpen?'none':'block';
-  icon.style.transform=isOpen?'rotate(0deg)':'rotate(180deg)';
-  if(!isOpen){setTimeout(()=>initDragScroll(document.getElementById('pov-videos-scroll')),50);}
+// "See all" full-screen overlays for youth stories and quotes
+function openAllYouthStories(){
+  const yVideos=YOUTH_VIDEOS[T]||YOUTH_VIDEOS[1];
+  const listHtml=yVideos.map((v,i)=>`
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer">
+      <div style="position:relative;width:90px;height:90px;border-radius:14px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+        <img src="${v.img}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.7)">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent var(--ink);margin-left:2px"></div></div>
+      </div>
+      <div style="flex:1;min-width:0;padding-top:4px">
+        <div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:2px">${v.n}</div>
+        <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">${v.age}yo \u00b7 1:${String(20+i*15).padStart(2,'0')}</div>
+        <div style="font-size:13.5px;color:var(--ink2);line-height:1.5;font-style:italic">${v.c}</div>
+      </div>
+    </div>`).join('');
+  showSeeAllOverlay('Stories from our youth',listHtml);
 }
+function openAllYouthQuotes(){
+  const allQuotes=[];
+  Object.keys(POV).forEach(k=>{if(k.startsWith(T+'-')){allQuotes.push(POV[k]);}});
+  const listHtml=allQuotes.map(q=>`
+    <div style="background:white;border-radius:16px;padding:18px;margin-bottom:10px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--brand-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0">${lucide('user',16,'var(--brand)')}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;color:var(--ink3);font-weight:600;margin-bottom:6px">${q.attr}</div>
+          <div style="font-size:14px;color:var(--ink);line-height:1.6;font-style:italic">${q.quote.replace(/^"|"$/g,'')}</div>
+        </div>
+      </div>
+    </div>`).join('');
+  showSeeAllOverlay('In their own words',listHtml);
+}
+function showSeeAllOverlay(title,innerHtml){
+  let ov=document.getElementById('see-all-overlay');
+  if(!ov){ov=document.createElement('div');ov.id='see-all-overlay';ov.style.cssText='position:absolute;inset:0;z-index:1000;display:flex;flex-direction:column;background:var(--bg);animation:scFade .22s ease both';document.querySelector('.phone').appendChild(ov);}
+  ov.innerHTML=`
+    <div style="padding:46px 22px 14px;display:flex;align-items:center;justify-content:center;position:relative;background:white;border-bottom:1px solid var(--line);flex-shrink:0">
+      <button onclick="closeSeeAllOverlay()" style="position:absolute;left:22px;width:40px;height:40px;background:var(--bg);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;font-size:22px;color:var(--ink)">\u2039</button>
+      <div style="font-size:16px;font-weight:800;color:var(--ink);text-align:center">${title}</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:8px 22px 24px">${innerHtml}</div>`;
+  ov.style.display='flex';
+}
+function closeSeeAllOverlay(){const ov=document.getElementById('see-all-overlay');if(ov)ov.style.display='none';}
 
 // ════ VIDEO REELS ════
 function buildVideoScreen(){
@@ -1405,28 +1390,31 @@ function renderTip(){
       }).join('')}
     </div>`:'';
 
-  // v2: snapshot-driven tip variant + Go Deeper layer
+  // v2: snapshot-driven tip variant + Go Deeper layer (grouped into Why This Matters)
   const tipV=getTipContent(tip);
   const deeper=getTipDeeper(tip);
-  const deeperBadge=deeper?`<button id="gd-badge-${tipIdx}" onclick="toggleGoDeeper(${tipIdx})" style="background:#D4846B;color:white;border:none;border-radius:12px;padding:6px 12px 6px 10px;font-size:11.5px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(212,132,107,.35);transition:transform .12s;white-space:nowrap">${lucide('plus',12,'white')} Example</button>`:'';
-  const deeperBody=deeper?`
-    <div id="gd-body-${tipIdx}" style="display:none;background:#FDF4EF;border:1px solid #F0D8C8;border-radius:14px;padding:18px 18px;margin-top:14px;margin-bottom:14px;position:relative">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div style="font-size:10px;font-weight:800;color:#A8553A;text-transform:uppercase;letter-spacing:.6px">${deeper.label}</div>
-        <button onclick="toggleGoDeeper(${tipIdx})" style="background:transparent;border:none;cursor:pointer;color:#A8553A;padding:4px;display:flex;align-items:center;font-family:inherit">${lucide('x',14,'#A8553A')}</button>
+  const whyHtml=tipV.why?`
+    <div class="f-why" style="padding:14px 16px">
+      <div class="f-why-l">Why this matters</div>
+      <div class="f-why-t">${tipV.why}</div>
+      ${deeper?`
+      <div id="gd-toggle-${tipIdx}" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleGoDeeper(${tipIdx})">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span id="gd-plus-${tipIdx}" style="width:18px;height:18px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1">+</span>
+          <span id="gd-label-${tipIdx}" style="font-size:12px;font-weight:700;color:var(--brand)">Show an example</span>
+        </div>
       </div>
-      <div style="font-size:14px;color:var(--ink);line-height:1.65">${deeper.body}</div>
+      <div id="gd-body-${tipIdx}" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)">
+        <div style="font-size:10px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">${deeper.label}</div>
+        <div style="font-size:13.5px;color:var(--ink);line-height:1.65">${deeper.body}</div>
+      </div>`:''}
     </div>`:'';
 
   scroll.innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:${tip.tonight||deeper?'12px':'0'};min-height:${tip.tonight||deeper?'28px':'0'}">
-      ${tip.tonight?'<div class="f-tonight" style="margin:0">'+lucide('moon',14,'#B8860B')+' Try tonight</div>':'<div></div>'}
-      ${deeperBadge}
-    </div>
+    ${tip.tonight?'<div class="f-tonight">'+lucide('moon',14,'#B8860B')+' Try tonight</div>':''}
     <div class="f-h">${tipV.h}</div>
     <div class="f-sub">${tip.b}</div>
-    ${tipV.why?`<div class="f-why"><div class="f-why-l">Why this matters</div><div class="f-why-t">${tipV.why}</div></div>`:''}
-    ${deeperBody}
+    ${whyHtml}
     ${maHtml}
     <div class="f-dots">${tipData.map((_,j)=>`<div class="fdot${j===tipIdx?' on':''}"></div>`).join('')}</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding-top:10px">
@@ -1440,11 +1428,13 @@ function renderTip(){
 }
 function toggleGoDeeper(idx){
   const body=document.getElementById('gd-body-'+idx);
-  const badge=document.getElementById('gd-badge-'+idx);
+  const plus=document.getElementById('gd-plus-'+idx);
+  const label=document.getElementById('gd-label-'+idx);
   if(!body)return;
   const isOpen=body.style.display!=='none';
   body.style.display=isOpen?'none':'block';
-  if(badge){badge.style.opacity=isOpen?'1':'.5';badge.style.transform=isOpen?'scale(1)':'scale(.95)';}
+  if(plus)plus.textContent=isOpen?'+':'\u2013';
+  if(label)label.textContent=isOpen?'Hide example':'Show an example';
   if(!isOpen){setTimeout(()=>body.scrollIntoView({behavior:'smooth',block:'nearest'}),50);}
 }
 function tipNext(){if(tipIdx<tipData.length-1){tipIdx++;renderTip();}}

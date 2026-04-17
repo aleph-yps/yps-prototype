@@ -1469,26 +1469,28 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
   </div>
 </div>
 
-<!-- GACHA TOKEN REWARD POPUP -->
-<div id="gachaTokenPopup" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.92);z-index:99;flex-direction:column;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(14px);">
-  <div style="animation:slideUp .6s ease-out;text-align:center;width:100%;">
-    <div style="margin:0 auto 16px;">
-      <img src="Assets/Items/Gacha Token_Freeze Card.png" style="width:120px;height:auto;filter:drop-shadow(0 8px 24px rgba(132,94,247,.5)) drop-shadow(0 0 40px rgba(132,94,247,.2));animation:glow-pulse 2s ease-in-out infinite;">
+<!-- GACHA TOKEN REWARD POPUP (Mini Boss celebration) -->
+<div id="gachaTokenPopup" style="display:none;position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(30,15,60,.96),rgba(0,0,0,.98));z-index:99;flex-direction:column;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(14px);overflow-y:auto;">
+  <!-- Sparkle particles -->
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 30% 20%,rgba(255,212,59,.15),transparent 40%),radial-gradient(circle at 70% 70%,rgba(132,94,247,.15),transparent 40%);animation:glow-pulse 3s ease-in-out infinite;"></div>
+  <div style="animation:slideUp .5s cubic-bezier(.4,0,.2,1);text-align:center;width:100%;position:relative;z-index:1;">
+    <!-- Victory banner -->
+    <div style="font-family:'Space Grotesk',monospace;font-size:10px;color:var(--gold);letter-spacing:.15em;margin-bottom:4px;">✨ MINI BOSS DEFEATED ✨</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;background:var(--grad-celebration);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;">You won a Gacha Token!</div>
+    <!-- Card reveal -->
+    <div style="margin:0 auto 16px;position:relative;">
+      <div style="position:absolute;inset:-20px;border-radius:50%;background:conic-gradient(from 0deg,transparent,rgba(255,212,59,.3),transparent,rgba(132,94,247,.3),transparent);animation:spin 4s linear infinite;"></div>
+      <img src="Assets/Items/Gacha Token_Freeze Card.png" style="width:140px;height:auto;filter:drop-shadow(0 8px 24px rgba(255,212,59,.5)) drop-shadow(0 0 40px rgba(132,94,247,.4));animation:glow-pulse 2s ease-in-out infinite;position:relative;z-index:1;">
     </div>
-    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad-celebration);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;">Gacha Token Earned!</div>
-    <div style="font-size:12px;color:var(--text-dim);margin-bottom:20px;line-height:1.6;">You defeated the boss and earned a <b style="color:var(--violet);">Gacha Token</b>!</div>
-    <div style="background:linear-gradient(135deg,rgba(132,94,247,.1),rgba(51,154,240,.06));border:1.5px solid rgba(132,94,247,.25);border-radius:16px;padding:16px;width:100%;margin-bottom:12px;text-align:left;">
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--violet);margin-bottom:8px;">🎁 How to redeem</div>
-      <div style="font-size:11px;color:var(--text-dim);line-height:1.7;">
-        This is a <b style="color:var(--text);">physical reward</b> — not instant.<br><br>
-        Go to your <b style="color:var(--violet);">Profile → Rewards</b> to find your unique gacha code. Show it at any <b style="color:var(--text);">HPB partner location</b> to collect your gacha capsule!
+    <div style="font-size:13px;color:var(--text);font-weight:600;line-height:1.5;margin-bottom:16px;">A Gacha Token unlocks a<br><b style="background:var(--grad-holo);background-size:400% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;">holographic power-up card</b> — your in-game perk.</div>
+    <!-- Redeem instructions -->
+    <div style="background:linear-gradient(135deg,rgba(132,94,247,.12),rgba(51,154,240,.06));border:1.5px solid rgba(132,94,247,.3);border-radius:16px;padding:14px;width:100%;margin-bottom:16px;text-align:left;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:var(--violet);margin-bottom:6px;display:flex;align-items:center;gap:6px;">🎁 How to redeem</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.6;">
+        Visit any <b style="color:var(--text);">HPB partner location</b> to collect your physical gacha capsule. Use the code from your <b style="color:var(--violet);">Profile → Rewards</b>.
       </div>
     </div>
-    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px 14px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
-      <span style="font-size:20px;">🏪</span>
-      <div style="font-size:10px;color:var(--text-muted);line-height:1.5;text-align:left;">Available at participating HPB outlets, community centres & partner gyms</div>
-    </div>
-    <button class="btn btn-primary" onclick="closeGachaTokenPopup()" style="width:100%;">Understood 👍</button>
+    <button class="btn btn-primary" onclick="closeGachaTokenPopup()" style="width:100%;">Awesome, continue →</button>
   </div>
 </div>
 
@@ -2316,10 +2318,13 @@ function closeBossPopupAndFightSolo(){
     else goTo(SCR.DAY10_MILESTONE);
     return;
   }
-  // Boss 5: Gacha Token popup → Evolve → Quest map
+  // Boss 5: Victory screen → Gacha Token popup → Evolve → Quest map
   if(currentBossLevel===5){
     if(questDay<=5) questDay=5;
-    showGachaTokenPopup();
+    setupBossVictory();
+    goTo(SCR.BOSS_VICTORY);
+    // Show gacha token popup on top after a brief delay
+    setTimeout(function(){ showGachaTokenPopup(); }, 900);
     return;
   }
   setupBossVictory();
@@ -2336,7 +2341,10 @@ function handleCoopEnd(){
   }
   if(currentBossLevel===5){
     if(questDay<=5) questDay=5;
-    showGachaTokenPopup();
+    setupBossVictory();
+    goTo(SCR.BOSS_VICTORY);
+    // Show gacha token popup on top after a brief delay
+    setTimeout(function(){ showGachaTokenPopup(); }, 900);
     return;
   }
   setupBossVictory();

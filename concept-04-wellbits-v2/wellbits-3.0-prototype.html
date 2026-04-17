@@ -322,9 +322,9 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
 <div class="notif-panel" id="notifPanel" style="z-index:25;">
   <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px;">Notifications</div>
   <!-- V2: Midpoint check-in notification (tap to open full check-in) -->
-  <div class="notif-item" onclick="goTo(SCR.CHARACTER_CHECKIN);document.getElementById('notifPanel').classList.remove('show');" style="cursor:pointer;background:linear-gradient(135deg,rgba(132,94,247,.12),rgba(51,154,240,.06));border:1px solid rgba(132,94,247,.2);border-radius:10px;padding:10px;margin-bottom:6px;">
-    <div class="ni-icon" style="background:rgba(132,94,247,.2);border:1px solid rgba(132,94,247,.3);">💬</div>
-    <div style="flex:1;min-width:0;">
+  <div class="notif-item" onclick="openMidpointCheckin(event)" style="cursor:pointer;background:linear-gradient(135deg,rgba(132,94,247,.12),rgba(51,154,240,.06));border:1px solid rgba(132,94,247,.2);border-radius:10px;padding:10px;margin-bottom:6px;position:relative;z-index:30;">
+    <div class="ni-icon" style="background:rgba(132,94,247,.2);border:1px solid rgba(132,94,247,.3);pointer-events:none;">💬</div>
+    <div style="flex:1;min-width:0;pointer-events:none;">
       <div class="ni-text" style="color:var(--text);font-weight:700;"><b id="midpointNotifName" style="color:var(--violet);">Aura</b> has a message for you</div>
       <div style="font-size:10px;color:var(--text-dim);line-height:1.4;margin-top:2px;font-style:italic;" id="midpointNotifPrompt">"Still drinking water, or back to the old ways?"</div>
       <div class="ni-time" style="color:var(--violet);font-weight:700;margin-top:3px;">Tap to reply →</div>
@@ -487,7 +487,7 @@ h1,h2,h3,.display{font-family:'Plus Jakarta Sans',sans-serif;}
     <div id="assignedCharReason" style="display:none;"></div>
     <!-- V2: Quest goal displayed prominently — BEFORE stats -->
     <div style="background:linear-gradient(135deg,rgba(255,212,59,.08),rgba(132,94,247,.05));border:1.5px solid rgba(255,212,59,.25);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:12px;width:100%;text-align:left;display:flex;align-items:flex-start;gap:10px;">
-      <div style="font-size:22px;flex-shrink:0;">🎯</div>
+      <div style="font-size:22px;flex-shrink:0;">⚜️</div>
       <div style="flex:1;">
         <div style="font-family:'Space Grotesk',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:.06em;margin-bottom:4px;">YOUR QUEST</div>
         <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:var(--text);line-height:1.4;" id="assignedQuestGoal">Help this Wellbit get its glow back in 30 days!</div>
@@ -1760,10 +1760,10 @@ function goTo(n){
   if(n===SCR.BOSS_VICTORY)setupBossVictory();
   if(n===SCR.DAY10_MILESTONE){var mel=document.getElementById('milestoneCharName');if(mel&&characters[curChar])mel.textContent=characters[curChar].name;}
   if(n===SCR.CHARACTER_CHECKIN)setupCheckin();
-  // Show/hide persistent top nav
+  // V2: Only show top nav AFTER reaching Quest Map (not during onboarding/quiz/invite flow)
   const topNav=document.getElementById('topNav');
-  const hideScreens=[SCR.LANDING,SCR.WELCOME,SCR.QUIZ1,SCR.QUIZ2,SCR.QUIZ3,SCR.CHAR_ASSIGN,SCR.EVOLVE,SCR.INVITE,SCR.INVITE_LINK,SCR.PARENT_VIEW,SCR.FRIEND_VIEW,SCR.TRANSITION,SCR.PARENT_ALERT];
-  if(!hideScreens.includes(n)){
+  const showNavScreens=[SCR.QUEST_MAP,SCR.DAILY_CHALLENGE,SCR.DAY_PREVIEW,SCR.CHALLENGE_COMPLETE,SCR.PROFILE,SCR.LEADERBOARD,SCR.BOSS_ENCOUNTER,SCR.COOP_BATTLE,SCR.BOSS_VICTORY,SCR.BACKPACK,SCR.GACHA_ENTRY,SCR.GACHA_REVEAL,SCR.GACHA_ACTIVATED,SCR.FINAL_REWARD,SCR.DAY10_MILESTONE,SCR.CHARACTER_CHECKIN];
+  if(showNavScreens.includes(n)){
     topNav.style.display='flex';
   } else {
     topNav.style.display='none';
@@ -1894,11 +1894,18 @@ function buildQuestMap(c){
   // V2: Update map name header (single zone for current 10-day map)
   var mapNameEl=document.getElementById('mapName');
   if(mapNameEl && c.zones && c.zones[0]) mapNameEl.textContent=c.zones[0];
-  // Update quest goal
+  // V2: Quest goal now reflects the 30-day goal from the 'Your Wellbit is' screen
+  const questGoals30 = {
+    'Aura':'Help this Wellbit get its glow back in 30 days!',
+    'Titan':'Help this Wellbit build real strength in 30 days!',
+    'Sage':'Help this Wellbit level up its nutrition in 30 days!',
+    'Spark':'Help this Wellbit get its energy back in 30 days!',
+    'Luna':'Help this Wellbit fix its sleep in 30 days!'
+  };
   var goalTitle=document.getElementById('questGoalTitle');
   var goalDesc=document.getElementById('questGoalDesc');
-  if(goalTitle && c.quest) goalTitle.innerHTML=c.quest;
-  if(goalDesc && c.questDesc) goalDesc.textContent=c.questDesc;
+  if(goalTitle) goalTitle.textContent = questGoals30[c.name] || 'Help this Wellbit evolve in 30 days!';
+  if(goalDesc) goalDesc.style.display='none';
   // Update companion
   var compImg=document.getElementById('mapCompanionImg');
   var compName=document.getElementById('mapCompanionName');
@@ -2443,6 +2450,14 @@ function goToAllyView(){
   else goTo(SCR.FRIEND_VIEW);
 }
 
+// V2: Open midpoint check-in from notification (explicit stopPropagation)
+function openMidpointCheckin(ev){
+  if(ev){ev.stopPropagation();ev.preventDefault();}
+  var panel=document.getElementById('notifPanel');
+  if(panel)panel.classList.remove('show');
+  goTo(SCR.CHARACTER_CHECKIN);
+}
+
 // === NOTIFICATIONS ===
 const midpointPrompts = {
   'Aura': '"Quick check — still drinking water, or back to the old ways?"',
@@ -2793,7 +2808,7 @@ function showFreezeCardMenu() {
     + '<div style="font-size:12px;color:#9CA3AF;line-height:1.6;margin-bottom:12px;text-align:left;">'
     + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">❄️</span><span><b style="color:#F1F3F5;">Skip a day</b> without breaking your streak. Life happens — freeze cards keep you on track.</span></div>'
     + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">⚔️</span><span><b style="color:#F1F3F5;">Earn a day by defeating bosses</b> — 1 day at every boss stage.</span></div>'
-    + (isGoingSolo ? '' : '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">🛡️</span><span><b style="color:#F1F3F5;">Use on your ally too</b> — if your parent or friend is too busy that day, gift them a freeze so their streak stays safe.</span></div>')
+    + '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">🛡️</span><span><b style="color:#F1F3F5;">Use on your ally too</b> — if your parent or friend is too busy that day, gift them a freeze so their streak stays safe.' + (isGoingSolo ? ' <i style="color:#6B7280;">(Invite an ally first)</i>' : '') + '</span></div>'
     + '</div>';
 
   // Card count
